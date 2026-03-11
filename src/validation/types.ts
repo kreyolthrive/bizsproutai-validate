@@ -1,0 +1,277 @@
+export type Locale = "en" | "fr" | "ht" | "es";
+
+export type Category =
+  | "ecommerce"
+  | "coaching"
+  | "consulting"
+  | "finance"
+  | "tech"
+  | "local_service"
+  | "saas"
+  | "marketplace"
+  | "health_wellness"
+  | "edtech"
+  | "legal_law";
+
+export type Region =
+  | "north_america"
+  | "caribbean"
+  | "latin_america"
+  | "africa"
+  | "europe"
+  | "asia";
+
+export type CountryCode = string; // ISO 3166-1 alpha-2
+
+export type ExperienceLevel = "beginner" | "intermediate" | "advanced";
+
+export type ValidationInput = {
+  category?: Category; // Now optional - can be auto-classified
+  locale?: Locale;
+  idea: string;
+  targetMarket?: string;
+  location?: string;
+  budgetUsd?: number;
+  channels?: string[];
+  timelineDays?: number;
+  experienceLevel?: ExperienceLevel;
+};
+
+export type ScoreBand = 1 | 2 | 3 | 4 | 5;
+
+export type Verdict = "go" | "caution" | "no-go";
+
+// New: Dynamic status for FIX loop and alternatives
+export type ValidationStatus = "GO" | "FIX" | "STOP";
+export type FrameworkDecision = "GO" | "CONDITIONAL_GO" | "NEED_WORK" | "NO_GO";
+
+export type CriterionKey = string;
+
+export type CriterionDefinition = {
+  key: CriterionKey;
+  label: string;
+  weight: number;
+  description?: string;
+};
+
+export type CriterionResult = {
+  key: CriterionKey;
+  label: string;
+  weight: number;
+  score: ScoreBand;
+  evidence: string[];
+  risks: string[];
+  recommendations: string[];
+};
+
+// New: Risk with severity
+export type FailureRisk = {
+  criterion: string;
+  score: ScoreBand;
+  reason: string;
+  severity: "critical" | "high" | "medium" | "low";
+};
+
+// New: Fix suggestion
+export type FixSuggestion = {
+  issue: string;
+  action: string;
+  expectedImpact: string;
+};
+
+// New: Alternative business model
+export type AlternativeModel = {
+  model: string;
+  reason: string;
+  viability: ScoreBand;
+};
+
+// New: Country detection result
+export type CountryDetection = {
+  code: CountryCode;
+  region: Region;
+  confidence: number;
+  evidence: string[];
+};
+
+// New: Build job for GO status
+export type BuildJob = {
+  type: "brand" | "website" | "content" | "social";
+  status: "queued" | "pending";
+};
+
+// Legacy result type (kept for backward compatibility)
+export type ValidationResult = {
+  category: Category;
+  locale: Locale;
+  overallScore: ScoreBand;
+  verdict: Verdict;
+  summary: {
+    oneLiner: string;
+    topOpportunities: string[];
+    biggestRisks: string[];
+  };
+  nextSteps: string[];
+  criteria: CriterionResult[];
+  assumptions: string[];
+  missingInfo: string[];
+  meta: {
+    version: string;
+    generatedAt: string;
+  };
+};
+
+// New: Enhanced validation result with dynamic framework features
+export type DynamicValidationResult = {
+  status: ValidationStatus;
+  category: Category;
+  framework?: {
+    archetype: string;
+    label: string;
+  };
+  country: CountryDetection;
+  language: Locale;
+  overallScore: ScoreBand;
+  verdict: Verdict;
+  summary: {
+    oneLiner: string;
+    topOpportunities: string[];
+    biggestRisks: string[];
+  };
+  failureRisks: FailureRisk[];
+  fixes: FixSuggestion[];
+  alternatives: AlternativeModel[];
+  nextActions: string[];
+  criteria: CriterionResult[];
+  assumptions: string[];
+  missingInfo: string[];
+  buildTriggered: boolean;
+  buildJobs: BuildJob[];
+  frameworkReport?: SimplifiedFrameworkReport;
+  meta: {
+    version: string;
+    iterationCount: number;
+    generatedAt: string;
+  };
+};
+
+export type SimplifiedGateResult = {
+  gate: 1 | 2 | 3 | 4 | 5;
+  name: string;
+  score: number;
+  maxScore: number;
+  passed: boolean;
+  status: "PASS" | "FAIL" | "BLOCKED";
+  blockedByGate?: 1 | 2 | 3 | 4 | 5;
+  reasoning: string;
+};
+
+export type SimplifiedFrameworkReport = {
+  oneLineSummary: string;
+  missingInfo: string[];
+  assumptions: string[];
+  problemDemand: {
+    painLevel: number;
+    demandFrequency: number;
+    marketCoverage: number;
+    currentGap: number;
+    total: number;
+    passGate1: boolean;
+    keyInsight: string;
+  };
+  primarySegment: {
+    name: string;
+    who: string;
+    jobToBeDone: string;
+    currentPain: string;
+    willingnessToPay: string;
+    reachChannels: string[];
+    scores: {
+      reachability: number;
+      painLevel: number;
+      payingCapability: number;
+      total: number;
+    };
+  };
+  solutionValidation: {
+    painCoverage: number;
+    differentiation: number;
+    adoptionFriction: number;
+    score: number;
+    passGate3: boolean;
+  };
+  marketValidation: {
+    tam: number;
+    sam: number;
+    som: number;
+    confidence: number;
+    passGate4: boolean;
+  };
+  businessModelValidation: {
+    model: string;
+    entryPrice: number;
+    anchorPrice: number;
+    margin: number;
+    passGate4: boolean;
+  };
+  operationalValidation: {
+    score: number;
+    passGate5: boolean;
+    keyConstraints: string[];
+  };
+  weightedScore: number;
+  decision: FrameworkDecision;
+  gates: SimplifiedGateResult[];
+};
+
+export type Framework = (input: ValidationInput) => Promise<ValidationResult>;
+
+export type FrameworkDefinition = {
+  category: Category;
+  displayName: string;
+  criteriaTemplate: Array<{
+    key: string;
+    label: string;
+    weight: number;
+  }>;
+  run: Framework;
+};
+
+// New: JSON Schema types for dynamic frameworks
+export type CategorySchema = {
+  category: Category;
+  displayName: string;
+  criteria: Array<{
+    key: string;
+    label: string;
+    weight: number;
+    description?: string;
+    riskIndicators: string[];
+    fixSuggestions: string[];
+  }>;
+  failurePatterns: Array<{
+    pattern: string;
+    severity: "critical" | "high" | "medium" | "low";
+    description: string;
+  }>;
+  alternativeModels: string[];
+};
+
+export type RegionSchema = {
+  region: Region;
+  displayName: string;
+  countries: CountryCode[];
+  commonChallenges: string[];
+  paymentNotes: string[];
+};
+
+export type CountrySchema = {
+  country: CountryCode;
+  region: Region;
+  name: string;
+  currency: string;
+  paymentRails: string[];
+  adjustments: Record<string, { weightMultiplier: number; reason?: string }>;
+  warnings: string[];
+  marketNotes: string[];
+};

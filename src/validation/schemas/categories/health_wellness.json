@@ -1,0 +1,125 @@
+{
+  "category": "health_wellness",
+  "displayName": "Health & Wellness",
+  "criteria": [
+    {
+      "key": "outcome_clarity",
+      "label": "Outcome Clarity",
+      "weight": 0.25,
+      "description": "Specific, measurable health or wellness outcome",
+      "riskIndicators": [
+        "Vague benefits (feel better)",
+        "Outcomes take too long to see",
+        "Results vary significantly",
+        "Hard to attribute results to your solution"
+      ],
+      "fixSuggestions": [
+        "Define 30/60/90 day milestones",
+        "Create measurable success metrics",
+        "Document before/after case studies",
+        "Focus on one specific outcome"
+      ]
+    },
+    {
+      "key": "credentials_trust",
+      "label": "Credentials & Trust",
+      "weight": 0.25,
+      "description": "Authority and credibility to give health/wellness advice",
+      "riskIndicators": [
+        "No relevant certifications",
+        "Giving medical advice without license",
+        "No personal transformation story",
+        "Competing with licensed professionals"
+      ],
+      "fixSuggestions": [
+        "Get relevant certifications",
+        "Clearly state what you are/aren't qualified for",
+        "Partner with licensed professionals",
+        "Document your own health journey"
+      ]
+    },
+    {
+      "key": "compliance_safety",
+      "label": "Compliance & Safety",
+      "weight": 0.20,
+      "description": "Meeting regulatory requirements and avoiding harm",
+      "riskIndicators": [
+        "Making medical claims",
+        "Selling supplements without compliance",
+        "No liability protection",
+        "Ignoring FDA/FTC guidelines"
+      ],
+      "fixSuggestions": [
+        "Consult with health industry lawyer",
+        "Use proper disclaimers",
+        "Get appropriate insurance",
+        "Stay within scope of practice"
+      ]
+    },
+    {
+      "key": "retention",
+      "label": "Retention & Lifestyle Fit",
+      "weight": 0.15,
+      "description": "Solution fits into customer's life sustainably",
+      "riskIndicators": [
+        "Requires major lifestyle changes",
+        "One-time purchase with no follow-up",
+        "High dropout rates expected",
+        "Depends on motivation alone"
+      ],
+      "fixSuggestions": [
+        "Design for habit formation",
+        "Create accountability mechanisms",
+        "Build community for support",
+        "Start with small behavior changes"
+      ]
+    },
+    {
+      "key": "market_positioning",
+      "label": "Market Positioning",
+      "weight": 0.15,
+      "description": "Clear niche in crowded wellness market",
+      "riskIndicators": [
+        "Generic wellness positioning",
+        "Competing with free content",
+        "No specific target audience",
+        "Trend-dependent (fad diet, etc.)"
+      ],
+      "fixSuggestions": [
+        "Narrow to specific demographic/condition",
+        "Combine unique method/approach",
+        "Target underserved segment",
+        "Build on evidence-based practices"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "compliance_violation",
+      "severity": "critical",
+      "description": "Making claims that violate FTC/FDA regulations"
+    },
+    {
+      "pattern": "scope_creep_liability",
+      "severity": "critical",
+      "description": "Giving advice outside qualifications"
+    },
+    {
+      "pattern": "fad_dependency",
+      "severity": "high",
+      "description": "Business built on trend that fades"
+    },
+    {
+      "pattern": "results_variance",
+      "severity": "medium",
+      "description": "Customer results vary too much to sustain"
+    }
+  ],
+  "alternativeModels": [
+    "Health education content (lower liability)",
+    "Wellness community (peer support model)",
+    "Corporate wellness (B2B, higher value)",
+    "Health tech/tracking (tools, not advice)",
+    "Affiliate for wellness products"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "region": "europe",
+  "displayName": "Europe",
+  "countries": ["GB", "DE", "FR", "ES", "IT", "NL", "BE", "CH", "SE", "PL"],
+  "commonChallenges": [
+    "GDPR compliance required",
+    "Multiple languages/markets",
+    "Strong consumer protection laws",
+    "High labor costs (especially Western Europe)",
+    "VAT complexity across countries"
+  ],
+  "paymentNotes": [
+    "SEPA for bank transfers",
+    "Strong Debit Preference (especially NL, DE)",
+    "iDEAL in Netherlands",
+    "Sofort/Klarna in Germany",
+    "Stripe, Adyen dominant",
+    "Apple Pay, Google Pay growing"
+  ]
+}

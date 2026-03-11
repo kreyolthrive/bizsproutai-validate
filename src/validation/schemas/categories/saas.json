@@ -1,0 +1,125 @@
+{
+  "category": "saas",
+  "displayName": "SaaS (Software as a Service)",
+  "criteria": [
+    {
+      "key": "problem_urgency",
+      "label": "Problem Urgency",
+      "weight": 0.25,
+      "description": "Users have a painful, recurring problem they'll pay monthly to solve",
+      "riskIndicators": [
+        "Nice-to-have, not must-have",
+        "Problem is infrequent",
+        "Users don't recognize the problem",
+        "Free tools are good enough"
+      ],
+      "fixSuggestions": [
+        "Focus on workflow that happens daily/weekly",
+        "Target moment of acute pain (hiring, scaling, compliance)",
+        "Quantify time/money cost of not solving",
+        "Interview users about their workarounds"
+      ]
+    },
+    {
+      "key": "willingness_to_pay",
+      "label": "Willingness to Pay",
+      "weight": 0.25,
+      "description": "Target customers have budget and habit of paying for software",
+      "riskIndicators": [
+        "Targeting consumers (low WTP)",
+        "Industry doesn't buy software",
+        "Price sensitivity is high",
+        "Long approval processes"
+      ],
+      "fixSuggestions": [
+        "Target B2B over B2C",
+        "Focus on industries with SaaS culture",
+        "Price based on value delivered",
+        "Target decision-makers who own budget"
+      ]
+    },
+    {
+      "key": "retention_mechanics",
+      "label": "Retention & Stickiness",
+      "weight": 0.20,
+      "description": "Product becomes essential and hard to leave",
+      "riskIndicators": [
+        "Easy to switch to competitor",
+        "Low switching costs",
+        "No data lock-in",
+        "Usage is occasional"
+      ],
+      "fixSuggestions": [
+        "Store customer data that grows over time",
+        "Integrate with other tools they use",
+        "Become part of daily workflow",
+        "Create network effects between users"
+      ]
+    },
+    {
+      "key": "acquisition_economics",
+      "label": "Acquisition Economics",
+      "weight": 0.15,
+      "description": "Cost to acquire customers relative to lifetime value",
+      "riskIndicators": [
+        "High CAC (outbound sales required)",
+        "Low LTV (high churn or low price)",
+        "Long sales cycles",
+        "No organic acquisition channel"
+      ],
+      "fixSuggestions": [
+        "Build self-serve/PLG motion",
+        "Create content that attracts users",
+        "Target higher-value customers",
+        "Reduce churn before scaling acquisition"
+      ]
+    },
+    {
+      "key": "competitive_moat",
+      "label": "Competitive Moat",
+      "weight": 0.15,
+      "description": "Defensibility against competitors and new entrants",
+      "riskIndicators": [
+        "Feature can be copied easily",
+        "No proprietary data",
+        "Competing with well-funded players",
+        "No network effects"
+      ],
+      "fixSuggestions": [
+        "Accumulate proprietary data over time",
+        "Build integrations that increase switching costs",
+        "Create community around product",
+        "Focus on specific vertical deeply"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "vitamin_not_painkiller",
+      "severity": "critical",
+      "description": "Nice-to-have product that users don't urgently need"
+    },
+    {
+      "pattern": "leaky_bucket",
+      "severity": "critical",
+      "description": "High churn rate makes growth unsustainable"
+    },
+    {
+      "pattern": "cac_ltv_death",
+      "severity": "high",
+      "description": "Costs more to acquire customers than they're worth"
+    },
+    {
+      "pattern": "feature_factory",
+      "severity": "medium",
+      "description": "Building features without solving core problem deeply"
+    }
+  ],
+  "alternativeModels": [
+    "Productized service (done-for-you with software)",
+    "Marketplace (connect buyers and sellers)",
+    "API/infrastructure (sell to developers)",
+    "Usage-based pricing (align with value)",
+    "Vertical SaaS (deep focus on one industry)"
+  ]
+}

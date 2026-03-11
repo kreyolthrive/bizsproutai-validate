@@ -1,0 +1,25 @@
+{
+  "country": "MX",
+  "region": "latin_america",
+  "name": "Mexico",
+  "currency": "MXN",
+  "paymentRails": ["OXXO", "SPEI", "Mercado Pago", "PayPal", "Kueski Pay", "Credit Cards", "Cash"],
+  "adjustments": {
+    "payment_trust": { "weightMultiplier": 1.3, "reason": "Cash payments (OXXO) still very common" },
+    "distribution": { "weightMultiplier": 1.1, "reason": "Strong social commerce culture" }
+  },
+  "warnings": [
+    "OXXO cash payments are essential for e-commerce",
+    "Installment payments (meses sin intereses) expected",
+    "SPEI for bank transfers is widely used",
+    "Mercado Libre is dominant marketplace"
+  ],
+  "marketNotes": [
+    "Large market (~130 million population)",
+    "Growing middle class with purchasing power",
+    "Strong e-commerce growth",
+    "Spanish language essential",
+    "Regional variations (Mexico City vs rest of country)",
+    "Nearshoring trend creating opportunities"
+  ]
+}

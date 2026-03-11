@@ -1,0 +1,31 @@
+{
+  "country": "HT",
+  "region": "caribbean",
+  "name": "Haiti",
+  "currency": "HTG",
+  "paymentRails": ["MonCash", "Natcash", "Lajan Cash", "Cash", "Western Union", "CAM Transfer"],
+  "adjustments": {
+    "payment_trust": { "weightMultiplier": 1.8, "reason": "Mobile money adoption critical, cash still dominant" },
+    "logistics": { "weightMultiplier": 1.5, "reason": "Infrastructure challenges, delivery complexity" },
+    "unit_economics": { "weightMultiplier": 1.3, "reason": "Lower purchasing power, price sensitivity" },
+    "operations": { "weightMultiplier": 1.4, "reason": "Power, internet, supply chain challenges" },
+    "credibility": { "weightMultiplier": 1.3, "reason": "Trust is earned slowly, relationships matter" }
+  },
+  "warnings": [
+    "Mobile money (MonCash, Natcash) is essential for payments",
+    "Cash economy is still dominant in many areas",
+    "Infrastructure (power, internet) can be unreliable",
+    "Build trust through community and relationships",
+    "Diaspora market (US, Canada, France) is significant",
+    "Remittances are a major economic driver"
+  ],
+  "marketNotes": [
+    "Population ~11 million, large diaspora abroad",
+    "French and Haitian Creole are official languages",
+    "High mobile phone penetration",
+    "Strong entrepreneurial culture despite challenges",
+    "Community trust and word-of-mouth critical",
+    "Foreign exchange access can be limited",
+    "Consider diaspora as target market"
+  ]
+}

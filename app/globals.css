@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-navy: 11, 31, 77;
+  --brand-navy-2: 18, 45, 103;
+  --brand-green: 15, 176, 133;
+  --brand-green-2: 20, 201, 164;
+  --foreground-rgb: 9, 23, 52;
+  --background-rgb: 241, 245, 249;
+  --surface-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background:
+    radial-gradient(circle at 12% -8%, rgba(var(--brand-green), 0.2), transparent 34%),
+    radial-gradient(circle at 90% -10%, rgba(var(--brand-navy), 0.15), transparent 38%),
+    rgb(var(--background-rgb));
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-heading {
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, sans-serif;
+}
+
+.brand-glass {
+  background: linear-gradient(
+      135deg,
+      rgba(var(--surface-rgb), 0.94) 0%,
+      rgba(var(--surface-rgb), 0.82) 100%
+    );
+  backdrop-filter: blur(10px);
+}
+
+.brand-panel {
+  background: linear-gradient(
+      145deg,
+      rgba(var(--surface-rgb), 0.98) 0%,
+      rgba(240, 248, 255, 0.96) 100%
+    );
+  border: 1px solid rgba(var(--brand-navy), 0.08);
+  box-shadow: 0 20px 45px -30px rgba(var(--brand-navy), 0.55);
+}
+
+.brand-cta {
+  background: linear-gradient(
+      135deg,
+      rgb(var(--brand-green)) 0%,
+      rgb(var(--brand-green-2)) 34%,
+      rgb(var(--brand-navy-2)) 100%
+    );
+}

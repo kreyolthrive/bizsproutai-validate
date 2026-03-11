@@ -1,0 +1,24 @@
+{
+  "country": "US",
+  "region": "north_america",
+  "name": "United States",
+  "currency": "USD",
+  "paymentRails": ["Stripe", "PayPal", "Square", "Apple Pay", "Google Pay", "Venmo", "ACH"],
+  "adjustments": {
+    "demand": { "weightMultiplier": 1.0, "reason": "Large, accessible market" },
+    "unit_economics": { "weightMultiplier": 1.1, "reason": "High CAC in competitive market" },
+    "distribution": { "weightMultiplier": 1.2, "reason": "Crowded channels, need differentiation" }
+  },
+  "warnings": [
+    "Very competitive market in most categories",
+    "High customer acquisition costs expected",
+    "Strong existing incumbents in most spaces"
+  ],
+  "marketNotes": [
+    "Largest consumer market globally",
+    "High willingness to pay for premium",
+    "Strong e-commerce infrastructure",
+    "Litigious environment - legal compliance important",
+    "State-by-state regulations vary"
+  ]
+}

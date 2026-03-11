@@ -1,0 +1,624 @@
+{
+  "landing": {
+    "nav": {
+      "story": "Histoire",
+      "features": "Fonctionnalités",
+      "faq": "FAQ"
+    },
+    "hero": {
+      "title": "Validez votre idée d'entreprise",
+      "subtitle": "Notre IA valide votre idée en quelques minutes—puis vous aide à la lancer.",
+      "cta": "Valider mon idée"
+    },
+    "story": {
+      "headline": "Les \"stratégies éprouvées\" n'ont pas été écrites pour nous.",
+      "para1": "Quand j'ai essayé de créer des entreprises en Haïti, j'ai échoué encore et encore.",
+      "para2": "J'ai même fait échouer la petite entreprise de mon père.",
+      "para3": "Pas parce que nous étions paresseux. Nous avons travaillé dur. Nous sommes restés debout tard. Nous avons fait ce que les livres et les vidéos YouTube disaient. Mais presque chaque stratégie \"éprouvée\" que j'ai trouvée était conçue pour l'Amérique du Nord ou l'Europe.",
+      "breakpoint": {
+        "title": "Et c'est là que ça a cassé.",
+        "para1": "Ces modèles supposaient des choses que je n'avais pas : une infrastructure stable, un accès facile aux comptes bancaires et aux cartes, des budgets marketing, et des clients qui se comportent comme aux États-Unis ou en Europe. Rien de tout cela ne correspondait à ma réalité haïtienne.",
+        "para2": "Donc chaque fois que je suivais les \"bonnes étapes\"… j'obtenais quand même les mauvais résultats."
+      },
+      "global": "Ce qui m'est arrivé en Haïti se passe en ce moment même en Afrique, en Amérique latine et dans les Caraïbes. Les gens perdent leur emploi à cause de l'IA et de l'automatisation, et ils se tournent vers les petites entreprises et les activités secondaires pour survivre. Mais on leur donne les mêmes guides étrangers et outils coûteux… et ensuite on est surpris quand la plupart de ces entreprises échouent.",
+      "cycle": {
+        "intro": "Si rien ne change, ce cycle continue de se répéter :",
+        "steps": [
+          "travail acharné",
+          "mauvaise stratégie",
+          "pas de résultats",
+          "découragement",
+          "abandon"
+        ]
+      },
+      "whyExists": {
+        "label": "Pourquoi BizSproutAI existe",
+        "title": "BizSproutAI est conçu pour les fondateurs dans des endroits comme les nôtres.",
+        "para1": "Il vous enseigne comment votre marché fonctionne vraiment—comment les gens achètent, comment ils paient, quels canaux ils utilisent réellement—puis vous aide à valider votre idée avec le bon cadre pour votre type d'entreprise (e-commerce, coaching, conseil, tech, finance, et plus).",
+        "para2": "Ensuite, vous suivez un Sprint de Lancement étape par étape pour obtenir vos premiers clients payants. Pas de diplôme. Pas de codage. Plus besoin de deviner avec le guide de quelqu'un d'autre."
+      },
+      "ctaCard": {
+        "title": "C'est une rare chance d'arrêter de construire à l'aveugle.",
+        "body": "Si les conseils de démarrage standard ne correspondent pas à votre réalité, c'est votre carte de lancement—conçue pour votre monde—pour que vos efforts aient vraiment une chance de devenir un revenu, des emplois et un vrai changement dans votre communauté.",
+        "button": "Rejoindre la liste d'attente",
+        "note": "Soyez le premier à accéder à la validation + cadres spécifiques par catégorie."
+      }
+    },
+    "features": {
+      "title": "Tout ce dont vous avez besoin pour lancer",
+      "subtitle": "De l'idée au revenu—une seule plateforme.",
+      "items": {
+        "validate": {
+          "title": "Validez votre idée",
+          "description": "Validation alimentée par l'IA spécifique à votre catégorie d'entreprise et aux conditions du marché local."
+        },
+        "fix": {
+          "title": "Obtenez des corrections actionnables",
+          "description": "N'obtenez pas seulement un score—obtenez des recommandations spécifiques pour améliorer vos chances de succès."
+        },
+        "build": {
+          "title": "Construisez votre entreprise",
+          "description": "Générez automatiquement votre marque, site web et contenu de lancement quand vous êtes prêt."
+        },
+        "launch": {
+          "title": "Sprint de lancement",
+          "description": "Guidage étape par étape pour acquérir vos 10 premiers clients payants."
+        }
+      }
+    },
+    "faq": {
+      "title": "Questions fréquemment posées",
+      "items": {
+        "what": {
+          "question": "Qu'est-ce que BizSproutAI ?",
+          "answer": "BizSproutAI est une plateforme alimentée par l'IA qui valide votre idée d'entreprise en utilisant des cadres spécifiques à votre catégorie et marché local, puis vous aide à construire et lancer."
+        },
+        "different": {
+          "question": "En quoi est-ce différent des autres outils ?",
+          "answer": "Contrairement aux conseils de démarrage génériques, nous ajustons les critères de validation en fonction de votre catégorie d'entreprise (e-commerce, coaching, fintech, etc.) et des conditions de votre marché local (méthodes de paiement, facteurs de confiance, infrastructure)."
+        },
+        "cost": {
+          "question": "Combien ça coûte ?",
+          "answer": "La validation de base est gratuite. Les fonctionnalités premium pour la construction et le lancement seront disponibles avec un abonnement."
+        },
+        "countries": {
+          "question": "Quels pays soutenez-vous ?",
+          "answer": "Nous avons des données de marché spécifiques pour Haïti, le Nigeria, le Kenya, le Mexique, le Brésil et les États-Unis, avec plus de pays à venir. La validation fonctionne globalement."
+        }
+      }
+    },
+    "cta": {
+      "getFreeValidation": "Obtenir une validation gratuite"
+    },
+    "sections": {
+      "stopBuilding": {
+        "titleLine1": "Arrêtez de créer",
+        "titleLine2": "des entreprises qui échouent",
+        "body": "90% des startups échouent. Notre IA valide votre idée, la redéfinit si c'est un NO-GO, et construit tout ce qu'il vous faut pour lancer. Un prompt. Une entreprise complète. Entièrement modifiable selon votre vision."
+      },
+      "demo": {
+        "title": "Essayez une validation gratuite",
+        "subtitle": "Découvrez comment notre IA analyse des idées business"
+      },
+      "validation": {
+        "title": "Obtenir une validation gratuite",
+        "placeholder": "Décrivez votre idée d'entreprise",
+        "analyzing": "Analyse...",
+        "button": "Valider mon idée"
+      }
+    },
+    "operatingModel": {
+      "title": "Le web est votre centre de contrôle. Le mobile est votre télécommande d'exécution.",
+      "subtitle": "Configurez et optimisez sur desktop, puis exécutez votre lancement depuis votre poche.",
+      "web": {
+        "kicker": "Application web",
+        "title": "Construire, configurer, analyser",
+        "body": "Utilisez le web pour créer votre site et vos micro-apps, configurer les langues/domaines et suivre le lancement.",
+        "items": [
+          "Générer et modifier site + micro-apps",
+          "Gérer les leads CRM et soumissions",
+          "Suivre Sprint, trafic et signaux de validation"
+        ],
+        "cta": "Ouvrir le tableau de bord"
+      },
+      "mobile": {
+        "kicker": "Application mobile",
+        "title": "Exécuter rapidement le quotidien",
+        "body": "Utilisez le mobile pour terminer les tâches Sprint, répondre vite aux leads et partager des liens instantanément.",
+        "items": [
+          "Focus du jour avec 1–3 tâches à fort impact",
+          "Actions lead: WhatsApp, appel, email",
+          "Partage rapide des liens booking/request/waitlist"
+        ],
+        "cta": "Ouvrir le compagnon mobile"
+      }
+    }
+  },
+  "hero": {
+    "title": "Validez votre idée d'entreprise",
+    "subtitle": "Notre IA valide votre idée en quelques minutes—puis vous aide à la lancer.",
+    "cta": "Valider"
+  },
+  "form": {
+    "category": "Catégorie",
+    "idea": "Décrivez votre idée",
+    "ideaPlaceholder": "Je veux vendre des artisanats faits main aux touristes visitant ma ville...",
+    "targetMarket": "Marché cible (optionnel)",
+    "budgetUsd": "Budget (USD, optionnel)",
+    "submit": "Valider mon idée",
+    "analyzing": "Analyse de votre idée..."
+  },
+  "validation": {
+    "status": {
+      "go": "FONCEZ",
+      "fix": "AJUSTEZ",
+      "stop": "ARRÊTEZ"
+    },
+    "verdicts": {
+      "go": "Votre idée est prête à être construite !",
+      "caution": "Procédez avec prudence—adressez d'abord les risques.",
+      "no-go": "Cette idée nécessite des changements significatifs."
+    },
+    "labels": {
+      "overallScore": "Score global",
+      "failureRisks": "Risques d'échec",
+      "fixes": "Corrections recommandées",
+      "alternatives": "Modèles alternatifs",
+      "nextActions": "Prochaines actions",
+      "country": "Pays détecté",
+      "category": "Catégorie d'entreprise"
+    },
+    "buttons": {
+      "validate": "Valider",
+      "tryAgain": "Réessayer",
+      "startBuilding": "Commencer à construire"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Quelque chose s'est mal passé",
+    "retry": "Réessayer",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Soumettre",
+    "cancel": "Annuler"
+  },
+  "site": {
+    "nav": {
+      "launchKit": "Kit de lancement",
+      "websiteBuilder": "Créateur de site",
+      "microApps": "Micro-apps",
+      "socialAgent": "Agent social",
+      "blog": "Blog",
+      "dashboard": "Tableau de bord",
+      "domains": "Domaines",
+      "courses": "Cours",
+      "billing": "Facturation",
+      "mobile": "Mobile"
+    },
+    "contact": {
+      "label": "Contact",
+      "addressLine1": "7901 4th St N #32253",
+      "addressLine2": "St. Petersburg, FL, 33702, USA",
+      "phoneLabel": "Téléphone",
+      "salesLabel": "Email",
+      "supportLabel": "Support"
+    }
+  },
+  "pages": {
+    "privacy": {
+      "title": "Confidentialité",
+      "p1": "Nous utilisons votre idée et votre email uniquement pour fournir les résultats de validation et les mises à jour produit liées à BizSproutAI.",
+      "p2": "Nous ne publions pas vos soumissions. Pour un partenariat, contactez info@bizsproutai.com."
+    },
+    "terms": {
+      "title": "Conditions",
+      "p1": "En utilisant BizSproutAI, vous acceptez d'utiliser le service de manière responsable et de comprendre que la validation est une aide à la décision, pas un conseil juridique ou financier.",
+      "p2": "Nous pouvons mettre à jour ces conditions. L'utilisation continue du service vaut acceptation de la dernière version."
+    },
+    "websitePublish": {
+      "title": "Publier le site",
+      "subtitle": "Publiez sur un sous-domaine BizSproutAI maintenant, puis connectez votre domaine personnalisé plus tard.",
+      "checklist": {
+        "title": "Checklist de publication",
+        "item1": "Texte du hero et offre vérifiés",
+        "item2": "CTA principal configuré",
+        "item3": "Section contact ou capture de leads active",
+        "item4": "Au moins une micro-app en ligne et testée avec une vraie soumission"
+      },
+      "links": {
+        "title": "URLs des micro-apps",
+        "subtitle": "Partagez ces liens sur les réseaux sociaux, WhatsApp et vos messages d'outreach.",
+        "booking": "Réservation de consultation",
+        "request": "Demande de service local",
+        "waitlist": "Liste d'attente / accès anticipé",
+        "crm": "Vue CRM des soumissions"
+      }
+    },
+    "billing": {
+      "title": "Facturation",
+      "subtitle": "Gérez votre plan actuel et les futures options.",
+      "currentPlanTitle": "Plan actuel",
+      "currentPlanBody": "Vous utilisez actuellement le niveau de validation gratuit."
+    },
+    "blog": {
+      "title": "Blog BizSproutAI",
+      "subtitle": "Des conseils pratiques pour les fondateurs des marchés réels.",
+      "posts": [
+        {
+          "title": "Valider la demande avant de construire",
+          "excerpt": "Une checklist simple pour vérifier si les clients paieront avant de construire.",
+          "date": "Mars 2026",
+          "category": "Validation"
+        },
+        {
+          "title": "Choisir votre premier segment client",
+          "excerpt": "Pourquoi la traction initiale vient d'un segment clair, pas de tout le monde.",
+          "date": "Mars 2026",
+          "category": "Go-to-Market"
+        },
+        {
+          "title": "De l'idée au premier sprint de lancement",
+          "excerpt": "Utilisez 30 jours pour passer du concept au feedback réel du marché.",
+          "date": "Mars 2026",
+          "category": "Lancement"
+        }
+      ]
+    },
+    "courses": {
+      "title": "Cours",
+      "subtitle": "Parcours guidés pour mieux construire et lancer.",
+      "items": [
+        {
+          "title": "Fondamentaux de validation",
+          "description": "Apprenez à noter vos idées et repérer tôt les hypothèses faibles."
+        },
+        {
+          "title": "Découverte client",
+          "description": "Identifiez votre premier segment et menez de bons entretiens clients."
+        },
+        {
+          "title": "Offre et prix",
+          "description": "Construisez une offre claire et testez vos prix avec confiance."
+        },
+        {
+          "title": "Playbook sprint de lancement",
+          "description": "Exécutez votre premier sprint de 30 jours avec des objectifs hebdomadaires."
+        }
+      ]
+    },
+    "dashboard": {
+      "kicker": "Contrôle de lancement",
+      "title": "Tableau de bord fondateur",
+      "subtitle": "Suivez la progression, les leads et les tâches depuis un seul espace.",
+      "stats": {
+        "sprint": "Progression du sprint",
+        "tasks": "Tâches terminées",
+        "leads": "Leads",
+        "submissions": "Soumissions"
+      },
+      "webPanel": {
+        "title": "Lancement web",
+        "body": "Construisez votre site, affinez vos assets et publiez vos pages principales."
+      },
+      "mobilePanel": {
+        "title": "Exécution mobile",
+        "body": "Gérez leads et tâches rapidement avec des workflows mobile-first."
+      },
+      "actions": {
+        "builder": "Builder de site",
+        "launchKit": "Kit de lancement",
+        "microApps": "Micro-apps",
+        "social": "Agent social",
+        "mobileCompanion": "Compagnon mobile",
+        "booking": "Formulaire de réservation",
+        "request": "Demande de service",
+        "waitlist": "Liste d'attente"
+      },
+      "today": {
+        "title": "Focus du jour",
+        "subtitle": "Complétez ces actions pour avancer votre lancement.",
+        "done": "Fait",
+        "pending": "En attente"
+      }
+    },
+    "brandKit": {
+      "title": "Kit de marque",
+      "subtitle": "Définissez une identité claire avant le lancement.",
+      "essentialsTitle": "Éléments essentiels",
+      "items": [
+        "Positionnement de marque",
+        "Guide de ton de voix",
+        "Direction couleurs et typographie",
+        "Piliers de message et langage CTA"
+      ]
+    },
+    "domains": {
+      "title": "Domaines",
+      "subtitle": "Connectez votre domaine personnalisé quand vous êtes prêt.",
+      "steps": [
+        "Choisissez votre nom de domaine et registrar.",
+        "Pointez les DNS vers votre déploiement BizSproutAI.",
+        "Vérifiez SSL et testez les pages principales."
+      ]
+    },
+    "mobile": {
+      "kicker": "Compagnon mobile",
+      "title": "Pilotez votre lancement depuis votre téléphone",
+      "subtitle": "Suivez vos tâches et relancez vos leads rapidement en déplacement.",
+      "copied": "Lien copié.",
+      "offline": "Vous êtes hors ligne. Les changements sont sauvegardés localement.",
+      "noName": "Lead sans nom",
+      "noLeads": "Aucun lead pour le moment. Publiez vos liens pour commencer.",
+      "metrics": {
+        "leads": "Leads",
+        "done": "Faits"
+      },
+      "tabs": {
+        "today": "Aujourd'hui",
+        "leads": "Leads",
+        "tasks": "Tâches",
+        "profile": "Profil"
+      },
+      "actions": {
+        "completed": "Terminé",
+        "markDone": "Marquer comme fait",
+        "call": "Appeler",
+        "shareBooking": "Partager le lien de réservation",
+        "shareRequest": "Partager le lien de demande",
+        "shareWaitlist": "Partager le lien liste d'attente",
+        "openWeb": "Ouvrir le dashboard web"
+      },
+      "profile": {
+        "blurb": "Partagez vos liens et gardez du rythme chaque jour. Les petites actions créent de la traction."
+      }
+    },
+    "socialAgent": {
+      "title": "Agent social",
+      "subtitle": "Créez du contenu cohérent et des campagnes avec un workflow guidé.",
+      "quickStartTitle": "Démarrage rapide",
+      "steps": [
+        "Définissez une offre claire et une audience pour cette semaine.",
+        "Générez des hooks, posts et variantes de CTA.",
+        "Publiez, mesurez les réponses et itérez selon l'engagement réel."
+      ]
+    },
+    "adminLeads": {
+      "kicker": "Admin",
+      "title": "Leads de validation",
+      "subtitle": "Filtrez et segmentez les leads capturés depuis la landing.",
+      "exportCsv": "Exporter CSV",
+      "stats": {
+        "total": "Total leads"
+      },
+      "filters": {
+        "allDecisions": "Toutes les décisions",
+        "ideaCategory": "Catégorie d'idée",
+        "source": "Source",
+        "apply": "Appliquer",
+        "reset": "Réinitialiser"
+      },
+      "table": {
+        "created": "Créé le",
+        "email": "Email",
+        "idea": "Idée business",
+        "decision": "Décision",
+        "category": "Catégorie",
+        "score": "Score",
+        "source": "Source",
+        "country": "Pays",
+        "empty": "Aucun lead trouvé avec ces filtres."
+      },
+      "pagination": {
+        "prev": "Précédent",
+        "next": "Suivant",
+        "showing": "Affichage {from}-{to} sur {total}"
+      }
+    }
+  },
+  "microApps": {
+    "form": {
+      "fields": {
+        "name": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "preferredDateTime": "Date/heure souhaitée",
+        "helpRequest": "Comment pouvons-nous aider?",
+        "addressOrNeighborhood": "Adresse ou quartier",
+        "serviceType": "Type de service",
+        "requestDescription": "Décrivez votre demande",
+        "profile": "Qui êtes-vous?",
+        "answer1": "Quel est votre plus gros problème aujourd'hui?",
+        "answer2": "Qu'est-ce qui en ferait une évidence pour vous?"
+      },
+      "placeholders": {
+        "fullName": "Votre nom complet",
+        "email": "vous@exemple.com",
+        "phone": "+1 555 123 4567",
+        "preferredDateTime": "ex: mardi 15h",
+        "helpRequest": "Dites-nous votre objectif et votre défi.",
+        "addressOrNeighborhood": "Zone, district ou quartier",
+        "requestDescription": "De quoi avez-vous besoin?",
+        "profile": "Propriétaire / étudiant / parent / agriculteur"
+      },
+      "selectService": "Choisir un service",
+      "optional": "optionnel",
+      "submitting": "Envoi...",
+      "thankYouTitle": "Merci, {name}!",
+      "submitAnother": "Envoyer une autre réponse",
+      "viewSubmissions": "Voir les soumissions",
+      "errors": {
+        "nameRequired": "Le nom est requis.",
+        "emailRequired": "L'email est requis.",
+        "phoneRequired": "Le téléphone est requis."
+      }
+    },
+    "admin": {
+      "title": "Soumissions Micro-App & CRM",
+      "subtitle": "Chaque soumission est stockée dans la liste micro-app et mappée dans votre pipeline de contacts.",
+      "publishedUrls": "URLs Micro-App publiées",
+      "statusLabel": "Statut",
+      "statusLive": "En ligne",
+      "statusDisabled": "Désactivé",
+      "tabs": {
+        "bookings": "Réservations",
+        "requests": "Demandes de service",
+        "waitlist": "Liste d'attente",
+        "contacts": "Tous les contacts"
+      },
+      "submissions": "Soumissions",
+      "noSubmissions": "Aucune soumission pour le moment.",
+      "noEmail": "Pas d'email",
+      "noExtraNotes": "Aucune note supplémentaire",
+      "globalContacts": "Contacts globaux",
+      "filteredContacts": "Contacts (filtrés par canal)",
+      "noContacts": "Aucun contact pour le moment."
+    },
+    "types": {
+      "consultation_booking": {
+        "title": "Réserver une consultation gratuite",
+        "description": "Dites-nous ce dont vous avez besoin. Nous confirmerons le meilleur horaire via WhatsApp ou email.",
+        "buttonLabel": "Demander une consultation",
+        "thankYouMessage": "Merci! Nous confirmerons votre consultation via WhatsApp/email.",
+        "nextStepNote": "Vous aurez une réponse sous 24 heures."
+      },
+      "service_request": {
+        "title": "Demander un service",
+        "description": "Partagez votre zone et votre besoin. Nous vous contacterons via WhatsApp/téléphone avec les détails et le prix.",
+        "buttonLabel": "Envoyer la demande",
+        "thankYouMessage": "Nous avons bien reçu votre demande. Nous vous contacterons via WhatsApp/téléphone pour confirmer les détails et le prix.",
+        "nextStepNote": "Réponse rapide pendant les heures ouvrables.",
+        "serviceOptions": [
+          "Ménage",
+          "Réparation",
+          "Installation"
+        ]
+      },
+      "waitlist": {
+        "title": "Rejoindre la liste d'attente",
+        "description": "Inscrivez-vous tôt pour un accès prioritaire, les mises à jour de lancement et des avantages early-bird.",
+        "buttonLabel": "Rejoindre la liste",
+        "thankYouMessage": "Vous êtes sur la liste. Nous vous contacterons par email/WhatsApp quand ce sera prêt.",
+        "nextStepNote": "Surveillez votre boîte mail pour les mises à jour."
+      }
+    }
+  },
+  "layout": {
+    "nav": {
+      "validate": "Valider mon idée gratuitement",
+      "features": "Fonctionnalités",
+      "faq": "FAQ"
+    },
+    "footer": {
+      "copyright": "© BizSproutAI",
+      "terms": "Conditions",
+      "privacy": "Confidentialité"
+    }
+  },
+  "homepage": {
+    "hero": {
+      "badge": "Validation IA pour les marchés réels",
+      "title": "Validez votre idée d'entreprise avant de la construire",
+      "subtitle": "BizSproutAI analyse votre idée en quelques minutes et vous montre si elle a un vrai potentiel, avant d'investir du temps, de l'argent et de l'énergie.",
+      "supporting": "Conçu pour les entrepreneurs en Afrique, en Amérique latine, dans les Caraïbes et dans la diaspora."
+    },
+    "whatYouGet": {
+      "title": "Ce que vous obtenez",
+      "intro": "Quand vous soumettez votre idée, vous recevez :",
+      "item1": "Un résumé de validation IA (GO / GO CONDITIONNEL / À AMÉLIORER / NO GO)",
+      "item2": "Une analyse simple : demande, concurrence et modèle économique",
+      "item3": "Un rapport téléchargeable et un aperçu du sprint de lancement sur 30 jours"
+    },
+    "examples": {
+      "title": "Comment BizSproutAI évalue des idées",
+      "cta": "Vous voulez ce type d'analyse pour votre idée ? Décrivez votre idée et votre email ci-dessus.",
+      "card1": {
+        "idea": "Sacs en cuir faits main vendus en ligne",
+        "demand": "Demande : croissance de la demande pour des produits artisanaux durables.",
+        "competition": "Concurrence : modérée avec de la place via le branding.",
+        "model": "Modèle : le direct au consommateur permet de bonnes marges.",
+        "decision": "Décision : GO CONDITIONNEL"
+      },
+      "card2": {
+        "idea": "Service d'abonnement lavage auto mobile",
+        "demand": "Demande : forte dans les zones urbaines où la commodité compte.",
+        "competition": "Concurrence : marché fragmenté avec de petits opérateurs.",
+        "model": "Modèle : les abonnements créent un revenu mensuel prévisible.",
+        "decision": "Décision : GO"
+      },
+      "card3": {
+        "idea": "Page Instagram de citations motivationnelles",
+        "demand": "Demande : catégorie de contenu très saturée.",
+        "competition": "Concurrence : extrêmement élevée, différenciation difficile.",
+        "model": "Modèle : monétisation difficile sans niche.",
+        "decision": "Décision : À AMÉLIORER"
+      }
+    },
+    "why": {
+      "title": "La plupart des entreprises échouent avant le lancement",
+      "body": "Beaucoup de fondateurs commencent par créer un produit ou un site. BizSproutAI vous aide à valider d'abord pour éviter de perdre des mois sur la mauvaise idée.",
+      "item1": "Repérez tôt les signaux rouges : faible demande ou forte concurrence.",
+      "item2": "Identifiez exactement ce qu'il faut améliorer.",
+      "item3": "Recevez votre plan de lancement des 30 premiers jours.",
+      "cta": "Valider mon idée gratuitement"
+    },
+    "afterValidation": {
+      "title": "Que se passe-t-il après la validation ?",
+      "body": "Si votre idée montre du potentiel, nous envoyons aussi un aperçu pratique du sprint de lancement de 30 jours : marque, présence en ligne, contenu et actions d'acquisition."
+    },
+    "contact": {
+      "title": "Questions ou idée de partenariat ?",
+      "prefix": "Écrivez-nous à"
+    }
+  },
+  "validationHero": {
+    "form": {
+      "ideaLabel": "Décrivez votre idée en 1 à 3 phrases",
+      "ideaPlaceholder": "Exemple : service de detailing auto mobile pour professionnels occupés à Miami",
+      "emailLabel": "Votre meilleur email",
+      "emailPlaceholder": "nom@entreprise.com",
+      "submit": "Valider mon idée gratuitement",
+      "validating": "Validation en cours...",
+      "note": "Aucune carte requise - Votre idée reste privée"
+    },
+    "sample": {
+      "title": "Essayer un exemple"
+    },
+    "sampleIdeas": [
+      "Sacs en cuir faits main vendus en direct en ligne",
+      "Service d'abonnement de lavage auto mobile pour professionnels occupés à Miami",
+      "Assistant IA de réseaux sociaux pour agents immobiliers"
+    ],
+    "result": {
+      "awaiting": "En attente de validation",
+      "go": "GO",
+      "conditionalGo": "GO CONDITIONNEL",
+      "needsWork": "À AMÉLIORER",
+      "noGo": "NO GO",
+      "summaryDefault": "Soumettez votre idée pour obtenir votre résumé de validation IA.",
+      "breakdownTitle": "Analyse simple",
+      "demand": "Demande",
+      "competition": "Concurrence",
+      "model": "Modèle économique",
+      "pending": "En attente",
+      "sprintTitle": "Aperçu du sprint de lancement 30 jours",
+      "sprintPending": "Validez votre idée pour recevoir vos premières actions sur 30 jours.",
+      "download": "Télécharger le rapport",
+      "downloaded": "Téléchargé",
+      "downloadHint": "Lancez une validation pour télécharger votre rapport."
+    },
+    "status": {
+      "emailSent": "Rapport de validation envoyé à votre email.",
+      "emailIssue": "Problème d'envoi email",
+      "emailAttempted": "L'envoi email a été tenté.",
+      "emailDisabled": "L'envoi email est désactivé.",
+      "leadSaved": "Lead enregistré en base SQL.",
+      "leadIssue": "Problème d'enregistrement du lead"
+    },
+    "errors": {
+      "minIdea": "Ajoutez au moins 10 caractères pour analyser votre idée.",
+      "invalidEmail": "Veuillez entrer un email valide.",
+      "generic": "Une erreur est survenue pendant la validation."
+    }
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "category": "local_service",
+  "displayName": "Local Services",
+  "criteria": [
+    {
+      "key": "local_demand",
+      "label": "Local Demand",
+      "weight": 0.25,
+      "description": "Sufficient demand in your geographic area",
+      "riskIndicators": [
+        "Small population in service area",
+        "Service already saturated locally",
+        "Seasonal demand only",
+        "Economic conditions in area"
+      ],
+      "fixSuggestions": [
+        "Research local competitors and their capacity",
+        "Survey local community about need",
+        "Start with adjacent services people already pay for",
+        "Target underserved neighborhoods or demographics"
+      ]
+    },
+    {
+      "key": "differentiation",
+      "label": "Local Differentiation",
+      "weight": 0.20,
+      "description": "Clear reason customers choose you over established competitors",
+      "riskIndicators": [
+        "Competing on price only",
+        "No unique value proposition",
+        "Established players have reputation",
+        "No specialization"
+      ],
+      "fixSuggestions": [
+        "Specialize in specific customer segment",
+        "Offer unique service bundle",
+        "Focus on underserved time slots or areas",
+        "Build personal brand in community"
+      ]
+    },
+    {
+      "key": "operations",
+      "label": "Operations & Delivery",
+      "weight": 0.25,
+      "description": "Ability to reliably deliver service quality",
+      "riskIndicators": [
+        "Dependent on founder for all delivery",
+        "No processes or training",
+        "Equipment/space requirements unclear",
+        "Licensing or certification needed"
+      ],
+      "fixSuggestions": [
+        "Create service delivery checklist",
+        "Get required licenses and insurance",
+        "Define service area boundaries",
+        "Plan for hiring help when needed"
+      ]
+    },
+    {
+      "key": "pricing",
+      "label": "Pricing & Profitability",
+      "weight": 0.15,
+      "description": "Pricing that covers costs and generates profit",
+      "riskIndicators": [
+        "Underpriced vs competition",
+        "Not accounting for all costs",
+        "Low margins after expenses",
+        "Customers expect lower prices"
+      ],
+      "fixSuggestions": [
+        "Calculate true cost per service hour",
+        "Research competitor pricing",
+        "Identify premium service opportunities",
+        "Build in travel time and overhead"
+      ]
+    },
+    {
+      "key": "customer_acquisition",
+      "label": "Customer Acquisition",
+      "weight": 0.15,
+      "description": "Repeatable way to get local customers",
+      "riskIndicators": [
+        "Relying on word-of-mouth only",
+        "No online presence",
+        "Not on local platforms (Google, Yelp, Nextdoor)",
+        "No referral system"
+      ],
+      "fixSuggestions": [
+        "Claim and optimize Google Business Profile",
+        "Join local Facebook groups",
+        "Create simple referral incentive",
+        "Partner with complementary local businesses"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "race_to_bottom",
+      "severity": "high",
+      "description": "Competing on price leads to unsustainable margins"
+    },
+    {
+      "pattern": "founder_burnout",
+      "severity": "high",
+      "description": "Can't scale beyond founder's personal capacity"
+    },
+    {
+      "pattern": "seasonal_death",
+      "severity": "medium",
+      "description": "Revenue too seasonal to sustain business"
+    },
+    {
+      "pattern": "review_dependency",
+      "severity": "medium",
+      "description": "One bad review can significantly hurt business"
+    }
+  ],
+  "alternativeModels": [
+    "Mobile/on-demand service (go to customers)",
+    "Subscription/maintenance model (recurring revenue)",
+    "Premium positioning (higher prices, better service)",
+    "Franchise/licensing (expand beyond your capacity)",
+    "Online service (remove geographic limits)"
+  ]
+}

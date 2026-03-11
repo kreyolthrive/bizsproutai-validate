@@ -1,0 +1,21 @@
+{
+  "region": "asia",
+  "displayName": "Asia Pacific",
+  "countries": ["IN", "ID", "PH", "VN", "TH", "MY", "SG", "JP", "KR", "CN"],
+  "commonChallenges": [
+    "Diverse markets with different needs",
+    "Language localization essential",
+    "Super-app competition (Grab, Gojek)",
+    "Mobile-first in Southeast Asia",
+    "Regulatory differences by country",
+    "Strong local competitors"
+  ],
+  "paymentNotes": [
+    "UPI dominant in India",
+    "Alipay, WeChat Pay in China",
+    "GrabPay, GoPay in Southeast Asia",
+    "Cash on delivery still important",
+    "E-wallets widely adopted",
+    "QR code payments standard"
+  ]
+}

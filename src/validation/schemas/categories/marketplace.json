@@ -1,0 +1,125 @@
+{
+  "category": "marketplace",
+  "displayName": "Marketplace",
+  "criteria": [
+    {
+      "key": "chicken_egg",
+      "label": "Chicken-and-Egg Solution",
+      "weight": 0.30,
+      "description": "Strategy to solve the cold start problem of needing both supply and demand",
+      "riskIndicators": [
+        "No plan for initial supply",
+        "Waiting for organic growth",
+        "Trying to scale both sides at once",
+        "No single-player value"
+      ],
+      "fixSuggestions": [
+        "Constrain to single geography or niche first",
+        "Manually recruit initial supply (do things that don't scale)",
+        "Create value for one side before needing the other",
+        "Start as aggregator or directory before marketplace"
+      ]
+    },
+    {
+      "key": "transaction_value",
+      "label": "Transaction Value & Take Rate",
+      "weight": 0.25,
+      "description": "Sufficient transaction size to support marketplace economics",
+      "riskIndicators": [
+        "Low transaction value (under $20)",
+        "Can't justify meaningful take rate",
+        "Payments happen off-platform",
+        "One-time purchases (no repeat)"
+      ],
+      "fixSuggestions": [
+        "Focus on higher-value transactions",
+        "Bundle services to increase order value",
+        "Add value that justifies take rate",
+        "Target repeat/subscription transactions"
+      ]
+    },
+    {
+      "key": "fragmentation",
+      "label": "Market Fragmentation",
+      "weight": 0.20,
+      "description": "Market has many small suppliers that benefit from aggregation",
+      "riskIndicators": [
+        "Few large suppliers dominate",
+        "Suppliers don't need help finding buyers",
+        "Existing platforms serve this market",
+        "Low search/discovery friction"
+      ],
+      "fixSuggestions": [
+        "Target long-tail suppliers ignored by platforms",
+        "Focus on underserved buyer segment",
+        "Add unique value beyond matching",
+        "Verticalize to specific niche"
+      ]
+    },
+    {
+      "key": "trust_safety",
+      "label": "Trust & Safety",
+      "weight": 0.15,
+      "description": "Ability to create trust between strangers transacting",
+      "riskIndicators": [
+        "High-risk transactions (expensive, safety)",
+        "No verification mechanism",
+        "Fraud/abuse potential",
+        "Dispute resolution complexity"
+      ],
+      "fixSuggestions": [
+        "Implement identity verification",
+        "Create review/rating system",
+        "Offer payment protection/escrow",
+        "Build clear dispute resolution process"
+      ]
+    },
+    {
+      "key": "network_effects",
+      "label": "Network Effects",
+      "weight": 0.10,
+      "description": "Value increases as more users join",
+      "riskIndicators": [
+        "No cross-side network effects",
+        "Same-side network effects negative",
+        "Easy for users to multi-home",
+        "No data network effects"
+      ],
+      "fixSuggestions": [
+        "Create features that reward engagement",
+        "Build community features",
+        "Accumulate data that improves matching",
+        "Create switching costs through history/reputation"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "cold_start_death",
+      "severity": "critical",
+      "description": "Unable to attract initial supply or demand"
+    },
+    {
+      "pattern": "disintermediation",
+      "severity": "critical",
+      "description": "Users bypass platform after initial connection"
+    },
+    {
+      "pattern": "unit_economics",
+      "severity": "high",
+      "description": "Transaction value too low to support take rate"
+    },
+    {
+      "pattern": "multi_homing",
+      "severity": "medium",
+      "description": "Users use multiple platforms, no loyalty"
+    }
+  ],
+  "alternativeModels": [
+    "Lead generation (charge for leads, not transactions)",
+    "SaaS for suppliers (tools they pay for)",
+    "Managed marketplace (handle fulfillment)",
+    "Vertical community (build audience first)",
+    "Aggregator/directory (no transactions)"
+  ]
+}

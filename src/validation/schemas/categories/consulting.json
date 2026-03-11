@@ -1,0 +1,125 @@
+{
+  "category": "consulting",
+  "displayName": "Consulting & Professional Services",
+  "criteria": [
+    {
+      "key": "expertise_depth",
+      "label": "Expertise & Track Record",
+      "weight": 0.25,
+      "description": "Proven expertise with documented results in specific domain",
+      "riskIndicators": [
+        "No prior client work in this area",
+        "Can't point to measurable results delivered",
+        "Generalist positioning",
+        "Competing against firms with more experience"
+      ],
+      "fixSuggestions": [
+        "Document 3 specific results from past work",
+        "Create case studies with metrics",
+        "Narrow to specific industry vertical",
+        "Partner with established consultant initially"
+      ]
+    },
+    {
+      "key": "problem_value",
+      "label": "Problem Value",
+      "weight": 0.25,
+      "description": "The problem you solve has significant financial impact for clients",
+      "riskIndicators": [
+        "Problem is nice-to-have, not must-have",
+        "ROI of solution unclear",
+        "Client can solve internally",
+        "Problem isn't urgent enough"
+      ],
+      "fixSuggestions": [
+        "Quantify the cost of the problem for clients",
+        "Focus on revenue-generating or cost-saving outcomes",
+        "Target companies in active pain (hiring, scaling, crisis)",
+        "Create ROI calculator for prospects"
+      ]
+    },
+    {
+      "key": "market_access",
+      "label": "Market Access",
+      "weight": 0.20,
+      "description": "Ability to reach and close decision-makers",
+      "riskIndicators": [
+        "No existing network in target industry",
+        "Long sales cycles (6+ months)",
+        "Multiple stakeholders to convince",
+        "Gatekeepers block access"
+      ],
+      "fixSuggestions": [
+        "Leverage existing network for warm intros",
+        "Create content that attracts inbound leads",
+        "Attend industry events and conferences",
+        "Partner with complementary service providers"
+      ]
+    },
+    {
+      "key": "delivery_model",
+      "label": "Delivery Model",
+      "weight": 0.15,
+      "description": "Scalable way to deliver value without burning out",
+      "riskIndicators": [
+        "100% custom work for each client",
+        "You are the only deliverer",
+        "No productized offerings",
+        "Scope creep common"
+      ],
+      "fixSuggestions": [
+        "Create a signature methodology/framework",
+        "Productize into tiered service packages",
+        "Build SOPs for repeatable delivery",
+        "Define clear scope boundaries upfront"
+      ]
+    },
+    {
+      "key": "pricing_power",
+      "label": "Pricing & Positioning",
+      "weight": 0.15,
+      "description": "Ability to command premium rates",
+      "riskIndicators": [
+        "Competing on price",
+        "Clients price-shopping",
+        "Commoditized service",
+        "No clear differentiator"
+      ],
+      "fixSuggestions": [
+        "Position as specialist, not generalist",
+        "Price on value/outcome, not hours",
+        "Create proprietary framework or tool",
+        "Target clients who value expertise over price"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "generalist_trap",
+      "severity": "critical",
+      "description": "Trying to serve everyone results in serving no one well"
+    },
+    {
+      "pattern": "founder_bottleneck",
+      "severity": "high",
+      "description": "All delivery depends on founder, limiting growth"
+    },
+    {
+      "pattern": "feast_famine",
+      "severity": "high",
+      "description": "No consistent pipeline leads to revenue volatility"
+    },
+    {
+      "pattern": "scope_creep",
+      "severity": "medium",
+      "description": "Unclear boundaries lead to unprofitable projects"
+    }
+  ],
+  "alternativeModels": [
+    "Fractional executive (part-time leadership role)",
+    "Advisory retainer (ongoing strategic advice)",
+    "Training and workshops (productized teaching)",
+    "SaaS tool + consulting (build software for the problem)",
+    "Agency model (team-based delivery)"
+  ]
+}

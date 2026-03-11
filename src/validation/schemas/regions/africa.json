@@ -1,0 +1,21 @@
+{
+  "region": "africa",
+  "displayName": "Africa",
+  "countries": ["NG", "KE", "ZA", "GH", "EG", "TZ", "UG", "RW", "ET", "SN"],
+  "commonChallenges": [
+    "Mobile-first market (desktop secondary)",
+    "Infrastructure gaps (power, logistics)",
+    "Cross-border complexity (54 countries)",
+    "Trust in new digital services",
+    "Last-mile delivery challenges",
+    "Large informal economy"
+  ],
+  "paymentNotes": [
+    "M-Pesa dominant in East Africa",
+    "Mobile money essential",
+    "Flutterwave, Paystack for payments",
+    "Cash on delivery still common",
+    "Bank account penetration low",
+    "USSD payments important for feature phones"
+  ]
+}

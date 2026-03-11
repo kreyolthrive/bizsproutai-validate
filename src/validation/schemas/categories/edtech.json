@@ -1,0 +1,125 @@
+{
+  "category": "edtech",
+  "displayName": "Education & EdTech",
+  "criteria": [
+    {
+      "key": "learning_outcome",
+      "label": "Learning Outcome",
+      "weight": 0.25,
+      "description": "Clear, valuable skill or knowledge students gain",
+      "riskIndicators": [
+        "Outcome not career/life relevant",
+        "Can learn same thing free on YouTube",
+        "No clear before/after skill change",
+        "Takes too long to see results"
+      ],
+      "fixSuggestions": [
+        "Define specific skills/competencies taught",
+        "Connect to career advancement or income",
+        "Create quick-win early modules",
+        "Show student transformation stories"
+      ]
+    },
+    {
+      "key": "market_willingness",
+      "label": "Market Willingness to Pay",
+      "weight": 0.25,
+      "description": "Target students/parents can and will pay for education",
+      "riskIndicators": [
+        "Target students have no money",
+        "Parents don't see value",
+        "Competing with free alternatives",
+        "School/institution budgets tight"
+      ],
+      "fixSuggestions": [
+        "Target professionals for upskilling (they pay)",
+        "Focus on outcome worth paying for (job, income)",
+        "Sell to employers who sponsor learning",
+        "Create scholarship or financing options"
+      ]
+    },
+    {
+      "key": "completion_engagement",
+      "label": "Completion & Engagement",
+      "weight": 0.20,
+      "description": "Students actually complete and engage with learning",
+      "riskIndicators": [
+        "Low completion rates expected",
+        "Passive content (watch and forget)",
+        "No accountability mechanism",
+        "Competes with entertainment for attention"
+      ],
+      "fixSuggestions": [
+        "Build in practice and projects",
+        "Create cohort-based learning",
+        "Add gamification and milestones",
+        "Shorten to focused, completable modules"
+      ]
+    },
+    {
+      "key": "credibility",
+      "label": "Instructor Credibility",
+      "weight": 0.15,
+      "description": "Authority and proof you can teach this",
+      "riskIndicators": [
+        "No track record in subject",
+        "No student success stories",
+        "Competing with known experts",
+        "Teaching without doing"
+      ],
+      "fixSuggestions": [
+        "Document your own expertise/results",
+        "Start teaching for free to build proof",
+        "Partner with credentialed experts",
+        "Get testimonials from early students"
+      ]
+    },
+    {
+      "key": "scalability",
+      "label": "Scalability",
+      "weight": 0.15,
+      "description": "Ability to serve more students without linear effort",
+      "riskIndicators": [
+        "1:1 tutoring model only",
+        "Live teaching required",
+        "No recorded/async content",
+        "High support burden per student"
+      ],
+      "fixSuggestions": [
+        "Create recorded core curriculum",
+        "Build community for peer support",
+        "Use AI for personalization",
+        "Train teaching assistants"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "free_alternative",
+      "severity": "critical",
+      "description": "Same content available free elsewhere"
+    },
+    {
+      "pattern": "completion_crisis",
+      "severity": "high",
+      "description": "Students don't finish, leading to refunds and bad reviews"
+    },
+    {
+      "pattern": "credential_gap",
+      "severity": "high",
+      "description": "No recognized credential or career outcome"
+    },
+    {
+      "pattern": "attention_competition",
+      "severity": "medium",
+      "description": "Loses to Netflix/TikTok for student attention"
+    }
+  ],
+  "alternativeModels": [
+    "Cohort-based course (higher completion, community)",
+    "Corporate training (B2B, employers pay)",
+    "Certification program (credential value)",
+    "Community/membership (ongoing value)",
+    "Tutoring marketplace (connect tutors and students)"
+  ]
+}

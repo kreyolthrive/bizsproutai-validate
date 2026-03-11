@@ -1,0 +1,607 @@
+{
+  "landing": {
+    "nav": {
+      "story": "Istwa",
+      "features": "Fonksyonalite",
+      "faq": "FAQ"
+    },
+    "hero": {
+      "title": "Valide lide biznis ou",
+      "subtitle": "AI nou valide lide ou nan kèk minit—epi ede ou lanse li.",
+      "cta": "Valide lide mwen"
+    },
+    "story": {
+      "headline": "\"Estrateji ki pwouve\" yo pa t ekri pou nou.",
+      "para1": "Lè m te premye eseye bati biznis nan Ayiti, m te echwe anpil fwa.",
+      "para2": "M te menm echwe ti biznis papa m.",
+      "para3": "Pa paske nou te parese. Nou te travay di. Nou te rete nan nwit. Nou te fè sa liv yo ak videyo YouTube yo te di. Men prèske chak \"estrateji ki pwouve\" m te jwenn te fèt pou Amerik di Nò oswa Ewòp.",
+      "breakpoint": {
+        "title": "E se la li te kase.",
+        "para1": "Modèl sa yo te sipoze bagay m pa t genyen: enfrastrikti ki estab, aksè fasil nan kont labank ak kat, bidjè maketing, ak kliyan ki konpòte tankou yo fè nan Etazini oswa Ewòp. Anyen nan sa pa t koresponn ak reyalite Ayisyen mwen.",
+        "para2": "Donk chak fwa m te swiv \"bon etap yo\"... m te toujou jwenn move rezilta."
+      },
+      "global": "Sa ki te rive m nan Ayiti ap rive kounye a atravè Lafrik, Amerik Latin, ak Karayib la. Moun ap pèdi travay akoz AI ak otomatizasyon, e yo ap vire nan ti biznis ak aktivite sou kote pou siviv. Men yo bay yo menm gid etranje ak zouti chè... epi apre sa nou sezi lè pifò nan biznis sa yo echwe.",
+      "cycle": {
+        "intro": "Si anyen pa chanje, sik sa a kontinye repete:",
+        "steps": [
+          "travay di",
+          "move estrateji",
+          "pa gen rezilta",
+          "dekourajman",
+          "abandone"
+        ]
+      },
+      "whyExists": {
+        "label": "Poukisa BizSproutAI egziste",
+        "title": "BizSproutAI fèt pou fondatè nan kote tankou pa nou yo.",
+        "para1": "Li anseye ou ki jan mache ou vrèman fonksyone—ki jan moun achte, ki jan yo peye, ki kanal yo vrèman itilize—apre sa li ede ou valide lide ou ak bon framework pou tip biznis ou (ecommerce, coaching, konsiltasyon, tech, finans, ak plis).",
+        "para2": "Apre sa ou swiv yon Sprint Lansman etap pa etap pou jwenn premye 10 kliyan ki peye ou. Pa gen diplòm. Pa gen kodaj. Pa gen plis devinn ak gid yon lòt moun."
+      },
+      "ctaCard": {
+        "title": "Sa a se yon chans ra pou sispann bati avèg.",
+        "body": "Si konsèy estartip estanda yo pa kadre ak reyalite ou, sa a se kat lansman ou—bati pou mond ou—pou efò ou vrèman gen yon chans vin lajan, travay, ak vrè chanjman nan kominote ou.",
+        "button": "Rejwenn lis datant",
+        "note": "Premye pou aksede validasyon + framework spesifik pou chak kategori."
+      }
+    },
+    "features": {
+      "title": "Tout sa ou bezwen pou lanse",
+      "subtitle": "Soti nan lide rive nan lajan—yon sèl platfòm.",
+      "items": {
+        "validate": {
+          "title": "Valide lide ou",
+          "description": "Validasyon ki alimante pa AI ki espesifik pou kategori biznis ou ak kondisyon mache lokal."
+        },
+        "fix": {
+          "title": "Jwenn koreksyon ou ka aji sou yo",
+          "description": "Pa jis jwenn yon nòt—jwenn rekòmandasyon espesifik pou amelyore chans siksè ou."
+        },
+        "build": {
+          "title": "Bati biznis ou",
+          "description": "Otomatikman jenere mak ou, sit entènèt, ak kontni lansman lè ou pare."
+        },
+        "launch": {
+          "title": "Sprint Lansman",
+          "description": "Gidans etap pa etap pou akeri premye 10 kliyan ki peye ou."
+        }
+      }
+    },
+    "faq": {
+      "title": "Kesyon yo poze souvan",
+      "items": {
+        "what": {
+          "question": "Kisa BizSproutAI ye?",
+          "answer": "BizSproutAI se yon platfòm ki alimante pa AI ki valide lide biznis ou lè l sèvi ak framework ki espesifik pou kategori ou ak mache lokal, apre sa li ede ou bati epi lanse."
+        },
+        "different": {
+          "question": "Ki jan sa diferan de lòt zouti yo?",
+          "answer": "Kontrèman ak konsèy estartip jenerik, nou ajiste kritè validasyon baze sou kategori biznis ou (ecommerce, coaching, fintech, elatriye) ak kondisyon mache lokal ou (metòd peman, faktè konfyans, enfrastrikti)."
+        },
+        "cost": {
+          "question": "Konbyen li koute?",
+          "answer": "Validasyon debaz gratis. Fonksyonalite premium pou bati ak lanse ap disponib ak yon abònman."
+        },
+        "countries": {
+          "question": "Ki peyi nou sipòte?",
+          "answer": "Nou gen done mache espesifik pou Ayiti, Nijerya, Kenya, Meksik, Brezil, ak Etazini, ak plis peyi k ap vini byento. Validasyon an fonksyone globalman."
+        }
+      }
+    },
+    "cta": {
+      "getFreeValidation": "Jwenn yon validasyon gratis"
+    },
+    "operatingModel": {
+      "title": "Web se sant kontwòl ou. Mobil se remote ekzekisyon ou.",
+      "subtitle": "Mete tout bagay an plas sou desktop, epi opere lansman an nan pòch ou.",
+      "web": {
+        "kicker": "App web",
+        "title": "Bati, konfigire, analize",
+        "body": "Sèvi ak web pou kreye sit ou ak mikwo-app yo, mete lang/domèn, epi swiv pwogrè lansman an.",
+        "items": [
+          "Jenere epi modifye sit + mikwo-app",
+          "Jere leads ak soumèt nan CRM",
+          "Swiv Sprint, trafik ak siyal validasyon"
+        ],
+        "cta": "Louvri tablo"
+      },
+      "mobile": {
+        "kicker": "App mobil",
+        "title": "Egzekite travay chak jou rapid",
+        "body": "Sèvi ak mobil pou fini travay Sprint yo, reponn leads rapid, epi pataje lyen imedyatman.",
+        "items": [
+          "Fokus jodi a ak 1–3 travay ki gen gwo enpak",
+          "Aksyon leads: WhatsApp, rele, email",
+          "Pataj rapid pou lyen booking/request/waitlist"
+        ],
+        "cta": "Louvri konpayon mobil"
+      }
+    }
+  },
+  "hero": {
+    "title": "Valide lide biznis ou",
+    "subtitle": "AI nou valide lide ou nan kèk minit—epi ede ou lanse li.",
+    "cta": "Valide"
+  },
+  "form": {
+    "category": "Kategori",
+    "idea": "Dekri lide ou",
+    "ideaPlaceholder": "M vle vann atizana fèt ak men bay touris k ap vizite vil mwen...",
+    "targetMarket": "Mache sib (opsyonèl)",
+    "budgetUsd": "Bidjè (USD, opsyonèl)",
+    "submit": "Valide lide mwen",
+    "analyzing": "Ap analize lide ou..."
+  },
+  "validation": {
+    "status": {
+      "go": "ALE",
+      "fix": "RANJE",
+      "stop": "KANPE"
+    },
+    "verdicts": {
+      "go": "Lide ou pare pou bati!",
+      "caution": "Ale ak prekosyon—adrese risk yo anvan.",
+      "no-go": "Lide sa a bezwen gwo chanjman."
+    },
+    "labels": {
+      "overallScore": "Nòt global",
+      "failureRisks": "Risk echèk",
+      "fixes": "Koreksyon rekòmande",
+      "alternatives": "Modèl altènatif",
+      "nextActions": "Pwochen aksyon",
+      "country": "Peyi detekte",
+      "category": "Kategori biznis"
+    },
+    "buttons": {
+      "validate": "Valide",
+      "tryAgain": "Eseye ankò",
+      "startBuilding": "Kòmanse bati"
+    }
+  },
+  "common": {
+    "loading": "Ap chaje...",
+    "error": "Yon bagay mal pase",
+    "retry": "Eseye ankò",
+    "back": "Retounen",
+    "next": "Swivan",
+    "submit": "Soumèt",
+    "cancel": "Anile"
+  },
+  "site": {
+    "nav": {
+      "launchKit": "Kit Lansman",
+      "websiteBuilder": "Builder Sit Entènèt",
+      "microApps": "Mikwo-App",
+      "socialAgent": "Ajan Sosyal",
+      "blog": "Blog",
+      "dashboard": "Tablo",
+      "domains": "Domèn",
+      "courses": "Kou",
+      "billing": "Fakti",
+      "mobile": "Mobil"
+    },
+    "contact": {
+      "label": "Kontak",
+      "addressLine1": "7901 4th St N #32253",
+      "addressLine2": "St. Petersburg, FL, 33702, USA",
+      "phoneLabel": "Telefòn",
+      "salesLabel": "Imèl",
+      "supportLabel": "Sipò"
+    }
+  },
+  "pages": {
+    "privacy": {
+      "title": "Konfidansyalite",
+      "p1": "Nou itilize lide biznis ou ak imel ou sèlman pou bay rezilta validasyon ak mizajou pwodwi ki gen rapò ak BizSproutAI.",
+      "p2": "Nou pa pibliye sa ou soumèt. Pou patenarya, kontakte info@bizsproutai.com."
+    },
+    "terms": {
+      "title": "Tèm yo",
+      "p1": "Lè ou itilize BizSproutAI, ou dakò itilize sèvis la ak responsablite epi konprann validasyon an se gidans, pa konsèy legal oswa finansye.",
+      "p2": "Nou ka mete tèm sa yo ajou. Kontinye itilize sèvis la vle di ou aksepte dènye vèsyon an."
+    },
+    "websitePublish": {
+      "title": "Pibliye sit la",
+      "subtitle": "Pibliye sou yon sou-domèn BizSproutAI kounye a, epi konekte pwòp domèn ou pita.",
+      "checklist": {
+        "title": "Lis verifikasyon pou pibliye",
+        "item1": "Tèks hero ak òf la revize",
+        "item2": "CTA prensipal la konfigire",
+        "item3": "Seksyon kontak oswa lead capture aktif",
+        "item4": "Omwen yon mikro-app anliy epi teste ak yon soumisyon reyèl"
+      },
+      "links": {
+        "title": "URL mikro-app yo",
+        "subtitle": "Pataje lyen sa yo nan post sosyal, WhatsApp, ak mesaj outreach.",
+        "booking": "Rezèvasyon konsiltasyon",
+        "request": "Demann sèvis lokal",
+        "waitlist": "Lis datant / aksè bonè",
+        "crm": "Vizyalizasyon soumisyon CRM"
+      }
+    },
+    "billing": {
+      "title": "Fakti",
+      "subtitle": "Jere plan aktyèl ou ak amelyorasyon kap vini yo.",
+      "currentPlanTitle": "Plan aktyèl",
+      "currentPlanBody": "Kounye a ou sou nivo validasyon gratis la."
+    },
+    "blog": {
+      "title": "Blog BizSproutAI",
+      "subtitle": "Konsèy pratik pou fondatè k ap bati nan mache reyèl yo.",
+      "posts": [
+        {
+          "title": "Kijan pou valide demand anvan ou bati",
+          "excerpt": "Yon lis senp pou teste si kliyan ap peye anvan ou konstwi pwodwi a.",
+          "date": "Mas 2026",
+          "category": "Validasyon"
+        },
+        {
+          "title": "Chwazi premye segman kliyan ou",
+          "excerpt": "Poukisa premye traksayon soti nan yon segman klè, pa tout moun.",
+          "date": "Mas 2026",
+          "category": "Go-to-Market"
+        },
+        {
+          "title": "Soti nan lide rive nan premye sprint lansman",
+          "excerpt": "Sèvi ak 30 jou pou jwenn reyèl fidbak nan mache a.",
+          "date": "Mas 2026",
+          "category": "Lansman"
+        }
+      ]
+    },
+    "courses": {
+      "title": "Kou",
+      "subtitle": "Chemen etap pa etap pou amelyore fason ou bati ak lanse.",
+      "items": [
+        {
+          "title": "Fondasyon validasyon",
+          "description": "Aprann nòt lide yo epi detekte sipozisyon ki fèb bonè."
+        },
+        {
+          "title": "Dekouvèt kliyan",
+          "description": "Idantifye premye segman ou epi fè bon entèvyou kliyan."
+        },
+        {
+          "title": "Òf ak pri",
+          "description": "Kreye yon òf klè epi teste pri ou ak konfyans."
+        },
+        {
+          "title": "Playbook sprint lansman",
+          "description": "Egzekite premye sprint 30 jou ou ak objektif chak semèn."
+        }
+      ]
+    },
+    "dashboard": {
+      "kicker": "Kontwòl lansman",
+      "title": "Dashboard fondatè",
+      "subtitle": "Swiv pwogrè, leads, ak travay nan yon sèl kote.",
+      "stats": {
+        "sprint": "Pwogrè sprint",
+        "tasks": "Travay fini",
+        "leads": "Leads",
+        "submissions": "Soumisyon"
+      },
+      "webPanel": {
+        "title": "Lansman sou web",
+        "body": "Bati sit ou, rafine materyèl lansman ou, epi pibliye paj prensipal yo."
+      },
+      "mobilePanel": {
+        "title": "Egzekisyon mobil",
+        "body": "Jere leads ak travay rapidman ak workflows mobil."
+      },
+      "actions": {
+        "builder": "Builder sit",
+        "launchKit": "Kit lansman",
+        "microApps": "Mikwo-apps",
+        "social": "Ajan sosyal",
+        "mobileCompanion": "Konpayon mobil",
+        "booking": "Fòm rezèvasyon",
+        "request": "Demann sèvis",
+        "waitlist": "Lis datant"
+      },
+      "today": {
+        "title": "Fokus jodi a",
+        "subtitle": "Fè aksyon sa yo pou avanse lansman ou.",
+        "done": "Fini",
+        "pending": "An atant"
+      }
+    },
+    "brandKit": {
+      "title": "Kit brand",
+      "subtitle": "Fòme idantite brand ou anvan lansman.",
+      "essentialsTitle": "Pwen esansyèl yo",
+      "items": [
+        "Deklarasyon pozisyon brand",
+        "Gid ton vwa",
+        "Direksyon koulè prensipal ak tipografi",
+        "Pilye mesaj ak langaj CTA"
+      ]
+    },
+    "domains": {
+      "title": "Domèn",
+      "subtitle": "Konekte domèn pèsonèl ou lè ou pare pou pibliye.",
+      "steps": [
+        "Chwazi non domèn ak registrar ou.",
+        "Mete DNS yo sou deploy BizSproutAI ou.",
+        "Verifye SSL epi teste paj prensipal yo."
+      ]
+    },
+    "mobile": {
+      "kicker": "Konpayon mobil",
+      "title": "Jere lansman ou sou telefòn ou",
+      "subtitle": "Swiv travay yo epi reponn leads yo rapid pandan ou deplase.",
+      "copied": "Lyen an kopye.",
+      "offline": "Ou offline. Chanjman yo sove lokalman.",
+      "noName": "Lead san non",
+      "noLeads": "Pa gen lead ankò. Pibliye lyen ou yo pou kolekte kontak.",
+      "metrics": {
+        "leads": "Leads",
+        "done": "Fini"
+      },
+      "tabs": {
+        "today": "Jodi a",
+        "leads": "Leads",
+        "tasks": "Travay",
+        "profile": "Pwofil"
+      },
+      "actions": {
+        "completed": "Konplete",
+        "markDone": "Make fini",
+        "call": "Rele",
+        "shareBooking": "Pataje lyen rezèvasyon",
+        "shareRequest": "Pataje lyen demann sèvis",
+        "shareWaitlist": "Pataje lyen lis datant",
+        "openWeb": "Louvri dashboard web"
+      },
+      "profile": {
+        "blurb": "Pataje lyen ou yo epi kenbe vitès la chak jou. Ti aksyon chak jou bay traksayon."
+      }
+    },
+    "socialAgent": {
+      "title": "Ajan sosyal",
+      "subtitle": "Kreye kontni regilye ak kanpay nan yon workflow gid.",
+      "quickStartTitle": "Demaraj rapid",
+      "steps": [
+        "Defini yon òf klè ak yon odyans pou semèn sa.",
+        "Jenere hooks, posts, ak diferan CTA.",
+        "Pibliye, mezire repons yo, epi ajiste selon rezilta reyèl."
+      ]
+    },
+    "adminLeads": {
+      "kicker": "Admin",
+      "title": "Leads validasyon",
+      "subtitle": "Filtre epi segmante leads ki soti sou landing validasyon an.",
+      "exportCsv": "Ekspòte CSV",
+      "stats": {
+        "total": "Total leads"
+      },
+      "filters": {
+        "allDecisions": "Tout desizyon",
+        "ideaCategory": "Kategori lide",
+        "source": "Sous",
+        "apply": "Aplike filtè",
+        "reset": "Reyajiste"
+      },
+      "table": {
+        "created": "Dat",
+        "email": "Imel",
+        "idea": "Lide biznis",
+        "decision": "Desizyon",
+        "category": "Kategori",
+        "score": "Nòt",
+        "source": "Sous",
+        "country": "Peyi",
+        "empty": "Pa gen lead pou filtè sa yo."
+      },
+      "pagination": {
+        "prev": "Anvan",
+        "next": "Apre",
+        "showing": "Ap montre {from}-{to} sou {total}"
+      }
+    }
+  },
+  "microApps": {
+    "form": {
+      "fields": {
+        "name": "Non",
+        "email": "Imèl",
+        "phone": "Telefòn",
+        "preferredDateTime": "Dat/lè ou prefere",
+        "helpRequest": "Kijan nou ka ede?",
+        "addressOrNeighborhood": "Adrès oswa katye",
+        "serviceType": "Kalite sèvis",
+        "requestDescription": "Dekri demann ou",
+        "profile": "Ki moun ou ye?",
+        "answer1": "Ki pi gwo pwoblèm ou ak sa jodi a?",
+        "answer2": "Kisa ki ta fè sa fasil pou ou pran desizyon?"
+      },
+      "placeholders": {
+        "fullName": "Non konplè ou",
+        "email": "ou@egzanp.com",
+        "phone": "+1 555 123 4567",
+        "preferredDateTime": "egzanp: madi 3pm",
+        "helpRequest": "Di nou objektif ou ak defi ou.",
+        "addressOrNeighborhood": "Zòn, distri oswa katye",
+        "requestDescription": "Ki sa ou bezwen nou fè?",
+        "profile": "Pwopriyetè biznis / etidyan / paran / agrikiltè"
+      },
+      "selectService": "Chwazi yon sèvis",
+      "optional": "opsyonèl",
+      "submitting": "Ap voye...",
+      "thankYouTitle": "Mèsi, {name}!",
+      "submitAnother": "Voye yon lòt repons",
+      "viewSubmissions": "Gade soumisyon yo",
+      "errors": {
+        "nameRequired": "Non obligatwa.",
+        "emailRequired": "Imèl obligatwa.",
+        "phoneRequired": "Telefòn obligatwa."
+      }
+    },
+    "admin": {
+      "title": "Soumisyon Mikwo-App & CRM",
+      "subtitle": "Chak soumisyon sove nan lis mikwo-app la epi li antre nan pipeline kontak ou.",
+      "publishedUrls": "URL Mikwo-App ki pibliye",
+      "statusLabel": "Estati",
+      "statusLive": "An liy",
+      "statusDisabled": "Dezaktive",
+      "tabs": {
+        "bookings": "Rezèvasyon",
+        "requests": "Demann sèvis",
+        "waitlist": "Lis atant",
+        "contacts": "Tout kontak"
+      },
+      "submissions": "Soumisyon",
+      "noSubmissions": "Poko gen soumisyon.",
+      "noEmail": "Pa gen imèl",
+      "noExtraNotes": "Pa gen nòt anplis",
+      "globalContacts": "Kontak global",
+      "filteredContacts": "Kontak (filtre pa chanèl)",
+      "noContacts": "Poko gen kontak."
+    },
+    "types": {
+      "consultation_booking": {
+        "title": "Rezève yon konsiltasyon gratis",
+        "description": "Di nou sa ou bezwen. N ap konfime pi bon lè a pa WhatsApp oswa imèl.",
+        "buttonLabel": "Mande yon konsiltasyon",
+        "thankYouMessage": "Mèsi! N ap konfime lè konsiltasyon an pa WhatsApp/imèl.",
+        "nextStepNote": "N ap reponn ou nan 24 èdtan."
+      },
+      "service_request": {
+        "title": "Mande yon sèvis",
+        "description": "Pataje kote ou ye ak sèvis ou bezwen an. N ap kontakte ou pa WhatsApp/telefòn ak detay ak pri.",
+        "buttonLabel": "Voye demann",
+        "thankYouMessage": "Nou resevwa demann ou an. N ap kontakte ou pa WhatsApp/telefòn pou konfime detay ak pri.",
+        "nextStepNote": "Repons rapid pandan lè travay.",
+        "serviceOptions": [
+          "Netwayaj kay",
+          "Reparasyon",
+          "Enstalasyon"
+        ]
+      },
+      "waitlist": {
+        "title": "Antre nan lis atant la",
+        "description": "Antre bonè pou jwenn aksè priyoritè, mizajou lansman, ak avantaj early-bird.",
+        "buttonLabel": "Antre nan lis atant",
+        "thankYouMessage": "Ou sou lis la. N ap voye mizajou ba ou pa imèl/WhatsApp lè nou pare.",
+        "nextStepNote": "Veye bwat resepsyon ou pou mizajou."
+      }
+    }
+  },
+  "layout": {
+    "nav": {
+      "validate": "Valide lide mwen gratis",
+      "features": "Fonksyonalite",
+      "faq": "FAQ"
+    },
+    "footer": {
+      "copyright": "© BizSproutAI",
+      "terms": "Tèm yo",
+      "privacy": "Konfidansyalite"
+    }
+  },
+  "homepage": {
+    "hero": {
+      "badge": "Validasyon AI pou mache reyèl",
+      "title": "Valide lide biznis ou anvan ou bati li",
+      "subtitle": "BizSproutAI analize lide ou an kèk minit epi li montre ou si li gen vrè potansyèl anvan ou depanse tan, lajan, ak enèji.",
+      "supporting": "Fèt pou antreprenè nan Lafrik, Amerik Latin, Karayib la, ak dyaspora a."
+    },
+    "whatYouGet": {
+      "title": "Sa ou jwenn",
+      "intro": "Lè ou voye lide ou, ou resevwa :",
+      "item1": "Yon rezime validasyon AI (GO / KONDISYONÈL GO / BEZWEN TRAVAY / NO GO)",
+      "item2": "Yon analiz senp: demand, konpetisyon, ak modèl biznis",
+      "item3": "Yon rapò ou ka telechaje plis yon preview sprint lansman 30 jou"
+    },
+    "examples": {
+      "title": "Gade kijan BizSproutAI evalye lide yo",
+      "cta": "Ou vle menm kalite analiz sa pou lide ou? Ekri lide ou ak imel ou anlè a.",
+      "card1": {
+        "idea": "Sak kwi atizana vann sou entènèt",
+        "demand": "Demand: demann ap monte pou pwodwi atizana dirab.",
+        "competition": "Konpetisyon: modere, gen espas pou diferans ak branding.",
+        "model": "Modèl biznis: vann dirèk bay kliyan bay bon maj.",
+        "decision": "Desizyon: KONDISYONÈL GO"
+      },
+      "card2": {
+        "idea": "Sèvis abonman lave machin mobil",
+        "demand": "Demand: fò nan zòn iben kote konvenyans enpòtan.",
+        "competition": "Konpetisyon: mache a fragmante ak plizyè ti operatè.",
+        "model": "Modèl biznis: abonman bay revni previzib chak mwa.",
+        "decision": "Desizyon: GO"
+      },
+      "card3": {
+        "idea": "Paj Instagram sitasyon motivasyon jeneral",
+        "demand": "Demand: kategori kontni an deja twòp.",
+        "competition": "Konpetisyon: ekstrèmman wo, difisil pou soti.",
+        "model": "Modèl biznis: difisil pou monetize san nich.",
+        "decision": "Desizyon: BEZWEN TRAVAY"
+      }
+    },
+    "why": {
+      "title": "Pifò biznis echwe anvan lansman",
+      "body": "Pifò fondatè kòmanse pa bati pwodwi oswa sit. BizSproutAI ede ou valide lide a an premye pou ou pa pèdi mwa sou move direksyon.",
+      "item1": "Detekte drapo wouj bonè: pa gen demand oswa gwo konpetisyon.",
+      "item2": "Wè klèman kisa pou amelyore nan òf ou.",
+      "item3": "Jwenn premye plan lansman 30 jou ou.",
+      "cta": "Valide lide mwen gratis"
+    },
+    "afterValidation": {
+      "title": "Kisa k pase apre validasyon?",
+      "body": "Si lide ou montre potansyèl, nou voye yon preview sprint lansman 30 jou ak etap senp pou brand, prezans sou entènèt, kontni, ak outreach."
+    },
+    "contact": {
+      "title": "Kesyon oswa lide patenarya?",
+      "prefix": "Ekri nou sou"
+    }
+  },
+  "validationHero": {
+    "form": {
+      "ideaLabel": "Dekri lide biznis ou an 1-3 fraz",
+      "ideaPlaceholder": "Egzanp: sèvis netwayaj machin mobil pou pwofesyonèl ki okipe nan Miami",
+      "emailLabel": "Pi bon imel ou",
+      "emailPlaceholder": "non@konpayi.com",
+      "submit": "Valide lide mwen gratis",
+      "validating": "Ap valide...",
+      "note": "Pa bezwen kat kredi - Lide ou rete prive"
+    },
+    "sample": {
+      "title": "Eseye yon lide egzanp"
+    },
+    "sampleIdeas": [
+      "Sak kwi atizana vann dirèk sou entènèt",
+      "Sèvis abonman netwayaj machin mobil pou pwofesyonèl okipe nan Miami",
+      "Manadjè rezo sosyal AI pou ajan imobilye"
+    ],
+    "result": {
+      "awaiting": "Ap tann validasyon",
+      "go": "GO",
+      "conditionalGo": "KONDISYONÈL GO",
+      "needsWork": "BEZWEN TRAVAY",
+      "noGo": "NO GO",
+      "summaryDefault": "Soumèt lide ou pou resevwa rezime validasyon AI ou.",
+      "breakdownTitle": "Analiz senp",
+      "demand": "Demand",
+      "competition": "Konpetisyon",
+      "model": "Modèl biznis",
+      "pending": "An atant",
+      "sprintTitle": "Preview Sprint Lansman 30 Jou",
+      "sprintPending": "Valide lide ou pou resevwa premye aksyon lansman 30 jou yo.",
+      "download": "Telechaje rapò validasyon an",
+      "downloaded": "Telechaje",
+      "downloadHint": "Fè yon validasyon pou telechaje rapò ou."
+    },
+    "status": {
+      "emailSent": "Rapò validasyon an voye nan imel ou.",
+      "emailIssue": "Pwoblèm voye imel",
+      "emailAttempted": "Sistèm nan te eseye voye imel la.",
+      "emailDisabled": "Voye imel la dezaktive.",
+      "leadSaved": "Lead la anrejistre nan baz SQL la.",
+      "leadIssue": "Pwoblèm anrejistreman lead la"
+    },
+    "errors": {
+      "minIdea": "Tanpri mete omwen 10 karaktè pou modèl la evalye lide ou.",
+      "invalidEmail": "Tanpri antre yon imel ki valab.",
+      "generic": "Gen yon pwoblèm pandan validasyon an."
+    }
+  }
+}

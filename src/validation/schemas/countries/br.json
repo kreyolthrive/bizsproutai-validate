@@ -1,0 +1,26 @@
+{
+  "country": "BR",
+  "region": "latin_america",
+  "name": "Brazil",
+  "currency": "BRL",
+  "paymentRails": ["Pix", "Boleto", "Mercado Pago", "PagSeguro", "Credit Cards", "Nubank"],
+  "adjustments": {
+    "payment_trust": { "weightMultiplier": 1.1, "reason": "Pix has revolutionized payments, very trusted" },
+    "regulatory_compliance": { "weightMultiplier": 1.3, "reason": "Complex tax system (ICMS, ISS)" },
+    "logistics": { "weightMultiplier": 1.2, "reason": "Huge country, logistics costs high" }
+  },
+  "warnings": [
+    "Pix is essential - instant, free, dominant",
+    "Installment payments (parcelamento) expected for larger purchases",
+    "Complex tax system - get local accounting help",
+    "Portuguese language required"
+  ],
+  "marketNotes": [
+    "Largest market in Latin America (~215 million)",
+    "Strong fintech ecosystem (Nubank, PagSeguro)",
+    "Portuguese language (not Spanish)",
+    "Large geographic distances affect logistics",
+    "Strong social media usage (WhatsApp, Instagram)",
+    "Mercado Livre is dominant marketplace"
+  ]
+}

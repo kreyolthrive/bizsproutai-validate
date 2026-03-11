@@ -1,0 +1,17 @@
+{
+  "region": "north_america",
+  "displayName": "North America",
+  "countries": ["US", "CA", "MX"],
+  "commonChallenges": [
+    "High competition in most markets",
+    "High customer acquisition costs",
+    "Saturation in popular categories",
+    "High labor and operating costs"
+  ],
+  "paymentNotes": [
+    "Credit/debit cards widely accepted",
+    "Stripe, PayPal dominant processors",
+    "Apple Pay, Google Pay growing",
+    "Buy Now Pay Later (Affirm, Klarna) popular"
+  ]
+}

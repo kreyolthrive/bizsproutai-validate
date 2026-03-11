@@ -1,0 +1,26 @@
+{
+  "country": "KE",
+  "region": "africa",
+  "name": "Kenya",
+  "currency": "KES",
+  "paymentRails": ["M-Pesa", "Airtel Money", "Bank Transfer", "PesaPal", "Flutterwave", "Cash"],
+  "adjustments": {
+    "payment_trust": { "weightMultiplier": 1.2, "reason": "M-Pesa is ubiquitous, trust is high" },
+    "logistics": { "weightMultiplier": 1.3, "reason": "Last-mile challenges outside Nairobi" },
+    "market_access": { "weightMultiplier": 0.9, "reason": "Nairobi is a tech hub with good infrastructure" }
+  },
+  "warnings": [
+    "M-Pesa integration is absolutely essential",
+    "Mobile-first market",
+    "Nairobi is primary market, but rural is larger",
+    "Strong fintech and startup ecosystem"
+  ],
+  "marketNotes": [
+    "Population ~55 million",
+    "M-Pesa pioneer - highest mobile money adoption globally",
+    "English and Swahili languages",
+    "Strong tech talent pool",
+    "Gateway to East African market",
+    "Safari/Tourism economy important"
+  ]
+}

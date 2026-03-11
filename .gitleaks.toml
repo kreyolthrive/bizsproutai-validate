@@ -1,0 +1,14 @@
+title = "Bizspr Gitleaks Config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Ignore generated and dependency directories"
+paths = [
+  '''^\.next/''',
+  '''^node_modules/''',
+  '''^coverage/''',
+  '''^playwright-report/''',
+  '''^test-results/'''
+]

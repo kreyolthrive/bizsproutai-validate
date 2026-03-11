@@ -1,0 +1,125 @@
+{
+  "category": "tech",
+  "displayName": "Tech Products & Apps",
+  "criteria": [
+    {
+      "key": "problem_validation",
+      "label": "Problem Validation",
+      "weight": 0.25,
+      "description": "Evidence that target users have this problem and will pay to solve it",
+      "riskIndicators": [
+        "Building based on assumption, not research",
+        "No customer interviews conducted",
+        "Problem exists but not urgent",
+        "Users have free/cheap alternatives"
+      ],
+      "fixSuggestions": [
+        "Interview 20 potential users about the problem",
+        "Find 5 people willing to pay before building",
+        "Create landing page to test demand",
+        "Study why existing solutions fail"
+      ]
+    },
+    {
+      "key": "market_size",
+      "label": "Market Size & Timing",
+      "weight": 0.20,
+      "description": "Large enough market with good timing",
+      "riskIndicators": [
+        "Niche too small to build venture-scale business",
+        "Market is saturated",
+        "Too early (market not ready)",
+        "Too late (winner-take-all already happened)"
+      ],
+      "fixSuggestions": [
+        "Calculate TAM/SAM/SOM realistically",
+        "Find adjacent markets for expansion",
+        "Target emerging category with tailwinds",
+        "Focus on underserved segment of large market"
+      ]
+    },
+    {
+      "key": "execution_ability",
+      "label": "Execution Ability",
+      "weight": 0.20,
+      "description": "Team capability to build and iterate quickly",
+      "riskIndicators": [
+        "No technical co-founder",
+        "Outsourcing core product development",
+        "First-time founders in complex domain",
+        "Part-time commitment"
+      ],
+      "fixSuggestions": [
+        "Find technical co-founder or learn to code",
+        "Use no-code tools for MVP",
+        "Focus on simpler product scope initially",
+        "Commit full-time or find someone who can"
+      ]
+    },
+    {
+      "key": "distribution",
+      "label": "Distribution Strategy",
+      "weight": 0.20,
+      "description": "Clear path to acquire users/customers",
+      "riskIndicators": [
+        "Build it and they will come mentality",
+        "Requires expensive paid acquisition",
+        "No organic growth mechanism",
+        "Competing for attention in crowded space"
+      ],
+      "fixSuggestions": [
+        "Identify one distribution channel to own",
+        "Build virality or network effects into product",
+        "Create content that attracts target users",
+        "Partner with platforms that have your users"
+      ]
+    },
+    {
+      "key": "business_model",
+      "label": "Business Model",
+      "weight": 0.15,
+      "description": "Viable way to monetize that aligns with user value",
+      "riskIndicators": [
+        "Monetization as afterthought",
+        "Users expect it to be free",
+        "Low willingness to pay in category",
+        "Need massive scale for ad model"
+      ],
+      "fixSuggestions": [
+        "Validate pricing with potential customers",
+        "Consider B2B if B2C won't pay",
+        "Build monetization into core product loop",
+        "Start with premium/paid before free"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "solution_looking_for_problem",
+      "severity": "critical",
+      "description": "Building technology without validated customer need"
+    },
+    {
+      "pattern": "no_distribution",
+      "severity": "critical",
+      "description": "Great product but no way to reach customers"
+    },
+    {
+      "pattern": "feature_creep",
+      "severity": "high",
+      "description": "Building too many features before validating core value"
+    },
+    {
+      "pattern": "premature_scaling",
+      "severity": "high",
+      "description": "Scaling before achieving product-market fit"
+    }
+  ],
+  "alternativeModels": [
+    "Consulting first (validate while getting paid)",
+    "Info product (course/community before software)",
+    "Marketplace (connect buyers and sellers)",
+    "API/infrastructure (B2B, sell to developers)",
+    "White-label/licensing (sell to other businesses)"
+  ]
+}

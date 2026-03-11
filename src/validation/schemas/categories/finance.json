@@ -1,0 +1,125 @@
+{
+  "category": "finance",
+  "displayName": "Finance & Fintech",
+  "criteria": [
+    {
+      "key": "regulatory_compliance",
+      "label": "Regulatory Compliance",
+      "weight": 0.25,
+      "description": "Understanding and ability to navigate financial regulations",
+      "riskIndicators": [
+        "Operating in regulated space without licenses",
+        "Cross-border compliance complexity",
+        "Consumer protection requirements unclear",
+        "Data privacy regulations not addressed"
+      ],
+      "fixSuggestions": [
+        "Consult with fintech-specialized lawyer",
+        "Research specific licenses required in target market",
+        "Start in less regulated product category",
+        "Partner with licensed entity initially"
+      ]
+    },
+    {
+      "key": "trust_security",
+      "label": "Trust & Security",
+      "weight": 0.25,
+      "description": "Ability to handle money/data securely and build user trust",
+      "riskIndicators": [
+        "No security infrastructure plan",
+        "First-time founders handling financial data",
+        "No established brand or track record",
+        "Users must trust with sensitive info"
+      ],
+      "fixSuggestions": [
+        "Partner with established payment processor",
+        "Get security certifications (SOC2, PCI-DSS)",
+        "Start with lower-risk product to build trust",
+        "Transparent security practices and insurance"
+      ]
+    },
+    {
+      "key": "unit_economics",
+      "label": "Unit Economics & Funding",
+      "weight": 0.20,
+      "description": "Path to profitability or ability to raise capital for growth",
+      "riskIndicators": [
+        "High CAC relative to LTV",
+        "Requires significant capital before revenue",
+        "Thin margins (under 20%)",
+        "Long time to break-even"
+      ],
+      "fixSuggestions": [
+        "Model realistic CAC/LTV ratios",
+        "Explore revenue share or embedded finance",
+        "Find niche with higher willingness to pay",
+        "Consider B2B fintech (shorter sales, higher value)"
+      ]
+    },
+    {
+      "key": "market_fit",
+      "label": "Problem-Solution Fit",
+      "weight": 0.15,
+      "description": "Clear pain point that existing solutions don't address",
+      "riskIndicators": [
+        "Incumbents already solve this well",
+        "Switching costs are high",
+        "Problem not painful enough",
+        "Tech solution for non-tech audience"
+      ],
+      "fixSuggestions": [
+        "Focus on underserved segment (unbanked, SMBs)",
+        "Solve one specific workflow painfully well",
+        "Target users frustrated with incumbents",
+        "Make switching frictionless"
+      ]
+    },
+    {
+      "key": "scalability",
+      "label": "Scalability & Moat",
+      "weight": 0.15,
+      "description": "Ability to grow and defend against competition",
+      "riskIndicators": [
+        "Easy to replicate",
+        "No network effects",
+        "Dependent on single partner/API",
+        "No data advantage"
+      ],
+      "fixSuggestions": [
+        "Build network effects into product",
+        "Accumulate proprietary data over time",
+        "Create deep integrations that increase switching costs",
+        "Focus on specific vertical for depth"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "regulatory_blindness",
+      "severity": "critical",
+      "description": "Building without understanding compliance requirements"
+    },
+    {
+      "pattern": "trust_gap",
+      "severity": "critical",
+      "description": "Users won't trust unknown brand with their money"
+    },
+    {
+      "pattern": "capital_intensive",
+      "severity": "high",
+      "description": "Requires more capital than founders can access"
+    },
+    {
+      "pattern": "incumbent_advantage",
+      "severity": "high",
+      "description": "Banks and established fintechs have unfair advantages"
+    }
+  ],
+  "alternativeModels": [
+    "Financial education/content (no regulation)",
+    "Fintech infrastructure/API (B2B, less trust needed)",
+    "Embedded finance (partner with platforms)",
+    "Financial tools/SaaS (analytics, not transactions)",
+    "Affiliate/referral for financial products"
+  ]
+}

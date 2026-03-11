@@ -1,0 +1,125 @@
+{
+  "category": "coaching",
+  "displayName": "Coaching & Mentorship",
+  "criteria": [
+    {
+      "key": "transformation",
+      "label": "Transformation Promise",
+      "weight": 0.25,
+      "description": "Clear, specific outcome clients can expect",
+      "riskIndicators": [
+        "Vague outcome (e.g., 'feel better')",
+        "No measurable success metric",
+        "Transformation takes too long (12+ months)",
+        "Outcome depends on factors outside your control"
+      ],
+      "fixSuggestions": [
+        "Define a 90-day transformation milestone",
+        "Create 3 measurable success indicators",
+        "Document 1 case study with before/after",
+        "Narrow focus to one specific outcome"
+      ]
+    },
+    {
+      "key": "credibility",
+      "label": "Credibility & Authority",
+      "weight": 0.20,
+      "description": "Evidence that you can deliver the promised transformation",
+      "riskIndicators": [
+        "No personal results to show",
+        "No client testimonials or case studies",
+        "Competing with established experts",
+        "Credentials don't match the promise"
+      ],
+      "fixSuggestions": [
+        "Document your own transformation story",
+        "Coach 3-5 people for free to get testimonials",
+        "Create content demonstrating expertise",
+        "Get certified if credibility gap exists"
+      ]
+    },
+    {
+      "key": "target_market",
+      "label": "Target Market Clarity",
+      "weight": 0.20,
+      "description": "Specific audience that urgently needs your solution",
+      "riskIndicators": [
+        "Too broad (e.g., 'entrepreneurs')",
+        "Audience can't afford coaching",
+        "Low urgency problem",
+        "Hard to reach online"
+      ],
+      "fixSuggestions": [
+        "Narrow to specific demographic + situation",
+        "Target people in active transition moments",
+        "Focus on B2B if B2C can't afford you",
+        "Identify where your audience gathers online"
+      ]
+    },
+    {
+      "key": "pricing_model",
+      "label": "Pricing & Business Model",
+      "weight": 0.20,
+      "description": "Sustainable pricing that reflects value delivered",
+      "riskIndicators": [
+        "Pricing by hour (not outcome)",
+        "Underpriced for market",
+        "No recurring revenue component",
+        "High time-for-money dependency"
+      ],
+      "fixSuggestions": [
+        "Price based on value of transformation",
+        "Create a signature program with fixed price",
+        "Add group coaching for leverage",
+        "Build in upsell to ongoing support"
+      ]
+    },
+    {
+      "key": "client_acquisition",
+      "label": "Client Acquisition",
+      "weight": 0.15,
+      "description": "Repeatable system to attract qualified clients",
+      "riskIndicators": [
+        "No content strategy",
+        "Relying on referrals only",
+        "No lead magnet or funnel",
+        "Cold outreach as primary method"
+      ],
+      "fixSuggestions": [
+        "Create 1 signature lead magnet",
+        "Post content weekly on 1 platform",
+        "Build discovery call booking system",
+        "Partner with complementary coaches"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "undifferentiated_coach",
+      "severity": "critical",
+      "description": "Generic life coach with no specific niche or transformation"
+    },
+    {
+      "pattern": "no_proof",
+      "severity": "high",
+      "description": "Selling transformation without evidence you can deliver it"
+    },
+    {
+      "pattern": "wrong_audience",
+      "severity": "high",
+      "description": "Targeting people who can't afford or don't urgently need coaching"
+    },
+    {
+      "pattern": "time_trap",
+      "severity": "medium",
+      "description": "Trading hours for dollars with no leverage or scale"
+    }
+  ],
+  "alternativeModels": [
+    "Group coaching program (serve more clients)",
+    "Online course (productize knowledge)",
+    "Membership community (recurring revenue)",
+    "Corporate training (B2B, higher ticket)",
+    "Certification program (train other coaches)"
+  ]
+}

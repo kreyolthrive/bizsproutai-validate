@@ -1,0 +1,21 @@
+{
+  "region": "caribbean",
+  "displayName": "Caribbean",
+  "countries": ["HT", "DO", "JM", "TT", "BB", "BS", "PR"],
+  "commonChallenges": [
+    "Limited banking infrastructure",
+    "Remittance-dependent economies",
+    "High shipping costs to islands",
+    "Small local market size",
+    "Infrastructure reliability (power, internet)",
+    "Import dependency for goods"
+  ],
+  "paymentNotes": [
+    "Mobile money critical (MonCash, Natcash in Haiti)",
+    "Cash still dominant in many areas",
+    "Cross-border payments complex",
+    "Remittance integration important",
+    "Limited card penetration",
+    "Bank account access varies widely"
+  ]
+}

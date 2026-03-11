@@ -1,0 +1,125 @@
+{
+  "category": "ecommerce",
+  "displayName": "Ecommerce",
+  "criteria": [
+    {
+      "key": "demand",
+      "label": "Demand & Intent",
+      "weight": 0.25,
+      "description": "Evidence that people actively search for and want to buy this product",
+      "riskIndicators": [
+        "No search volume on Google/Amazon",
+        "No competitor sales data",
+        "Trend is declining",
+        "Seasonal-only demand"
+      ],
+      "fixSuggestions": [
+        "Run Google Trends analysis for product keywords",
+        "Check Amazon Best Sellers in category",
+        "Test with $50 Facebook ad to measure click-through",
+        "Survey 20 potential customers about purchase intent"
+      ]
+    },
+    {
+      "key": "differentiation",
+      "label": "Differentiation",
+      "weight": 0.20,
+      "description": "Clear reason why customers would buy from you vs Amazon/competitors",
+      "riskIndicators": [
+        "Commodity product with no unique angle",
+        "Can be easily found on Amazon for less",
+        "No brand story or emotional hook",
+        "Feature parity with competitors"
+      ],
+      "fixSuggestions": [
+        "Identify 1 specific customer pain point competitors ignore",
+        "Create a brand story tied to founder experience",
+        "Bundle products in a unique way",
+        "Target an underserved niche segment"
+      ]
+    },
+    {
+      "key": "unit_economics",
+      "label": "Unit Economics",
+      "weight": 0.25,
+      "description": "Margin after COGS, shipping, returns, and customer acquisition",
+      "riskIndicators": [
+        "COGS unknown or estimated loosely",
+        "Shipping cost not calculated",
+        "Return rate not factored (10-30% typical)",
+        "CAC likely exceeds margin"
+      ],
+      "fixSuggestions": [
+        "Get 3 supplier quotes for exact COGS",
+        "Calculate all-in shipping cost per unit",
+        "Model 15% return rate and restock costs",
+        "Target minimum 3x markup before ads"
+      ]
+    },
+    {
+      "key": "operations",
+      "label": "Operations & Fulfillment",
+      "weight": 0.15,
+      "description": "Ability to reliably fulfill orders at scale",
+      "riskIndicators": [
+        "No fulfillment plan defined",
+        "Single supplier dependency",
+        "Complex inventory management",
+        "Cross-border shipping complications"
+      ],
+      "fixSuggestions": [
+        "Choose fulfillment model: self, 3PL, or dropship",
+        "Identify backup supplier",
+        "Start with limited SKU count (under 10)",
+        "Use local fulfillment first before international"
+      ]
+    },
+    {
+      "key": "distribution",
+      "label": "Distribution Channels",
+      "weight": 0.15,
+      "description": "Clear path to reach customers profitably",
+      "riskIndicators": [
+        "No specific channel identified",
+        "Relying solely on paid ads",
+        "Organic reach strategy unclear",
+        "No influencer/affiliate plan"
+      ],
+      "fixSuggestions": [
+        "Pick ONE primary channel to master first",
+        "Test UGC content before scaling ads",
+        "Build email list from day 1",
+        "Identify 5 micro-influencers in niche"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "commodity_trap",
+      "severity": "critical",
+      "description": "Selling generic products that Amazon or competitors offer cheaper"
+    },
+    {
+      "pattern": "margin_squeeze",
+      "severity": "critical",
+      "description": "Unit economics don't support profitable customer acquisition"
+    },
+    {
+      "pattern": "inventory_risk",
+      "severity": "high",
+      "description": "Large upfront inventory investment before demand validation"
+    },
+    {
+      "pattern": "channel_dependency",
+      "severity": "medium",
+      "description": "Over-reliance on single paid channel (Facebook/Google)"
+    }
+  ],
+  "alternativeModels": [
+    "Dropshipping (test demand with zero inventory)",
+    "Print-on-demand (custom products, no inventory)",
+    "Affiliate marketing (promote others' products)",
+    "Wholesale/B2B (sell to retailers instead)",
+    "Subscription box (recurring revenue model)"
+  ]
+}

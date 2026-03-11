@@ -1,0 +1,28 @@
+{
+  "country": "NG",
+  "region": "africa",
+  "name": "Nigeria",
+  "currency": "NGN",
+  "paymentRails": ["Paystack", "Flutterwave", "OPay", "PalmPay", "Bank Transfer", "USSD", "Cash"],
+  "adjustments": {
+    "payment_trust": { "weightMultiplier": 1.5, "reason": "Fintech adoption high but trust varies" },
+    "logistics": { "weightMultiplier": 1.4, "reason": "Last-mile delivery challenges" },
+    "unit_economics": { "weightMultiplier": 1.3, "reason": "Currency volatility, forex access issues" },
+    "operations": { "weightMultiplier": 1.3, "reason": "Power infrastructure challenges" }
+  },
+  "warnings": [
+    "Currency (Naira) volatility affects pricing",
+    "Mobile-first market essential",
+    "USSD payments reach non-smartphone users",
+    "Cash on delivery still expected by many",
+    "Lagos is primary market, expansion needs planning"
+  ],
+  "marketNotes": [
+    "Largest economy and population in Africa (~220M)",
+    "Young, tech-savvy population",
+    "Strong fintech ecosystem",
+    "English speaking",
+    "High entrepreneurial energy",
+    "Significant regional differences (Lagos vs North)"
+  ]
+}

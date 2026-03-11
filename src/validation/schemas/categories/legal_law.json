@@ -1,0 +1,125 @@
+{
+  "category": "legal_law",
+  "displayName": "Legal & Law",
+  "criteria": [
+    {
+      "key": "regulatory_compliance",
+      "label": "Regulatory Compliance",
+      "weight": 0.30,
+      "description": "Operating within unauthorized practice of law rules",
+      "riskIndicators": [
+        "Providing legal advice without license",
+        "Operating in regulated legal territory",
+        "Crossing state/country bar requirements",
+        "No legal counsel reviewing offering"
+      ],
+      "fixSuggestions": [
+        "Consult with bar association on boundaries",
+        "Position as legal education, not advice",
+        "Partner with licensed attorneys",
+        "Use proper disclaimers everywhere"
+      ]
+    },
+    {
+      "key": "market_access",
+      "label": "Market Access",
+      "weight": 0.25,
+      "description": "Ability to reach and serve legal market",
+      "riskIndicators": [
+        "Competing with established law firms",
+        "Target clients use existing attorneys",
+        "Long sales cycles in legal",
+        "Trust barrier with new legal provider"
+      ],
+      "fixSuggestions": [
+        "Target underserved legal needs (SMBs, startups)",
+        "Focus on legal-adjacent services (compliance, docs)",
+        "Build trust through content and education",
+        "Partner with law firms for referrals"
+      ]
+    },
+    {
+      "key": "value_proposition",
+      "label": "Value Proposition",
+      "weight": 0.20,
+      "description": "Clear value vs traditional legal services",
+      "riskIndicators": [
+        "Not cheaper, faster, or better",
+        "Complex needs require attorneys anyway",
+        "Value unclear to non-lawyers",
+        "Commoditizing something that shouldn't be"
+      ],
+      "fixSuggestions": [
+        "Focus on routine, repeatable legal work",
+        "Emphasize speed and transparency",
+        "Target specific use case deeply",
+        "Make legal accessible to non-lawyers"
+      ]
+    },
+    {
+      "key": "liability_protection",
+      "label": "Liability Protection",
+      "weight": 0.15,
+      "description": "Protection from malpractice and liability claims",
+      "riskIndicators": [
+        "High liability exposure",
+        "No malpractice insurance",
+        "Unclear terms of service",
+        "Bad outcomes could lead to lawsuits"
+      ],
+      "fixSuggestions": [
+        "Get professional liability insurance",
+        "Create clear terms and disclaimers",
+        "Have attorney review all customer-facing materials",
+        "Document scope limitations clearly"
+      ]
+    },
+    {
+      "key": "scalability",
+      "label": "Scalability",
+      "weight": 0.10,
+      "description": "Ability to serve more clients without proportional cost",
+      "riskIndicators": [
+        "Every client needs custom work",
+        "Attorney involvement required for each",
+        "No technology leverage",
+        "Time-for-money model"
+      ],
+      "fixSuggestions": [
+        "Productize common legal needs",
+        "Use templates and automation",
+        "Build self-serve where compliant",
+        "Create tiered service levels"
+      ]
+    }
+  ],
+  "failurePatterns": [
+    {
+      "pattern": "upl_violation",
+      "severity": "critical",
+      "description": "Unauthorized practice of law violation"
+    },
+    {
+      "pattern": "liability_exposure",
+      "severity": "critical",
+      "description": "Sued for bad legal outcome"
+    },
+    {
+      "pattern": "trust_barrier",
+      "severity": "high",
+      "description": "Clients won't trust non-traditional legal provider"
+    },
+    {
+      "pattern": "complexity_creep",
+      "severity": "medium",
+      "description": "Needs become too complex for productized offering"
+    }
+  ],
+  "alternativeModels": [
+    "Legal education/content (no UPL risk)",
+    "Legal tech tools (for lawyers, not clients)",
+    "Document templates (self-serve, disclaimers)",
+    "Legal marketplace (connect with attorneys)",
+    "Compliance SaaS (tech, not legal advice)"
+  ]
+}

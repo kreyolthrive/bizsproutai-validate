@@ -1,0 +1,20 @@
+{
+  "region": "latin_america",
+  "displayName": "Latin America",
+  "countries": ["BR", "MX", "AR", "CO", "CL", "PE", "VE", "EC"],
+  "commonChallenges": [
+    "Currency volatility in some countries",
+    "Complex tax and regulatory environments",
+    "Logistics infrastructure varies",
+    "Economic instability in some regions",
+    "Large informal economy"
+  ],
+  "paymentNotes": [
+    "Pix dominant in Brazil",
+    "Mercado Pago widespread",
+    "Boleto still used in Brazil",
+    "OXXO cash payments in Mexico",
+    "Installment payments (cuotas) expected",
+    "Local payment methods essential"
+  ]
+}
