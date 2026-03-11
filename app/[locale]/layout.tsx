@@ -191,7 +191,10 @@ export default async function LocaleLayout({
 
             <footer className="mt-8 border-t border-[#0b1f4d]/20 bg-[#edf3ff]">
               <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-[#17366d] sm:flex-row">
-                <p className="font-medium text-[#0b1f4d]">{t("footer.copyright")}</p>
+                <div className="text-center sm:text-left">
+                  <p className="font-medium text-[#0b1f4d]">{t("footer.copyright")}</p>
+                  <p className="text-xs text-[#2a4f82]">BizSproutAI is a DBA of Kreyol Thrive Biz.</p>
+                </div>
                 <a href="mailto:info@bizsproutai.com" className="font-semibold text-[#0fb085] hover:text-[#0b1f4d]">
                   info@bizsproutai.com
                 </a>

@@ -125,6 +125,7 @@ export default async function Home({ params }: Props) {
             </a>
             .
           </p>
+          <p className="mt-2 text-xs text-[#355889]">BizSproutAI is a DBA of Kreyol Thrive Biz.</p>
         </div>
       </section>
     </main>

@@ -269,6 +269,8 @@ export async function sendValidationEmails(payload: ValidationEmailPayload): Pro
     ...(previewActions.length ? previewActions : ["No actions generated"]),
     "",
     `Report generated: ${payload.report.generatedAt}`,
+    "",
+    "BizSproutAI is a DBA of Kreyol Thrive Biz.",
   ].join("\n");
 
   const userText = [
@@ -294,6 +296,7 @@ export async function sendValidationEmails(payload: ValidationEmailPayload): Pro
     payload.result.summary.oneLiner,
     ...breakdown,
     "Questions? Reply to info@bizsproutai.com",
+    "BizSproutAI is a DBA of Kreyol Thrive Biz.",
   ].join("\n");
 
   const errors: string[] = [];
