@@ -29,9 +29,14 @@ export type ValidationInput = {
   category?: Category; // Now optional - can be auto-classified
   locale?: Locale;
   idea: string;
+  targetCustomer?: string;
   targetMarket?: string;
   location?: string;
+  offer?: string;
+  problem?: string;
+  pricingIdea?: string;
   budgetUsd?: number;
+  skillSummary?: string;
   channels?: string[];
   timelineDays?: number;
   experienceLevel?: ExperienceLevel;
@@ -44,6 +49,11 @@ export type Verdict = "go" | "caution" | "no-go";
 // New: Dynamic status for FIX loop and alternatives
 export type ValidationStatus = "GO" | "FIX" | "STOP";
 export type FrameworkDecision = "GO" | "CONDITIONAL_GO" | "NEED_WORK" | "NO_GO";
+export type FinalValidationVerdict =
+  | "strong_validation"
+  | "promising_but_needs_proof"
+  | "risky_requires_refinement"
+  | "weak_validation_major_changes_needed";
 
 export type CriterionKey = string;
 
@@ -148,11 +158,101 @@ export type DynamicValidationResult = {
   buildTriggered: boolean;
   buildJobs: BuildJob[];
   frameworkReport?: SimplifiedFrameworkReport;
+  submittedContext?: SubmittedValidationContext;
+  businessCategory?: string;
+  frameworkUsed?: string;
+  confidenceScore?: number;
+  scores?: ValidationScoreBreakdown;
+  strengths?: string[];
+  weaknesses?: string[];
+  keyRisks?: string[];
+  assumptionsToTest?: string[];
+  missingProof?: string[];
+  recommendedTests?: string[];
+  recommendedNextSteps?: string[];
+  finalVerdict?: FinalValidationVerdict;
+  categoryRouting?: ValidationCategoryRouting;
+  selectedFramework?: ValidationFrameworkSelection;
+  researchSummary?: ValidationResearchSummary;
+  modelRouting?: ValidationModelRouting;
+  nextActionCtas?: ValidationCta[];
+  business_category?: string;
+  framework_used?: string;
+  overall_score?: number;
+  confidence_score?: number;
+  key_risks?: string[];
+  assumptions_to_test?: string[];
+  missing_proof?: string[];
+  recommended_tests?: string[];
+  recommended_next_steps?: string[];
+  final_verdict?: FinalValidationVerdict;
   meta: {
     version: string;
     iterationCount: number;
     generatedAt: string;
   };
+};
+
+export type SubmittedValidationContext = {
+  idea: string;
+  targetCustomer?: string;
+  targetMarket?: string;
+  location?: string;
+  offer?: string;
+  problem?: string;
+  pricingIdea?: string;
+  budgetUsd?: number;
+  skillSummary?: string;
+  channels?: string[];
+  timelineDays?: number;
+  experienceLevel?: ExperienceLevel;
+};
+
+export type ValidationScoreBreakdown = {
+  market_demand: number;
+  monetization: number;
+  competition: number;
+  acquisition: number;
+  execution_feasibility: number;
+  differentiation: number;
+  risk: number;
+};
+
+export type ValidationCategoryRouting = {
+  businessCategory: string;
+  confidence: number;
+  alternateCategories: string[];
+  evidence: string[];
+};
+
+export type ValidationFrameworkSelection = {
+  frameworkName: string;
+  frameworkLabel: string;
+  version: string;
+  criteria: string[];
+};
+
+export type ValidationResearchSummary = {
+  demandSignals: string[];
+  competitionNotes: string[];
+  marketTrends: string[];
+  monetizationNotes: string[];
+  acquisitionChallenges: string[];
+  differentiationOpportunities: string[];
+  riskFactors: string[];
+  sources: string[];
+};
+
+export type ValidationModelRouting = {
+  researchModel: string;
+  reasoningModel: string;
+  formatterModel: string;
+};
+
+export type ValidationCta = {
+  key: string;
+  label: string;
+  href: string;
 };
 
 export type SimplifiedGateResult = {

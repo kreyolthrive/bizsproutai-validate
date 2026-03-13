@@ -33,6 +33,9 @@ function toIntegerScore(value: number): number {
 }
 
 function resolveReportScore(result: DynamicValidationResult): number {
+  if (typeof result.overall_score === "number") {
+    return Math.max(0, Math.min(100, Math.round(result.overall_score)));
+  }
   if (typeof result.frameworkReport?.weightedScore === "number") {
     return Math.max(0, Math.min(100, Math.round(result.frameworkReport.weightedScore)));
   }
@@ -63,6 +66,12 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
   const modelMargin = input.result.frameworkReport?.businessModelValidation.margin;
   const gates = input.result.frameworkReport?.gates ?? [];
   const reportScore = resolveReportScore(input.result);
+  const structuredScores = input.result.scores;
+  const strengths = input.result.strengths ?? input.result.summary.topOpportunities;
+  const weaknesses = input.result.weaknesses ?? [];
+  const keyRisks = input.result.keyRisks ?? input.result.summary.biggestRisks;
+  const assumptionsToTest = input.result.assumptionsToTest ?? input.result.assumptions;
+  const nextSteps = input.result.recommendedNextSteps ?? input.result.nextActions;
 
   const reportLines: string[] = [
     "BizSproutAI Validation Report",
@@ -82,25 +91,35 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
     "",
     "Context",
     "-------",
-    `Category: ${input.result.category}`,
+    `Category: ${input.result.businessCategory ?? input.result.category}`,
     `Country: ${input.result.country.code}`,
-    `Framework: ${input.result.framework?.label ?? "General"}`,
+    `Framework: ${input.result.frameworkUsed ?? input.result.framework?.label ?? "General"}`,
+    `Confidence: ${input.result.confidenceScore ?? input.result.confidence_score ?? "n/a"}/100`,
     "",
     "One-Line Summary",
     "----------------",
     input.result.summary.oneLiner,
     "",
-    "Simple Breakdown",
-    "----------------",
-    `Demand: ${typeof demand === "number" ? `${demand}/20` : "n/a"}`,
-    `Competition: ${typeof competition === "number" ? `${competition}/5` : "n/a"}`,
-    `Business Model Margin: ${typeof modelMargin === "number" ? `${modelMargin}%` : "n/a"}`,
+    "Score Breakdown",
+    "---------------",
+    `Overall Score: ${reportScore}/100`,
+    `Market Demand: ${structuredScores?.market_demand ?? (typeof demand === "number" ? toIntegerScore(demand / 4) : "n/a")}`,
+    `Monetization: ${structuredScores?.monetization ?? (typeof modelMargin === "number" ? Math.round(modelMargin) : "n/a")}`,
+    `Competition: ${structuredScores?.competition ?? (typeof competition === "number" ? toIntegerScore(competition) : "n/a")}`,
+    `Acquisition: ${structuredScores?.acquisition ?? "n/a"}`,
+    `Execution Feasibility: ${structuredScores?.execution_feasibility ?? "n/a"}`,
+    `Differentiation: ${structuredScores?.differentiation ?? "n/a"}`,
+    `Risk: ${structuredScores?.risk ?? "n/a"}`,
     "",
-    ...linesWithFallback("Top Opportunities", input.result.summary.topOpportunities),
+    ...linesWithFallback("Strengths", strengths),
     "",
-    ...linesWithFallback("Biggest Risks", input.result.summary.biggestRisks),
+    ...linesWithFallback("Weaknesses", weaknesses),
     "",
-    ...linesWithFallback("Next Actions (30-Day Launch Sprint Preview)", input.result.nextActions.slice(0, 10)),
+    ...linesWithFallback("Key Risks", keyRisks),
+    "",
+    ...linesWithFallback("Assumptions To Test", assumptionsToTest),
+    "",
+    ...linesWithFallback("Next Steps", nextSteps.slice(0, 10)),
     "",
     "Gate Analysis",
     "-------------",
