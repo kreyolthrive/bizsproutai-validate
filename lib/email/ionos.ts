@@ -238,7 +238,8 @@ function normalizeUserEmail(payload: ValidationEmailPayload): string | null {
     ("email" in payload ? payload.email : undefined) ??
     ("to" in payload ? payload.to : undefined);
 
-  return sanitize(candidate);
+  const normalized = sanitize(candidate);
+  return normalized ?? null;
 }
 
 function normalizeLocale(payload: ValidationEmailPayload): string {
@@ -262,7 +263,8 @@ function normalizeReport(payload: ValidationEmailPayload): NormalizedReport {
   let pdfBuffer: Buffer | null = null;
   let pdfFilename: string | null =
     ("pdfFilename" in payload ? sanitize(payload.pdfFilename) : undefined) ??
-    sanitize(payload.report?.pdf?.filename);
+    sanitize(payload.report?.pdf?.filename) ??
+    null;
 
   const reportPdf = payload.report?.pdf;
 
