@@ -14,12 +14,13 @@ import type {
   SimplifiedGateResult,
 } from "../types";
 import { ENGINE_VERSION } from "../constants";
-import { detectCountry } from "./detectCountry";
-import { classifyCategory } from "./classifyCategory";
+import { getDefaultFrameworkGuideId, getFrameworkGuide } from "../frameworkGuides";
 import { loadFramework, type LoadedFramework } from "./loadFramework";
 import { sortRisksBySeverity } from "./evaluateRisks";
 import { suggestAlternatives } from "./suggestAlternatives";
 import { triggerBuildFlow } from "./triggerBuildFlow";
+import { analyzeBusinessIdeaWithAI, resolveValidationContext } from "./aiValidation";
+import { hasInPersonWellnessServiceSignals, hasPhysicalProductSubscriptionSignals, hasVerticalSaasSignals } from "./classifyCategory";
 
 const SCORING_WEIGHTS = {
   problemStrength: 0.3,
@@ -163,6 +164,7 @@ const REGION_MARKET_MULTIPLIER: Record<string, number> = {
 
 type FrameworkArchetype =
   | "general"
+  | "ecommerce_product"
   | "restaurant"
   | "food_truck"
   | "marketing_agency"
@@ -245,6 +247,47 @@ const FRAMEWORK_PROFILES: Record<FrameworkArchetype, FrameworkProfile> = {
       operations: [/team|process|ops|delivery|capacity|timeline/i],
       regulatory: [/license|permit|compliance|inspection|tax/i],
       execution: [/experience|skills|partner|supplier|contingency/i],
+    },
+  },
+  ecommerce_product: {
+    id: "ecommerce_product",
+    label: "Ecommerce / Physical Product",
+    preferredCategory: "ecommerce",
+    gate1Threshold: 9.5,
+    gate2Threshold: 11,
+    gate4SomThreshold: 400000,
+    gate4MarginThreshold: 45,
+    gate5OpsThreshold: 3,
+    directCompetitors: ["DTC brands", "Amazon sellers", "Subscription-box brands"],
+    indirectAlternatives: ["Retail stores", "Supermarkets", "Generic marketplaces"],
+    statusQuo: ["Buying one-off products online", "Buying from local retail shelves"],
+    modelOverride: "Direct-to-consumer ecommerce with repeat purchase or subscription revenue",
+    costRatioOverride: 0.38,
+    gate1Signals: {
+      painLevel: [/convenience|discovery|quality|gift|curation|freshness/i],
+      marketCoverage: [/consumers|households|enthusiasts|gift buyers|online shoppers/i],
+      currentGap: [/generic options|low quality|hard to find|lack of variety|poor curation/i],
+      demandFrequency: [/repeat purchase|subscription|monthly|shipping cadence|churn/i],
+    },
+    gate1Boost: { painLevel: 0.2, demandFrequency: 0.3 },
+    gate2Signals: {
+      reachability: [/instagram|tiktok|email|influencers|creators|search/i],
+      locationFit: [/shipping|delivery|warehouse|fulfillment|nationwide|cross-border/i],
+      payerFit: [/aov|price point|gross margin|willing to pay|giftable/i],
+    },
+    gate3Signals: {
+      competition: [/amazon|shopify brands|subscription boxes|retail alternatives/i],
+      differentiation: [/curation|exclusive|origin|premium|brand|packaging|storytelling/i],
+    },
+    gate4Signals: {
+      pricingModel: [/subscription box|monthly box|one-time purchase|bundles|gift subscription/i],
+      unitEconomics: [/gross margin|shipping cost|cogs|inventory|repeat purchase|returns/i],
+      recurringRevenue: [/subscriptions?|reorders|retention|repeat buyers/i],
+    },
+    gate5Signals: {
+      operations: [/inventory|supplier|roaster|packaging|shipping|fulfillment|ops/i],
+      regulatory: [/food safety|labeling|import|customs|shelf life/i],
+      execution: [/supplier reliability|forecasting|stockouts|customer support/i],
     },
   },
   restaurant: {
@@ -497,6 +540,10 @@ const FRAMEWORK_PROFILES: Record<FrameworkArchetype, FrameworkProfile> = {
 function detectFrameworkProfile(idea: string, category: Category): FrameworkProfile {
   const text = idea.toLowerCase();
 
+  if (hasPhysicalProductSubscriptionSignals(text) || /\bstore|shop|e-?commerce|inventory|shipping|fulfillment|shopify|amazon\b/i.test(text)) {
+    return FRAMEWORK_PROFILES.ecommerce_product;
+  }
+
   if (/\bfood truck|street food|kiosk|stall|cart\b/i.test(text)) {
     return FRAMEWORK_PROFILES.food_truck;
   }
@@ -509,8 +556,18 @@ function detectFrameworkProfile(idea: string, category: Category): FrameworkProf
     return FRAMEWORK_PROFILES.marketing_agency;
   }
 
+  // Check for vertical SaaS BEFORE generic SaaS or local service
+  // This is CRITICAL: software built FOR local service operators is SaaS, not local service
+  if (category === "saas") {
+    return FRAMEWORK_PROFILES.saas_product;
+  }
+
   if (/\bsaas|software|app|platform|dashboard|api|automation|workflow\b/i.test(text)) {
     return FRAMEWORK_PROFILES.saas_product;
+  }
+
+  if (hasInPersonWellnessServiceSignals(text)) {
+    return FRAMEWORK_PROFILES.local_service_business;
   }
 
   if (/\bcourse|cohort|tutoring|bootcamp|online class|exam prep|coaching\b/i.test(text)) {
@@ -523,13 +580,29 @@ function detectFrameworkProfile(idea: string, category: Category): FrameworkProf
     return FRAMEWORK_PROFILES.online_education_coaching;
   }
 
+  // Only match local service if NOT building software for them
+  // "Build app for barber" = SaaS, "I am a barber starting a business" = local service
   if (/\bcleaning|plumbing|detailing|car wash|salon|barber|repair|real estate agent|realtor|homebuyers|tutoring\b/i.test(text)) {
-    return FRAMEWORK_PROFILES.local_service_business;
+    // Check if this is actually about building software for these operators
+    if (!hasVerticalSaasSignals(text)) {
+      return FRAMEWORK_PROFILES.local_service_business;
+    }
+    // If vertical SaaS signals detected, don't fall into local service - will be handled by saas check above
   }
 
   if (category === "saas") return FRAMEWORK_PROFILES.saas_product;
   if (category === "consulting") return FRAMEWORK_PROFILES.marketing_agency;
-  if (category === "local_service") return FRAMEWORK_PROFILES.local_service_business;
+  if (category === "local_service") {
+    // Double-check it's not vertical SaaS that was miscategorized
+    if (!hasVerticalSaasSignals(text)) {
+      return FRAMEWORK_PROFILES.local_service_business;
+    }
+    // If it's actually vertical SaaS, use saas profile
+    return FRAMEWORK_PROFILES.saas_product;
+  }
+  if (category === "health_wellness" && hasInPersonWellnessServiceSignals(text)) {
+    return FRAMEWORK_PROFILES.local_service_business;
+  }
   if (category === "coaching" || category === "edtech") return FRAMEWORK_PROFILES.online_education_coaching;
 
   return FRAMEWORK_PROFILES.general;
@@ -1876,6 +1949,11 @@ function buildNextActions(decision: FrameworkDecision, fixes: FixSuggestion[], p
       "Build a single-workflow MVP and test onboarding completion.",
       "Validate willingness to pay with 5 buyer calls before adding features.",
     ],
+    ecommerce_product: [
+      "Validate product demand with a lean landing page and 3-5 creative angles.",
+      "Confirm gross margin after product cost, shipping, and returns assumptions.",
+      "Test one hero product before expanding into a broader catalog.",
+    ],
     local_service_business: [
       "Pick one neighborhood and validate demand through 20 direct conversations.",
       "Price one core package with travel, supplies, and helper costs included.",
@@ -2013,39 +2091,18 @@ function resolveGateStatus(
   };
 }
 
-export async function validateIdeaDynamic(input: ValidationInput): Promise<DynamicValidationResult> {
-  const locale: Locale = input.locale || "en";
-
-  const country = detectCountry({
-    idea: input.idea,
-    locale,
-    location: input.location,
-    targetMarket: input.targetMarket,
-  });
-
-  const categoryClassification = classifyCategory({
-    idea: input.idea,
-    explicitCategory: input.category,
-  });
-
-  const profile = detectFrameworkProfile(input.idea, categoryClassification.category);
-
-  const category =
-    profile.preferredCategory &&
-    categoryClassification.category !== profile.preferredCategory &&
-    categoryClassification.confidence < 0.9
-      ? profile.preferredCategory
-      : categoryClassification.category;
-
-  const categoryConfidence =
-    category === categoryClassification.category
-      ? categoryClassification.confidence
-      : Math.max(categoryClassification.confidence, 0.72);
-
-  const framework = loadFramework({
-    category,
-    countryCode: country.code,
-  });
+async function validateIdeaWithHeuristics(
+  input: ValidationInput,
+  context: {
+    locale: Locale;
+    country: DynamicValidationResult["country"];
+    category: Category;
+    categoryConfidence: number;
+    framework: LoadedFramework;
+  }
+): Promise<DynamicValidationResult> {
+  const { locale, country, category, categoryConfidence, framework } = context;
+  const profile = detectFrameworkProfile(input.idea, category);
 
   const clarification = clarifyIdea(input.idea);
   const problemDemand = evaluateProblemDemand(input.idea, clarification, profile);
@@ -2252,17 +2309,12 @@ export async function validateIdeaDynamic(input: ValidationInput): Promise<Dynam
   const alternativeSuggestion = suggestAlternatives(framework, failureRisks, overallScore);
   const alternatives = status === "STOP" ? alternativeSuggestion.alternatives : [];
 
-  const hasCriticalRisks = failureRisks.some((risk) => risk.severity === "critical");
-  const shouldBuild = status === "GO" && !hasCriticalRisks;
-
-  const buildResult = shouldBuild
-    ? triggerBuildFlow({
-        category,
-        countryCode: country.code,
-        locale,
-        ideaSummary: clarification.restatement.slice(0, 140),
-      })
-    : null;
+  const buildResult = triggerBuildFlow({
+    category,
+    countryCode: country.code,
+    locale,
+    ideaSummary: clarification.restatement.slice(0, 140),
+  });
 
   const summary = buildSummary(decision, category, gates, failureRisks, profile);
   const nextActions = buildNextActions(decision, fixes, profile);
@@ -2306,13 +2358,68 @@ export async function validateIdeaDynamic(input: ValidationInput): Promise<Dynam
     criteria,
     assumptions: clarification.assumptions,
     missingInfo,
-    buildTriggered: buildResult?.triggered ?? false,
-    buildJobs: buildResult?.jobs ?? [],
+    buildTriggered: buildResult.triggered,
+    buildJobs: buildResult.jobs,
     frameworkReport,
     meta: {
       version: ENGINE_VERSION,
       iterationCount: 1,
       generatedAt: new Date().toISOString(),
+    },
+  };
+}
+
+export async function validateIdeaDynamic(input: ValidationInput): Promise<DynamicValidationResult> {
+  const locale: Locale = input.locale || "en";
+  const resolvedContext = await resolveValidationContext(input, locale);
+  const { country, categoryClassification } = resolvedContext;
+  const frameworkProfile = detectFrameworkProfile(input.idea, resolvedContext.category);
+  const category =
+    frameworkProfile.preferredCategory &&
+    categoryClassification.category !== frameworkProfile.preferredCategory &&
+    categoryClassification.confidence < 0.9
+      ? frameworkProfile.preferredCategory
+      : resolvedContext.category;
+
+  const categoryConfidence =
+    category === categoryClassification.category
+      ? categoryClassification.confidence
+      : Math.max(categoryClassification.confidence, 0.72);
+
+  const framework = loadFramework({
+    category,
+    countryCode: country.code,
+  });
+  const frameworkGuideId = resolvedContext.frameworkHint ?? getDefaultFrameworkGuideId(category);
+  const frameworkGuide = getFrameworkGuide(frameworkGuideId) ?? getFrameworkGuide(getDefaultFrameworkGuideId(category));
+
+  const aiResult = await analyzeBusinessIdeaWithAI({
+    input,
+    locale,
+    category,
+    framework,
+    frameworkGuide: frameworkGuide!,
+    country,
+    categoryClassification,
+    businessModel: {
+      subcategory: resolvedContext.subcategory,
+      businessModelType: resolvedContext.businessModelType,
+      segment: resolvedContext.segment,
+      frameworkHint: frameworkGuideId,
+    },
+  });
+
+  return {
+    ...aiResult,
+    frameworkUsed: aiResult.frameworkUsed ?? frameworkGuideId,
+    inferredBusinessModel: {
+      primaryCategory: aiResult.businessCategory ?? aiResult.business_category ?? category,
+      subcategory: resolvedContext.subcategory,
+      businessModelType: resolvedContext.businessModelType,
+      segment: resolvedContext.segment,
+      frameworkId: frameworkGuideId,
+      confidence: Math.round(categoryClassification.confidence * 100),
+      evidence: categoryClassification.evidence,
     },
   };
 }
