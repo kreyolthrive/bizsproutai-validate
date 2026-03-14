@@ -590,7 +590,7 @@ function detectFrameworkProfile(idea: string, category: Category): FrameworkProf
     // If vertical SaaS signals detected, don't fall into local service - will be handled by saas check above
   }
 
-  if (category === "saas") return FRAMEWORK_PROFILES.saas_product;
+  // Note: "saas" category is already handled above, no need to check again here
   if (category === "consulting") return FRAMEWORK_PROFILES.marketing_agency;
   if (category === "local_service") {
     // Double-check it's not vertical SaaS that was miscategorized
