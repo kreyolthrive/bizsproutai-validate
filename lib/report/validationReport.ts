@@ -1,5 +1,12 @@
-import type { DynamicValidationResult, FrameworkDecision, Locale } from "@/src/validation/types";
-import { resolveFrameworkDecision, resolveOverallScore100 } from "@/src/validation/decision";
+import type {
+  DynamicValidationResult,
+  FrameworkDecision,
+  Locale,
+} from "@/src/validation/types";
+import {
+  resolveFrameworkDecision,
+  resolveOverallScore100,
+} from "@/src/validation/decision";
 
 export type ValidationReportDocument = {
   filename: string;
@@ -21,10 +28,6 @@ function decisionLabel(decision: FrameworkDecision): string {
   return "High Risk — Improve or Pivot";
 }
 
-function toIntegerScore(value: number): number {
-  return Math.round(Math.max(0, Math.min(100, value * 20)));
-}
-
 function safeSegment(value: string): string {
   return value
     .toLowerCase()
@@ -38,30 +41,97 @@ function linesWithFallback(title: string, lines: string[]): string[] {
   return [title, ...lines.map((line) => `- ${line}`)];
 }
 
-export function buildValidationReportDocument(input: ValidationReportInput): ValidationReportDocument {
+function normalizeStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+}
+
+function resolveCategory(result: DynamicValidationResult): string {
+  return (
+    result.businessCategory ??
+    result.business_category ??
+    result.category ??
+    "n/a"
+  );
+}
+
+function resolveFramework(result: DynamicValidationResult): string {
+  return (
+    result.frameworkUsed ??
+    result.framework_used ??
+    result.selectedFramework?.frameworkLabel ??
+    result.framework?.label ??
+    "General"
+  );
+}
+
+function resolveCountry(result: DynamicValidationResult): string {
+  return result.country?.code ?? result.country?.name ?? "n/a";
+}
+
+function resolveConfidence(result: DynamicValidationResult): string {
+  const value = result.confidenceScore ?? result.confidence_score;
+  return typeof value === "number" ? `${value}/100` : "n/a";
+}
+
+export function buildValidationReportDocument(
+  input: ValidationReportInput
+): ValidationReportDocument {
   const generatedAt = new Date().toISOString();
   const shortIdea = input.idea.split(/\s+/).slice(0, 6).join("-");
-  const filename = `bizsproutai-validation-${safeSegment(shortIdea || "report")}.txt`;
+  const filename = `bizsproutai-validation-${safeSegment(
+    shortIdea || "report"
+  )}.txt`;
 
   const decision = decisionLabel(resolveFrameworkDecision(input.result));
-
-  const demand = input.result.frameworkReport?.problemDemand.total;
-  const competition = input.result.frameworkReport?.solutionValidation.differentiation;
-  const modelMargin = input.result.frameworkReport?.businessModelValidation.margin;
-  const gates = input.result.frameworkReport?.gates ?? [];
   const reportScore = resolveOverallScore100(input.result);
-  const structuredScores = input.result.scores;
-  const strengths = input.result.strengths ?? input.result.summary.topOpportunities;
-  const weaknesses = input.result.weaknesses ?? [];
-  const keyRisks = input.result.keyRisks ?? input.result.summary.biggestRisks;
-  const assumptionsToTest = input.result.assumptionsToTest ?? input.result.assumptions;
-  const nextSteps = input.result.recommendedNextSteps ?? input.result.nextActions;
+
+  const strengths = normalizeStringArray(
+    input.result.strengths ?? input.result.summary?.topOpportunities ?? []
+  );
+  const weaknesses = normalizeStringArray(input.result.weaknesses ?? []);
+  const keyRisks = normalizeStringArray(
+    input.result.keyRisks ??
+      input.result.key_risks ??
+      input.result.summary?.biggestRisks ??
+      []
+  );
+  const assumptionsToTest = normalizeStringArray(
+    input.result.assumptionsToTest ??
+      input.result.assumptions_to_test ??
+      input.result.assumptions ??
+      []
+  );
+  const nextSteps = normalizeStringArray(
+    input.result.recommendedNextSteps ??
+      input.result.recommended_next_steps ??
+      input.result.nextActions ??
+      []
+  ).slice(0, 10);
+
   const pillarValidation = input.result.pillarValidation;
+  const gates = input.result.frameworkReport?.gates ?? [];
+
+  const scoreLines = [
+    `Overall Score: ${reportScore}/100`,
+    `Market Demand: ${input.result.scores?.market_demand ?? "n/a"}`,
+    `Monetization: ${input.result.scores?.monetization ?? "n/a"}`,
+    `Competition: ${input.result.scores?.competition ?? "n/a"}`,
+    `Acquisition: ${input.result.scores?.acquisition ?? "n/a"}`,
+    `Execution Feasibility: ${input.result.scores?.execution_feasibility ?? "n/a"}`,
+    `Differentiation: ${input.result.scores?.differentiation ?? "n/a"}`,
+    `Risk: ${input.result.scores?.risk ?? "n/a"}`,
+  ];
+
+  const researchSignals = [
+    ...normalizeStringArray(input.result.researchSummary?.demandSignals ?? []),
+    ...normalizeStringArray(input.result.researchSummary?.marketTrends ?? []),
+    ...normalizeStringArray(input.result.researchSummary?.monetizationNotes ?? []),
+  ].slice(0, 8);
 
   const reportLines: string[] = [
     "BizSproutAI Validation Report",
     "============================",
-    "Brand: BizSproutAI (logo is embedded in the PDF report version)",
     `Generated: ${generatedAt}`,
     `Locale: ${input.locale}`,
     `Email: ${input.email ?? "not provided"}`,
@@ -76,25 +146,18 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
     "",
     "Context",
     "-------",
-    `Category: ${input.result.businessCategory ?? input.result.category}`,
-    `Country: ${input.result.country.code}`,
-    `Framework: ${input.result.frameworkUsed ?? input.result.framework?.label ?? "General"}`,
-    `Confidence: ${input.result.confidenceScore ?? input.result.confidence_score ?? "n/a"}/100`,
+    `Category: ${resolveCategory(input.result)}`,
+    `Country: ${resolveCountry(input.result)}`,
+    `Framework: ${resolveFramework(input.result)}`,
+    `Confidence: ${resolveConfidence(input.result)}`,
     "",
     "One-Line Summary",
     "----------------",
-    input.result.summary.oneLiner,
+    input.result.summary?.oneLiner ?? "Validation completed.",
     "",
     "Score Breakdown",
     "---------------",
-    `Overall Score: ${reportScore}/100`,
-    `Market Demand: ${structuredScores?.market_demand ?? (typeof demand === "number" ? toIntegerScore(demand / 4) : "n/a")}`,
-    `Monetization: ${structuredScores?.monetization ?? (typeof modelMargin === "number" ? Math.round(modelMargin) : "n/a")}`,
-    `Competition: ${structuredScores?.competition ?? (typeof competition === "number" ? toIntegerScore(competition) : "n/a")}`,
-    `Acquisition: ${structuredScores?.acquisition ?? "n/a"}`,
-    `Execution Feasibility: ${structuredScores?.execution_feasibility ?? "n/a"}`,
-    `Differentiation: ${structuredScores?.differentiation ?? "n/a"}`,
-    `Risk: ${structuredScores?.risk ?? "n/a"}`,
+    ...scoreLines,
     "",
     ...linesWithFallback("Strengths", strengths),
     "",
@@ -104,7 +167,9 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
     "",
     ...linesWithFallback("Assumptions To Test", assumptionsToTest),
     "",
-    ...linesWithFallback("Next Steps", nextSteps.slice(0, 10)),
+    ...linesWithFallback("Next Steps", nextSteps),
+    "",
+    ...linesWithFallback("Research Signals", researchSignals),
     "",
     ...(pillarValidation && pillarValidation.pillars.length > 0
       ? [
@@ -117,7 +182,7 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
             `${pillar.label} (${pillar.score}/100 — ${pillar.status})`,
             pillar.summary ? `  ${pillar.summary}` : "",
             ...(pillar.advice.length > 0
-              ? ["  How to improve or pivot:", ...pillar.advice.map((a) => `    - ${a}`)]
+              ? ["  How to improve:", ...pillar.advice.map((a) => `    - ${a}`)]
               : []),
             "",
           ]),
@@ -137,14 +202,12 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
     "Gate Analysis",
     "-------------",
     ...(gates.length
-      ? gates.map(
-          (gate) => {
-            if (gate.status === "BLOCKED") {
-              return `- Gate ${gate.gate} ${gate.name}: BLOCKED (waiting for Gate ${gate.blockedByGate})`;
-            }
-            return `- Gate ${gate.gate} ${gate.name}: ${gate.status} (${gate.score}/${gate.maxScore})`;
+      ? gates.map((gate) => {
+          if (gate.status === "BLOCKED") {
+            return `- Gate ${gate.gate} ${gate.name}: BLOCKED (waiting for Gate ${gate.blockedByGate})`;
           }
-        )
+          return `- Gate ${gate.gate} ${gate.name}: ${gate.status} (${gate.score}/${gate.maxScore})`;
+        })
       : ["- n/a"]),
     "",
     "Generated by BizSproutAI",
