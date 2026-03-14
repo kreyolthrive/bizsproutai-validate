@@ -10,18 +10,30 @@ const DB_FILE = path.join(DB_DIR, "bizspr.db");
 const require = createRequire(import.meta.url);
 
 let database: import("node:sqlite").DatabaseSync | null = null;
+let sqliteUnavailable = false;
 
-function getDatabaseSync(): typeof import("node:sqlite").DatabaseSync {
-  return require("node:sqlite").DatabaseSync as typeof import("node:sqlite").DatabaseSync;
+function getDatabaseSync(): typeof import("node:sqlite").DatabaseSync | null {
+  if (sqliteUnavailable) return null;
+  try {
+    return require("node:sqlite").DatabaseSync as typeof import("node:sqlite").DatabaseSync;
+  } catch {
+    sqliteUnavailable = true;
+    console.warn("[validationRunsDb] node:sqlite unavailable - local run tracking disabled");
+    return null;
+  }
 }
 
-function getDb(): import("node:sqlite").DatabaseSync {
+function getDb(): import("node:sqlite").DatabaseSync | null {
+  if (sqliteUnavailable) return null;
   if (database) return database;
 
-  fs.mkdirSync(DB_DIR, { recursive: true });
   const DatabaseSync = getDatabaseSync();
-  database = new DatabaseSync(DB_FILE);
-  database.exec(`
+  if (!DatabaseSync) return null;
+
+  try {
+    fs.mkdirSync(DB_DIR, { recursive: true });
+    database = new DatabaseSync(DB_FILE);
+    database.exec(`
     CREATE TABLE IF NOT EXISTS business_validation_runs (
       id TEXT PRIMARY KEY,
       user_id TEXT,
@@ -75,7 +87,12 @@ function getDb(): import("node:sqlite").DatabaseSync {
     );
   `);
 
-  return database;
+    return database;
+  } catch (error) {
+    sqliteUnavailable = true;
+    console.warn("[validationRunsDb] Failed to initialize SQLite database:", error);
+    return null;
+  }
 }
 
 type SaveValidationRunInput = {
@@ -89,6 +106,8 @@ function insertScores(runId: string, result: DynamicValidationResult, createdAt:
   if (!result.scores) return;
 
   const db = getDb();
+  if (!db) return;
+  
   const statement = db.prepare(`
     INSERT INTO business_validation_scores (
       id, validation_run_id, score_name, score_value, weight, reason, created_at
@@ -121,6 +140,8 @@ function insertScores(runId: string, result: DynamicValidationResult, createdAt:
 
 function insertInsights(runId: string, result: DynamicValidationResult, createdAt: string): void {
   const db = getDb();
+  if (!db) return;
+
   const statement = db.prepare(`
     INSERT INTO business_validation_insights (
       id, validation_run_id, type, content, created_at
@@ -146,6 +167,8 @@ function insertResearch(runId: string, input: ValidationInput, result: DynamicVa
   if (!result.researchSummary) return;
 
   const db = getDb();
+  if (!db) return;
+
   const statement = db.prepare(`
     INSERT INTO business_validation_research (
       id, validation_run_id, source_type, query_used, summary, evidence, created_at
@@ -194,6 +217,8 @@ function upsertFramework(result: DynamicValidationResult): void {
     countryCode: result.country.code,
   });
   const db = getDb();
+  if (!db) return;
+
   const statement = db.prepare(`
     INSERT INTO business_validation_frameworks (
       id, category, framework_name, version, criteria_json, weights_json, updated_at
@@ -224,33 +249,43 @@ function upsertFramework(result: DynamicValidationResult): void {
 }
 
 export function saveBusinessValidationRun(input: SaveValidationRunInput): { runId: string } {
-  const db = getDb();
   const runId = randomUUID();
   const createdAt = new Date().toISOString();
-  const statement = db.prepare(`
-    INSERT INTO business_validation_runs (
-      id, user_id, business_id, idea_input, business_category, framework_used,
-      overall_score, confidence_score, final_verdict, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
+  
+  const db = getDb();
+  if (!db) {
+    // SQLite not available (e.g., on Vercel) - skip local persistence
+    return { runId };
+  }
 
-  statement.run(
-    runId,
-    input.userId ?? null,
-    input.businessId ?? null,
-    JSON.stringify(input.result.submittedContext ?? input.input),
-    input.result.businessCategory ?? input.result.business_category ?? input.result.category,
-    input.result.frameworkUsed ?? input.result.framework_used ?? `${input.result.category}_v1`,
-    input.result.overall_score ?? 0,
-    input.result.confidenceScore ?? input.result.confidence_score ?? 0,
-    input.result.finalVerdict ?? input.result.final_verdict ?? "promising_but_needs_proof",
-    createdAt
-  );
+  try {
+    const statement = db.prepare(`
+      INSERT INTO business_validation_runs (
+        id, user_id, business_id, idea_input, business_category, framework_used,
+        overall_score, confidence_score, final_verdict, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
 
-  upsertFramework(input.result);
-  insertScores(runId, input.result, createdAt);
-  insertInsights(runId, input.result, createdAt);
-  insertResearch(runId, input.input, input.result, createdAt);
+    statement.run(
+      runId,
+      input.userId ?? null,
+      input.businessId ?? null,
+      JSON.stringify(input.result.submittedContext ?? input.input),
+      input.result.businessCategory ?? input.result.business_category ?? input.result.category,
+      input.result.frameworkUsed ?? input.result.framework_used ?? `${input.result.category}_v1`,
+      input.result.overall_score ?? 0,
+      input.result.confidenceScore ?? input.result.confidence_score ?? 0,
+      input.result.finalVerdict ?? input.result.final_verdict ?? "promising_but_needs_proof",
+      createdAt
+    );
+
+    upsertFramework(input.result);
+    insertScores(runId, input.result, createdAt);
+    insertInsights(runId, input.result, createdAt);
+    insertResearch(runId, input.input, input.result, createdAt);
+  } catch (error) {
+    console.warn("[validationRunsDb] Failed to save validation run:", error);
+  }
 
   return { runId };
 }

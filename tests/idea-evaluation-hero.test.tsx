@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { IdeaEvaluationHero } from "../components/IdeaEvaluationHero";
@@ -10,8 +10,21 @@ vi.mock("next-intl", () => ({
     createMockTranslator(
       {
         "form.ideaLabel": "Describe your business idea",
-        "form.emailLabel": "Email for the report (optional)",
+        "form.emailLabel": "Email to receive your validation report",
+        "form.submit": "Validate My Idea",
+        "form.moreDetails": "Add more details (optional)",
+        "intro.eyebrow": "AI business validation",
+        "intro.kicker": "Category-aware scoring and next-step guidance",
+        "intro.title": "Validate your business idea with AI before you build",
+        "intro.body": "Refined copy",
         "result.awaiting": "Awaiting input",
+        "result.summaryDefault": "Share your idea to get a category-aware validation score, key risks, and the clearest next step.",
+        "result.nextStepEmpty": "Your next best step will appear here after validation.",
+        "status.emailSent": "Your validation report is on its way to your inbox.",
+        "status.emailOptional": "Report is ready on this page. Add email next time if you want inbox delivery.",
+        "status.leadSaved": "Your details have been saved successfully.",
+        "status.runSaved": "Your validation is ready.",
+        "status.waitlist": "Thank you — you’re on the waitlist. We’ll notify you when this business is ready to launch.",
       },
       {
         sampleIdeas: [
@@ -32,9 +45,85 @@ describe("IdeaEvaluationHero", () => {
     render(<IdeaEvaluationHero locale="en" />);
 
     await user.type(screen.getByLabelText("Describe your business idea"), "Too short");
-    fireEvent.submit(screen.getByRole("button", { name: "form.submit" }).closest("form")!);
+    await user.click(screen.getByRole("button", { name: "Validate My Idea" }));
 
     expect(screen.getByText("errors.minIdea")).toBeInTheDocument();
+  });
+
+  it("allows validation without an email and shows on-page delivery messaging", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          status: "GO",
+          overall_score: 68,
+          confidenceScore: 74,
+          businessCategory: "saas",
+          frameworkUsed: "saas_v1",
+          summary: {
+            oneLiner: "Promising concept with more proof needed.",
+            topOpportunities: ["Clear niche signal"],
+            biggestRisks: ["Still needs pricing proof"],
+          },
+          strengths: ["Clear niche signal"],
+          weaknesses: ["Still needs pricing proof"],
+          keyRisks: ["Still needs pricing proof"],
+          assumptionsToTest: ["Buyers will pay for the initial workflow"],
+          recommendedNextSteps: ["Interview five buyers"],
+          scores: {
+            market_demand: 70,
+            monetization: 62,
+            competition: 58,
+            acquisition: 60,
+            execution_feasibility: 74,
+            differentiation: 57,
+            risk: 55,
+          },
+          researchSummary: {
+            demandSignals: ["Problem appears frequent."],
+            competitionNotes: [],
+            marketTrends: [],
+            monetizationNotes: [],
+            acquisitionChallenges: [],
+            differentiationOpportunities: [],
+            riskFactors: [],
+            sources: [],
+          },
+          emailDelivery: {
+            attempted: false,
+            enabled: false,
+            sentToUser: false,
+            sentToOwner: false,
+            errors: [],
+          },
+          validationRun: {
+            saved: true,
+            runId: "run-1",
+            error: null,
+          },
+        }),
+        {
+          status: 200,
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<IdeaEvaluationHero locale="en" />);
+
+    await user.type(
+      screen.getByLabelText("Describe your business idea"),
+      "A strong business concept with enough detail"
+    );
+    await user.click(screen.getByRole("button", { name: "Validate My Idea" }));
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+      expect(screen.getByText("Report is ready on this page. Add email next time if you want inbox delivery.")).toBeInTheDocument();
+    });
   });
 
   it("fills the form from sample ideas and renders a successful validation result", async () => {
@@ -111,11 +200,11 @@ describe("IdeaEvaluationHero", () => {
     await user.click(screen.getByRole("button", { name: "Sample business idea one" }));
     expect(screen.getByLabelText("Describe your business idea")).toHaveValue("Sample business idea one");
 
-    await user.type(screen.getByLabelText("Email for the report (optional)"), "founder@example.com");
-    await user.click(screen.getByRole("button", { name: "form.submit" }));
+    await user.type(screen.getByLabelText("Email to receive your validation report"), "founder@example.com");
+    await user.click(screen.getByRole("button", { name: "Validate My Idea" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Strong go-to-market signal")).toBeInTheDocument();
+      expect(screen.getByText("Interview 10 buyers")).toBeInTheDocument();
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
@@ -124,27 +213,26 @@ describe("IdeaEvaluationHero", () => {
         method: "POST",
       })
     );
-    expect(screen.getByText("status.emailSent")).toBeInTheDocument();
-    expect(screen.getByText("status.leadSaved")).toBeInTheDocument();
-    expect(screen.getByText("status.runSaved")).toBeInTheDocument();
-    expect(screen.getByText(/result.category: Local Service/i)).toBeInTheDocument();
-    expect(screen.getByText("74/100")).toBeInTheDocument();
-    expect(screen.getByText("82/100")).toBeInTheDocument();
-    expect(screen.getByText("Build landing page")).toBeInTheDocument();
+    expect(screen.getByText("Your validation report is on its way to your inbox.")).toBeInTheDocument();
+    expect(screen.getByText("Your details have been saved successfully.")).toBeInTheDocument();
+    expect(screen.getByText("Local Service")).toBeInTheDocument();
+    expect(screen.getByText("74")).toBeInTheDocument();
   });
 
   it("renders API errors returned from validation", async () => {
     const user = userEvent.setup();
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ error: "Validation failed." }), {
+        status: 500,
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+    );
+
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue(
-        new Response(JSON.stringify({ error: "Validation failed." }), {
-          status: 500,
-          headers: {
-            "content-type": "application/json",
-          },
-        })
-      )
+      fetchMock
     );
 
     render(<IdeaEvaluationHero locale="en" />);
@@ -153,14 +241,93 @@ describe("IdeaEvaluationHero", () => {
       screen.getByLabelText("Describe your business idea"),
       "A strong business concept with enough detail"
     );
-    await user.click(screen.getByRole("button", { name: "form.submit" }));
+    await user.type(screen.getByLabelText("Email to receive your validation report"), "founder@example.com");
+    await user.click(screen.getByRole("button", { name: "Validate My Idea" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Validation failed.")).toBeInTheDocument();
+      expect(fetchMock).toHaveBeenCalled();
+      expect(screen.getByRole("alert")).toHaveTextContent("Validation failed.");
     });
   });
 
   it("clears stale validation results when the form is edited again", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          status: "GO",
+          overall_score: 71,
+          confidenceScore: 76,
+          businessCategory: "saas",
+          frameworkUsed: "saas_v1",
+          summary: {
+            oneLiner: "Strong go-to-market signal",
+            topOpportunities: ["Clear SaaS pain"],
+            biggestRisks: ["Needs buyer proof"],
+          },
+          strengths: ["Clear SaaS pain"],
+          weaknesses: ["Needs buyer proof"],
+          keyRisks: ["Needs buyer proof"],
+          assumptionsToTest: ["Buyers will pay for this workflow"],
+          recommendedNextSteps: ["Interview five buyers"],
+          scores: {
+            market_demand: 70,
+            monetization: 72,
+            competition: 60,
+            acquisition: 58,
+            execution_feasibility: 80,
+            differentiation: 54,
+            risk: 52,
+          },
+          researchSummary: {
+            demandSignals: [],
+            competitionNotes: [],
+            marketTrends: [],
+            monetizationNotes: [],
+            acquisitionChallenges: [],
+            differentiationOpportunities: [],
+            riskFactors: [],
+            sources: [],
+          },
+        }),
+        {
+          status: 200,
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+    );
+
+    vi.stubGlobal(
+      "fetch",
+      fetchMock
+    );
+
+    render(<IdeaEvaluationHero locale="en" />);
+
+    await user.type(
+      screen.getByLabelText("Describe your business idea"),
+      "A strong business concept with enough detail"
+    );
+    await user.type(screen.getByLabelText("Email to receive your validation report"), "founder@example.com");
+    await user.click(screen.getByRole("button", { name: "Validate My Idea" }));
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+      expect(screen.getByText("Interview five buyers")).toBeInTheDocument();
+    });
+
+    await user.type(screen.getByLabelText("Describe your business idea"), " updated");
+
+    await waitFor(() => {
+      expect(screen.queryByText("Interview five buyers")).not.toBeInTheDocument();
+    });
+    expect(screen.queryByText("Your validation report is on its way to your inbox.")).not.toBeInTheDocument();
+    expect(screen.getByText("Your next best step will appear here after validation.")).toBeInTheDocument();
+  });
+
+  it("does not show waitlist success when only the validation run is saved", async () => {
     const user = userEvent.setup();
     vi.stubGlobal(
       "fetch",
@@ -201,6 +368,16 @@ describe("IdeaEvaluationHero", () => {
               riskFactors: [],
               sources: [],
             },
+            leadCapture: {
+              saved: false,
+              eventId: null,
+              error: "Failed to save lead to SQL database.",
+            },
+            validationRun: {
+              saved: true,
+              runId: "run-1",
+              error: null,
+            },
           }),
           {
             status: 200,
@@ -218,18 +395,16 @@ describe("IdeaEvaluationHero", () => {
       screen.getByLabelText("Describe your business idea"),
       "A strong business concept with enough detail"
     );
-    await user.click(screen.getByRole("button", { name: "form.submit" }));
+    await user.type(screen.getByLabelText("Email to receive your validation report"), "founder@example.com");
+    await user.click(screen.getByRole("button", { name: "Validate My Idea" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Strong go-to-market signal")).toBeInTheDocument();
+      expect(screen.getByText("Interview five buyers")).toBeInTheDocument();
     });
 
-    await user.type(screen.getByLabelText("Describe your business idea"), " updated");
-
-    await waitFor(() => {
-      expect(screen.queryByText("Strong go-to-market signal")).not.toBeInTheDocument();
-    });
-    expect(screen.queryByText("status.emailSent")).not.toBeInTheDocument();
-    expect(screen.getByText("result.summaryDefault")).toBeInTheDocument();
+    expect(screen.getByText("Your validation is ready.")).toBeInTheDocument();
+    expect(
+      screen.queryByText("Thank you — you’re on the waitlist. We’ll notify you when this business is ready to launch.")
+    ).not.toBeInTheDocument();
   });
 });

@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { PDFDocument, StandardFonts, rgb, type PDFPage, type PDFFont } from "pdf-lib";
 import type { DynamicValidationResult, FrameworkDecision, Locale } from "@/src/validation/types";
+import { resolveFrameworkDecision, resolveOverallScore100 } from "@/src/validation/decision";
 
 type ValidationPdfInput = {
   idea: string;
@@ -24,15 +25,8 @@ const PAGE = {
   marginBottom: 42,
 };
 
-function scoreTo100(score: number): number {
-  return Math.round(Math.max(0, Math.min(100, score * 20)));
-}
-
 function resolveReportScore(result: DynamicValidationResult): number {
-  if (typeof result.frameworkReport?.weightedScore === "number") {
-    return Math.max(0, Math.min(100, Math.round(result.frameworkReport.weightedScore)));
-  }
-  return scoreTo100(result.overallScore);
+  return resolveOverallScore100(result);
 }
 
 function decisionLabel(decision: FrameworkDecision): string {
@@ -40,6 +34,10 @@ function decisionLabel(decision: FrameworkDecision): string {
   if (decision === "NEED_WORK") return "NEEDS WORK";
   if (decision === "NO_GO") return "NO GO";
   return "GO";
+}
+
+function getDecision(result: DynamicValidationResult): FrameworkDecision {
+  return resolveFrameworkDecision(result);
 }
 
 function safeSegment(value: string): string {
@@ -226,10 +224,7 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
     color: rgb(0.89, 0.94, 1),
   });
 
-  const frameworkDecision = input.result.frameworkReport?.decision;
-  const decision =
-    frameworkDecision ??
-    (input.result.status === "GO" ? "GO" : input.result.status === "STOP" ? "NO_GO" : "NEED_WORK");
+  const decision = getDecision(input.result);
   const score = resolveReportScore(input.result);
 
   page.drawRectangle({

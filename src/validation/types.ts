@@ -171,6 +171,7 @@ export type DynamicValidationResult = {
   recommendedTests?: string[];
   recommendedNextSteps?: string[];
   finalVerdict?: FinalValidationVerdict;
+  inferredBusinessModel?: ValidationBusinessModel;
   categoryRouting?: ValidationCategoryRouting;
   selectedFramework?: ValidationFrameworkSelection;
   researchSummary?: ValidationResearchSummary;
@@ -222,6 +223,10 @@ export type ValidationCategoryRouting = {
   businessCategory: string;
   confidence: number;
   alternateCategories: string[];
+  subcategory?: string;
+  businessModelType?: string;
+  segment?: string;
+  frameworkId?: string;
   evidence: string[];
 };
 
@@ -230,6 +235,18 @@ export type ValidationFrameworkSelection = {
   frameworkLabel: string;
   version: string;
   criteria: string[];
+  specialization?: string;
+  reason?: string;
+};
+
+export type ValidationBusinessModel = {
+  primaryCategory: string;
+  subcategory?: string;
+  businessModelType?: string;
+  segment?: string;
+  frameworkId?: string;
+  confidence?: number;
+  evidence?: string[];
 };
 
 export type ValidationResearchSummary = {

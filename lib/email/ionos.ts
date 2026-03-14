@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import type { DynamicValidationResult, FrameworkDecision } from "@/src/validation/types";
+import { resolveFrameworkDecision, resolveOverallScore100 } from "@/src/validation/decision";
 
 type ValidationEmailPayload = {
   userEmail: string;
@@ -104,10 +105,7 @@ function getTransporter(config: MailConfig) {
 }
 
 function getDecision(result: DynamicValidationResult): FrameworkDecision {
-  if (result.frameworkReport?.decision) return result.frameworkReport.decision;
-  if (result.status === "GO") return "GO";
-  if (result.status === "STOP") return "NO_GO";
-  return "NEED_WORK";
+  return resolveFrameworkDecision(result);
 }
 
 function getDecisionLabel(decision: FrameworkDecision): string {
@@ -118,10 +116,7 @@ function getDecisionLabel(decision: FrameworkDecision): string {
 }
 
 function resolveReportScore(result: DynamicValidationResult): number {
-  if (typeof result.frameworkReport?.weightedScore === "number") {
-    return Math.max(0, Math.min(100, Math.round(result.frameworkReport.weightedScore)));
-  }
-  return Math.round(Math.max(0, Math.min(100, result.overallScore * 20)));
+  return resolveOverallScore100(result);
 }
 
 function buildSummaryLines(result: DynamicValidationResult): string[] {

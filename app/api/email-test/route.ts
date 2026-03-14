@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendSmtpTestEmail } from "@/lib/email/ionos";
 import { buildCorsHeaders } from "@/src/security/cors";
+import { buildRateLimitIdentity } from "@/src/security/requestIdentity";
 import { checkRateLimit } from "@/src/security/rateLimit";
 
 export const runtime = "nodejs";
 
 const RATE_LIMIT_REQUESTS_PER_MINUTE = 10;
 const RATE_LIMIT_WINDOW_MS = 60_000;
+const MAX_REQUEST_BYTES = 8_000;
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -31,6 +33,13 @@ function isEmailTestEnabled(): boolean {
 
 export async function POST(request: NextRequest) {
   const corsHeaders = buildCorsHeaders(request.headers.get("origin"));
+  const contentLength = Number(request.headers.get("content-length") ?? "");
+  if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_BYTES) {
+    return NextResponse.json(
+      { error: `Request payload too large (max ${MAX_REQUEST_BYTES} bytes).` },
+      { status: 413, headers: corsHeaders }
+    );
+  }
 
   if (!isEmailTestEnabled()) {
     return NextResponse.json(
@@ -39,10 +48,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const ip = (request.headers.get("x-forwarded-for") ?? "unknown")
-    .split(",")[0]
-    ?.trim() || "unknown";
-  const rate = checkRateLimit(`email-test:${ip}`, RATE_LIMIT_REQUESTS_PER_MINUTE, RATE_LIMIT_WINDOW_MS);
+  const rate = await checkRateLimit(
+    buildRateLimitIdentity("email-test", request),
+    RATE_LIMIT_REQUESTS_PER_MINUTE,
+    RATE_LIMIT_WINDOW_MS
+  );
   if (!rate.allowed) {
     return NextResponse.json(
       { error: "Too many email-test requests. Please retry shortly." },

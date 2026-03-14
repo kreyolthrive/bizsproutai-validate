@@ -5,6 +5,7 @@ export type ProviderName = "claude" | "chatgpt" | "perplexity" | "heuristic";
 
 // Task types that can be routed to providers
 export type TaskType =
+  | "business_validation"
   | "failure_analysis"
   | "risk_reasoning"
   | "verdict_narrative"
@@ -32,18 +33,38 @@ export interface ProviderConfig {
 
 // Task-to-provider mapping
 const taskProviderMapping: Record<TaskType, ProviderName[]> = {
-  failure_analysis: ["claude", "heuristic"],
-  risk_reasoning: ["claude", "heuristic"],
-  verdict_narrative: ["claude", "chatgpt", "heuristic"],
-  positioning: ["chatgpt", "claude", "heuristic"],
-  landing_copy: ["chatgpt", "claude", "heuristic"],
-  content_generation: ["chatgpt", "claude", "heuristic"],
-  market_research: ["perplexity", "claude", "heuristic"],
-  competitor_analysis: ["perplexity", "claude", "heuristic"],
+  business_validation: ["claude", "perplexity", "chatgpt"],
+  failure_analysis: ["claude", "perplexity", "chatgpt"],
+  risk_reasoning: ["claude", "perplexity", "chatgpt"],
+  verdict_narrative: ["claude", "chatgpt", "perplexity"],
+  positioning: ["chatgpt", "claude", "perplexity"],
+  landing_copy: ["chatgpt", "claude", "perplexity"],
+  content_generation: ["chatgpt", "claude", "perplexity"],
+  market_research: ["perplexity", "claude", "chatgpt"],
+  competitor_analysis: ["perplexity", "claude", "chatgpt"],
 };
+
+function isProviderEnabled(provider: ProviderName): boolean {
+  switch (provider) {
+    case "claude":
+      return process.env.ENABLE_CLAUDE !== "false";
+    case "chatgpt":
+      return process.env.ENABLE_CHATGPT !== "false";
+    case "perplexity":
+      return process.env.ENABLE_PERPLEXITY !== "false";
+    case "heuristic":
+      return true;
+    default:
+      return true;
+  }
+}
 
 // Provider availability check
 function isProviderAvailable(provider: ProviderName, config: ProviderConfig): boolean {
+  if (!isProviderEnabled(provider)) {
+    return false;
+  }
+
   switch (provider) {
     case "claude":
       return !!config.claude?.apiKey || !!process.env.ANTHROPIC_API_KEY;
@@ -63,7 +84,7 @@ export function getProviderForTask(
   task: TaskType,
   config: ProviderConfig = {}
 ): ProviderName {
-  const providers = taskProviderMapping[task] || ["heuristic"];
+  const providers = taskProviderMapping[task] || ["claude", "perplexity", "chatgpt"];
 
   for (const provider of providers) {
     if (isProviderAvailable(provider, config)) {
@@ -71,7 +92,7 @@ export function getProviderForTask(
     }
   }
 
-  return "heuristic"; // Fallback
+  return providers[0] ?? "chatgpt";
 }
 
 // Check which providers are available
@@ -96,15 +117,12 @@ export class ProviderRouter {
     task: TaskType,
     executor: Record<ProviderName, () => Promise<T>>
   ): Promise<T> {
-    const provider = this.getProvider(task);
+    const providers = taskProviderMapping[task] || ["claude", "perplexity", "chatgpt"];
 
-    if (executor[provider]) {
-      return executor[provider]();
-    }
-
-    // Fallback to heuristic
-    if (executor.heuristic) {
-      return executor.heuristic();
+    for (const provider of providers) {
+      if (executor[provider] && isProviderAvailable(provider, this.config)) {
+        return executor[provider]();
+      }
     }
 
     throw new Error(`No executor found for task ${task}`);

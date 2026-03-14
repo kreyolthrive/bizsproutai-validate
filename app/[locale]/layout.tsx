@@ -181,7 +181,6 @@ export default async function LocaleLayout({
                 </a>
                 <div className="flex items-center gap-4 text-sm font-semibold text-slate-200">
                   <a href={`/${locale}#features`} className="transition hover:text-white">{t("nav.features")}</a>
-                  <a href={`/${locale}#faq`} className="transition hover:text-white">{t("nav.faq")}</a>
                   <LanguageSwitcher />
                 </div>
               </div>

@@ -13,7 +13,7 @@ export default async function TermsPage({ params }: Props) {
       <h1 className="font-[family:var(--font-display)] text-3xl font-semibold text-slate-900">
         Terms of Service (BizSproutAI)
       </h1>
-      <p className="mt-2 text-sm text-slate-600">Effective Date: March 11, 2026</p>
+      <p className="mt-2 text-sm text-slate-600">Effective Date: January 2026</p>
 
       <div className="mt-8 space-y-7 text-slate-700">
         <section>

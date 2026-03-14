@@ -96,7 +96,33 @@ export async function analyzeCompetitors(
 function conductMarketResearchHeuristic(
   request: MarketResearchRequest
 ): MarketResearchResponse {
-  const { category, countryCode } = request;
+  const { category, countryCode, idea } = request;
+  const ideaLower = idea.toLowerCase();
+
+  if (
+    category === "saas" &&
+    /\b(barber|barbers|barbershop|barber shop|salon|spa|appointment-based)\b/i.test(ideaLower) &&
+    /\b(booking|appointment|scheduling|time slots?|client management|confirmation screen)\b/i.test(ideaLower)
+  ) {
+    const opportunities = [
+      "Vertical SaaS wedge for appointment-based SMBs",
+      "Operator demand for simpler booking and client-rebooking workflows",
+      "Niche differentiation through barber-specific scheduling and lightweight CRM",
+    ];
+
+    if (countryCode) {
+      opportunities.push(`Local SMB software opportunities in ${countryCode}`);
+    }
+
+    return {
+      marketSize: "Appointment software and SMB operations software are large, fragmented markets with room for vertical specialists",
+      growthTrend: "growing",
+      keyPlayers: ["Booksy", "Fresha", "Square Appointments"],
+      opportunities,
+      threats: ["Incumbent booking tools", "Switching friction", "SMB churn and price sensitivity"],
+      sources: ["AI business analysis", "Idea-specific heuristic market synthesis"],
+    };
+  }
 
   // Category-specific market insights (heuristic)
   const categoryInsights: Record<Category, Partial<MarketResearchResponse>> = {
@@ -201,7 +227,47 @@ function conductMarketResearchHeuristic(
 function analyzeCompetitorsHeuristic(
   request: CompetitorAnalysisRequest
 ): CompetitorAnalysisResponse {
-  const { category } = request;
+  const { category, idea } = request;
+  const ideaLower = idea.toLowerCase();
+
+  if (
+    category === "saas" &&
+    /\b(barber|barbers|barbershop|barber shop|salon|spa|appointment-based)\b/i.test(ideaLower) &&
+    /\b(booking|appointment|scheduling|time slots?|client management|confirmation screen)\b/i.test(ideaLower)
+  ) {
+    return {
+      competitors: [
+        {
+          name: "Booksy",
+          description: "Vertical booking and marketplace tooling for barbers and beauty operators",
+          strengths: ["Vertical brand recognition", "Booking workflow depth", "Installed user base"],
+          weaknesses: ["May feel broad or costly for simpler shops", "Feature set can exceed what a narrow MVP needs"],
+        },
+        {
+          name: "Fresha",
+          description: "Appointment and business-management software for salons and wellness operators",
+          strengths: ["Scheduling", "Payments", "Multi-location support"],
+          weaknesses: ["Broader beauty focus", "Can be heavier than a barber-specific wedge"],
+        },
+        {
+          name: "Square Appointments",
+          description: "Horizontal SMB scheduling integrated with payments",
+          strengths: ["Payments ecosystem", "Simple setup", "Broad SMB familiarity"],
+          weaknesses: ["Less vertical depth", "Generic positioning for barber-specific workflows"],
+        },
+      ],
+      competitiveAdvantages: [
+        "Barber-specific workflow depth",
+        "Simpler onboarding and migration",
+        "Low-friction rebooking and client-note features",
+      ],
+      gaps: [
+        "Tools optimized for independent barbers and small shops",
+        "Faster setup with less feature bloat",
+        "Workflow support for repeat clients and chair-based scheduling",
+      ],
+    };
+  }
 
   // Generic competitor insights by category
   const categoryCompetitors: Record<Category, CompetitorAnalysisResponse> = {

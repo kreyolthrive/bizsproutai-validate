@@ -32,7 +32,7 @@ export function resolveCorsOrigin(origin: string | null): string | null {
 export function buildCorsHeaders(origin: string | null): Record<string, string> {
   const allowed = resolveCorsOrigin(origin);
   const headers: Record<string, string> = {
-    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Methods": "GET,POST,DELETE,OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Admin-Token",
     "Access-Control-Max-Age": "86400",
     Vary: "Origin",
@@ -44,4 +44,3 @@ export function buildCorsHeaders(origin: string | null): Record<string, string> 
 
   return headers;
 }
-

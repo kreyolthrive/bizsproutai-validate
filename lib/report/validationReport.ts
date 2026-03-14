@@ -1,4 +1,5 @@
 import type { DynamicValidationResult, FrameworkDecision, Locale } from "@/src/validation/types";
+import { resolveFrameworkDecision, resolveOverallScore100 } from "@/src/validation/decision";
 
 export type ValidationReportDocument = {
   filename: string;
@@ -20,26 +21,16 @@ function decisionLabel(decision: FrameworkDecision): string {
   return "GO";
 }
 
+function toIntegerScore(value: number): number {
+  return Math.round(Math.max(0, Math.min(100, value * 20)));
+}
+
 function safeSegment(value: string): string {
   return value
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 42);
-}
-
-function toIntegerScore(value: number): number {
-  return Math.round(Math.max(0, Math.min(100, value * 20)));
-}
-
-function resolveReportScore(result: DynamicValidationResult): number {
-  if (typeof result.overall_score === "number") {
-    return Math.max(0, Math.min(100, Math.round(result.overall_score)));
-  }
-  if (typeof result.frameworkReport?.weightedScore === "number") {
-    return Math.max(0, Math.min(100, Math.round(result.frameworkReport.weightedScore)));
-  }
-  return toIntegerScore(result.overallScore);
 }
 
 function linesWithFallback(title: string, lines: string[]): string[] {
@@ -52,20 +43,13 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
   const shortIdea = input.idea.split(/\s+/).slice(0, 6).join("-");
   const filename = `bizsproutai-validation-${safeSegment(shortIdea || "report")}.txt`;
 
-  const frameworkDecision = input.result.frameworkReport?.decision;
-  const decision = frameworkDecision
-    ? decisionLabel(frameworkDecision)
-    : input.result.status === "GO"
-      ? "GO"
-      : input.result.status === "STOP"
-        ? "NO GO"
-        : "NEEDS WORK";
+  const decision = decisionLabel(resolveFrameworkDecision(input.result));
 
   const demand = input.result.frameworkReport?.problemDemand.total;
   const competition = input.result.frameworkReport?.solutionValidation.differentiation;
   const modelMargin = input.result.frameworkReport?.businessModelValidation.margin;
   const gates = input.result.frameworkReport?.gates ?? [];
-  const reportScore = resolveReportScore(input.result);
+  const reportScore = resolveOverallScore100(input.result);
   const structuredScores = input.result.scores;
   const strengths = input.result.strengths ?? input.result.summary.topOpportunities;
   const weaknesses = input.result.weaknesses ?? [];

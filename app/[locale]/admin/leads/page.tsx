@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { headers } from "next/headers";
+import { cookies } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { listValidationLeads, type LeadDecision } from "@/src/leads/server/adminLeads";
-import { authorizeAdminAccess } from "@/src/security/adminAccess";
+import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSession } from "@/src/security/adminSession";
+import AdminTokenForm from "@/components/admin/AdminTokenForm";
+import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -55,24 +57,20 @@ export default async function AdminLeadsPage({ params, searchParams }: Props) {
   const t = await getTranslations({ locale, namespace: "pages.adminLeads" });
 
   const search = await searchParams;
-  const token = getSingle(search.token);
-  const headerStore = await headers();
-  const access = authorizeAdminAccess({
-    authorizationHeader: headerStore.get("authorization"),
-    adminTokenHeader: headerStore.get("x-admin-token"),
-    queryToken: token ?? null,
-  });
+  const cookieStore = await cookies();
+  const token = cookieStore.get(ADMIN_SESSION_COOKIE_NAME)?.value;
+  const access = token ? verifyAdminSession(token) : null;
 
-  if (!access.ok) {
+  if (!access) {
     return (
       <main className="mx-auto max-w-2xl px-6 py-20">
         <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6">
           <h1 className="text-xl font-semibold text-rose-900">Admin Access Restricted</h1>
-          <p className="mt-2 text-sm text-rose-800">{access.reason}</p>
+          <p className="mt-2 text-sm text-rose-800">Unauthorized</p>
           <p className="mt-2 text-sm text-rose-700">
-            Set <code>ADMIN_DASHBOARD_TOKEN</code> in Vercel, then open this page with{" "}
-            <code>?token=YOUR_TOKEN</code>.
+            Enter <code>ADMIN_TOKEN</code> to create a secure admin session.
           </p>
+          <AdminTokenForm />
         </div>
       </main>
     );
@@ -105,7 +103,6 @@ export default async function AdminLeadsPage({ params, searchParams }: Props) {
   const hasNext = nextOffset < result.total;
 
   const baseParams = {
-    token,
     decision,
     ideaCategory,
     source,
@@ -130,12 +127,15 @@ export default async function AdminLeadsPage({ params, searchParams }: Props) {
           <h1 className="mt-2 font-[family:var(--font-display)] text-3xl font-semibold text-slate-950">{t("title")}</h1>
           <p className="mt-2 text-slate-600">{t("subtitle")}</p>
         </div>
-        <a
-          href={csvHref}
-          className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-        >
-          {t("exportCsv")}
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href={csvHref}
+            className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+          >
+            {t("exportCsv")}
+          </a>
+          <AdminLogoutButton />
+        </div>
       </div>
 
       <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -213,7 +213,7 @@ export default async function AdminLeadsPage({ params, searchParams }: Props) {
           </button>
 
           <Link
-            href={`/${locale}/admin/leads${token ? `?token=${encodeURIComponent(token)}` : ""}`}
+            href={`/${locale}/admin/leads`}
             className="rounded-xl border border-slate-300 px-4 py-2 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
             {t("filters.reset")}

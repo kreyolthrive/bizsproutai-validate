@@ -44,7 +44,6 @@ interface RoadmapDisplayProps {
   roadmap: RoadmapData;
   businessType?: string;
   validationData?: any;
-  userId?: string;
   sprintSettings?: SprintSettings;
   projectSprintKey?: string;
   onClose?: () => void;
@@ -92,7 +91,6 @@ export default function RoadmapDisplay({
   roadmap,
   businessType,
   validationData,
-  userId,
   sprintSettings,
   projectSprintKey,
   onClose,
@@ -102,13 +100,13 @@ export default function RoadmapDisplay({
   const [taskSyncError, setTaskSyncError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!userId || !projectSprintKey) return;
+    if (!projectSprintKey) return;
 
     let cancelled = false;
     const loadTaskState = async () => {
       try {
         const response = await fetch(
-          `/api/sprint/settings?userId=${encodeURIComponent(userId)}&projectKey=${encodeURIComponent(projectSprintKey)}`
+          `/api/sprint/settings?projectKey=${encodeURIComponent(projectSprintKey)}`
         );
         if (!response.ok) return;
 
@@ -130,7 +128,7 @@ export default function RoadmapDisplay({
     return () => {
       cancelled = true;
     };
-  }, [userId, projectSprintKey]);
+  }, [projectSprintKey]);
 
   const templateId = sprintSettings?.sprintTemplateId || roadmap.sprint?.sprintTemplateId || 'generic_90_day';
   const template = getSprintTemplate(templateId);
@@ -160,13 +158,12 @@ export default function RoadmapDisplay({
   ];
 
   const persistCompletedTasks = async (nextTaskIds: string[]) => {
-    if (!userId || !projectSprintKey) return;
+    if (!projectSprintKey) return;
     try {
-      await fetch('/api/sprint/settings', {
+      const response = await fetch('/api/sprint/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId,
           projectKey: projectSprintKey,
           settings: {
             sprintTemplateId: sprintSettings?.sprintTemplateId || templateId,
@@ -177,6 +174,9 @@ export default function RoadmapDisplay({
           },
         }),
       });
+      if (!response.ok) {
+        throw new Error('Unable to save checklist progress');
+      }
       setTaskSyncError(null);
     } catch (error) {
       setTaskSyncError(error instanceof Error ? error.message : 'Unable to save checklist progress');
@@ -362,12 +362,9 @@ export default function RoadmapDisplay({
               </div>
 
               <div className="px-6 py-4">
-                <div
-                  className="prose prose-sm max-w-none text-gray-700"
-                  dangerouslySetInnerHTML={{
-                    __html: data.description.replace(/\n/g, '<br />'),
-                  }}
-                />
+                <p className="whitespace-pre-line text-sm text-gray-700">
+                  {data.description}
+                </p>
 
                 {data.resources && data.resources.length > 0 && (
                   <div className="mt-4 pt-4 border-t border-gray-200">

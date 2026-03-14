@@ -12,18 +12,6 @@ import StartSprintModal from '@/components/sprint/StartSprintModal';
 import { DEFAULT_SPRINT_SETTINGS } from '@/src/sprint/config';
 import type { SprintIntensity, SprintSettings } from '@/src/sprint/types';
 
-const USER_ID_STORAGE_KEY = 'bizsprout.user.id';
-
-function getOrCreateAnonymousUserId(): string {
-  if (typeof window === 'undefined') return '';
-  const existing = window.localStorage.getItem(USER_ID_STORAGE_KEY);
-  if (existing) return existing;
-
-  const generated = `anon_${crypto.randomUUID()}`;
-  window.localStorage.setItem(USER_ID_STORAGE_KEY, generated);
-  return generated;
-}
-
 export default function ValidationRoadmapFlow() {
   const [step, setStep] = useState<'input' | 'validating' | 'validated' | 'roadmap'>('input');
   const [idea, setIdea] = useState('');
@@ -32,14 +20,9 @@ export default function ValidationRoadmapFlow() {
   const [validationResult, setValidationResult] = useState<any>(null);
   const [roadmap, setRoadmap] = useState<any>(null);
   const [showSprintModal, setShowSprintModal] = useState(false);
-  const [userId, setUserId] = useState('');
   const [sprintSettings, setSprintSettings] = useState<SprintSettings>(DEFAULT_SPRINT_SETTINGS);
   const [sprintSettingsLoading, setSprintSettingsLoading] = useState(false);
   const [sprintSettingsError, setSprintSettingsError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUserId(getOrCreateAnonymousUserId());
-  }, []);
 
   useEffect(() => {
     if (step === 'validated' && !sprintSettingsLoading && !sprintSettings.onboardingCompleted) {
@@ -54,7 +37,7 @@ export default function ValidationRoadmapFlow() {
   }, [businessType, validationResult, idea]);
 
   useEffect(() => {
-    if (!userId || !projectSprintKey) return;
+    if (!projectSprintKey) return;
 
     let cancelled = false;
     const loadSettings = async () => {
@@ -62,7 +45,7 @@ export default function ValidationRoadmapFlow() {
       setSprintSettingsError(null);
       try {
         const response = await fetch(
-          `/api/sprint/settings?userId=${encodeURIComponent(userId)}&projectKey=${encodeURIComponent(projectSprintKey)}`
+          `/api/sprint/settings?projectKey=${encodeURIComponent(projectSprintKey)}`
         );
 
         if (!response.ok) {
@@ -92,10 +75,10 @@ export default function ValidationRoadmapFlow() {
     return () => {
       cancelled = true;
     };
-  }, [userId, projectSprintKey]);
+  }, [projectSprintKey]);
 
   const persistSprintSettings = async (patch: Partial<SprintSettings>) => {
-    if (!userId || !projectSprintKey) return;
+    if (!projectSprintKey) return;
 
     const nextSettings: SprintSettings = {
       ...sprintSettings,
@@ -108,7 +91,6 @@ export default function ValidationRoadmapFlow() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId,
           projectKey: projectSprintKey,
           settings: nextSettings,
         }),
@@ -331,7 +313,6 @@ export default function ValidationRoadmapFlow() {
               roadmap={roadmap}
               businessType={businessType || validationResult?.category || validationResult?.businessCategory}
               validationData={validationResult}
-              userId={userId}
               sprintSettings={sprintSettings}
               projectSprintKey={projectSprintKey}
               onClose={() => setStep('validated')}

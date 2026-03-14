@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listValidationLeads, type LeadDecision } from "@/src/leads/server/adminLeads";
-import { authorizeAdminRequest } from "@/src/security/adminAccess";
+import { AdminUnauthorizedError, requireAdminRequest } from "@/src/security/adminAccess";
 import { buildCorsHeaders } from "@/src/security/cors";
 
 export const runtime = "nodejs";
@@ -54,10 +54,7 @@ function rowsToCsv(rows: Array<Record<string, unknown>>): string {
 export async function GET(request: NextRequest) {
   const corsHeaders = buildCorsHeaders(request.headers.get("origin"));
   try {
-    const access = authorizeAdminRequest(request);
-    if (!access.ok) {
-      return NextResponse.json({ error: access.reason }, { status: access.status, headers: corsHeaders });
-    }
+    requireAdminRequest(request);
 
     const search = request.nextUrl.searchParams;
     const decision = parseDecision(search.get("decision"));
@@ -93,13 +90,13 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(result, { headers: corsHeaders });
   } catch (error) {
+    if (error instanceof AdminUnauthorizedError) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: corsHeaders });
+    }
+
+    console.error("Admin leads load error:", error);
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to load admin leads",
-      },
+      { error: "Failed to load admin leads" },
       { status: 500, headers: corsHeaders }
     );
   }
