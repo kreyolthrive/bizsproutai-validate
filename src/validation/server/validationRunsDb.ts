@@ -1,13 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { createRequire } from "node:module";
 import type { DynamicValidationResult, ValidationInput } from "@/src/validation/types";
 import { loadFramework } from "@/src/validation/engine/loadFramework";
 
 const DB_DIR = process.env.VERCEL ? "/tmp" : path.join(process.cwd(), ".data");
 const DB_FILE = path.join(DB_DIR, "bizspr.db");
-const require = createRequire(import.meta.url);
 
 let database: import("node:sqlite").DatabaseSync | null = null;
 let sqliteUnavailable = false;
@@ -15,7 +13,9 @@ let sqliteUnavailable = false;
 function getDatabaseSync(): typeof import("node:sqlite").DatabaseSync | null {
   if (sqliteUnavailable) return null;
   try {
-    return require("node:sqlite").DatabaseSync as typeof import("node:sqlite").DatabaseSync;
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const sqliteModule = require("node:sqlite");
+    return sqliteModule.DatabaseSync as typeof import("node:sqlite").DatabaseSync;
   } catch {
     sqliteUnavailable = true;
     console.warn("[validationRunsDb] node:sqlite unavailable - local run tracking disabled");

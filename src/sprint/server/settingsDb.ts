@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import { createRequire } from "node:module";
 import { DEFAULT_SPRINT_SETTINGS } from "@/src/sprint/config";
 import type { SprintIntensity, SprintSettings } from "@/src/sprint/types";
 
@@ -9,7 +8,6 @@ const DB_FILE = path.join(DB_DIR, "bizspr.db");
 const REDIS_KEY_PREFIX = "sprint_settings:v1";
 const REDIS_WARNED_FALLBACK_GLOBAL_KEY = "__bizsprSprintSettingsRedisFallbackWarned";
 
-const require = createRequire(import.meta.url);
 type DatabaseSyncType = import("node:sqlite").DatabaseSync;
 let database: DatabaseSyncType | null = null;
 let sqliteUnavailable = false;
@@ -223,7 +221,9 @@ async function saveSprintSettingsToRedis(
 function getDatabaseSync(): typeof import("node:sqlite").DatabaseSync | null {
   if (sqliteUnavailable) return null;
   try {
-    return require("node:sqlite").DatabaseSync as typeof import("node:sqlite").DatabaseSync;
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const sqliteModule = require("node:sqlite");
+    return sqliteModule.DatabaseSync as typeof import("node:sqlite").DatabaseSync;
   } catch {
     sqliteUnavailable = true;
     console.warn("[settingsDb] node:sqlite unavailable - local SQLite fallback disabled");
