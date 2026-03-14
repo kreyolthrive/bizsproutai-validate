@@ -7,15 +7,26 @@ import { loadFramework } from "@/src/validation/engine/loadFramework";
 const DB_DIR = process.env.VERCEL ? "/tmp" : path.join(process.cwd(), ".data");
 const DB_FILE = path.join(DB_DIR, "bizspr.db");
 
-let database: import("node:sqlite").DatabaseSync | null = null;
+// Type alias to avoid direct import() reference which can confuse bundlers
+type SqliteDatabaseSync = {
+  exec: (sql: string) => void;
+  prepare: (sql: string) => {
+    run: (...params: unknown[]) => void;
+    get: (...params: unknown[]) => unknown;
+    all: (...params: unknown[]) => unknown[];
+  };
+  close: () => void;
+};
+
+let database: SqliteDatabaseSync | null = null;
 let sqliteUnavailable = false;
 
-function getDatabaseSync(): typeof import("node:sqlite").DatabaseSync | null {
+function getDatabaseSync(): (new (path: string) => SqliteDatabaseSync) | null {
   if (sqliteUnavailable) return null;
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const sqliteModule = require("node:sqlite");
-    return sqliteModule.DatabaseSync as typeof import("node:sqlite").DatabaseSync;
+    return sqliteModule.DatabaseSync as (new (path: string) => SqliteDatabaseSync);
   } catch {
     sqliteUnavailable = true;
     console.warn("[validationRunsDb] node:sqlite unavailable - local run tracking disabled");
@@ -23,7 +34,7 @@ function getDatabaseSync(): typeof import("node:sqlite").DatabaseSync | null {
   }
 }
 
-function getDb(): import("node:sqlite").DatabaseSync | null {
+function getDb(): SqliteDatabaseSync | null {
   if (sqliteUnavailable) return null;
   if (database) return database;
 

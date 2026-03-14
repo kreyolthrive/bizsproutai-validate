@@ -8,8 +8,18 @@ const DB_FILE = path.join(DB_DIR, "bizspr.db");
 const REDIS_KEY_PREFIX = "sprint_settings:v1";
 const REDIS_WARNED_FALLBACK_GLOBAL_KEY = "__bizsprSprintSettingsRedisFallbackWarned";
 
-type DatabaseSyncType = import("node:sqlite").DatabaseSync;
-let database: DatabaseSyncType | null = null;
+// Type alias to avoid direct import() reference which can confuse bundlers
+type SqliteDatabaseSync = {
+  exec: (sql: string) => void;
+  prepare: (sql: string) => {
+    run: (...params: unknown[]) => void;
+    get: (...params: unknown[]) => unknown;
+    all: (...params: unknown[]) => unknown[];
+  };
+  close: () => void;
+};
+
+let database: SqliteDatabaseSync | null = null;
 let sqliteUnavailable = false;
 
 type RedisConfig = {
@@ -218,12 +228,12 @@ async function saveSprintSettingsToRedis(
   await runRedisPipeline(config, [["SET", key, payload]]);
 }
 
-function getDatabaseSync(): typeof import("node:sqlite").DatabaseSync | null {
+function getDatabaseSync(): (new (path: string) => SqliteDatabaseSync) | null {
   if (sqliteUnavailable) return null;
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const sqliteModule = require("node:sqlite");
-    return sqliteModule.DatabaseSync as typeof import("node:sqlite").DatabaseSync;
+    return sqliteModule.DatabaseSync as (new (path: string) => SqliteDatabaseSync);
   } catch {
     sqliteUnavailable = true;
     console.warn("[settingsDb] node:sqlite unavailable - local SQLite fallback disabled");
@@ -231,7 +241,7 @@ function getDatabaseSync(): typeof import("node:sqlite").DatabaseSync | null {
   }
 }
 
-function getDb(): DatabaseSyncType | null {
+function getDb(): SqliteDatabaseSync | null {
   if (sqliteUnavailable) return null;
   if (database) return database;
 
