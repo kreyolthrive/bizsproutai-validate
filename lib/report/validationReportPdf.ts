@@ -1,8 +1,22 @@
 import fs from "node:fs";
 import path from "node:path";
-import { PDFDocument, StandardFonts, rgb, type PDFPage, type PDFFont } from "pdf-lib";
-import type { DynamicValidationResult, FrameworkDecision, Locale } from "@/src/validation/types";
-import { resolveFrameworkDecision, resolveOverallScore100 } from "@/src/validation/decision";
+import {
+  PDFDocument,
+  StandardFonts,
+  rgb,
+  type PDFPage,
+  type PDFFont,
+  type PDFImage,
+} from "pdf-lib";
+import type {
+  DynamicValidationResult,
+  FrameworkDecision,
+  Locale,
+} from "@/src/validation/types";
+import {
+  resolveFrameworkDecision,
+  resolveOverallScore100,
+} from "@/src/validation/decision";
 
 type ValidationPdfInput = {
   idea: string;
@@ -48,6 +62,11 @@ function safeSegment(value: string): string {
     .slice(0, 42);
 }
 
+function normalizeStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+}
+
 function wrapText(text: string, font: PDFFont, size: number, maxWidth: number): string[] {
   const words = text.split(/\s+/).filter(Boolean);
   if (words.length === 0) return [""];
@@ -64,36 +83,44 @@ function wrapText(text: string, font: PDFFont, size: number, maxWidth: number): 
       current = words[i];
     }
   }
+
   lines.push(current);
   return lines;
 }
 
-async function tryEmbedLogo(pdfDoc: PDFDocument) {
+async function tryEmbedLogo(pdfDoc: PDFDocument): Promise<PDFImage | null> {
   const candidates = [
-    "bizsprouai-logo.png",
-    "bizsprouai logo.png",
+    "bizsproutai-logo.png",
+    "bizsproutai-logo.jpg",
+    "bizsproutai-logo.jpeg",
     "bizsproutai logo.png",
     "bizsproutai logo.jpg",
+    "bizsproutai_logo.png",
+    "bizsproutai_logo.jpg",
     "company-logo.png",
-    "logo.png",
-    "bizsproutai-logo.png",
     "company-logo.jpg",
+    "logo.png",
     "logo.jpg",
+    "logo.jpeg",
   ];
+
   for (const file of candidates) {
     const abs = path.join(process.cwd(), "public", file);
     if (!fs.existsSync(abs)) continue;
 
-    const bytes = fs.readFileSync(abs);
     try {
+      const bytes = fs.readFileSync(abs);
+
       if (file.endsWith(".png")) {
         return await pdfDoc.embedPng(bytes);
       }
+
       return await pdfDoc.embedJpg(bytes);
     } catch {
-      return null;
+      continue;
     }
   }
+
   return null;
 }
 
@@ -106,6 +133,7 @@ function ensureSpace(
   if (y - needed >= PAGE.marginBottom) {
     return { page: currentPage, y };
   }
+
   const newPage = pdfDoc.addPage([PAGE.width, PAGE.height]);
   return { page: newPage, y: PAGE.height - PAGE.marginTop };
 }
@@ -118,6 +146,7 @@ function drawSectionTitle(page: PDFPage, y: number, title: string, fontBold: PDF
     font: fontBold,
     color: rgb(0.12, 0.16, 0.27),
   });
+
   return y - 18;
 }
 
@@ -131,6 +160,7 @@ function drawParagraph(
   const maxWidth = PAGE.width - PAGE.marginX * 2;
   const lines = wrapText(text, font, size, maxWidth);
   let nextY = y;
+
   for (const line of lines) {
     page.drawText(line, {
       x: PAGE.marginX,
@@ -141,6 +171,7 @@ function drawParagraph(
     });
     nextY -= size + 3;
   }
+
   return nextY - 6;
 }
 
@@ -153,10 +184,13 @@ function drawBullets(
 ): number {
   const width = PAGE.width - PAGE.marginX * 2 - 14;
   let nextY = y;
+
   for (const item of items) {
     const lines = wrapText(item, font, size, width);
+
     for (let i = 0; i < lines.length; i += 1) {
       const x = PAGE.marginX + (i === 0 ? 10 : 20);
+
       if (i === 0) {
         page.drawText("•", {
           x: PAGE.marginX,
@@ -166,6 +200,7 @@ function drawBullets(
           color: rgb(0.2, 0.24, 0.36),
         });
       }
+
       page.drawText(lines[i], {
         x,
         y: nextY,
@@ -173,14 +208,57 @@ function drawBullets(
         font,
         color: rgb(0.18, 0.23, 0.33),
       });
+
       nextY -= size + 3;
     }
+
     nextY -= 3;
   }
+
   return nextY - 4;
 }
 
-export async function buildValidationReportPdf(input: ValidationPdfInput): Promise<ValidationPdfDocument> {
+function resolveCategory(result: DynamicValidationResult): string {
+  return result.businessCategory ?? result.business_category ?? result.category ?? "n/a";
+}
+
+function resolveCountry(result: DynamicValidationResult): string {
+  return result.country?.code ?? result.country?.name ?? "n/a";
+}
+
+function resolveFramework(result: DynamicValidationResult): string {
+  return (
+    result.selectedFramework?.frameworkLabel ??
+    result.frameworkUsed ??
+    result.framework_used ??
+    result.framework?.label ??
+    "General"
+  );
+}
+
+function resolveSummary(result: DynamicValidationResult): string {
+  return result.summary?.oneLiner ?? "Validation completed.";
+}
+
+function resolveTopOpportunities(result: DynamicValidationResult): string[] {
+  return normalizeStringArray(result.strengths ?? result.summary?.topOpportunities ?? []).slice(0, 4);
+}
+
+function resolveBiggestRisks(result: DynamicValidationResult): string[] {
+  return normalizeStringArray(
+    result.keyRisks ?? result.key_risks ?? result.summary?.biggestRisks ?? []
+  ).slice(0, 4);
+}
+
+function resolveNextActions(result: DynamicValidationResult): string[] {
+  return normalizeStringArray(
+    result.recommendedNextSteps ?? result.recommended_next_steps ?? result.nextActions ?? []
+  ).slice(0, 6);
+}
+
+export async function buildValidationReportPdf(
+  input: ValidationPdfInput
+): Promise<ValidationPdfDocument> {
   const pdfDoc = await PDFDocument.create();
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -198,9 +276,11 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
   });
 
   const logo = await tryEmbedLogo(pdfDoc);
+
   if (logo) {
     const logoHeight = 34;
     const logoWidth = (logo.width / logo.height) * logoHeight;
+
     page.drawImage(logo, {
       x: PAGE.marginX + 16,
       y: y - 64,
@@ -216,6 +296,7 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
     font: fontBold,
     color: rgb(1, 1, 1),
   });
+
   page.drawText(`Generated ${input.generatedAt}`, {
     x: PAGE.marginX + 60,
     y: y - 56,
@@ -234,13 +315,15 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
     height: 44,
     color: rgb(1, 1, 1),
   });
-  page.drawText(`${decisionLabel(decision)}`, {
+
+  page.drawText(decisionLabel(decision), {
     x: PAGE.width - PAGE.marginX - 122,
     y: y - 44,
     size: 10.5,
     font: fontBold,
     color: rgb(0.09, 0.18, 0.36),
   });
+
   page.drawText(`${score}/100`, {
     x: PAGE.width - PAGE.marginX - 122,
     y: y - 61,
@@ -251,35 +334,42 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
 
   y -= 108;
 
-  const summary = input.result.summary;
+  const top = resolveTopOpportunities(input.result);
+  const risks = resolveBiggestRisks(input.result);
+  const actions = resolveNextActions(input.result);
   const gates = input.result.frameworkReport?.gates ?? [];
-  const top = summary.topOpportunities.slice(0, 4);
-  const risks = summary.biggestRisks.slice(0, 4);
-  const actions = input.result.nextActions.slice(0, 6);
-  const demand = input.result.frameworkReport?.problemDemand.total;
-  const competition = input.result.frameworkReport?.solutionValidation.differentiation;
-  const modelMargin = input.result.frameworkReport?.businessModelValidation.margin;
 
   const metricCards: Array<{ label: string; value: string }> = [
     {
       label: "Demand",
-      value: typeof demand === "number" ? `${demand}/20` : "n/a",
+      value:
+        typeof input.result.scores?.market_demand === "number"
+          ? `${input.result.scores.market_demand}/100`
+          : "n/a",
     },
     {
       label: "Competition",
-      value: typeof competition === "number" ? `${competition}/5` : "n/a",
+      value:
+        typeof input.result.scores?.competition === "number"
+          ? `${input.result.scores.competition}/100`
+          : "n/a",
     },
     {
-      label: "Model Margin",
-      value: typeof modelMargin === "number" ? `${modelMargin}%` : "n/a",
+      label: "Execution",
+      value:
+        typeof input.result.scores?.execution_feasibility === "number"
+          ? `${input.result.scores.execution_feasibility}/100`
+          : "n/a",
     },
   ];
 
   const cardGap = 12;
   const cardWidth = (PAGE.width - PAGE.marginX * 2 - cardGap * 2) / 3;
   const cardY = y - 54;
+
   metricCards.forEach((card, idx) => {
     const x = PAGE.marginX + idx * (cardWidth + cardGap);
+
     page.drawRectangle({
       x,
       y: cardY,
@@ -289,6 +379,7 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
       borderColor: rgb(0.83, 0.88, 0.97),
       borderWidth: 1,
     });
+
     page.drawText(card.label, {
       x: x + 10,
       y: cardY + 29,
@@ -296,6 +387,7 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
       font: fontRegular,
       color: rgb(0.31, 0.39, 0.52),
     });
+
     page.drawText(card.value, {
       x: x + 10,
       y: cardY + 13,
@@ -308,20 +400,20 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
   y = cardY - 18;
 
   const breakdown = [
-    `Category: ${input.result.category}`,
-    `Country: ${input.result.country.code}`,
-    `Framework: ${input.result.framework?.label ?? "General"}`,
+    `Category: ${resolveCategory(input.result)}`,
+    `Country: ${resolveCountry(input.result)}`,
+    `Framework: ${resolveFramework(input.result)}`,
     `Locale: ${input.locale}`,
     `Email: ${input.email ?? "not provided"}`,
   ];
 
   const sections: Array<{ title: string; lines?: string[]; bullets?: string[] }> = [
     { title: "Submitted Idea", lines: [input.idea] },
-    { title: "Decision Summary", lines: [summary.oneLiner] },
+    { title: "Decision Summary", lines: [resolveSummary(input.result)] },
     { title: "Context", bullets: breakdown },
     { title: "Top Opportunities", bullets: top.length ? top : ["n/a"] },
     { title: "Biggest Risks", bullets: risks.length ? risks : ["n/a"] },
-    { title: "Next Actions (30-Day Preview)", bullets: actions.length ? actions : ["n/a"] },
+    { title: "Next Actions", bullets: actions.length ? actions : ["n/a"] },
     {
       title: "Gate Analysis",
       bullets:
@@ -330,6 +422,7 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
               if (gate.status === "BLOCKED") {
                 return `Gate ${gate.gate} ${gate.name}: BLOCKED (waiting for Gate ${gate.blockedByGate})`;
               }
+
               return `Gate ${gate.gate} ${gate.name}: ${gate.status} (${gate.score}/${gate.maxScore})`;
             })
           : ["n/a"],
@@ -346,8 +439,8 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
       height: 1,
       color: rgb(0.89, 0.91, 0.95),
     });
-    y -= 16;
 
+    y -= 16;
     y = drawSectionTitle(page, y, section.title, fontBold);
 
     if (section.lines) {
@@ -364,6 +457,7 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
   }
 
   ({ page, y } = ensureSpace(pdfDoc, page, y, 22));
+
   page.drawText("Generated by BizSproutAI", {
     x: PAGE.marginX,
     y: y - 2,
@@ -373,7 +467,11 @@ export async function buildValidationReportPdf(input: ValidationPdfInput): Promi
   });
 
   const filenameIdea = input.idea.split(/\s+/).slice(0, 6).join("-");
-  const filename = `bizsproutai-validation-${safeSegment(filenameIdea || "report")}.pdf`;
+  const filename = `bizsproutai-validation-${safeSegment(
+    filenameIdea || "report"
+  )}.pdf`;
+
   const bytes = await pdfDoc.save();
+
   return { filename, bytes };
 }
