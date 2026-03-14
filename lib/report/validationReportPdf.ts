@@ -39,6 +39,11 @@ const PAGE = {
   marginBottom: 42,
 };
 
+type EmbeddedLogo = {
+  image: PDFImage;
+  sourceFile: string;
+};
+
 function resolveReportScore(result: DynamicValidationResult): number {
   return resolveOverallScore100(result);
 }
@@ -64,10 +69,17 @@ function safeSegment(value: string): string {
 
 function normalizeStringArray(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
-  return value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+  return value.filter(
+    (item): item is string => typeof item === "string" && item.trim().length > 0
+  );
 }
 
-function wrapText(text: string, font: PDFFont, size: number, maxWidth: number): string[] {
+function wrapText(
+  text: string,
+  font: PDFFont,
+  size: number,
+  maxWidth: number
+): string[] {
   const words = text.split(/\s+/).filter(Boolean);
   if (words.length === 0) return [""];
 
@@ -88,7 +100,7 @@ function wrapText(text: string, font: PDFFont, size: number, maxWidth: number): 
   return lines;
 }
 
-async function tryEmbedLogo(pdfDoc: PDFDocument): Promise<PDFImage | null> {
+async function tryEmbedLogo(pdfDoc: PDFDocument): Promise<EmbeddedLogo | null> {
   const candidates = [
     "bizsproutai-logo.png",
     "bizsproutai-logo.jpg",
@@ -106,21 +118,29 @@ async function tryEmbedLogo(pdfDoc: PDFDocument): Promise<PDFImage | null> {
 
   for (const file of candidates) {
     const abs = path.join(process.cwd(), "public", file);
-    if (!fs.existsSync(abs)) continue;
+
+    if (!fs.existsSync(abs)) {
+      continue;
+    }
 
     try {
       const bytes = fs.readFileSync(abs);
+      const image = file.endsWith(".png")
+        ? await pdfDoc.embedPng(bytes)
+        : await pdfDoc.embedJpg(bytes);
 
-      if (file.endsWith(".png")) {
-        return await pdfDoc.embedPng(bytes);
-      }
+      console.log(`[pdf] Embedded logo from public/${file}`);
 
-      return await pdfDoc.embedJpg(bytes);
-    } catch {
-      continue;
+      return {
+        image,
+        sourceFile: file,
+      };
+    } catch (error) {
+      console.error(`[pdf] Failed to embed logo file public/${file}`, error);
     }
   }
 
+  console.warn("[pdf] No logo file found in public/ matching known candidates.");
   return null;
 }
 
@@ -138,7 +158,12 @@ function ensureSpace(
   return { page: newPage, y: PAGE.height - PAGE.marginTop };
 }
 
-function drawSectionTitle(page: PDFPage, y: number, title: string, fontBold: PDFFont): number {
+function drawSectionTitle(
+  page: PDFPage,
+  y: number,
+  title: string,
+  fontBold: PDFFont
+): number {
   page.drawText(title, {
     x: PAGE.marginX,
     y,
@@ -241,7 +266,9 @@ function resolveSummary(result: DynamicValidationResult): string {
 }
 
 function resolveTopOpportunities(result: DynamicValidationResult): string[] {
-  return normalizeStringArray(result.strengths ?? result.summary?.topOpportunities ?? []).slice(0, 4);
+  return normalizeStringArray(
+    result.strengths ?? result.summary?.topOpportunities ?? []
+  ).slice(0, 4);
 }
 
 function resolveBiggestRisks(result: DynamicValidationResult): string[] {
@@ -252,7 +279,10 @@ function resolveBiggestRisks(result: DynamicValidationResult): string[] {
 
 function resolveNextActions(result: DynamicValidationResult): string[] {
   return normalizeStringArray(
-    result.recommendedNextSteps ?? result.recommended_next_steps ?? result.nextActions ?? []
+    result.recommendedNextSteps ??
+      result.recommended_next_steps ??
+      result.nextActions ??
+      []
   ).slice(0, 6);
 }
 
@@ -275,22 +305,35 @@ export async function buildValidationReportPdf(
     color: rgb(0.06, 0.22, 0.49),
   });
 
-  const logo = await tryEmbedLogo(pdfDoc);
+  const embeddedLogo = await tryEmbedLogo(pdfDoc);
 
-  if (logo) {
+  let titleX = PAGE.marginX + 18;
+
+  if (embeddedLogo) {
     const logoHeight = 34;
-    const logoWidth = (logo.width / logo.height) * logoHeight;
+    const logoWidth = (embeddedLogo.image.width / embeddedLogo.image.height) * logoHeight;
 
-    page.drawImage(logo, {
+    page.drawImage(embeddedLogo.image, {
       x: PAGE.marginX + 16,
       y: y - 64,
       width: logoWidth,
       height: logoHeight,
     });
+
+    titleX = PAGE.marginX + 16 + logoWidth + 14;
+  } else {
+    page.drawText("BizSproutAI", {
+      x: PAGE.marginX + 16,
+      y: y - 50,
+      size: 14,
+      font: fontBold,
+      color: rgb(1, 1, 1),
+    });
+    titleX = PAGE.marginX + 110;
   }
 
-  page.drawText("BizSproutAI Business Validation Report", {
-    x: PAGE.marginX + 60,
+  page.drawText("Business Validation Report", {
+    x: titleX,
     y: y - 36,
     size: 16,
     font: fontBold,
@@ -298,7 +341,7 @@ export async function buildValidationReportPdf(
   });
 
   page.drawText(`Generated ${input.generatedAt}`, {
-    x: PAGE.marginX + 60,
+    x: titleX,
     y: y - 56,
     size: 9.5,
     font: fontRegular,
