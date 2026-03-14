@@ -122,7 +122,13 @@ const BARBER_SEGMENT_REGEX = /\b(barber|barbers|barbershop|barber shop)\b/i;
 const APPOINTMENT_BASED_OPERATOR_REGEX =
   /\b(barber|barbershop|salon|spa|medspa|med spa|esthetician|nail salon|massage therapist|clinic|dentist|dental practice|tattoo shop|pet groomer|appointment-based local businesses?)\b/i;
 const BOOKING_WORKFLOW_REGEX =
-  /\b(booking|appointment|appointments|scheduling|calendar|time slots?|client info|client management|confirmation screen|rebooking|no-shows?)\b/i;
+  /\b(booking|appointment|appointments|scheduling|calendar|time slots?|confirmation screen|rebooking|no-shows?)\b/i;
+
+// CRM / workflow tool detection - distinct from booking/scheduling tools
+const CRM_WORKFLOW_REGEX =
+  /\b(crm|pipeline|lead management|lead tracking|project status|project management|project tracker|task management|client management|contact management|contacts|deals?|proposals?|invoicing|workflow management)\b/i;
+const FREELANCE_CREATIVE_SEGMENT_REGEX =
+  /\b(freelance|freelancer|freelancers|designer|designers|creative|creatives|photographer|photographers|videographer|videographers|illustrator|illustrators|copywriter|copywriters|consultant|consultants|agency|agencies|solopreneur|independent contractor)\b/i;
 
 type VerticalSaasSegmentContext = {
   segment: string;
@@ -130,6 +136,7 @@ type VerticalSaasSegmentContext = {
   workflowLabel: string;
   acquisitionLabel: string;
   differentiationLabel: string;
+  toolType: "booking" | "crm" | "workflow" | "generic";
 };
 
 function resolveVerticalSaasSegment(text: string): VerticalSaasSegmentContext | null {
@@ -140,6 +147,7 @@ function resolveVerticalSaasSegment(text: string): VerticalSaasSegmentContext | 
       workflowLabel: "appointment scheduling, client notes, confirmations, and repeat rebooking for barbers",
       acquisitionLabel: "direct outreach, barber communities, Instagram/TikTok, industry partnerships, and POS ecosystem referrals",
       differentiationLabel: "barber-specific workflows such as chair calendars, repeat-client rebooking, and lightweight client history",
+      toolType: "booking",
     };
   }
 
@@ -150,6 +158,61 @@ function resolveVerticalSaasSegment(text: string): VerticalSaasSegmentContext | 
       workflowLabel: "scheduling, confirmations, client records, and no-show reduction for local operators",
       acquisitionLabel: "outbound outreach, vertical communities, referrals, and partner channels that already serve SMB operators",
       differentiationLabel: "workflow depth for one operator niche, not a generic all-in-one feature list",
+      toolType: "booking",
+    };
+  }
+
+  return null;
+}
+
+function resolveCrmWorkflowSegment(text: string): VerticalSaasSegmentContext | null {
+  // Detect freelance/creative professionals using CRM/workflow tools
+  if (FREELANCE_CREATIVE_SEGMENT_REGEX.test(text) && CRM_WORKFLOW_REGEX.test(text)) {
+    const isDesigner = /\bdesigner|designers\b/i.test(text);
+    const isPhotographer = /\bphotographer|photographers\b/i.test(text);
+    const isCreative = /\bcreative|creatives\b/i.test(text);
+    const isConsultant = /\bconsultant|consultants\b/i.test(text);
+    const isAgency = /\bagency|agencies\b/i.test(text);
+
+    let segment = "freelancers_creatives";
+    let audienceLabel = "freelancers and creative professionals";
+    
+    if (isDesigner) {
+      segment = "freelance_designers";
+      audienceLabel = "freelance designers";
+    } else if (isPhotographer) {
+      segment = "freelance_photographers";
+      audienceLabel = "freelance photographers and videographers";
+    } else if (isConsultant) {
+      segment = "independent_consultants";
+      audienceLabel = "independent consultants";
+    } else if (isAgency) {
+      segment = "small_agencies";
+      audienceLabel = "small agencies and studios";
+    } else if (isCreative) {
+      segment = "creative_professionals";
+      audienceLabel = "creative professionals";
+    }
+
+    return {
+      segment,
+      audienceLabel,
+      workflowLabel: "client pipeline management, project tracking, proposal workflows, and contact organization",
+      acquisitionLabel: "freelance communities, design forums, Twitter/X, Product Hunt, content marketing, and word-of-mouth referrals",
+      differentiationLabel: "workflow simplicity for solo operators vs. enterprise complexity, niche-specific templates, and fast onboarding",
+      toolType: "crm",
+    };
+  }
+
+  // Generic CRM/workflow tool detection without a specific segment
+  if (CRM_WORKFLOW_REGEX.test(text) && SOFTWARE_PRODUCT_REGEX.test(text)) {
+    return {
+      segment: "small_business_operators",
+      audienceLabel: "small business operators and solo professionals",
+      workflowLabel: "client relationship management, pipeline tracking, and project workflows",
+      acquisitionLabel: "niche communities, content marketing, Product Hunt, and design-partner relationships",
+      differentiationLabel: "simplicity and speed for the target niche vs. generic horizontal tools",
+      toolType: "crm",
     };
   }
 
@@ -157,6 +220,11 @@ function resolveVerticalSaasSegment(text: string): VerticalSaasSegmentContext | 
 }
 
 function detectVerticalSaasContext(text: string): VerticalSaasSegmentContext | null {
+  // First check for CRM/workflow tools - these are NOT booking software
+  const crmContext = resolveCrmWorkflowSegment(text);
+  if (crmContext) return crmContext;
+
+  // Then check for booking/scheduling software
   if (!SOFTWARE_PRODUCT_REGEX.test(text) || !BOOKING_WORKFLOW_REGEX.test(text)) {
     return null;
   }
@@ -625,94 +693,270 @@ function detectValidationSpecialization(
 
   if (selectedFrameworkId === "vertical_saas_v1" || verticalSaasContext) {
     const context = verticalSaasContext ?? {
-      segment: result?.inferredBusinessModel?.segment ?? "vertical_smb_operators",
-      audienceLabel: "SMB operators",
-      workflowLabel: "one high-frequency operator workflow",
+      segment: result?.inferredBusinessModel?.segment ?? "small_business_operators",
+      audienceLabel: "target users",
+      workflowLabel: "one high-frequency workflow",
       acquisitionLabel: "direct outreach, niche communities, and ecosystem partnerships",
-      differentiationLabel: "operator-specific workflow depth and a faster setup experience",
+      differentiationLabel: "niche-specific workflow depth and a faster setup experience",
+      toolType: "generic" as const,
     };
 
+    const isCrmTool = context.toolType === "crm";
+    const isBookingTool = context.toolType === "booking";
+
+    // CRM / workflow tool specific content
+    if (isCrmTool) {
+      return {
+        primaryCategory: "saas",
+        subcategory: "crm_workflow",
+        businessModelType: "vertical_saas_crm_workflow",
+        segment: context.segment,
+        frameworkName: "vertical_saas_v1",
+        frameworkLabel: "CRM / Workflow SaaS Framework",
+        criteria: [
+          "Workflow pain urgency for target users",
+          "Willingness to pay vs. free alternatives",
+          "Switching friction from current tools",
+          "Depth of workflow coverage",
+          "Acquisition channels to target segment",
+          "Retention through daily usage",
+          "Simplicity vs. feature bloat",
+          "Differentiation vs. horizontal tools",
+        ],
+        reason:
+          "This idea is a CRM or workflow tool for a specific professional segment, so the framework should evaluate pipeline management, project tracking, and client workflows rather than scheduling or booking.",
+        evidence: unique([
+          "The idea describes software for managing clients, projects, contacts, or pipelines.",
+          context.audienceLabel !== "target users"
+            ? `The served customer segment is ${context.audienceLabel}, which defines the vertical niche.`
+            : null,
+          `The workflow centers on ${context.workflowLabel}.`,
+          "Framework selection should evaluate CRM and workflow pain, not scheduling or appointment software.",
+        ], 4),
+        scoreAdjustments: {
+          market_demand: 6,
+          monetization: 3,
+          competition: -8,
+          acquisition: -4,
+          execution_feasibility: -2,
+          differentiation: 8,
+          risk: -6,
+        },
+        strengths: [
+          `A focused CRM/workflow tool can feel more relevant to ${context.audienceLabel} than generic horizontal tools like Notion, Airtable, or Trello.`,
+          "If the tool becomes part of daily workflow habits, retention can be strong due to switching costs and data lock-in.",
+          "A narrow MVP around one painful workflow is easier to validate than a full-featured CRM suite.",
+        ],
+        weaknesses: [
+          `${context.audienceLabel} may already use spreadsheets, Notion, Airtable, HoneyBook, Dubsado, or other tools that are 'good enough' for their current workflow.`,
+          "Switching costs can work against adoption if migration from existing tools feels heavy.",
+          "A thin feature wedge can be ignored if the product does not solve a painful daily workflow better than existing alternatives.",
+        ],
+        keyRisks: [
+          `Competition is likely intense from established CRM, project management, and productivity tools already used by ${context.audienceLabel}.`,
+          "Retention will suffer if the product adds another dashboard without becoming part of the user's daily workflow.",
+          "Feature sprawl can slow the build and weaken differentiation before the core wedge is proven.",
+          "Acquisition can be expensive without organic channels, community presence, or design-partner relationships.",
+        ],
+        assumptions: [
+          `${context.audienceLabel} have painful enough workflow or client management problems to pay for a better tool.`,
+          "The product can reduce friction enough that users will switch from current tools, spreadsheets, or manual habits.",
+          `${context.differentiationLabel} is strong enough to justify adoption despite established alternatives.`,
+        ],
+        recommendedTests: {
+          market_demand: [
+            `Interview 10 ${context.audienceLabel} about workflow pain, current tools, what's frustrating, and willingness to pay for something better.`,
+            `Run a landing-page or waitlist test focused on ${context.workflowLabel}.`,
+          ],
+          monetization: [
+            `Test whether ${context.audienceLabel} will pre-commit to a simple monthly price before adding more features.`,
+          ],
+          acquisition: [
+            `Test acquisition through ${context.acquisitionLabel}.`,
+            "Try a design-partner offer for 3 pilot users before scaling paid acquisition.",
+          ],
+          differentiation: [
+            `Define the wedge around ${context.differentiationLabel}, not generic CRM language.`,
+            "Identify what makes this meaningfully simpler or faster than Notion, Airtable, HoneyBook, or Dubsado for the target segment.",
+          ],
+          risk: [
+            "Validate switching friction by asking pilots to migrate real client data or project records.",
+          ],
+        },
+        defaultNextSteps: [
+          "Interview target users to validate workflow pain and current tool frustration before building.",
+          "Keep the MVP focused on one painful workflow step before expanding into a full CRM suite.",
+          "Use design partners to validate willingness to pay and retention before broadening the roadmap.",
+        ],
+      };
+    }
+
+    // Booking / scheduling tool specific content
+    if (isBookingTool) {
+      return {
+        primaryCategory: "saas",
+        subcategory: "vertical_saas",
+        businessModelType: "vertical_saas_workflow_software",
+        segment: context.segment,
+        frameworkName: "vertical_saas_v1",
+        frameworkLabel: "Vertical SaaS / SMB Software Framework",
+        criteria: [
+          "Problem urgency for the operator",
+          "Willingness to pay",
+          "Switching friction and migration",
+          "Workflow depth for the niche",
+          "Acquisition channels to SMB operators",
+          "Retention and churn risk",
+          "Simplicity vs feature bloat",
+          "Operational support burden",
+        ],
+        reason:
+          "This idea is software for a local-service niche, so the core business model is vertical SaaS rather than the operator's local service business.",
+        evidence: unique([
+          "What is being built is a software product, not the operator's local service operation.",
+          context.audienceLabel !== "target users"
+            ? `The served customer segment is ${context.audienceLabel}, which defines the vertical rather than the core business model.`
+            : null,
+          `The workflow centers on ${context.workflowLabel}.`,
+          "Framework selection should follow the product model first, then layer in the served-customer context.",
+        ], 4),
+        scoreAdjustments: {
+          market_demand: 6,
+          monetization: 4,
+          competition: -6,
+          acquisition: -4,
+          execution_feasibility: -2,
+          differentiation: 8,
+          risk: -8,
+        },
+        strengths: [
+          `A focused vertical can make the product feel more relevant than generic scheduling software for ${context.audienceLabel}.`,
+          "Recurring workflow usage can create better retention than one-off project software if the tool becomes operationally embedded.",
+          "A narrow MVP around one painful workflow is easier to validate than a broad all-in-one SMB suite.",
+        ],
+        weaknesses: [
+          "SMB buyers often expect low pricing and fast setup, which can compress willingness to pay.",
+          "Switching from incumbents or spreadsheets can be hard if migration and onboarding feel heavy.",
+          "A thin feature wedge can be ignored if the product does not solve a painful daily workflow better than existing tools.",
+        ],
+        keyRisks: [
+          `Competition is likely intense from incumbent booking and business-management tools already selling to ${context.audienceLabel}.`,
+          "Retention will suffer if the product adds another dashboard without becoming part of the operator's daily workflow.",
+          "Feature sprawl can slow the build and weaken differentiation before the core scheduling wedge is proven.",
+          "Acquisition can be expensive if the team cannot reach operators through niche channels or design-partner relationships.",
+        ],
+        assumptions: [
+          `${context.audienceLabel} have a painful enough scheduling or client-management problem to pay for a better workflow tool.`,
+          "The product can reduce friction enough that operators will switch from current tools, spreadsheets, or manual booking habits.",
+          `${context.differentiationLabel} is strong enough to justify adoption despite incumbent alternatives.`,
+        ],
+        recommendedTests: {
+          market_demand: [
+            `Interview 10 ${context.audienceLabel} about scheduling pain, no-shows, client management gaps, and what they use today.`,
+            `Run a landing-page or waitlist test focused on ${context.workflowLabel}.`,
+          ],
+          monetization: [
+            `Test whether ${context.audienceLabel} will pre-commit to a simple monthly price for a narrower workflow tool before adding more features.`,
+          ],
+          acquisition: [
+            `Test acquisition through ${context.acquisitionLabel}.`,
+            "Try a design-partner offer for 3 pilot customers before scaling paid acquisition.",
+          ],
+          differentiation: [
+            `Define the wedge around ${context.differentiationLabel}, not generic appointment software language.`,
+          ],
+          risk: [
+            "Validate switching friction by asking pilots to migrate a real week of bookings or client records.",
+          ],
+        },
+        defaultNextSteps: [
+          "Keep the MVP focused on one painful workflow before expanding into a full business-management suite.",
+          "Use design partners to validate willingness to pay, migration friction, and retention before broadening the roadmap.",
+        ],
+      };
+    }
+
+    // Generic vertical SaaS fallback - no scheduling/booking references
     return {
       primaryCategory: "saas",
       subcategory: "vertical_saas",
       businessModelType: "vertical_saas_workflow_software",
       segment: context.segment,
       frameworkName: "vertical_saas_v1",
-      frameworkLabel: "Vertical SaaS / SMB Software Framework",
+      frameworkLabel: "Vertical SaaS Framework",
       criteria: [
-        "Problem urgency for the operator",
+        "Problem urgency for target users",
         "Willingness to pay",
         "Switching friction and migration",
         "Workflow depth for the niche",
-        "Acquisition channels to SMB operators",
+        "Acquisition channels to target segment",
         "Retention and churn risk",
         "Simplicity vs feature bloat",
         "Operational support burden",
       ],
       reason:
-        "This idea is software for a local-service niche, so the core business model is vertical SaaS rather than the operator's local service business.",
+        "This idea is software for a specific niche, so the framework evaluates vertical SaaS dynamics.",
       evidence: unique([
-        "What is being built is a software product, not the barber's or shop's local service operation.",
-        context.audienceLabel !== "SMB operators"
-          ? `The served customer segment is ${context.audienceLabel}, which defines the vertical rather than the core business model.`
+        "The idea describes software, an app, or a tool for a specific professional segment.",
+        context.audienceLabel !== "target users"
+          ? `The served customer segment is ${context.audienceLabel}.`
           : null,
-        BOOKING_WORKFLOW_REGEX.test(text)
-          ? `The workflow centers on ${context.workflowLabel}.`
-          : null,
-        "Framework selection should follow the product model first, then layer in the served-customer context.",
+        `The workflow centers on ${context.workflowLabel}.`,
+        "Framework selection should evaluate product-market fit for the target niche.",
       ], 4),
       scoreAdjustments: {
-        market_demand: 6,
-        monetization: 4,
+        market_demand: 5,
+        monetization: 3,
         competition: -6,
         acquisition: -4,
         execution_feasibility: -2,
-        differentiation: 8,
-        risk: -8,
+        differentiation: 7,
+        risk: -6,
       },
       strengths: [
-        `A focused vertical can make the product feel more relevant than generic scheduling software for ${context.audienceLabel}.`,
-        "Recurring workflow usage can create better retention than one-off project software if the tool becomes operationally embedded.",
-        "A narrow MVP around one painful workflow is easier to validate than a broad all-in-one SMB suite.",
+        `A focused vertical tool can feel more relevant to ${context.audienceLabel} than generic horizontal software.`,
+        "Recurring workflow usage can create retention if the tool becomes embedded in daily operations.",
+        "A narrow MVP around one workflow is easier to validate than a broad feature suite.",
       ],
       weaknesses: [
-        "SMB buyers often expect low pricing and fast setup, which can compress willingness to pay.",
-        "Switching from incumbents or spreadsheets can be hard if migration and onboarding feel heavy.",
-        "A thin feature wedge can be ignored if the product does not solve a painful daily workflow better than existing tools.",
+        "Target users may expect low pricing and fast setup.",
+        "Switching from existing tools can be hard if migration feels heavy.",
+        "A thin feature wedge can be ignored if it doesn't solve a painful workflow better than alternatives.",
       ],
       keyRisks: [
-        `Competition is likely intense from incumbent booking and business-management tools already selling to ${context.audienceLabel}.`,
-        "Retention will suffer if the product adds another dashboard without becoming part of the operator's daily workflow.",
-        "Feature sprawl can slow the build and weaken differentiation before the core scheduling wedge is proven.",
-        "Acquisition can be expensive if the team cannot reach operators through niche channels or design-partner relationships.",
+        `Competition is likely from established tools already serving ${context.audienceLabel}.`,
+        "Retention depends on becoming part of the user's daily workflow.",
+        "Feature sprawl can weaken differentiation before the core wedge is proven.",
+        "Acquisition can be expensive without organic channels or design-partner relationships.",
       ],
       assumptions: [
-        `${context.audienceLabel} have a painful enough scheduling or client-management problem to pay for a better workflow tool.`,
-        "The product can reduce friction enough that operators will switch from current tools, spreadsheets, or manual booking habits.",
-        `${context.differentiationLabel} is strong enough to justify adoption despite incumbent alternatives.`,
+        `${context.audienceLabel} have painful enough workflow problems to pay for a better tool.`,
+        "Users will switch from current tools if the product reduces friction meaningfully.",
+        `${context.differentiationLabel} is strong enough to justify adoption.`,
       ],
       recommendedTests: {
         market_demand: [
-          `Interview 10 ${context.audienceLabel} about scheduling pain, no-shows, client management gaps, and what they use today.`,
+          `Interview 10 ${context.audienceLabel} about workflow pain, current tools, and willingness to pay.`,
           `Run a landing-page or waitlist test focused on ${context.workflowLabel}.`,
         ],
         monetization: [
-          `Test whether ${context.audienceLabel} will pre-commit to a simple monthly price for a narrower workflow tool before adding more features.`,
+          `Test whether ${context.audienceLabel} will pre-commit to a price before adding more features.`,
         ],
         acquisition: [
           `Test acquisition through ${context.acquisitionLabel}.`,
-          "Try a design-partner offer for 3 pilot customers before scaling paid acquisition.",
+          "Try a design-partner offer for pilot users before scaling acquisition.",
         ],
         differentiation: [
-          `Define the wedge around ${context.differentiationLabel}, not generic appointment software language.`,
+          `Define the wedge around ${context.differentiationLabel}.`,
         ],
         risk: [
-          "Validate switching friction by asking pilots to migrate a real week of bookings or client records.",
+          "Validate switching friction by asking pilots to migrate real data.",
         ],
       },
       defaultNextSteps: [
-        "Keep the MVP focused on one painful workflow before expanding into a full business-management suite.",
-        "Use design partners to validate willingness to pay, migration friction, and retention before broadening the roadmap.",
+        "Interview target users to validate workflow pain before building.",
+        "Keep the MVP focused on one painful workflow before expanding.",
+        "Use design partners to validate willingness to pay and retention.",
       ],
     };
   }
