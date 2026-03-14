@@ -134,13 +134,13 @@
   "validation": {
     "status": {
       "go": "ALE",
-      "fix": "RANJE",
-      "stop": "KANPE"
+      "fix": "RAFINE",
+      "refine": "REPOZISYONE"
     },
     "verdicts": {
       "go": "Lide ou pare pou bati!",
-      "caution": "Ale ak prekosyon—adrese risk yo anvan.",
-      "no-go": "Lide sa a bezwen gwo chanjman."
+      "caution": "Pwometan—adrese risk kle yo pou ranfòse pozisyon ou.",
+      "pivot": "Konsidere repozisyone oswa chanje direksyon pou yon pi bon ajisteman mache."
     },
     "labels": {
       "overallScore": "Nòt global",
@@ -620,11 +620,11 @@
     ],
     "result": {
       "awaiting": "Your verdict will appear here",
-      "go": "GO",
-      "conditionalGo": "CONDITIONAL GO",
-      "needsWork": "NEEDS WORK",
-      "noGo": "NO GO",
-      "panelEyebrow": "Validation results",
+      "go": "PWOMETAN — PRÊT POU EGZEKITE",
+      "conditionalGo": "PWOMETAN — BEZWEN VALIDASYON",
+      "needsWork": "PREMYE ETAP — VALIDE ANVAN OU BATI",
+      "pivotRecommended": "GWO RISK — AMELYORE OSWA CHANJE DIREKSYON",
+      "panelEyebrow": "Kote ide ou ye jodi a",
       "panelTitle": "Your validation snapshot",
       "panelBody": "Run validation to see the score, category, risks, and next step for your idea.",
       "summaryDefault": "Share your idea to get a category-aware validation score, key risks, and the clearest next step.",
@@ -669,7 +669,24 @@
       "ctaBody": "Choose the clearest next move to keep validating, building, or refining the business.",
       "download": "Download My Validation Report",
       "downloaded": "Downloaded",
-      "downloadHint": "Run validation to download your report."
+      "downloadHint": "Run validation to download your report.",
+      "pillarTitle": "Validasyon Sis Pilye",
+      "pillarSubtitle": "Chak pilye evalye yon zòn kle nan viabilite biznis la",
+      "pillarStrong": "Fò",
+      "pillarModerate": "Bezwen travay",
+      "pillarWeak": "Fèb",
+      "pillarAdvice": "Kijan pou amelyore",
+      "pathForward": "Chemen ou pou ale devan",
+      "nextExperiments": "Pwochen eksperyans pou fè",
+      "pillarProblemDemand": "Pwoblèm ak Demand",
+      "pillarCustomerFit": "Kliyan ak Kontèks",
+      "pillarCompetition": "Konpetisyon ak Diferansyasyon",
+      "pillarBusinessModel": "Modèl Biznis ak Lajan",
+      "pillarAcquisition": "Akizisyon ak Kanal",
+      "pillarExecution": "Ekzekisyon ak Kapasite Fondatè",
+      "promisingExecution": "Prometan — Pare pou Ekzekite",
+      "promisingNeedsValidation": "Prometan — Bezwen Plis Validasyon",
+      "highRiskImprove": "Gwo Risk — Amelyore oswa Pivote"
     },
     "progress": {
       "title": "Validation pipeline",

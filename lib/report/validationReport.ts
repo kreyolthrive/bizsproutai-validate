@@ -15,10 +15,10 @@ type ValidationReportInput = {
 };
 
 function decisionLabel(decision: FrameworkDecision): string {
-  if (decision === "CONDITIONAL_GO") return "CONDITIONAL GO";
-  if (decision === "NEED_WORK") return "NEEDS WORK";
-  if (decision === "NO_GO") return "NO GO";
-  return "GO";
+  if (decision === "GO") return "Promising — Ready to Execute";
+  if (decision === "CONDITIONAL_GO") return "Promising — Needs Validation";
+  if (decision === "NEED_WORK") return "Early Stage — Validate Before Building";
+  return "High Risk — Improve or Pivot";
 }
 
 function toIntegerScore(value: number): number {
@@ -56,6 +56,7 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
   const keyRisks = input.result.keyRisks ?? input.result.summary.biggestRisks;
   const assumptionsToTest = input.result.assumptionsToTest ?? input.result.assumptions;
   const nextSteps = input.result.recommendedNextSteps ?? input.result.nextActions;
+  const pillarValidation = input.result.pillarValidation;
 
   const reportLines: string[] = [
     "BizSproutAI Validation Report",
@@ -105,6 +106,34 @@ export function buildValidationReportDocument(input: ValidationReportInput): Val
     "",
     ...linesWithFallback("Next Steps", nextSteps.slice(0, 10)),
     "",
+    ...(pillarValidation && pillarValidation.pillars.length > 0
+      ? [
+          "Six-Pillar Validation",
+          "---------------------",
+          `Verdict: ${pillarValidation.verdictLabel}`,
+          `Overall Score: ${pillarValidation.overallScore}/100`,
+          "",
+          ...pillarValidation.pillars.flatMap((pillar) => [
+            `${pillar.label} (${pillar.score}/100 — ${pillar.status})`,
+            pillar.summary ? `  ${pillar.summary}` : "",
+            ...(pillar.advice.length > 0
+              ? ["  How to improve or pivot:", ...pillar.advice.map((a) => `    - ${a}`)]
+              : []),
+            "",
+          ]),
+          ...(pillarValidation.pathForward
+            ? ["Path Forward", "------------", pillarValidation.pathForward, ""]
+            : []),
+          ...(pillarValidation.nextExperiments.length > 0
+            ? [
+                "Next Experiments",
+                "----------------",
+                ...pillarValidation.nextExperiments.map((e) => `- ${e}`),
+                "",
+              ]
+            : []),
+        ]
+      : []),
     "Gate Analysis",
     "-------------",
     ...(gates.length

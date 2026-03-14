@@ -107,27 +107,27 @@ describe("validation decision mapping", () => {
     expect(frameworkDecisionFromOverallScore(84)).toBe("GO");
     expect(frameworkDecisionFromOverallScore(68)).toBe("CONDITIONAL_GO");
     expect(frameworkDecisionFromOverallScore(54)).toBe("NEED_WORK");
-    expect(frameworkDecisionFromOverallScore(31)).toBe("NO_GO");
+    expect(frameworkDecisionFromOverallScore(31)).toBe("PIVOT_RECOMMENDED");
 
     expect(verdictFromOverallScore(84)).toBe("go");
     expect(verdictFromOverallScore(54)).toBe("caution");
-    expect(verdictFromOverallScore(31)).toBe("no-go");
+    expect(verdictFromOverallScore(31)).toBe("pivot");
 
     expect(finalVerdictFromOverallScore(84)).toBe("strong_validation");
     expect(finalVerdictFromOverallScore(68)).toBe("promising_but_needs_proof");
     expect(finalVerdictFromOverallScore(54)).toBe("risky_requires_refinement");
-    expect(finalVerdictFromOverallScore(31)).toBe("weak_validation_major_changes_needed");
+    expect(finalVerdictFromOverallScore(31)).toBe("pivot_or_reposition_recommended");
 
     expect(statusFromFrameworkDecision("GO")).toBe("GO");
     expect(statusFromFrameworkDecision("CONDITIONAL_GO")).toBe("FIX");
     expect(statusFromFrameworkDecision("NEED_WORK")).toBe("FIX");
-    expect(statusFromFrameworkDecision("NO_GO")).toBe("STOP");
+    expect(statusFromFrameworkDecision("PIVOT_RECOMMENDED")).toBe("REFINE");
   });
 
   it("prefers the stabilized 0-100 score over a stale framework decision", () => {
     const result = buildResult(31);
 
     expect(resolveOverallScore100(result)).toBe(31);
-    expect(resolveFrameworkDecision(result)).toBe("NO_GO");
+    expect(resolveFrameworkDecision(result)).toBe("PIVOT_RECOMMENDED");
   });
 });

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import type { DynamicValidationResult, FrameworkDecision } from "@/src/validation/types";
+import type { DynamicValidationResult, FrameworkDecision, PillarBasedValidation, PillarResult } from "@/src/validation/types";
 import { resolveFrameworkDecision, resolveOverallScore100 } from "@/src/validation/decision";
 
 type IdeaEvaluationHeroProps = {
@@ -59,8 +59,28 @@ function decisionStyles(decision: FrameworkDecision | null): string {
   if (decision === "GO") return "bg-emerald-100 text-emerald-800 border border-emerald-200";
   if (decision === "CONDITIONAL_GO") return "bg-blue-100 text-blue-800 border border-blue-200";
   if (decision === "NEED_WORK") return "bg-amber-100 text-amber-800 border border-amber-200";
-  if (decision === "NO_GO") return "bg-rose-100 text-rose-800 border border-rose-200";
+  if (decision === "PIVOT_RECOMMENDED") return "bg-purple-100 text-purple-800 border border-purple-200";
   return "bg-slate-100 text-slate-700 border border-slate-200";
+}
+
+function constructiveVerdictStyles(verdict: string | null | undefined): string {
+  if (verdict === "promising_execution") return "bg-emerald-100 text-emerald-800 border border-emerald-200";
+  if (verdict === "promising_needs_validation") return "bg-blue-100 text-blue-800 border border-blue-200";
+  if (verdict === "high_risk_improve_or_pivot") return "bg-amber-100 text-amber-800 border border-amber-200";
+  return "bg-slate-100 text-slate-700 border border-slate-200";
+}
+
+function pillarStatusStyles(status: string): string {
+  if (status === "strong") return "bg-emerald-100 text-emerald-800 border-emerald-200";
+  if (status === "moderate") return "bg-blue-100 text-blue-800 border-blue-200";
+  if (status === "weak") return "bg-amber-100 text-amber-800 border-amber-200";
+  return "bg-slate-100 text-slate-700 border-slate-200";
+}
+
+function pillarScoreColor(score: number): string {
+  if (score >= 70) return "text-emerald-600";
+  if (score >= 40) return "text-blue-600";
+  return "text-amber-600";
 }
 
 function isEmailValid(email: string): boolean {
@@ -151,6 +171,15 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
   const nextSteps = result?.recommendedNextSteps ?? result?.recommended_next_steps ?? result?.nextActions ?? [];
   const weaknesses = result?.weaknesses ?? [];
   const assumptions = result?.assumptionsToTest ?? result?.assumptions_to_test ?? result?.assumptions ?? [];
+  
+  // Extract pillar-based validation
+  const pillarValidation = result?.pillarValidation;
+  const constructiveVerdict = result?.constructiveVerdict;
+  const constructiveVerdictLabel = result?.constructiveVerdictLabel;
+  const pillars = pillarValidation?.pillars ?? [];
+  const pathForward = pillarValidation?.pathForward;
+  const nextExperiments = pillarValidation?.nextExperiments ?? [];
+  
   const researchSignals = [
     ...(result?.researchSummary?.demandSignals ?? []),
     ...(result?.researchSummary?.marketTrends ?? []),
@@ -218,7 +247,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
   const decisionLabel = (() => {
     if (!decision) return t("result.awaiting");
     if (decision === "CONDITIONAL_GO") return t("result.conditionalGo");
-    if (decision === "NO_GO") return t("result.noGo");
+    if (decision === "PIVOT_RECOMMENDED") return t("result.pivotRecommended");
     if (decision === "NEED_WORK") return t("result.needsWork");
     return t("result.go");
   })();
@@ -237,7 +266,12 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
       return;
     }
 
-    if (trimmedEmail && !isEmailValid(trimmedEmail)) {
+    if (!trimmedEmail) {
+      setError(t("errors.emailRequired"));
+      return;
+    }
+
+    if (!isEmailValid(trimmedEmail)) {
       setError(t("errors.invalidEmail"));
       return;
     }
@@ -283,9 +317,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
       }
 
       if (data.emailDelivery) {
-        if (!trimmedEmail) {
-          setEmailStatus(t("status.emailOptional"));
-        } else if (data.emailDelivery.sentToUser) {
+        if (data.emailDelivery.sentToUser) {
           setEmailStatus(t("status.emailSent"));
         } else if (data.emailDelivery.errors.length) {
           setEmailStatus(`${t("status.emailIssue")}: ${data.emailDelivery.errors.join(" | ")}`);
@@ -682,6 +714,70 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
               ))}
             </div>
           </div>
+
+          {/* Pillar-Based Validation Section */}
+          {pillars.length > 0 && (
+            <div className="mt-6 rounded-[1.5rem] border border-[#d6e3f7] bg-gradient-to-br from-[#f7fbff] to-white p-5">
+              <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+                <div>
+                  <p className="text-sm font-semibold text-[#12345f]">{t("result.pillarTitle") || "Validation Pillars"}</p>
+                  <p className="mt-1 text-xs text-[#5d7094]">{t("result.pillarSubtitle") || "Analysis across 6 key business dimensions"}</p>
+                </div>
+                {constructiveVerdictLabel && (
+                  <div className={`inline-flex rounded-full px-4 py-2 text-xs font-semibold border ${constructiveVerdictStyles(constructiveVerdict)}`}>
+                    {constructiveVerdictLabel}
+                  </div>
+                )}
+              </div>
+              
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {pillars.map((pillar) => (
+                  <div key={pillar.key} className="rounded-[1.2rem] border border-white bg-white p-4 shadow-sm">
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <p className="text-sm font-semibold text-[#12345f]">{pillar.label}</p>
+                      <span className={`text-lg font-bold ${pillarScoreColor(pillar.score)}`}>
+                        {pillar.score}
+                      </span>
+                    </div>
+                    <div className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium border mb-2 ${pillarStatusStyles(pillar.status)}`}>
+                      {pillar.status === "strong" ? (t("result.pillarStrong") || "Strong") :
+                       pillar.status === "moderate" ? (t("result.pillarModerate") || "Moderate") :
+                       (t("result.pillarWeak") || "Weak")}
+                    </div>
+                    <p className="text-sm text-[#44658f] mb-3">{pillar.summary}</p>
+                    {pillar.advice.length > 0 && (
+                      <div className="space-y-1">
+                        <p className="text-xs font-medium text-[#5d7094] uppercase tracking-wide">{t("result.pillarAdvice") || "How to improve"}</p>
+                        <ul className="text-xs text-[#234875] space-y-1">
+                          {pillar.advice.slice(0, 2).map((advice, idx) => (
+                            <li key={idx}>• {advice}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              
+              {pathForward && (
+                <div className="mt-5 rounded-[1.2rem] border border-emerald-200 bg-emerald-50/70 p-4">
+                  <p className="text-sm font-semibold text-emerald-900">{t("result.pathForward") || "Path Forward"}</p>
+                  <p className="mt-2 text-sm text-emerald-950">{pathForward}</p>
+                </div>
+              )}
+              
+              {nextExperiments.length > 0 && (
+                <div className="mt-4 rounded-[1.2rem] border border-blue-200 bg-blue-50/70 p-4">
+                  <p className="text-sm font-semibold text-blue-900">{t("result.nextExperiments") || "Next Experiments"}</p>
+                  <ul className="mt-2 space-y-1 text-sm text-blue-950">
+                    {nextExperiments.slice(0, 3).map((experiment, idx) => (
+                      <li key={idx}>• {experiment}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="mt-6 grid gap-4 xl:grid-cols-2">
             <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50/70 p-4">

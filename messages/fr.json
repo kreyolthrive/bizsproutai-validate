@@ -151,13 +151,13 @@
   "validation": {
     "status": {
       "go": "FONCEZ",
-      "fix": "AJUSTEZ",
-      "stop": "ARRÊTEZ"
+      "fix": "AFFINER",
+      "refine": "REPOSITIONNER"
     },
     "verdicts": {
       "go": "Votre idée est prête à être construite !",
-      "caution": "Procédez avec prudence—adressez d'abord les risques.",
-      "no-go": "Cette idée nécessite des changements significatifs."
+      "caution": "Prometteur—adressez les risques clés pour renforcer votre position.",
+      "pivot": "Envisagez un repositionnement ou un pivot pour un meilleur ajustement au marché."
     },
     "labels": {
       "overallScore": "Score global",
@@ -637,11 +637,11 @@
     ],
     "result": {
       "awaiting": "Your verdict will appear here",
-      "go": "GO",
-      "conditionalGo": "CONDITIONAL GO",
-      "needsWork": "NEEDS WORK",
-      "noGo": "NO GO",
-      "panelEyebrow": "Validation results",
+      "go": "PROMETTEUR — PRÊT À EXÉCUTER",
+      "conditionalGo": "PROMETTEUR — VALIDATION NÉCESSAIRE",
+      "needsWork": "STADE PRÉCOCE — VALIDER AVANT DE CONSTRUIRE",
+      "pivotRecommended": "RISQUE ÉLEVÉ — AMÉLIORER OU PIVOTER",
+      "panelEyebrow": "Où en est votre idée aujourd'hui",
       "panelTitle": "Your validation snapshot",
       "panelBody": "Run validation to see the score, category, risks, and next step for your idea.",
       "summaryDefault": "Share your idea to get a category-aware validation score, key risks, and the clearest next step.",
@@ -686,7 +686,24 @@
       "ctaBody": "Choose the clearest next move to keep validating, building, or refining the business.",
       "download": "Download My Validation Report",
       "downloaded": "Downloaded",
-      "downloadHint": "Run validation to download your report."
+      "downloadHint": "Run validation to download your report.",
+      "pillarTitle": "Validation en Six Piliers",
+      "pillarSubtitle": "Chaque pilier évalue un domaine clé de viabilité commerciale",
+      "pillarStrong": "Fort",
+      "pillarModerate": "À améliorer",
+      "pillarWeak": "Faible",
+      "pillarAdvice": "Comment améliorer",
+      "pathForward": "Votre chemin à suivre",
+      "nextExperiments": "Prochaines expériences à mener",
+      "pillarProblemDemand": "Problème et Demande",
+      "pillarCustomerFit": "Client et Contexte",
+      "pillarCompetition": "Concurrence et Différenciation",
+      "pillarBusinessModel": "Modèle d'Affaires et Revenus",
+      "pillarAcquisition": "Acquisition et Canaux",
+      "pillarExecution": "Exécution et Aptitude du Fondateur",
+      "promisingExecution": "Prometteur — Prêt à Exécuter",
+      "promisingNeedsValidation": "Prometteur — Validation Requise",
+      "highRiskImprove": "Risque Élevé — Améliorer ou Pivoter"
     },
     "progress": {
       "title": "Validation pipeline",

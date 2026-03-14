@@ -926,7 +926,7 @@ describe("business category routing", () => {
           ? "CONDITIONAL_GO"
           : pipelineResult.overall_score! >= 50
             ? "NEED_WORK"
-            : "NO_GO";
+            : "PIVOT_RECOMMENDED";
     expect(pipelineResult.frameworkReport?.decision).toBe(expectedDecision);
   });
 });

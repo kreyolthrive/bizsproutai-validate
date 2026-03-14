@@ -715,12 +715,12 @@ function toScoreBand(value: number): ScoreBand {
 function scoreToVerdict(score: number): Verdict {
   if (score >= 4) return "go";
   if (score >= 3) return "caution";
-  return "no-go";
+  return "pivot";
 }
 
 function decisionToStatus(decision: FrameworkDecision): ValidationStatus {
   if (decision === "GO") return "GO";
-  if (decision === "NO_GO") return "STOP";
+  if (decision === "PIVOT_RECOMMENDED") return "REFINE";
   return "FIX";
 }
 
@@ -2296,7 +2296,7 @@ async function validateIdeaWithHeuristics(
   } else if (weightedScore >= 40) {
     decision = "NEED_WORK";
   } else {
-    decision = "NO_GO";
+    decision = "PIVOT_RECOMMENDED";
   }
 
   const status = decisionToStatus(decision);
@@ -2307,7 +2307,7 @@ async function validateIdeaWithHeuristics(
   const fixes = buildFixes(gates, criteria, profile);
 
   const alternativeSuggestion = suggestAlternatives(framework, failureRisks, overallScore);
-  const alternatives = status === "STOP" ? alternativeSuggestion.alternatives : [];
+  const alternatives = status === "REFINE" ? alternativeSuggestion.alternatives : [];
 
   const buildResult = triggerBuildFlow({
     category,

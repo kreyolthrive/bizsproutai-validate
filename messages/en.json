@@ -134,19 +134,19 @@
   "validation": {
     "status": {
       "go": "GO",
-      "fix": "FIX",
-      "stop": "STOP"
+      "fix": "REFINE",
+      "refine": "REPOSITION"
     },
     "verdicts": {
       "go": "Your idea is ready to build!",
-      "caution": "Proceed with caution—address the risks first.",
-      "no-go": "This idea needs significant changes."
+      "caution": "Promising—address key risks to strengthen your position.",
+      "pivot": "Consider repositioning or pivoting for a stronger market fit."
     },
     "labels": {
       "overallScore": "Overall Score",
-      "failureRisks": "Failure Risks",
-      "fixes": "Recommended Fixes",
-      "alternatives": "Alternative Models",
+      "failureRisks": "Areas to Strengthen",
+      "fixes": "Recommended Improvements",
+      "alternatives": "Alternative Approaches",
       "nextActions": "Next Actions",
       "country": "Detected Country",
       "category": "Business Category"
@@ -620,11 +620,11 @@
     ],
     "result": {
       "awaiting": "Your verdict will appear here",
-      "go": "GO",
-      "conditionalGo": "CONDITIONAL GO",
-      "needsWork": "NEEDS WORK",
-      "noGo": "NO GO",
-      "panelEyebrow": "Validation results",
+      "go": "PROMISING — READY TO EXECUTE",
+      "conditionalGo": "PROMISING — NEEDS VALIDATION",
+      "needsWork": "EARLY STAGE — VALIDATE BEFORE BUILDING",
+      "pivotRecommended": "HIGH RISK — IMPROVE OR PIVOT",
+      "panelEyebrow": "Where your idea stands today",
       "panelTitle": "Your validation snapshot",
       "panelBody": "Run validation to see the score, category, risks, and next step for your idea.",
       "summaryDefault": "Share your idea to get a category-aware validation score, key risks, and the clearest next step.",
@@ -669,7 +669,24 @@
       "ctaBody": "Choose the clearest next move to keep validating, building, or refining the business.",
       "download": "Download My Validation Report",
       "downloaded": "Downloaded",
-      "downloadHint": "Run validation to download your report."
+      "downloadHint": "Run validation to download your report.",
+      "pillarTitle": "Six-Pillar Validation",
+      "pillarSubtitle": "Each pillar scores a key area of business viability",
+      "pillarStrong": "Strong",
+      "pillarModerate": "Needs work",
+      "pillarWeak": "Weak",
+      "pillarAdvice": "How to improve",
+      "pathForward": "Your path forward",
+      "nextExperiments": "Next experiments to run",
+      "pillarProblemDemand": "Problem & Demand",
+      "pillarCustomerFit": "Customer & Context Fit",
+      "pillarCompetition": "Competition & Differentiation",
+      "pillarBusinessModel": "Business Model & Money",
+      "pillarAcquisition": "Acquisition & Channels",
+      "pillarExecution": "Execution & Founder Fit",
+      "promisingExecution": "Promising — Ready to Execute",
+      "promisingNeedsValidation": "Promising — Needs More Validation",
+      "highRiskImprove": "High Risk — Improve or Pivot"
     },
     "progress": {
       "title": "Validation pipeline",

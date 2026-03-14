@@ -10,26 +10,26 @@ const translations: Record<Locale, {
   en: {
     verdicts: {
       "go": "Your idea is ready to build!",
-      "caution": "Proceed with caution—address the risks first.",
-      "no-go": "This idea needs significant changes."
+      "caution": "Promising—address key risks to strengthen your position.",
+      "pivot": "Consider repositioning or pivoting for a stronger market fit."
     },
     status: {
       "GO": "GO",
-      "FIX": "FIX",
-      "STOP": "STOP"
+      "FIX": "REFINE",
+      "REFINE": "REPOSITION"
     },
     labels: {
       overallScore: "Overall Score",
-      failureRisks: "Failure Risks",
-      fixes: "Recommended Fixes",
-      alternatives: "Alternative Models",
+      failureRisks: "Areas to Strengthen",
+      fixes: "Recommended Improvements",
+      alternatives: "Alternative Approaches",
       nextActions: "Next Actions",
       country: "Detected Country",
       category: "Business Category",
       criteria: "Evaluation Criteria",
       summary: "Summary",
       opportunities: "Top Opportunities",
-      risks: "Biggest Risks"
+      risks: "Key Challenges"
     },
     common: {
       critical: "Critical",
@@ -41,26 +41,26 @@ const translations: Record<Locale, {
   fr: {
     verdicts: {
       "go": "Votre idée est prête à être construite !",
-      "caution": "Procédez avec prudence—adressez d'abord les risques.",
-      "no-go": "Cette idée nécessite des changements significatifs."
+      "caution": "Prometteur—adressez les risques clés pour renforcer votre position.",
+      "pivot": "Envisagez un repositionnement ou un pivot pour un meilleur ajustement au marché."
     },
     status: {
       "GO": "FONCEZ",
-      "FIX": "AJUSTEZ",
-      "STOP": "ARRÊTEZ"
+      "FIX": "AFFINER",
+      "REFINE": "REPOSITIONNER"
     },
     labels: {
       overallScore: "Score global",
-      failureRisks: "Risques d'échec",
-      fixes: "Corrections recommandées",
-      alternatives: "Modèles alternatifs",
+      failureRisks: "Points à renforcer",
+      fixes: "Améliorations recommandées",
+      alternatives: "Approches alternatives",
       nextActions: "Prochaines actions",
       country: "Pays détecté",
       category: "Catégorie d'entreprise",
       criteria: "Critères d'évaluation",
       summary: "Résumé",
       opportunities: "Meilleures opportunités",
-      risks: "Risques majeurs"
+      risks: "Défis principaux"
     },
     common: {
       critical: "Critique",
@@ -72,26 +72,26 @@ const translations: Record<Locale, {
   ht: {
     verdicts: {
       "go": "Lide ou pare pou bati!",
-      "caution": "Ale ak prekosyon—adrese risk yo anvan.",
-      "no-go": "Lide sa a bezwen gwo chanjman."
+      "caution": "Pwometan—adrese risk kle yo pou ranfòse pozisyon ou.",
+      "pivot": "Konsidere repozisyone oswa chanje direksyon pou yon pi bon ajisteman mache."
     },
     status: {
       "GO": "ALE",
-      "FIX": "RANJE",
-      "STOP": "KANPE"
+      "FIX": "RAFINE",
+      "REFINE": "REPOZISYONE"
     },
     labels: {
       overallScore: "Nòt global",
-      failureRisks: "Risk echèk",
-      fixes: "Koreksyon rekòmande",
-      alternatives: "Modèl altènatif",
+      failureRisks: "Zòn pou ranfòse",
+      fixes: "Amelyorasyon rekòmande",
+      alternatives: "Apwòch altènatif",
       nextActions: "Pwochen aksyon",
       country: "Peyi detekte",
       category: "Kategori biznis",
       criteria: "Kritè evalyasyon",
       summary: "Rezime",
       opportunities: "Pi bon opòtinite",
-      risks: "Pi gwo risk"
+      risks: "Defi kle"
     },
     common: {
       critical: "Kritik",
@@ -103,26 +103,26 @@ const translations: Record<Locale, {
   es: {
     verdicts: {
       "go": "¡Tu idea está lista para construir!",
-      "caution": "Procede con precaución—aborda los riesgos primero.",
-      "no-go": "Esta idea necesita cambios significativos."
+      "caution": "Prometedor—aborda los riesgos clave para fortalecer tu posición.",
+      "pivot": "Considera reposicionar o pivotar para un mejor ajuste de mercado."
     },
     status: {
       "GO": "ADELANTE",
-      "FIX": "AJUSTAR",
-      "STOP": "PARAR"
+      "FIX": "REFINAR",
+      "REFINE": "REPOSICIONAR"
     },
     labels: {
       overallScore: "Puntuación general",
-      failureRisks: "Riesgos de fracaso",
-      fixes: "Correcciones recomendadas",
-      alternatives: "Modelos alternativos",
+      failureRisks: "Áreas a fortalecer",
+      fixes: "Mejoras recomendadas",
+      alternatives: "Enfoques alternativos",
       nextActions: "Próximas acciones",
       country: "País detectado",
       category: "Categoría de negocio",
       criteria: "Criterios de evaluación",
       summary: "Resumen",
       opportunities: "Mejores oportunidades",
-      risks: "Mayores riesgos"
+      risks: "Desafíos clave"
     },
     common: {
       critical: "Crítico",

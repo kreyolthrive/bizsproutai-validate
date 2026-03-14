@@ -26,9 +26,12 @@ type ValidationLeadRow = {
 };
 
 function toDecision(result: DynamicValidationResult): string {
-  if (result.frameworkReport?.decision) return result.frameworkReport.decision;
+  const decision = result.frameworkReport?.decision;
+  // Map to DB-safe values (constraint allows: GO, CONDITIONAL_GO, NEED_WORK, NO_GO)
+  if (decision === "PIVOT_RECOMMENDED") return "NO_GO";
+  if (decision) return decision;
   if (result.status === "GO") return "GO";
-  if (result.status === "STOP") return "NO_GO";
+  if (result.status === "REFINE") return "NO_GO";
   return "NEED_WORK";
 }
 

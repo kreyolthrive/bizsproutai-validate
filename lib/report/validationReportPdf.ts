@@ -30,10 +30,10 @@ function resolveReportScore(result: DynamicValidationResult): number {
 }
 
 function decisionLabel(decision: FrameworkDecision): string {
-  if (decision === "CONDITIONAL_GO") return "CONDITIONAL GO";
-  if (decision === "NEED_WORK") return "NEEDS WORK";
-  if (decision === "NO_GO") return "NO GO";
-  return "GO";
+  if (decision === "GO") return "Promising — Ready to Execute";
+  if (decision === "CONDITIONAL_GO") return "Promising — Needs Validation";
+  if (decision === "NEED_WORK") return "Early Stage — Validate Before Building";
+  return "High Risk — Improve or Pivot";
 }
 
 function getDecision(result: DynamicValidationResult): FrameworkDecision {

@@ -298,10 +298,10 @@ export async function POST(request: NextRequest) {
         ? safeBody.category as Category
         : undefined;
 
-    const emailInput = normalizeOptionalEmail(safeBody.email);
-    if (emailInput.error) {
+    const emailInput = normalizeEmail(safeBody.email);
+    if (emailInput.error || !emailInput.value) {
       return NextResponse.json(
-        { error: emailInput.error ?? "Invalid email format" },
+        { error: emailInput.error ?? "Email is required to receive your validation report." },
         { status: 400, headers: corsHeaders }
       );
     }

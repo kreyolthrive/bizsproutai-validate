@@ -75,6 +75,16 @@ type RawGate = {
   reasoning?: string;
 };
 
+type RawPillarAnalysis = {
+  key?: string;
+  score?: number;
+  status?: string;
+  summary?: string;
+  advice?: unknown;
+  questions?: unknown;
+  evidence?: unknown;
+};
+
 type RawAIAnalysis = {
   framework?: {
     archetype?: string;
@@ -167,6 +177,10 @@ type RawAIAnalysis = {
   nextActions?: unknown;
   decision?: FrameworkDecision;
   weightedScore?: number;
+  pillarAnalysis?: RawPillarAnalysis[];
+  nextExperiments?: unknown;
+  pathForward?: string;
+  constructiveVerdict?: string;
 };
 
 type RawAIContextInference = {
@@ -203,12 +217,12 @@ function toScoreBand(value: number): ScoreBand {
 function toVerdict(scoreBand: ScoreBand): Verdict {
   if (scoreBand >= 4) return "go";
   if (scoreBand >= 3) return "caution";
-  return "no-go";
+  return "pivot";
 }
 
 function toStatus(decision: FrameworkDecision): DynamicValidationResult["status"] {
   if (decision === "GO") return "GO";
-  if (decision === "NO_GO") return "STOP";
+  if (decision === "PIVOT_RECOMMENDED") return "REFINE";
   return "FIX";
 }
 
@@ -273,15 +287,95 @@ function extractContextJsonObject(text: string): RawAIContextInference {
   return JSON.parse(candidate.slice(start, end + 1)) as RawAIContextInference;
 }
 
+function buildPillarInstructions(category: string, context?: { input?: { idea?: string } }): string {
+  const categoryInstructions: Record<string, string> = {
+    saas: `SaaS/Software framework:
+- Problem & Demand: Is the problem painful and frequent? Are people using workarounds (spreadsheets, hacks, multiple tools)? If weak: "Talk to 10-20 target users and collect specific stories of when this problem hurt them." "Try a simple manual service version before writing code."
+- Customer & Context Fit: Clear ICP (role, company size, industry)? Budget and tech maturity to adopt SaaS? If weak: "Tighten your audience from 'businesses' to one niche (e.g., B2B agencies 5-20 people)." "Check how they currently buy software."
+- Competition & Differentiation: What tools do they use today? Is your wedge clearly different (faster, cheaper, localized)? If weak: "Write a one-sentence comparison vs the top 2 tools: 'Unlike X, we...'." "Focus on one workflow or vertical."
+- Business Model & Money: Pricing model clear (per user, per account, per transaction)? LTV supports CAC? If weak: "Test 2-3 price points with potential customers before building." "Offer a simple entry plan."
+- Acquisition & Channels: How will you reach your ICP? Communities, marketplaces, partners? If weak: "List 3 places your ICP hangs out and plan one test in each."
+- Execution & Founder Fit: Tech/product skills? V1 scope realistic? If weak: "Shrink the v1 to one critical workflow you can ship in 4-8 weeks."`,
+
+    local_service: `Local Service Business framework (cleaning, salon, tutoring, handyman):
+- Problem & Demand: Service needed regularly in the area? People already paying for it? If weak: "Talk to 10 neighbors or local businesses." "Check how many similar providers exist within 5-10 km."
+- Customer & Context Fit: Who exactly (students, families, offices)? Within reachable radius? If weak: "Pick one primary segment and design your offer just for them first."
+- Competition & Differentiation: How many similar providers? What makes people choose you first? If weak: "List 3 ways to clearly stand out (faster, specialized, mobile, premium)."
+- Business Model & Money: After costs (transport, supplies), enough profit per job? Repeat clients? If weak: "Create simple bundles or subscriptions (weekly, monthly) for recurring revenue."
+- Acquisition & Channels: How will customers find you (WhatsApp, Facebook, flyers, referrals)? If weak: "Start with referrals and WhatsApp. Aim for first 5-10 clients this way."
+- Execution & Founder Fit: Skills/equipment? Regulations/certifications? If weak: "Start with minimal setup and validate demand before buying more equipment."`,
+
+    ecommerce: `Ecommerce framework:
+- Problem & Demand: Is there real demand for this product? Are people actively searching for it? If weak: "Validate with a simple landing page or marketplace listing before investing in inventory."
+- Customer & Context Fit: Clear buyer persona? Buying behavior online? If weak: "Define your ideal customer's age, income, shopping habits, and where they currently buy."
+- Competition & Differentiation: How saturated is the market? Unique angle? If weak: "Find an underserved niche or unique product angle that big players ignore."
+- Business Model & Money: Margins after COGS, shipping, returns? If weak: "Calculate true per-unit economics including packaging, shipping, returns, and ads."
+- Acquisition & Channels: Traffic sources (social, SEO, marketplace, ads)? If weak: "Start with one channel you can master and test with <$200 in ads."
+- Execution & Founder Fit: Supply chain ready? Fulfillment capacity? If weak: "Start with dropshipping or small batches to test before scaling inventory."`,
+
+    coaching: `Online Education / Coaching framework:
+- Problem & Demand: Clear transformation (pass exam, get job, skill)? People already buying courses/coaching? If weak: "Write your promise as 'In X weeks, I help Y do Z' and test interest."
+- Customer & Context Fit: Time, internet, and money to participate? Cultural attitudes to paying coaches? If weak: "Run a small cohort or 1-1 beta with 3-5 people to learn before scaling."
+- Competition & Differentiation: Free/cheap alternatives (YouTube, MOOCs)? Why choose you? If weak: "Lean on accountability, community, and local context instead of just content."
+- Business Model & Money: Pricing vs income in region? Group vs 1-1 vs self-paced? If weak: "Pre-sell a cohort with a clear date and curriculum before recording everything."
+- Acquisition & Channels: Audience already (email list, social following)? If weak: "Host a free workshop or challenge as a feeder into your paid offer."
+- Execution & Founder Fit: Expertise and credibility? Time to deliver live? If weak: "Start with a small, time-bound program to test energy and results."`,
+
+    consulting: `Agency / Freelancer / Marketing Services framework:
+- Problem & Demand: Do target clients already pay for this outcome? Pain clear and urgent? If weak: "Reframe from 'I do marketing' to 'I get X result for Y niche'."
+- Customer & Context Fit: Clear niche (restaurants, coaches, real estate)? Can they afford fees? If weak: "Pick one narrow niche and talk to 5-10 prospects."
+- Competition & Differentiation: How many similar agencies? What makes you different? If weak: "Design 1-2 simple offers with outcomes and timelines instead of vague services."
+- Business Model & Money: Pricing (retainer, project, performance)? Minimum clients needed? If weak: "Calculate: target income / average retainer = clients needed."
+- Acquisition & Channels: Referrals, cold outreach, inbound content? Social proof? If weak: "Plan a 30-day outreach sprint: DMs, calls, and valuable content."
+- Execution & Founder Fit: Skills in delivery? Can deliver consistently? If weak: "Start with a smaller promise you can over-deliver on to build testimonials."`,
+
+    restaurant: `Restaurant / Food Truck framework:
+- Problem & Demand: Is there demand for this cuisine/price point/location? Lines at similar places, or gaps at key hours? If weak: "Run a pop-up or delivery-only test weekend before committing to a full venue."
+- Customer & Context Fit: Who are primary customers (office workers, students, families)? Enough nearby at meal times? If weak: "Map where your customers are at breakfast, lunch, dinner, and adapt hours/menu."
+- Competition & Differentiation: How many similar food options nearby? Why would someone cross the street for you? If weak: "Define one hook: signature dish, speed, health angle, vibe, or story."
+- Business Model & Money: Estimated daily covers vs break-even? Delivery vs dine-in mix? If weak: "Run basic math: rent/truck payment + salaries + ingredients vs realistic daily customers."
+- Acquisition & Channels: How will people hear about you (walk-by, social, delivery apps)? Repeat customers? If weak: "Plan a simple loyalty mechanic (punch card, WhatsApp list, lunchtime deals)."
+- Execution & Founder Fit: Experience running F&B? Supply chain reliability? If weak: "Start with a smaller format (cloud kitchen, food truck, pop-up) if risk feels high."`,
+  };
+
+  // Detect food-related ideas for restaurant framework
+  const foodKeywords = /\b(restaurant|food\s*truck|cafe|bakery|catering|kitchen|cuisine|food\s*stand|diner|bistro|eatery|food\s*cart|taco|pizza|burger|sushi|ramen|bbq|grill|food\s*delivery)\b/i;
+
+  // Map additional categories to their closest framework
+  const categoryMap: Record<string, string> = {
+    saas: "saas",
+    tech: "saas",
+    local_service: "local_service",
+    health_wellness: "local_service",
+    ecommerce: "ecommerce",
+    marketplace: "ecommerce",
+    coaching: "coaching",
+    edtech: "coaching",
+    consulting: "consulting",
+    finance: "saas",
+    legal_law: "consulting",
+  };
+
+  let frameworkKey = categoryMap[category] ?? "saas";
+
+  // Override to restaurant framework for food-related local service ideas
+  if ((category === "local_service" || category === "ecommerce") && foodKeywords.test(context?.input?.idea ?? "")) {
+    frameworkKey = "restaurant";
+  }
+
+  return categoryInstructions[frameworkKey] ?? categoryInstructions.saas;
+}
+
 function buildPrompt(context: AIValidationContext): string {
   const { input, locale, category, framework, frameworkGuide, country, categoryClassification, businessModel } = context;
 
+  const pillarGuide = buildPillarInstructions(category, { input });
+
   return JSON.stringify(
     {
-      task: "Analyze this business idea using the supplied BizSproutAI validation framework. Return JSON only.",
+      task: "Analyze this business idea using deep AI reasoning with category-specific 6-pillar validation. Return JSON only.",
       outputRequirements: {
-        decision: ["GO", "CONDITIONAL_GO", "NEED_WORK", "NO_GO"],
-        weightedScore: "0-100 integer",
+        weightedScore: "0-100 integer (overall validation score)",
         criteriaScoreRange: "1-5 integer",
         gateScores: {
           gate1: "0-20",
@@ -290,9 +384,35 @@ function buildPrompt(context: AIValidationContext): string {
           gate4: "0-5",
           gate5: "0-5",
         },
+        pillarAnalysis: {
+          description: "REQUIRED: Deep 6-pillar analysis. For EACH pillar, reason step-by-step about THIS specific idea.",
+          format: "Array of 6 objects, one per pillar, in order",
+          pillars: [
+            { key: "problem_demand", label: "Problem & Demand" },
+            { key: "customer_context_fit", label: "Customer & Context Fit" },
+            { key: "competition_differentiation", label: "Competition & Differentiation" },
+            { key: "business_model_money", label: "Business Model & Money" },
+            { key: "acquisition_channels", label: "Acquisition & Channels" },
+            { key: "execution_founder_fit", label: "Execution & Founder Fit" },
+          ],
+          perPillar: {
+            key: "pillar key string (e.g., problem_demand)",
+            score: "0-100 integer reflecting THIS idea's strength on this pillar",
+            status: "strong (70+) | moderate (40-69) | weak (<40)",
+            summary: "1-2 sentences in plain language explaining THIS idea's performance on this pillar. Be SPECIFIC to the idea, not generic.",
+            advice: "Array of 2-3 specific, actionable 'How to improve or pivot' suggestions tailored to THIS idea",
+            evidence: "Array of 1-3 specific observations from the idea that justify the score",
+          },
+        },
+        constructiveVerdict: {
+          values: ["promising_execution", "promising_needs_validation", "high_risk_improve_or_pivot"],
+          rules: "Use promising_execution for 70+, promising_needs_validation for 45-69, high_risk_improve_or_pivot for <45. NEVER say NO GO.",
+        },
+        pathForward: "1-2 sentence summary of recommended path forward for the founder",
+        nextExperiments: "Array of 3-5 concrete experiments/next steps the founder can run in the real world (interviews, pre-sales, landing pages, pricing tests). These are ACTION ITEMS.",
         maxItems: {
           summaryBullets: 3,
-          assumptions: 5,
+          assumptions: "5 — CRITICAL: Each assumption must be a testable HYPOTHESIS about the market, customer, or business model. Frame as beliefs that need validation. Good examples: 'First-time buyers want more guided support than current agents provide', 'An education-first positioning increases trust and conversion', 'The target neighborhoods produce enough qualified buyers'. BAD (these are experiments, put in nextExperiments instead): 'Interview 15 buyers', 'Create a bootcamp', 'Start a newsletter', 'Shadow experienced agents'. If it starts with a verb telling the founder what to DO, it is an experiment, NOT an assumption.",
           missingInfo: 6,
           risks: 5,
           fixes: 5,
@@ -307,9 +427,14 @@ function buildPrompt(context: AIValidationContext): string {
         subcategory: businessModel?.subcategory ?? null,
         businessModelType: businessModel?.businessModelType ?? null,
         segment: businessModel?.segment ?? null,
+        targetCustomer: input.targetCustomer ?? null,
         targetMarket: input.targetMarket ?? null,
         location: input.location ?? null,
+        offer: input.offer ?? null,
+        problem: input.problem ?? null,
+        pricingIdea: input.pricingIdea ?? null,
         budgetUsd: input.budgetUsd ?? null,
+        skillSummary: input.skillSummary ?? null,
         channels: input.channels ?? [],
         timelineDays: input.timelineDays ?? null,
         experienceLevel: input.experienceLevel ?? null,
@@ -325,6 +450,7 @@ function buildPrompt(context: AIValidationContext): string {
         segment: businessModel?.segment ?? null,
         alternativeCategories: categoryClassification.alternativeCategories,
       },
+      categorySpecificFramework: pillarGuide,
       frameworkGuide: {
         id: frameworkGuide.id,
         label: frameworkGuide.label,
@@ -344,27 +470,36 @@ function buildPrompt(context: AIValidationContext): string {
         regionContext: framework.regionContext,
       },
       instructions: [
-        "Use the framework criteria, risk indicators, fix suggestions, and market context as the main rubric.",
-        `Use frameworkGuide.id=${frameworkGuide.id} as the primary analysis guide unless the business idea clearly contradicts it.`,
-        "If the framework guide represents a professional, trust-based, or regulated service, reflect that directly in risks, assumptions, and next steps.",
-        "Infer missing details conservatively and list them in missingInfo and assumptions.",
-        "CRITICAL: Give quantitative scores that are SPECIFIC to this idea. Do NOT give generic default scores.",
-        "Scores must reflect your analysis of THIS specific idea. A booking app for barbers has different strengths/weaknesses than a booking app for dentists.",
-        "For each criterion, provide specific evidence from the idea that justifies the score.",
-        "Research signals, risks, and recommendations must be specific to the idea's niche (e.g., 'barber shops' not 'SMBs'), not generic SaaS filler.",
-        "If the frameworkGuide is vertical_saas_v1, focus on: target user willingness to pay, switching friction from existing tools, acquisition difficulty to reach the niche, and retention/churn risk.",
-        "For vertical SaaS, evaluate: Does the target segment actually pay for software? What tools do they use now? How hard is it to reach them? What would make them switch?",
-        "IMPORTANT: Vertical SaaS includes CRM/workflow tools (contacts, pipeline, projects) AND booking/scheduling tools. Analyze based on the ACTUAL tool type described in the idea.",
-        "For CRM/workflow tools for freelancers or creative professionals: evaluate against Notion, Airtable, HoneyBook, Dubsado. Why would they switch from these?",
-        "For booking/scheduling tools for local service operators: evaluate against Square, Acuity, Calendly. What is the switching friction?",
-        "SCORING CALIBRATION GUIDE:",
+        "CRITICAL: You MUST use deep AI reasoning to analyze THIS SPECIFIC business idea. Do NOT use shallow keyword matching or static category rules.",
+        "Reason step-by-step through each of the 6 pillars using the categorySpecificFramework as your guide.",
+        "For each pillar, think about: What specific evidence exists in the idea? What are the real-world conditions for this niche? What would actually help this founder?",
+        `Use frameworkGuide.id=${frameworkGuide.id} as the primary analysis guide.`,
+        "The 'pillarAnalysis' array is REQUIRED and is the most important part of the output. Each pillar MUST have a specific, non-generic summary and advice.",
+        "Pillar summaries must reference THIS idea specifically (e.g., 'A hair salon in downtown Miami faces moderate competition from 15+ existing salons' NOT 'Competition exists in the area').",
+        "Pillar advice must be actionable and specific (e.g., 'Offer a free first haircut to 20 walk-ins from the nearby WeWork office' NOT 'Consider marketing strategies').",
+        "SCORING CALIBRATION:",
         "- weightedScore 70-100: Strong idea with clear path to validation. Real demand, manageable competition, testable.",
-        "- weightedScore 50-69: Promising but needs proof. Real pain exists, but competition or switching friction creates uncertainty. Still worth testing.",
-        "- weightedScore 35-49: Risky but testable. Demand likely exists, but significant barriers (competition, switching cost, acquisition difficulty). Founder should validate specific assumptions before building.",
-        "- weightedScore 20-34: Major concerns. Problem may not be urgent enough, or market is too saturated with no clear wedge. Needs significant pivoting.",
-        "- weightedScore 0-19: Fundamentally flawed. No clear demand, or insurmountable barriers.",
-        "IMPORTANT: If real workflow pain exists and the idea is testable (even with strong competition), score should be 35-55 range (NEED_WORK or CONDITIONAL_GO), NOT below 32.",
-        "Do not be overly pessimistic. An idea with real demand but strong competition is RISKY, not INVALID. Reserve sub-32 scores for ideas with no clear demand or fundamental structural problems.",
+        "- weightedScore 50-69: Promising but needs proof. Real pain exists but uncertainty remains. Worth testing.",
+        "- weightedScore 35-49: Risky but testable. Significant barriers but demand exists. Validate specific assumptions first.",
+        "- weightedScore 20-34: Major concerns. Needs significant pivoting or repositioning.",
+        "- weightedScore 0-19: Fundamental issues. No clear demand or insurmountable barriers.",
+        "IMPORTANT: If real pain exists and the idea is testable (even with strong competition), score 35-55, NOT below 32.",
+        "Do not be overly pessimistic. An idea with real demand but strong competition is RISKY, not INVALID.",
+        "CONSTRUCTIVE GUIDANCE: Your job is to HELP users refine, improve, or pivot—never to reject.",
+        "For ANY score: (1) specific ways to improve, (2) specific ways to test cheaply, (3) pivot suggestions if weak.",
+        "In 'nextExperiments', provide 3-5 concrete real-world experiments (interviews, pre-sales, landing pages, pricing tests) that can be done in <1 week with <$100.",
+        "In 'pathForward', give a clear 1-2 sentence recommendation for what the founder should do next.",
+        "In 'constructiveVerdict', use ONLY: promising_execution, promising_needs_validation, or high_risk_improve_or_pivot.",
+        "Even for low-scoring ideas, identify the CORE INSIGHT that might be valuable and suggest how to reposition.",
+        "If the idea concerns a restaurant or food truck: evaluate location demand, concept differentiation, daily cover math, and suggest starting smaller (pop-up, cloud kitchen) if risk is high.",
+        "For vertical SaaS: evaluate target segment willingness to pay, switching friction, acquisition difficulty, and retention risk.",
+        "QUALITY RULES FOR OUTPUT SECTIONS:",
+        "- topOpportunities (strengths): Max 3-4 bullets. Each MUST be specific to THIS idea. Do NOT include generic macro facts (global market size, 'economic cycles', names of large consulting firms like McKinsey/BCG/Deloitte, '$300B market'). Do NOT use formulaic phrases that apply to any SaaS (like 'A focused vertical tool can feel more relevant' or 'Recurring workflow usage can create retention'). Good: 'Small shops frequently run out of key items, creating real urgency for automated reorder alerts.' Bad: 'A narrow MVP around one workflow can help.'",
+        "- biggestRisks: Each risk must describe what could go WRONG, not what to DO about it. Good: 'You may struggle to stand out because the offer is too generic.' Bad: 'Pick one specific business size.' Risks should read as consequences, not instructions.",
+        "- assumptions: Frame as testable HYPOTHESES about the market or customer, not action steps. Good: 'Small shops with 50+ SKUs feel enough inventory pain to pay for a dedicated tool.' Bad: 'Interview 15-20 shop owners.' Bad: 'Partner with local business associations.' If it tells the founder to DO something, it is an experiment, not an assumption.",
+        "- failureRisks: Each reason must be a risk statement, not advice. Filter out action-item language (do not start with imperative verbs).",
+        "- customer_context_fit: When assessing customer fit weakness, focus on BUDGET CONSTRAINTS, SWITCHING COSTS, and EXISTING ALTERNATIVES — not 'technical sophistication'. Most small business owners can use apps; the real barrier is whether they see enough value to switch from free/existing tools.",
+        "- DEDUP: Do not repeat the same point across multiple sections. If something appears as a risk, do not also list it as an assumption. Each section should add new information.",
         "Do not add markdown, commentary, or code fences. Return one JSON object only.",
       ],
     },
@@ -444,9 +579,17 @@ function buildContextPrompt(input: ValidationInput, locale: Locale): string {
 
 function buildSystemInstructions(): string {
   return [
-    "You are BizSproutAI's business validation agent.",
-    "Analyze startup and small-business ideas using the provided framework instead of generic advice.",
-    "Use the supplied criteria, risk indicators, fix suggestions, country context, and failure patterns to drive the analysis.",
+    "You are BizSproutAI, an AI business validation assistant.",
+    "Your job is to evaluate a single business idea in depth and give constructive, category-aware feedback and next steps.",
+    "You must: Use AI + LLM reasoning to analyze this specific idea, its context, and its market.",
+    "Classify the idea into the closest business category and load the matching validation framework.",
+    "Reason step by step using the 6 pillars (Problem & Demand, Customer & Context Fit, Competition & Differentiation, Business Model & Money, Acquisition & Channels, Execution & Founder Fit).",
+    "Generate scores and insights for each pillar based on deep analysis of THIS specific idea.",
+    "Base your analysis on the current idea and context only, not on previous users or previous validations.",
+    "You must NOT: Use shallow keyword matching or static rules as the main logic.",
+    "You must NOT: Reuse cached text, stale reasoning, or generic filler. Every idea requires fresh reasoning.",
+    "You must NOT: Output hard labels like 'GO' or 'NO GO'. Use constructive verdicts only.",
+    "Be honest but encouraging: highlight risks clearly, then immediately show how to reduce those risks or consider a better angle.",
     "Return a single valid JSON object with the requested fields and no markdown.",
   ].join(" ");
 }
@@ -857,9 +1000,10 @@ function deriveDecision(weightedScore: number, gates: SimplifiedGateResult[]): F
   // Lowered threshold to 32 to avoid being too harsh on testable ideas
   if (weightedScore >= 32) return "NEED_WORK";
   
-  // NO_GO: Fundamentally flawed or no clear path forward
-  // Only below 32 - reserved for ideas with major structural problems
-  return "NO_GO";
+  // PIVOT_RECOMMENDED: Idea needs repositioning or pivoting for better market fit
+  // Below 32 - the current form has significant challenges, but the core insight may be valuable
+  // Help users understand how to reposition rather than just rejecting
+  return "PIVOT_RECOMMENDED";
 }
 
 function normalizeGates(raw: RawAIAnalysis, businessModelScore: number): SimplifiedGateResult[] {
@@ -1035,6 +1179,70 @@ function buildAlternatives(raw: RawAIAnalysis, framework: LoadedFramework) {
   }));
 }
 
+export type AIGeneratedPillar = {
+  key: string;
+  score: number;
+  status: "strong" | "moderate" | "weak";
+  summary: string;
+  advice: string[];
+  evidence: string[];
+};
+
+export type AIGeneratedPillarData = {
+  pillars: AIGeneratedPillar[];
+  constructiveVerdict: string | null;
+  pathForward: string | null;
+  nextExperiments: string[];
+};
+
+const VALID_PILLAR_KEYS = new Set([
+  "problem_demand",
+  "customer_context_fit",
+  "competition_differentiation",
+  "business_model_money",
+  "acquisition_channels",
+  "execution_founder_fit",
+]);
+
+function extractAIPillarData(raw: RawAIAnalysis): AIGeneratedPillarData | null {
+  if (!Array.isArray(raw.pillarAnalysis) || raw.pillarAnalysis.length === 0) {
+    return null;
+  }
+
+  const pillars: AIGeneratedPillar[] = raw.pillarAnalysis
+    .filter((p): p is RawPillarAnalysis => p !== null && typeof p === "object")
+    .filter((p) => typeof p.key === "string" && VALID_PILLAR_KEYS.has(p.key))
+    .map((p) => {
+      const score = clamp(toNumber(p.score, 50), 0, 100);
+      let status: "strong" | "moderate" | "weak";
+      if (typeof p.status === "string" && (p.status === "strong" || p.status === "moderate" || p.status === "weak")) {
+        status = p.status;
+      } else {
+        status = score >= 70 ? "strong" : score >= 40 ? "moderate" : "weak";
+      }
+
+      return {
+        key: p.key!,
+        score,
+        status,
+        summary: toText(p.summary, ""),
+        advice: toStringArray(p.advice, 3),
+        evidence: toStringArray(p.evidence, 3),
+      };
+    });
+
+  if (pillars.length < 3) {
+    return null;
+  }
+
+  return {
+    pillars,
+    constructiveVerdict: typeof raw.constructiveVerdict === "string" ? raw.constructiveVerdict : null,
+    pathForward: typeof raw.pathForward === "string" ? raw.pathForward : null,
+    nextExperiments: toStringArray(raw.nextExperiments, 5),
+  };
+}
+
 function buildFrameworkReport(
   raw: RawAIAnalysis,
   gates: SimplifiedGateResult[],
@@ -1112,12 +1320,31 @@ function buildFrameworkReport(
 export async function analyzeBusinessIdeaWithAI(
   context: AIValidationContext
 ): Promise<DynamicValidationResult> {
+  const DEBUG = process.env.VALIDATION_DEBUG === "true";
   const prompt = buildPrompt(context);
+  
+  if (DEBUG) {
+    console.log(`[VALIDATION_DEBUG][AI] Input idea: "${context.input.idea?.slice(0, 100)}..."`);
+    console.log(`[VALIDATION_DEBUG][AI] Framework guide: ${context.frameworkGuide.id}`);
+    console.log(`[VALIDATION_DEBUG][AI] Category: ${context.category}`);
+    console.log(`[VALIDATION_DEBUG][AI] Subcategory: ${context.businessModel?.subcategory ?? "none"}`);
+    console.log(`[VALIDATION_DEBUG][AI] BusinessModelType: ${context.businessModel?.businessModelType ?? "none"}`);
+    console.log(`[VALIDATION_DEBUG][AI] Segment: ${context.businessModel?.segment ?? "none"}`);
+    console.log(`[VALIDATION_DEBUG][AI] Prompt length: ${prompt.length} chars`);
+  }
+  
   const { parsed: raw } = await requestStructuredFromProviders(
     prompt,
     "business validation analysis",
     extractJsonObject
   );
+  
+  if (DEBUG) {
+    console.log(`[VALIDATION_DEBUG][AI] Raw AI weightedScore: ${raw.weightedScore}`);
+    console.log(`[VALIDATION_DEBUG][AI] Raw AI decision: ${raw.decision}`);
+    console.log(`[VALIDATION_DEBUG][AI] Raw AI summary: ${raw.summary?.oneLiner?.slice(0, 80)}...`);
+  }
+  
   const criteria = buildCriteria(raw, context.framework);
   const weightedScore = clamp(
     Math.round(
@@ -1128,16 +1355,15 @@ export async function analyzeBusinessIdeaWithAI(
   );
   const businessModelScore = clamp(toNumber(raw.businessModelValidation?.score, 0), 0, 5);
   const gates = normalizeGates(raw, businessModelScore);
-  
+
   // ALWAYS derive decision from score to ensure consistency
-  // The AI's decision is ignored to prevent score/verdict mismatches
   const derivedDecision = deriveDecision(weightedScore, gates);
   const decision = derivedDecision;
-  
+
   const overallScore = toScoreBand(weightedScore / 20);
   const failureRisks = buildFailureRisks(raw, criteria);
   const fixes = buildFixes(raw, criteria);
-  const alternatives = decision === "NO_GO" ? buildAlternatives(raw, context.framework) : [];
+  const alternatives = decision !== "GO" ? buildAlternatives(raw, context.framework) : [];
   const frameworkReport = buildFrameworkReport(raw, gates, weightedScore, decision, businessModelScore);
   const buildResult = triggerBuildFlow({
     category: context.category,
@@ -1145,6 +1371,17 @@ export async function analyzeBusinessIdeaWithAI(
     locale: context.locale,
     ideaSummary: toText(raw.summary?.oneLiner, context.input.idea).slice(0, 140),
   });
+
+  // Extract AI-generated pillar data from deep analysis
+  const aiPillarData = extractAIPillarData(raw);
+
+  if (DEBUG) {
+    console.log(`[VALIDATION_DEBUG][AI] AI pillar data available: ${aiPillarData !== null}`);
+    if (aiPillarData) {
+      console.log(`[VALIDATION_DEBUG][AI] AI pillars: ${aiPillarData.pillars.map(p => `${p.key}:${p.score}`).join(", ")}`);
+      console.log(`[VALIDATION_DEBUG][AI] AI verdict: ${aiPillarData.constructiveVerdict}`);
+    }
+  }
 
   return {
     status: toStatus(decision),
@@ -1184,6 +1421,7 @@ export async function analyzeBusinessIdeaWithAI(
       confidence: Math.round(clamp(context.categoryClassification.confidence * 100, 0, 100)),
       evidence: context.categoryClassification.evidence,
     },
+    aiPillarData: aiPillarData ?? undefined,
     meta: {
       version: ENGINE_VERSION,
       iterationCount: 1,

@@ -130,6 +130,16 @@ const CRM_WORKFLOW_REGEX =
 const FREELANCE_CREATIVE_SEGMENT_REGEX =
   /\b(freelance|freelancer|freelancers|designer|designers|creative|creatives|photographer|photographers|videographer|videographers|illustrator|illustrators|copywriter|copywriters|consultant|consultants|agency|agencies|solopreneur|independent contractor)\b/i;
 
+// Agency / service business onboarding and operations detection
+const AGENCY_SERVICE_SEGMENT_REGEX =
+  /\b(agency|agencies|studio|studios|firm|firms|consultancy|consultancies|service business|service businesses|client service|client services|professional service|professional services)\b/i;
+const ONBOARDING_WORKFLOW_REGEX =
+  /\b(onboarding|kickoff|kick-off|client intake|new client|new customer|welcome flow|setup process|getting started|handoff|hand-off|requirements gather|requirements receive|contract sign|invoice paid|first call|discovery call|project start|client success)\b/i;
+const CHECKLIST_TASK_REGEX =
+  /\b(checklist|task list|tasks|to-?do|step-?by-?step|workflow steps|process steps|milestones|stages|phases|status tracking|progress tracking)\b/i;
+const B2B_SERVICE_OPS_REGEX =
+  /\b(client relationship|client communication|client portal|project handoff|deliverable|deliverables|scope|timeline|deadline|kickoff call|wrap-?up|retainer|engagement|sow|statement of work)\b/i;
+
 type VerticalSaasSegmentContext = {
   segment: string;
   audienceLabel: string;
@@ -166,6 +176,39 @@ function resolveVerticalSaasSegment(text: string): VerticalSaasSegmentContext | 
 }
 
 function resolveCrmWorkflowSegment(text: string): VerticalSaasSegmentContext | null {
+  // Detect agency onboarding / service operations tools - most specific first
+  if (AGENCY_SERVICE_SEGMENT_REGEX.test(text) && (ONBOARDING_WORKFLOW_REGEX.test(text) || CHECKLIST_TASK_REGEX.test(text))) {
+    const hasOnboarding = ONBOARDING_WORKFLOW_REGEX.test(text);
+    const hasChecklist = CHECKLIST_TASK_REGEX.test(text);
+    const hasB2BOps = B2B_SERVICE_OPS_REGEX.test(text);
+
+    let segment = "agency_service_operations";
+    let audienceLabel = "agencies and service businesses";
+    let workflowLabel = "client onboarding, project kickoff, and service delivery workflows";
+    let differentiationLabel = "agency-specific onboarding templates and client handoff workflows vs. generic project management";
+
+    if (hasOnboarding && hasChecklist) {
+      segment = "agency_client_onboarding";
+      workflowLabel = "client onboarding checklists, kickoff workflows, contract/invoice tracking, and requirements gathering";
+      differentiationLabel = "streamlined onboarding flow for agencies vs. heavyweight project management or CRM tools";
+    } else if (hasOnboarding) {
+      segment = "agency_client_onboarding";
+      workflowLabel = "client intake, kickoff calls, contract signing, and project handoffs";
+    } else if (hasChecklist && hasB2BOps) {
+      segment = "agency_operations";
+      workflowLabel = "task checklists, milestone tracking, and client project operations";
+    }
+
+    return {
+      segment,
+      audienceLabel,
+      workflowLabel,
+      acquisitionLabel: "agency owner communities, Twitter/X, LinkedIn, ProductHunt, Slack communities (e.g., Agency Collective), and content marketing for service business operators",
+      differentiationLabel,
+      toolType: "workflow",
+    };
+  }
+
   // Detect freelance/creative professionals using CRM/workflow tools
   if (FREELANCE_CREATIVE_SEGMENT_REGEX.test(text) && CRM_WORKFLOW_REGEX.test(text)) {
     const isDesigner = /\bdesigner|designers\b/i.test(text);
@@ -673,7 +716,7 @@ function buildCombinedInputText(input: ValidationInput, result?: DynamicValidati
     input.offer,
     input.problem,
     input.pricingIdea,
-    result?.summary.oneLiner,
+    result?.summary?.oneLiner,
     result?.framework?.archetype,
     result?.framework?.label,
     result?.frameworkReport?.primarySegment?.name,
@@ -703,6 +746,98 @@ function detectValidationSpecialization(
 
     const isCrmTool = context.toolType === "crm";
     const isBookingTool = context.toolType === "booking";
+    const isWorkflowTool = context.toolType === "workflow";
+
+    // Agency onboarding / service operations workflow tool specific content
+    if (isWorkflowTool) {
+      const isAgencyOnboarding = context.segment.includes("onboarding") || context.segment.includes("agency");
+      
+      return {
+        primaryCategory: "saas",
+        subcategory: "agency_operations_workflow",
+        businessModelType: "vertical_saas_service_ops",
+        segment: context.segment,
+        frameworkName: "vertical_saas_v1",
+        frameworkLabel: "Agency / Service Operations SaaS Framework",
+        criteria: [
+          "Onboarding workflow pain severity",
+          "Willingness to pay for workflow tooling",
+          "Switching friction from current methods",
+          "Depth of workflow coverage needed",
+          "Acquisition channels to agency operators",
+          "Retention through operational embedding",
+          "Wedge strength vs. existing tools",
+          "Feature scope risk (too thin vs. too broad)",
+        ],
+        reason:
+          "This idea is a workflow tool for agencies or service businesses, so the framework evaluates client onboarding, service delivery operations, and whether the wedge is strong enough vs. existing tools.",
+        evidence: unique([
+          "The idea describes software for managing client onboarding, project workflows, or service delivery operations.",
+          `The target segment is ${context.audienceLabel}.`,
+          `The workflow centers on ${context.workflowLabel}.`,
+          "Framework selection evaluates service operations workflow pain and existing tool substitution.",
+        ], 4),
+        scoreAdjustments: {
+          market_demand: 5,
+          monetization: 2,
+          competition: -10,
+          acquisition: -5,
+          execution_feasibility: -3,
+          differentiation: 6,
+          risk: -8,
+        },
+        strengths: [
+          `${isAgencyOnboarding ? "Agency onboarding is a real pain point" : "Workflow standardization is valuable"} that can create immediate value if the tool reduces manual coordination.`,
+          "Agencies and service businesses have recurring client cycles, so a good onboarding tool can become operationally embedded.",
+          "A focused MVP around one workflow step (e.g., just onboarding checklists) is easier to validate than a full client management platform.",
+        ],
+        weaknesses: [
+          `${context.audienceLabel} already use tools like Notion, ClickUp, Asana, Airtable, HoneyBook, Dubsado, or HubSpot that often include onboarding and checklist features.`,
+          "A checklist-only tool may be too thin to justify a standalone subscription unless it has automation, client visibility, or handoff features.",
+          "Agency operators are notoriously tool-fatigued and skeptical of adding another dashboard to their stack.",
+          "Switching costs are low for checklists, making retention fragile if the tool doesn't become part of daily operations.",
+        ],
+        keyRisks: [
+          "Competition from existing project management, CRM, and client portal tools that already serve agency workflows.",
+          "The wedge may be too narrow: agencies can build equivalent checklists in Notion, Asana, or ClickUp in 30 minutes.",
+          "Retention will suffer without stickiness beyond basic checklists (e.g., automation, reminders, client-facing visibility, integrations).",
+          "Acquisition can be expensive if the product cannot demonstrate clear ROI over free alternatives or existing tools.",
+        ],
+        assumptions: [
+          `${context.audienceLabel} have painful enough onboarding or workflow problems that they would pay for a dedicated tool instead of using existing project management software.`,
+          "A narrow checklist or onboarding tool can differentiate from Notion/Asana/ClickUp through simplicity, templates, or automation.",
+          "Agency operators will adopt a new tool without excessive onboarding or migration friction.",
+          `${context.differentiationLabel} is strong enough to justify a standalone product.`,
+        ],
+        recommendedTests: {
+          market_demand: [
+            `Interview 10 ${context.audienceLabel} about their current onboarding process, what tools they use, what's frustrating, and whether they'd pay for something better.`,
+            "Ask specifically: What do you use for client onboarding today? What's broken about it? Would you pay $X/month for a better tool?",
+          ],
+          monetization: [
+            "Test willingness to pay with a specific price point before building. If agencies won't pre-commit to $20-50/month, the wedge may be too thin.",
+          ],
+          acquisition: [
+            `Test acquisition through ${context.acquisitionLabel}.`,
+            "Try posting in agency communities (Agency Collective, Slack groups) to gauge interest before building.",
+          ],
+          differentiation: [
+            `Define the wedge around ${context.differentiationLabel}.`,
+            "Identify: Is the value in simplicity, templates, automation, client visibility, integrations, or something else? A checklist alone is not enough.",
+            "Answer: Why wouldn't an agency just use a Notion template or Asana project for this?",
+          ],
+          risk: [
+            "Validate whether agencies will actually switch by asking 5 to adopt a beta. If they say 'we already use X for that', the wedge is weak.",
+          ],
+        },
+        defaultNextSteps: [
+          "Interview agency owners to validate onboarding workflow pain and current tool frustration before building anything.",
+          "Define the sharp wedge: Is it templates, automation, client-facing visibility, reminders, integrations, or something else? Checklist-only is likely too thin.",
+          "Test willingness to pay explicitly before building. If agencies won't pre-commit, the idea needs a stronger wedge.",
+          "Use 3-5 design partners to validate retention and daily usage before scaling the feature set.",
+        ],
+      };
+    }
 
     // CRM / workflow tool specific content
     if (isCrmTool) {
@@ -1368,14 +1503,62 @@ function buildEvidenceByArea(
 
 function buildAreaWeakness(area: ScoreKey, evidenceByArea: Record<ScoreKey, string[]>): string {
   const evidence = evidenceByArea[area][0];
-  if (evidence) return evidence;
-  return `The ${SCORE_LABELS[area]} case is still weak or under-proven.`;
+  if (evidence && !isGenericFiller(evidence)) return evidence;
+  // Skip generic fallbacks — only return idea-specific weaknesses
+  return "";
 }
 
 function buildAreaStrength(area: ScoreKey, evidenceByArea: Record<ScoreKey, string[]>): string {
   const evidence = evidenceByArea[area][0];
-  if (evidence) return evidence;
-  return `The idea shows a relatively stronger signal on ${SCORE_LABELS[area]}.`;
+  if (evidence && !isGenericFiller(evidence)) return evidence;
+  // Skip generic fallbacks — only return idea-specific strengths
+  return "";
+}
+
+/** Detect entries that read like action items / advice rather than actual risks or assumptions */
+function isActionItemNotRisk(text: string): boolean {
+  const trimmed = text.trim();
+  // Risks and assumptions should describe what could go wrong or what needs to be true,
+  // not tell the founder what to do
+  const actionPatterns = [
+    // Starts with an imperative verb → it's an instruction, not a hypothesis
+    /^(pick|choose|select|define|plan|create|design|build|interview|test|offer|host|run|send|start|post|launch|survey|shadow|map|talk\s+to|reach\s+out|sign\s+up|pre-sell|attend|join|set\s+up|write|publish|schedule|contact|network|partner|collaborate|volunteer|cold[\s-]?(call|outreach|email))\s/i,
+    // Advisory language
+    /\b(you should|try to|consider\b|make sure|aim for|plan a|go to)\b/i,
+    // Experiment / test format
+    /^(mvp|waitlist|landing\s+page|pricing|bootcamp|workshop|webinar|newsletter|checklist|lead\s+magnet)\s+(test|experiment|sprint)/i,
+    // Numbered action items: "Interview 10-20..." or "Create a..."
+    /^(interview|survey|talk to|shadow|attend|join|visit|contact|email|call|dm|message)\s+\d+/i,
+    // "Create a X" / "Start a Y" / "Launch a Z"
+    /^(create|start|launch|build|set\s+up|begin|establish)\s+(a|an|the|your|weekly|monthly|bi-?weekly)\s/i,
+  ];
+  return actionPatterns.some((pattern) => pattern.test(trimmed));
+}
+
+/** Detect generic macro facts and filler that don't help the founder */
+function isGenericFiller(text: string): boolean {
+  const fillerPatterns = [
+    /\$\d+[\+]?\s*(trillion|billion)\s*(globally|worldwide|market)/i,
+    /\b(McKinsey|BCG|Deloitte|Bain|Accenture)\b/i,
+    /\bglobal\s+(consulting|market|industry)\s+(market|size|revenue)/i,
+    /\beconomic\s+cycles?\b/i,
+    /\bSMB\s+market\b/i,
+    /\bmarket\s+signal:\s*$/i,
+    /\bthe idea shows a relatively stronger signal\b/i,
+    /\bthe .+ case is still weak or under-proven\b/i,
+    /\banalysis for .+ completed\b/i,
+    /\bfractional executives?\b(?!.*\b(for|to|help|serve)\b)/i,
+    // Template residue: "Name: Description Strengths: X, Y." pattern from competitor heuristics
+    /^[A-Z][^:]+:\s+[A-Z][^:]+\s+Strengths:\s+/,
+    // Very short generic filler
+    /^(varies|n\/a|unknown|tbd|none)$/i,
+    // Formulaic template phrases that apply to any SaaS and add no idea-specific value
+    /^a focused vertical tool can feel more relevant/i,
+    /^recurring workflow usage can create retention/i,
+    /^a narrow mvp around one workflow/i,
+    /\bthey may lack technical sophistication\b/i,
+  ];
+  return fillerPatterns.some((pattern) => pattern.test(text));
 }
 
 export function routeBusinessCategory(
@@ -1492,7 +1675,9 @@ export async function buildValidationResearch(
   const summary: ValidationResearchSummary = {
     demandSignals: unique([
       specialization?.frameworkName === "vertical_saas_v1" && verticalSaasContext
-        ? `Demand depends on whether ${verticalSaasContext.audienceLabel} feel enough scheduling and client-management pain to switch from current tools or manual workflows.`
+        ? verticalSaasContext.toolType === "crm" || verticalSaasContext.toolType === "workflow"
+          ? `Demand depends on whether ${verticalSaasContext.audienceLabel} feel enough pain managing ${verticalSaasContext.workflowLabel} to switch from current tools or manual processes.`
+          : `Demand depends on whether ${verticalSaasContext.audienceLabel} feel enough scheduling and client-management pain to switch from current tools or manual workflows.`
         : null,
       specialization?.subcategory === "postpartum_fitness_coaching"
         ? "Demand depends on whether postpartum mothers feel underserved by generic fitness content and want safer guided recovery support."
@@ -1500,14 +1685,18 @@ export async function buildValidationResearch(
       specialization?.subcategory === "real_estate_agent" && input.location
         ? `Demand depends on the local housing market, financing conditions, and buyer activity in ${input.location}.`
         : null,
-      marketResearch.marketSize ? `Market signal: ${marketResearch.marketSize}.` : null,
+      marketResearch.marketSize && !isGenericFiller(`Market signal: ${marketResearch.marketSize}`)
+        ? `Market signal: ${marketResearch.marketSize}.`
+        : null,
       result.frameworkReport?.problemDemand.keyInsight,
       result.summary.topOpportunities[0],
       input.problem ? `Customer pain described as: ${input.problem}.` : null,
     ], 4),
     competitionNotes: unique([
       specialization?.frameworkName === "vertical_saas_v1" && verticalSaasContext
-        ? `Competition includes incumbent booking and appointment tools, so differentiation must come from ${verticalSaasContext.differentiationLabel}.`
+        ? verticalSaasContext.toolType === "crm" || verticalSaasContext.toolType === "workflow"
+          ? `Competition includes existing CRM, project management, and workflow tools, so differentiation must come from ${verticalSaasContext.differentiationLabel}.`
+          : `Competition includes incumbent booking and appointment tools, so differentiation must come from ${verticalSaasContext.differentiationLabel}.`
         : null,
       ...competitionNotes,
     ], 4),
@@ -1521,13 +1710,17 @@ export async function buildValidationResearch(
       specialization?.subcategory === "real_estate_agent"
         ? "Market trend depends on mortgage rates, inventory, and affordability for first-time buyers."
         : null,
-      marketResearch.growthTrend !== "unknown" ? `Market trend looks ${marketResearch.growthTrend}.` : null,
+      marketResearch.growthTrend !== "unknown" && marketResearch.growthTrend !== "stable"
+        ? `Market trend for this niche looks ${marketResearch.growthTrend}.`
+        : null,
       marketResearch.opportunities[0],
       marketResearch.threats[0],
     ], 3),
     monetizationNotes: unique([
       specialization?.frameworkName === "vertical_saas_v1" && verticalSaasContext
-        ? `Monetization depends on whether ${verticalSaasContext.audienceLabel} will pay for a simpler, more niche workflow tool instead of sticking with incumbent platforms, spreadsheets, or manual booking.`
+        ? verticalSaasContext.toolType === "crm" || verticalSaasContext.toolType === "workflow"
+          ? `Monetization depends on whether ${verticalSaasContext.audienceLabel} will pay for a simpler, niche-specific tool instead of sticking with generic platforms, spreadsheets, or manual tracking.`
+          : `Monetization depends on whether ${verticalSaasContext.audienceLabel} will pay for a simpler, more niche workflow tool instead of sticking with incumbent platforms, spreadsheets, or manual booking.`
         : null,
       specialization?.subcategory === "postpartum_fitness_coaching"
         ? "Monetization depends on whether personalized coaching, accountability, and community justify paid conversion over free postpartum content."
@@ -1729,35 +1922,41 @@ export function scoreBusinessValidation(params: {
     ...strongestAreas.map(([area]) => buildAreaStrength(area, research.evidenceByArea)),
     ...result.summary.topOpportunities,
     ...result.criteria.filter((criterion) => criterion.score >= 4).flatMap((criterion) => criterion.evidence),
-  ], 5);
+  ].filter((s) => s && !isGenericFiller(s)), 4);
+
+  // Cross-section dedup: items in strengths should not appear in weaknesses or risks
+  const strengthsSet = new Set(strengths.map((s) => s.toLowerCase().trim()));
 
   const weaknesses = unique([
     ...(specialization?.weaknesses ?? []),
     ...weakestAreas.map(([area]) => buildAreaWeakness(area, research.evidenceByArea)),
     ...result.criteria.filter((criterion) => criterion.score <= 3).flatMap((criterion) => criterion.risks),
     ...result.missingInfo,
-  ], 5);
+  ].filter((s) => s && !isGenericFiller(s) && !strengthsSet.has(s.toLowerCase().trim())), 5);
 
   const keyRisks = unique([
     ...(specialization?.keyRisks ?? []),
     ...result.failureRisks.map((risk) => risk.reason),
     ...research.summary.riskFactors,
-    ...weakestAreas.map(([area]) => `The idea still needs stronger proof on ${SCORE_LABELS[area]}.`),
-  ], 5);
+  ].filter((s) => s && !isGenericFiller(s) && !isActionItemNotRisk(s) && !strengthsSet.has(s.toLowerCase().trim())), 5);
+
+  // Cross-section dedup: assumptions should not duplicate risks
+  const risksSet = new Set(keyRisks.map((s) => s.toLowerCase().trim()));
 
   const assumptionsToTest = unique([
     ...(specialization?.assumptions ?? []),
     ...result.assumptions,
-    ...weakestAreas.map(([area]) => `The current assumptions around ${SCORE_LABELS[area]} will hold once real users see the offer.`),
-    !input.targetCustomer ? "A narrower target customer will convert better than a broad audience." : null,
-    !input.pricingIdea ? "Customers will accept a price point that supports healthy margin." : null,
-  ], 5);
+    // Meaningful hypotheses when info is missing
+    !input.targetCustomer ? "Narrowing to one specific customer segment will make it easier to win clients and charge higher prices." : null,
+    !input.pricingIdea ? "Your target customers will pay enough for this service to sustain healthy margins." : null,
+    !input.offer ? "You can define a specific, outcome-based offer that stands out from generic competitors." : null,
+  ].filter((s) => s && !isGenericFiller(s) && !isActionItemNotRisk(s) && !risksSet.has(s.toLowerCase().trim())), 5);
 
   const missingProof = unique([
     ...result.missingInfo,
-    ...weakestAreas.map(([area]) => `Real-world proof for ${SCORE_LABELS[area]} is still limited.`),
-    research.summary.sources.length === 0 ? "External market sources are still thin." : null,
-  ], 5);
+    // Only add source note if truly no sources found
+    research.summary.sources.length === 0 ? "No external market data sources were found for this specific niche." : null,
+  ].filter((s) => s && !isGenericFiller(s)), 5);
 
   const recommendedTests = unique([
     ...(Object.values(specialization?.recommendedTests ?? {})
@@ -1792,7 +1991,7 @@ export function scoreBusinessValidation(params: {
       ? "promising_but_needs_proof"
       : overallScore >= 50
         ? "risky_requires_refinement"
-        : "weak_validation_major_changes_needed";
+        : "pivot_or_reposition_recommended";
 
   return {
     overallScore,

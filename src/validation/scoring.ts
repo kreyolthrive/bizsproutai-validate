@@ -19,5 +19,5 @@ export function scoreToVerdict(score: number): Verdict {
       return threshold.verdict;
     }
   }
-  return "no-go";
+  return "pivot";
 }

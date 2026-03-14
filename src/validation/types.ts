@@ -44,16 +44,53 @@ export type ValidationInput = {
 
 export type ScoreBand = 1 | 2 | 3 | 4 | 5;
 
-export type Verdict = "go" | "caution" | "no-go";
+export type Verdict = "go" | "caution" | "pivot";
 
 // New: Dynamic status for FIX loop and alternatives
-export type ValidationStatus = "GO" | "FIX" | "STOP";
-export type FrameworkDecision = "GO" | "CONDITIONAL_GO" | "NEED_WORK" | "NO_GO";
+export type ValidationStatus = "GO" | "FIX" | "REFINE";
+export type FrameworkDecision = "GO" | "CONDITIONAL_GO" | "NEED_WORK" | "PIVOT_RECOMMENDED";
 export type FinalValidationVerdict =
   | "strong_validation"
   | "promising_but_needs_proof"
   | "risky_requires_refinement"
-  | "weak_validation_major_changes_needed";
+  | "pivot_or_reposition_recommended";
+
+// New: Constructive verdict system (never "NO GO")
+export type ConstructiveVerdict =
+  | "promising_execution"         // Promising — focus on execution and testing
+  | "promising_needs_validation"  // Promising — but needs more validation work
+  | "high_risk_improve_or_pivot"; // High risk in current form — here's how to improve or pivot
+
+// New: Pillar-based validation structure (6 pillars for all categories)
+export type PillarKey =
+  | "problem_demand"
+  | "customer_context_fit"
+  | "competition_differentiation"
+  | "business_model_money"
+  | "acquisition_channels"
+  | "execution_founder_fit";
+
+export type PillarStatus = "strong" | "moderate" | "weak";
+
+export type PillarResult = {
+  key: PillarKey;
+  label: string;
+  score: number; // 0-100
+  status: PillarStatus;
+  summary: string; // 1-2 sentences in plain language
+  advice: string[]; // 2-3 specific suggestions to improve or pivot
+  questions: string[]; // Key questions for this pillar
+  evidence?: string[]; // Supporting evidence from the idea
+};
+
+export type PillarBasedValidation = {
+  pillars: PillarResult[];
+  overallScore: number; // 0-100
+  verdict: ConstructiveVerdict;
+  verdictLabel: string;
+  nextExperiments: string[]; // At least 3 concrete experiments
+  pathForward: string; // Always provide a constructive path
+};
 
 export type CriterionKey = string;
 
@@ -187,6 +224,24 @@ export type DynamicValidationResult = {
   recommended_tests?: string[];
   recommended_next_steps?: string[];
   final_verdict?: FinalValidationVerdict;
+  // Pillar-based validation (new 6-pillar framework)
+  pillarValidation?: PillarBasedValidation;
+  constructiveVerdict?: ConstructiveVerdict;
+  constructiveVerdictLabel?: string;
+  // AI-generated pillar data (raw from LLM deep analysis)
+  aiPillarData?: {
+    pillars: Array<{
+      key: string;
+      score: number;
+      status: "strong" | "moderate" | "weak";
+      summary: string;
+      advice: string[];
+      evidence: string[];
+    }>;
+    constructiveVerdict: string | null;
+    pathForward: string | null;
+    nextExperiments: string[];
+  };
   meta: {
     version: string;
     iterationCount: number;

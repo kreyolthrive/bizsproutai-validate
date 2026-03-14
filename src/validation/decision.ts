@@ -10,7 +10,7 @@ export function finalVerdictFromOverallScore(overallScore: number): FinalValidat
   if (overallScore >= 75) return "strong_validation";
   if (overallScore >= 55) return "promising_but_needs_proof";
   if (overallScore >= 32) return "risky_requires_refinement";
-  return "weak_validation_major_changes_needed";
+  return "pivot_or_reposition_recommended";
 }
 
 export function frameworkDecisionFromOverallScore(overallScore: number): FrameworkDecision {
@@ -18,18 +18,18 @@ export function frameworkDecisionFromOverallScore(overallScore: number): Framewo
   if (overallScore >= 75) return "GO";
   if (overallScore >= 55) return "CONDITIONAL_GO";
   if (overallScore >= 32) return "NEED_WORK";
-  return "NO_GO";
+  return "PIVOT_RECOMMENDED";
 }
 
 export function verdictFromOverallScore(overallScore: number): Verdict {
   if (overallScore >= 75) return "go";
   if (overallScore >= 32) return "caution";
-  return "no-go";
+  return "pivot";
 }
 
 export function statusFromFrameworkDecision(decision: FrameworkDecision): ValidationStatus {
   if (decision === "GO") return "GO";
-  if (decision === "NO_GO") return "STOP";
+  if (decision === "PIVOT_RECOMMENDED") return "REFINE";
   return "FIX";
 }
 
