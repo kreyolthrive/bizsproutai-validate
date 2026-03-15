@@ -104,13 +104,15 @@ function resolveSummary(result: DynamicValidationResult): string {
 }
 
 function resolveConfidence(result: DynamicValidationResult): string {
+  const summaryRecord = isRecord(result.summary)
+    ? (result.summary as UnknownRecord)
+    : undefined;
+
   const candidates: unknown[] = [
     (result as UnknownRecord)["confidence"],
     (result as UnknownRecord)["confidenceScore"],
     (result as UnknownRecord)["confidence_score"],
-    result.summary && isRecord(result.summary)
-      ? result.summary["confidence"]
-      : undefined,
+    summaryRecord?.["confidence"],
   ];
 
   for (const value of candidates) {
