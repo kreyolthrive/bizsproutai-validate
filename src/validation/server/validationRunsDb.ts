@@ -1,302 +1,332 @@
-import fs from "node:fs";
-import path from "node:path";
 import { randomUUID } from "node:crypto";
-import type { DynamicValidationResult, ValidationInput } from "@/src/validation/types";
-import { loadFramework } from "@/src/validation/engine/loadFramework";
+import { createClient } from "@supabase/supabase-js";
+import type {
+  DynamicValidationResult,
+  Locale,
+  ValidationInput,
+} from "@/src/validation/types";
+import { resolveOverallScore100 } from "@/src/validation/decision";
 
-const DB_DIR = process.env.VERCEL ? "/tmp" : path.join(process.cwd(), ".data");
-const DB_FILE = path.join(DB_DIR, "bizspr.db");
-
-// Type alias to avoid direct import() reference which can confuse bundlers
-type SqliteDatabaseSync = {
-  exec: (sql: string) => void;
-  prepare: (sql: string) => {
-    run: (...params: unknown[]) => void;
-    get: (...params: unknown[]) => unknown;
-    all: (...params: unknown[]) => unknown[];
-  };
-  close: () => void;
+type ReportPayload = {
+  filename: string;
+  generatedAt: string;
+  text: string;
+  pdf?: {
+    filename: string;
+    mimeType?: string;
+    contentBase64?: string;
+    sizeBytes?: number;
+  } | null;
+  pdfError?: string | null;
 };
-
-let database: SqliteDatabaseSync | null = null;
-let sqliteUnavailable = false;
-
-function getDatabaseSync(): (new (path: string) => SqliteDatabaseSync) | null {
-  if (sqliteUnavailable) return null;
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const sqliteModule = require("node:sqlite");
-    return sqliteModule.DatabaseSync as (new (path: string) => SqliteDatabaseSync);
-  } catch {
-    sqliteUnavailable = true;
-    console.warn("[validationRunsDb] node:sqlite unavailable - local run tracking disabled");
-    return null;
-  }
-}
-
-function getDb(): SqliteDatabaseSync | null {
-  if (sqliteUnavailable) return null;
-  if (database) return database;
-
-  const DatabaseSync = getDatabaseSync();
-  if (!DatabaseSync) return null;
-
-  try {
-    fs.mkdirSync(DB_DIR, { recursive: true });
-    database = new DatabaseSync(DB_FILE);
-    database.exec(`
-    CREATE TABLE IF NOT EXISTS business_validation_runs (
-      id TEXT PRIMARY KEY,
-      user_id TEXT,
-      business_id TEXT,
-      idea_input TEXT NOT NULL,
-      business_category TEXT NOT NULL,
-      framework_used TEXT NOT NULL,
-      overall_score INTEGER NOT NULL,
-      confidence_score INTEGER NOT NULL,
-      final_verdict TEXT NOT NULL,
-      created_at TEXT NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS business_validation_scores (
-      id TEXT PRIMARY KEY,
-      validation_run_id TEXT NOT NULL,
-      score_name TEXT NOT NULL,
-      score_value INTEGER NOT NULL,
-      weight REAL,
-      reason TEXT,
-      created_at TEXT NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS business_validation_insights (
-      id TEXT PRIMARY KEY,
-      validation_run_id TEXT NOT NULL,
-      type TEXT NOT NULL,
-      content TEXT NOT NULL,
-      created_at TEXT NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS business_validation_research (
-      id TEXT PRIMARY KEY,
-      validation_run_id TEXT NOT NULL,
-      source_type TEXT NOT NULL,
-      query_used TEXT,
-      summary TEXT NOT NULL,
-      evidence TEXT,
-      created_at TEXT NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS business_validation_frameworks (
-      id TEXT PRIMARY KEY,
-      category TEXT NOT NULL,
-      framework_name TEXT NOT NULL,
-      version TEXT NOT NULL,
-      criteria_json TEXT NOT NULL,
-      weights_json TEXT NOT NULL,
-      updated_at TEXT NOT NULL,
-      UNIQUE(category, framework_name, version)
-    );
-  `);
-
-    return database;
-  } catch (error) {
-    sqliteUnavailable = true;
-    console.warn("[validationRunsDb] Failed to initialize SQLite database:", error);
-    return null;
-  }
-}
 
 type SaveValidationRunInput = {
+  requestId?: string;
   userId?: string | null;
   businessId?: string | null;
+  email: string;
+  locale?: Locale;
   input: ValidationInput;
   result: DynamicValidationResult;
+  report: ReportPayload;
+  source?: string;
+  createdAt?: string;
 };
 
-function insertScores(runId: string, result: DynamicValidationResult, createdAt: string): void {
-  if (!result.scores) return;
+export type ValidationRunSaveResult = {
+  runId: string;
+  saved: boolean;
+};
 
-  const db = getDb();
-  if (!db) return;
-  
-  const statement = db.prepare(`
-    INSERT INTO business_validation_scores (
-      id, validation_run_id, score_name, score_value, weight, reason, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)
-  `);
+type ValidationRunRow = {
+  id: string;
+};
 
-  const criteriaByKey = new Map(result.criteria.map((criterion) => [criterion.key, criterion]));
-  const reasons: Record<string, string | undefined> = {
-    market_demand: result.frameworkReport?.problemDemand.keyInsight ?? criteriaByKey.get("problem_validation")?.evidence[0],
-    monetization: result.frameworkReport?.businessModelValidation.model ?? criteriaByKey.get("business_model")?.evidence[0],
-    competition: criteriaByKey.get("competition")?.risks[0] ?? criteriaByKey.get("differentiation")?.evidence[0],
-    acquisition: criteriaByKey.get("distribution")?.recommendations[0] ?? criteriaByKey.get("market_access")?.recommendations[0],
-    execution_feasibility: result.frameworkReport?.operationalValidation.keyConstraints[0] ?? criteriaByKey.get("execution_ability")?.risks[0],
-    differentiation: criteriaByKey.get("differentiation")?.evidence[0] ?? result.summary.topOpportunities[0],
-    risk: result.failureRisks[0]?.reason,
-  };
+type UnknownRecord = Record<string, unknown>;
 
-  for (const [scoreName, scoreValue] of Object.entries(result.scores)) {
-    statement.run(
-      randomUUID(),
-      runId,
-      scoreName,
-      Math.round(scoreValue),
-      null,
-      reasons[scoreName] ?? null,
-      createdAt
-    );
-  }
+function isRecord(value: unknown): value is UnknownRecord {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function insertInsights(runId: string, result: DynamicValidationResult, createdAt: string): void {
-  const db = getDb();
-  if (!db) return;
+function readString(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : undefined;
+}
 
-  const statement = db.prepare(`
-    INSERT INTO business_validation_insights (
-      id, validation_run_id, type, content, created_at
-    ) VALUES (?, ?, ?, ?, ?)
-  `);
+function readNumber(value: unknown): number | undefined {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
 
-  const insightSets: Array<[string, string[] | undefined]> = [
-    ["strength", result.strengths],
-    ["weakness", result.weaknesses],
-    ["risk", result.keyRisks],
-    ["assumption", result.assumptionsToTest],
-    ["next_step", result.recommendedNextSteps],
-  ];
-
-  for (const [type, entries] of insightSets) {
-    for (const content of entries ?? []) {
-      statement.run(randomUUID(), runId, type, content, createdAt);
+  if (typeof value === "string" && value.trim().length > 0) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
     }
   }
+
+  return undefined;
 }
 
-function insertResearch(runId: string, input: ValidationInput, result: DynamicValidationResult, createdAt: string): void {
-  if (!result.researchSummary) return;
-
-  const db = getDb();
-  if (!db) return;
-
-  const statement = db.prepare(`
-    INSERT INTO business_validation_research (
-      id, validation_run_id, source_type, query_used, summary, evidence, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)
-  `);
-
-  const query = JSON.stringify({
-    idea: input.idea,
-    targetCustomer: input.targetCustomer,
-    targetMarket: input.targetMarket,
-    location: input.location,
-    category: result.businessCategory ?? result.category,
-  });
-
-  const entries: Array<[string, string[]]> = [
-    ["demand_signals", result.researchSummary.demandSignals],
-    ["competition_notes", result.researchSummary.competitionNotes],
-    ["market_trends", result.researchSummary.marketTrends],
-    ["monetization_notes", result.researchSummary.monetizationNotes],
-    ["acquisition_challenges", result.researchSummary.acquisitionChallenges],
-    ["differentiation_opportunities", result.researchSummary.differentiationOpportunities],
-    ["risk_factors", result.researchSummary.riskFactors],
-  ];
-
-  for (const [sourceType, rows] of entries) {
-    for (const row of rows) {
-      statement.run(
-        randomUUID(),
-        runId,
-        sourceType,
-        query,
-        row,
-        JSON.stringify({ sources: result.researchSummary.sources }),
-        createdAt
-      );
-    }
-  }
+function clampScore(value: number): number {
+  return Math.max(0, Math.min(100, Math.round(value)));
 }
 
-function upsertFramework(result: DynamicValidationResult): void {
-  const frameworkName = result.frameworkUsed ?? result.framework_used;
-  if (!frameworkName) return;
+function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase();
+}
 
-  const framework = loadFramework({
-    category: result.category,
-    countryCode: result.country.code,
-  });
-  const db = getDb();
-  if (!db) return;
-
-  const statement = db.prepare(`
-    INSERT INTO business_validation_frameworks (
-      id, category, framework_name, version, criteria_json, weights_json, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(category, framework_name, version) DO UPDATE SET
-      criteria_json = excluded.criteria_json,
-      weights_json = excluded.weights_json,
-      updated_at = excluded.updated_at
-  `);
-  const nowIso = new Date().toISOString();
-
-  statement.run(
-    `${result.category}:${frameworkName}:v1`,
-    result.businessCategory ?? result.category,
-    frameworkName,
-    "v1",
-    JSON.stringify(framework.criteria.map((criterion) => ({
-      key: criterion.key,
-      label: criterion.label,
-      description: criterion.description ?? null,
-    }))),
-    JSON.stringify(framework.criteria.map((criterion) => ({
-      key: criterion.key,
-      weight: criterion.weight,
-    }))),
-    nowIso
+function resolveCategory(result: DynamicValidationResult): string {
+  return (
+    result.businessCategory ??
+    result.business_category ??
+    result.category ??
+    "unknown"
   );
 }
 
-export function saveBusinessValidationRun(input: SaveValidationRunInput): { runId: string } {
-  const runId = randomUUID();
-  const createdAt = new Date().toISOString();
-  
-  const db = getDb();
-  if (!db) {
-    // SQLite not available (e.g., on Vercel) - skip local persistence
-    return { runId };
+function resolveFramework(result: DynamicValidationResult): string {
+  return (
+    result.selectedFramework?.frameworkLabel ??
+    result.frameworkUsed ??
+    result.framework_used ??
+    result.framework?.label ??
+    `${resolveCategory(result)}_v1`
+  );
+}
+
+function resolveCountry(result: DynamicValidationResult): string | null {
+  const code = readString(result.country?.code);
+  if (code) return code;
+
+  const countryUnknown = result.country as unknown;
+  if (isRecord(countryUnknown)) {
+    const runtimeValue =
+      readString(countryUnknown["name"]) ??
+      readString(countryUnknown["label"]) ??
+      readString(countryUnknown["country"]);
+
+    if (runtimeValue) return runtimeValue;
   }
 
-  try {
-    const statement = db.prepare(`
-      INSERT INTO business_validation_runs (
-        id, user_id, business_id, idea_input, business_category, framework_used,
-        overall_score, confidence_score, final_verdict, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
+  return null;
+}
 
-    statement.run(
-      runId,
-      input.userId ?? null,
-      input.businessId ?? null,
-      JSON.stringify(input.result.submittedContext ?? input.input),
-      input.result.businessCategory ?? input.result.business_category ?? input.result.category,
-      input.result.frameworkUsed ?? input.result.framework_used ?? `${input.result.category}_v1`,
-      input.result.overall_score ?? 0,
-      input.result.confidenceScore ?? input.result.confidence_score ?? 0,
-      input.result.finalVerdict ?? input.result.final_verdict ?? "promising_but_needs_proof",
-      createdAt
+function resolveSummary(result: DynamicValidationResult): string {
+  return result.summary?.oneLiner ?? "Validation completed.";
+}
+
+function resolveConfidenceScore(result: DynamicValidationResult): number {
+  const candidates: unknown[] = [
+    result.confidenceScore,
+    result.confidence_score,
+    isRecord(result.meta) ? result.meta["confidence"] : undefined,
+    isRecord(result.meta) ? result.meta["confidenceScore"] : undefined,
+    isRecord(result.meta) ? result.meta["confidence_score"] : undefined,
+  ];
+
+  for (const candidate of candidates) {
+    const numeric = readNumber(candidate);
+    if (typeof numeric === "number") {
+      return clampScore(numeric);
+    }
+  }
+
+  return 0;
+}
+
+function resolveFinalVerdict(result: DynamicValidationResult): string {
+  const directDecision = readString(result.frameworkReport?.decision);
+  if (directDecision === "PIVOT_RECOMMENDED") return "NO_GO";
+  if (directDecision) return directDecision;
+
+  const finalVerdict =
+    readString(result.finalVerdict) ?? readString(result.final_verdict);
+  if (finalVerdict) return finalVerdict;
+
+  const status = readString(result.status);
+  if (status === "GO") return "GO";
+  if (status === "REFINE") return "NO_GO";
+
+  return "NEED_WORK";
+}
+
+function resolveOverallScore(result: DynamicValidationResult): number {
+  const direct =
+    readNumber(result.overall_score) ??
+    readNumber(result.overallScore) ??
+    readNumber(result.frameworkReport?.weightedScore);
+
+  if (typeof direct === "number") {
+    return clampScore(direct);
+  }
+
+  return clampScore(resolveOverallScore100(result));
+}
+
+function buildIdeaInputJson(input: SaveValidationRunInput): string {
+  return JSON.stringify({
+    email: normalizeEmail(input.email),
+    locale: input.locale ?? input.input.locale ?? "en",
+    submittedAt: input.createdAt ?? new Date().toISOString(),
+    input: input.input,
+    submittedContext: input.result.submittedContext ?? null,
+  });
+}
+
+function buildMetadataJson(input: SaveValidationRunInput): string {
+  return JSON.stringify({
+    requestId: input.requestId ?? null,
+    source: input.source ?? "bizsproutai-validation",
+    category: resolveCategory(input.result),
+    framework: resolveFramework(input.result),
+    country: resolveCountry(input.result),
+    summary: resolveSummary(input.result),
+    scores: input.result.scores ?? null,
+    report_filename: input.report.filename,
+    report_generated_at: input.report.generatedAt,
+    report_pdf_filename: input.report.pdf?.filename ?? null,
+    report_pdf_mime_type: input.report.pdf?.mimeType ?? null,
+    report_pdf_size_bytes: input.report.pdf?.sizeBytes ?? null,
+    report_pdf_error: input.report.pdfError ?? null,
+  });
+}
+
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error(
+      "Supabase is not configured. Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY."
     );
-
-    upsertFramework(input.result);
-    insertScores(runId, input.result, createdAt);
-    insertInsights(runId, input.result, createdAt);
-    insertResearch(runId, input.input, input.result, createdAt);
-  } catch (error) {
-    console.warn("[validationRunsDb] Failed to save validation run:", error);
   }
 
-  return { runId };
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+}
+
+async function tryInsertRun(
+  payload: Record<string, unknown>
+): Promise<ValidationRunRow | null> {
+  const supabase = getSupabaseClient();
+
+  const { data, error } = await supabase
+    .from("business_validation_runs")
+    .insert(payload)
+    .select("id")
+    .single<ValidationRunRow>();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data ?? null;
+}
+
+function buildInsertPayloads(input: SaveValidationRunInput, runId: string) {
+  const createdAt = input.createdAt ?? new Date().toISOString();
+  const normalizedEmail = normalizeEmail(input.email);
+  const locale = input.locale ?? input.input.locale ?? "en";
+  const ideaInputJson = buildIdeaInputJson(input);
+  const metadataJson = buildMetadataJson(input);
+  const businessCategory = resolveCategory(input.result);
+  const frameworkUsed = resolveFramework(input.result);
+  const overallScore = resolveOverallScore(input.result);
+  const confidenceScore = resolveConfidenceScore(input.result);
+  const finalVerdict = resolveFinalVerdict(input.result);
+  const summary = resolveSummary(input.result);
+  const country = resolveCountry(input.result);
+
+  const richPayload: Record<string, unknown> = {
+    id: runId,
+    request_id: input.requestId ?? runId,
+    user_id: input.userId ?? null,
+    business_id: input.businessId ?? null,
+    email: normalizedEmail,
+    locale,
+    idea_input: ideaInputJson,
+    input_json: ideaInputJson,
+    result_json: JSON.stringify(input.result),
+    business_category: businessCategory,
+    framework_used: frameworkUsed,
+    overall_score: overallScore,
+    confidence_score: confidenceScore,
+    final_verdict: finalVerdict,
+    summary,
+    country,
+    report_filename: input.report.filename,
+    report_generated_at: input.report.generatedAt,
+    report_text: input.report.text,
+    report_pdf_filename: input.report.pdf?.filename ?? null,
+    report_pdf_size_bytes: input.report.pdf?.sizeBytes ?? null,
+    source: input.source ?? "bizsproutai-validation",
+    metadata: metadataJson,
+    created_at: createdAt,
+    updated_at: createdAt,
+  };
+
+  const mediumPayload: Record<string, unknown> = {
+    id: runId,
+    email: normalizedEmail,
+    locale,
+    idea_input: ideaInputJson,
+    business_category: businessCategory,
+    framework_used: frameworkUsed,
+    overall_score: overallScore,
+    confidence_score: confidenceScore,
+    final_verdict: finalVerdict,
+    summary,
+    country,
+    metadata: metadataJson,
+    created_at: createdAt,
+    updated_at: createdAt,
+  };
+
+  const minimalPayload: Record<string, unknown> = {
+    id: runId,
+    user_id: input.userId ?? null,
+    business_id: input.businessId ?? null,
+    idea_input: ideaInputJson,
+    business_category: businessCategory,
+    framework_used: frameworkUsed,
+    overall_score: overallScore,
+    confidence_score: confidenceScore,
+    final_verdict: finalVerdict,
+    created_at: createdAt,
+  };
+
+  return [
+    { label: "rich", payload: richPayload },
+    { label: "medium", payload: mediumPayload },
+    { label: "minimal", payload: minimalPayload },
+  ];
+}
+
+export async function saveBusinessValidationRun(
+  input: SaveValidationRunInput
+): Promise<ValidationRunSaveResult> {
+  const runId = input.requestId?.trim() || randomUUID();
+  const attempts = buildInsertPayloads(input, runId);
+  const errors: string[] = [];
+
+  for (const attempt of attempts) {
+    try {
+      await tryInsertRun(attempt.payload);
+      return { runId, saved: true };
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Unknown Supabase insert error";
+      errors.push(`${attempt.label}: ${message}`);
+    }
+  }
+
+  throw new Error(
+    `Failed to save validation run to Supabase. ${errors.join(" | ")}`
+  );
 }
