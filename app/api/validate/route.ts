@@ -11,7 +11,7 @@ import type {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const VALID_LOCALES = new Set<Locale>(["en", "fr", "ht", "es"]);
+const VALID_LOCALES = new Set<Locale>(["en", "fr", "ht", "es", "pt"]);
 
 type JsonObject = Record<string, unknown>;
 
@@ -79,6 +79,281 @@ type ValidateSuccessResponse = DynamicValidationResult & {
   validationRun: ValidationRunStatus;
 };
 
+type RouteCopy = {
+  errors: {
+    invalidJson: string;
+    invalidRequest: string;
+    missingEmail: string;
+    invalidEmail: string;
+    missingIdea: string;
+    providerNotConfigured: string;
+    aiValidationFailed: string;
+    providerAuthError: string;
+    invalidAiResponse: string;
+    internalError: string;
+    unknownValidationError: string;
+    reportTextFailed: string;
+    reportPdfFailed: string;
+    leadSaveFailed: string;
+    runSaveFailed: string;
+    emailDeliveryFailed: string;
+  };
+  report: {
+    filename: string;
+    generatedLabel: string;
+    localeLabel: string;
+    emailLabel: string;
+    noEmail: string;
+    submittedIdeaTitle: string;
+    summaryTitle: string;
+    nextStepsTitle: string;
+    generatedBy: string;
+    reportTitle: string;
+    completedFallback: string;
+    noNextSteps: string;
+    pdfFallbackError: string;
+  };
+};
+
+function normalizeLocale(value: unknown): Locale {
+  const locale = typeof value === "string" ? value.trim().toLowerCase() : "en";
+  return VALID_LOCALES.has(locale as Locale) ? (locale as Locale) : "en";
+}
+
+function getRouteCopy(locale: Locale): RouteCopy {
+  switch (locale) {
+    case "fr":
+      return {
+        errors: {
+          invalidJson: "Le corps de la requête doit être un JSON valide.",
+          invalidRequest: "Requête invalide.",
+          missingEmail:
+            "L’adresse e-mail est requise pour recevoir votre rapport de validation.",
+          invalidEmail: "Veuillez fournir une adresse e-mail valide.",
+          missingIdea: "La requête de validation doit inclure une idée.",
+          providerNotConfigured:
+            "Le fournisseur d’IA pour la validation n’est pas configuré.",
+          aiValidationFailed:
+            "Tous les fournisseurs d’IA de validation ont échoué.",
+          providerAuthError:
+            "L’authentification auprès du fournisseur d’IA a échoué.",
+          invalidAiResponse:
+            "Le fournisseur d’IA a renvoyé une sortie de validation incomplète ou invalide.",
+          internalError: "Erreur interne du serveur.",
+          unknownValidationError: "Erreur de validation inconnue.",
+          reportTextFailed: "Échec de la génération du rapport texte.",
+          reportPdfFailed: "Échec de la génération du rapport PDF.",
+          leadSaveFailed: "Échec de l’enregistrement du lead.",
+          runSaveFailed: "Échec de l’enregistrement du run de validation.",
+          emailDeliveryFailed: "Échec de l’envoi de l’e-mail.",
+        },
+        report: {
+          filename: "rapport-validation-bizsproutai.txt",
+          generatedLabel: "Généré",
+          localeLabel: "Langue",
+          emailLabel: "E-mail",
+          noEmail: "non fourni",
+          submittedIdeaTitle: "Idée soumise",
+          summaryTitle: "Résumé",
+          nextStepsTitle: "Prochaines étapes",
+          generatedBy: "Généré par BizSproutAI",
+          reportTitle: "Rapport de validation BizSproutAI",
+          completedFallback: "Validation terminée.",
+          noNextSteps: "Aucune prochaine étape renvoyée.",
+          pdfFallbackError:
+            "Le générateur principal du rapport a échoué. Rapport texte de secours renvoyé.",
+        },
+      };
+    case "ht":
+      return {
+        errors: {
+          invalidJson: "Kò demann lan dwe yon JSON ki valab.",
+          invalidRequest: "Demann pa valab.",
+          missingEmail:
+            "Imèl obligatwa pou resevwa rapò validasyon ou a.",
+          invalidEmail: "Tanpri bay yon adrès imèl ki valab.",
+          missingIdea: "Demann validasyon an dwe gen yon lide.",
+          providerNotConfigured:
+            "Founisè AI pou validasyon an pa konfigire.",
+          aiValidationFailed:
+            "Tout founisè AI pou validasyon yo echwe.",
+          providerAuthError:
+            "Otantifikasyon ak founisè AI a echwe.",
+          invalidAiResponse:
+            "Founisè AI a retounen yon rezilta validasyon ki pa konplè oswa ki pa valab.",
+          internalError: "Erè entèn sèvè.",
+          unknownValidationError: "Erè validasyon enkoni.",
+          reportTextFailed: "Echèk pandan jenerasyon rapò tèks la.",
+          reportPdfFailed: "Echèk pandan jenerasyon rapò PDF la.",
+          leadSaveFailed: "Echèk pandan anrejistreman lead la.",
+          runSaveFailed: "Echèk pandan anrejistreman validasyon an.",
+          emailDeliveryFailed: "Echèk pandan voye imèl la.",
+        },
+        report: {
+          filename: "rapo-validasyon-bizsproutai.txt",
+          generatedLabel: "Jenere",
+          localeLabel: "Lang",
+          emailLabel: "Imèl",
+          noEmail: "pa bay",
+          submittedIdeaTitle: "Lide ki soumèt la",
+          summaryTitle: "Rezime",
+          nextStepsTitle: "Pwochen etap yo",
+          generatedBy: "BizSproutAI te jenere sa",
+          reportTitle: "Rapò validasyon BizSproutAI",
+          completedFallback: "Validasyon an fini.",
+          noNextSteps: "Pa gen pwochen etap ki retounen.",
+          pdfFallbackError:
+            "Jeneratè prensipal rapò a echwe. Nou retounen yon rapò tèks sekou.",
+        },
+      };
+    case "es":
+      return {
+        errors: {
+          invalidJson: "El cuerpo de la solicitud debe ser JSON válido.",
+          invalidRequest: "Solicitud no válida.",
+          missingEmail:
+            "El correo electrónico es obligatorio para recibir tu informe de validación.",
+          invalidEmail: "Proporciona un correo electrónico válido.",
+          missingIdea: "La solicitud de validación debe incluir una idea.",
+          providerNotConfigured:
+            "El proveedor de IA para validación no está configurado.",
+          aiValidationFailed:
+            "Todos los proveedores de validación con IA fallaron.",
+          providerAuthError:
+            "Falló la autenticación con el proveedor de IA.",
+          invalidAiResponse:
+            "El proveedor de IA devolvió una salida de validación incompleta o no válida.",
+          internalError: "Error interno del servidor.",
+          unknownValidationError: "Error de validación desconocido.",
+          reportTextFailed: "No se pudo generar el informe de texto.",
+          reportPdfFailed: "No se pudo generar el informe PDF.",
+          leadSaveFailed: "No se pudo guardar el lead.",
+          runSaveFailed: "No se pudo guardar la ejecución de validación.",
+          emailDeliveryFailed: "No se pudo enviar el correo electrónico.",
+        },
+        report: {
+          filename: "reporte-validacion-bizsproutai.txt",
+          generatedLabel: "Generado",
+          localeLabel: "Idioma",
+          emailLabel: "Correo electrónico",
+          noEmail: "no proporcionado",
+          submittedIdeaTitle: "Idea enviada",
+          summaryTitle: "Resumen",
+          nextStepsTitle: "Siguientes pasos",
+          generatedBy: "Generado por BizSproutAI",
+          reportTitle: "Reporte de validación BizSproutAI",
+          completedFallback: "Validación completada.",
+          noNextSteps: "No se devolvieron siguientes pasos.",
+          pdfFallbackError:
+            "Falló el generador principal del informe. Se devolvió un informe de texto de respaldo.",
+        },
+      };
+    case "pt":
+      return {
+        errors: {
+          invalidJson: "O corpo da requisição deve ser um JSON válido.",
+          invalidRequest: "Requisição inválida.",
+          missingEmail:
+            "O e-mail é obrigatório para receber seu relatório de validação.",
+          invalidEmail: "Informe um endereço de e-mail válido.",
+          missingIdea: "A solicitação de validação deve incluir uma ideia.",
+          providerNotConfigured:
+            "O provedor de IA para validação não está configurado.",
+          aiValidationFailed:
+            "Todos os provedores de validação por IA falharam.",
+          providerAuthError:
+            "A autenticação com o provedor de IA falhou.",
+          invalidAiResponse:
+            "O provedor de IA retornou uma saída de validação incompleta ou inválida.",
+          internalError: "Erro interno do servidor.",
+          unknownValidationError: "Erro de validação desconhecido.",
+          reportTextFailed: "Falha ao gerar o relatório em texto.",
+          reportPdfFailed: "Falha ao gerar o relatório em PDF.",
+          leadSaveFailed: "Falha ao salvar o lead.",
+          runSaveFailed: "Falha ao salvar a execução da validação.",
+          emailDeliveryFailed: "Falha ao enviar o e-mail.",
+        },
+        report: {
+          filename: "relatorio-validacao-bizsproutai.txt",
+          generatedLabel: "Gerado em",
+          localeLabel: "Idioma",
+          emailLabel: "E-mail",
+          noEmail: "não informado",
+          submittedIdeaTitle: "Ideia enviada",
+          summaryTitle: "Resumo",
+          nextStepsTitle: "Próximos passos",
+          generatedBy: "Gerado por BizSproutAI",
+          reportTitle: "Relatório de validação BizSproutAI",
+          completedFallback: "Validação concluída.",
+          noNextSteps: "Nenhum próximo passo retornado.",
+          pdfFallbackError:
+            "O gerador principal do relatório falhou. Foi retornado um relatório de texto alternativo.",
+        },
+      };
+    case "en":
+    default:
+      return {
+        errors: {
+          invalidJson: "Request body must be valid JSON.",
+          invalidRequest: "Invalid request.",
+          missingEmail:
+            "Email is required to receive your validation report.",
+          invalidEmail: "Please provide a valid email address.",
+          missingIdea: "Validation request must include an idea.",
+          providerNotConfigured:
+            "AI validation provider is not configured.",
+          aiValidationFailed:
+            "All AI validation providers failed.",
+          providerAuthError:
+            "AI provider authentication failed.",
+          invalidAiResponse:
+            "AI provider returned malformed or incomplete validation output.",
+          internalError: "Internal server error.",
+          unknownValidationError: "Unknown validation error.",
+          reportTextFailed: "Failed to generate text report.",
+          reportPdfFailed: "Failed to generate PDF report.",
+          leadSaveFailed: "Failed to save lead.",
+          runSaveFailed: "Failed to save validation run.",
+          emailDeliveryFailed: "Email delivery failed.",
+        },
+        report: {
+          filename: "bizsproutai-validation-report.txt",
+          generatedLabel: "Generated",
+          localeLabel: "Locale",
+          emailLabel: "Email",
+          noEmail: "not provided",
+          submittedIdeaTitle: "Submitted Idea",
+          summaryTitle: "Summary",
+          nextStepsTitle: "Next Steps",
+          generatedBy: "Generated by BizSproutAI",
+          reportTitle: "BizSproutAI Validation Report",
+          completedFallback: "Validation completed.",
+          noNextSteps: "No next steps returned.",
+          pdfFallbackError:
+            "Primary report builder failed. Returned fallback text report.",
+        },
+      };
+  }
+}
+
+function inferLocaleFromRequest(request: NextRequest): Locale {
+  const candidates = [
+    request.nextUrl.searchParams.get("locale"),
+    request.headers.get("x-locale"),
+    request.headers.get("x-user-locale"),
+    request.headers.get("accept-language")?.split(",")[0]?.split("-")[0],
+  ];
+
+  for (const candidate of candidates) {
+    const normalized = normalizeLocale(candidate);
+    if (candidate && VALID_LOCALES.has(normalized)) {
+      return normalized;
+    }
+  }
+
+  return "en";
+}
+
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -121,11 +396,6 @@ function asStringArray(value: unknown): string[] | undefined {
   return normalized.length > 0 ? normalized : undefined;
 }
 
-function normalizeLocale(value: unknown): Locale {
-  const locale = typeof value === "string" ? value.trim().toLowerCase() : "en";
-  return VALID_LOCALES.has(locale as Locale) ? (locale as Locale) : "en";
-}
-
 function normalizeExperienceLevel(
   value: unknown
 ): ValidationInput["experienceLevel"] {
@@ -161,7 +431,8 @@ function sendJson(payload: unknown, status: number, requestId: string) {
 }
 
 function parseValidationPayload(
-  body: unknown
+  body: unknown,
+  requestLocale: Locale
 ): { email?: string; website?: string; input: ValidationInput } {
   const raw = isObject(body) ? body : {};
 
@@ -176,7 +447,7 @@ function parseValidationPayload(
 
   const input: ValidationInput = {
     idea,
-    locale: normalizeLocale(raw.locale),
+    locale: normalizeLocale(raw.locale ?? requestLocale),
     targetCustomer: asTrimmedString(raw.targetCustomer),
     targetMarket: asTrimmedString(raw.targetMarket),
     location: asTrimmedString(raw.location),
@@ -193,7 +464,11 @@ function parseValidationPayload(
   return { email, website, input };
 }
 
-function classifyValidationError(message: string): ErrorResponseShape {
+function classifyValidationError(
+  message: string,
+  locale: Locale
+): ErrorResponseShape {
+  const copy = getRouteCopy(locale);
   const details = message.trim();
   const lower = details.toLowerCase();
 
@@ -201,19 +476,20 @@ function classifyValidationError(message: string): ErrorResponseShape {
     return {
       status: 400,
       code: "missing_email",
-      error: "Email is required to receive your validation report.",
+      error: copy.errors.missingEmail,
       details,
     };
   }
 
   if (
     lower.includes("validation input is missing an idea") ||
+    lower.includes("validation request must include an idea") ||
     lower.includes("missing an idea")
   ) {
     return {
       status: 400,
       code: "invalid_input",
-      error: "Validation input is missing an idea.",
+      error: copy.errors.missingIdea,
       details,
     };
   }
@@ -228,7 +504,7 @@ function classifyValidationError(message: string): ErrorResponseShape {
     return {
       status: 503,
       code: "provider_not_configured",
-      error: "AI validation provider is not configured.",
+      error: copy.errors.providerNotConfigured,
       details,
     };
   }
@@ -249,7 +525,7 @@ function classifyValidationError(message: string): ErrorResponseShape {
     return {
       status: 502,
       code: "ai_validation_failed",
-      error: "All AI validation providers failed.",
+      error: copy.errors.aiValidationFailed,
       details,
       providerFailures,
     };
@@ -264,7 +540,7 @@ function classifyValidationError(message: string): ErrorResponseShape {
     return {
       status: 502,
       code: "provider_auth_error",
-      error: "AI provider authentication failed.",
+      error: copy.errors.providerAuthError,
       details,
     };
   }
@@ -285,7 +561,7 @@ function classifyValidationError(message: string): ErrorResponseShape {
     return {
       status: 502,
       code: "invalid_ai_response",
-      error: "AI provider returned malformed or incomplete validation output.",
+      error: copy.errors.invalidAiResponse,
       details,
     };
   }
@@ -293,7 +569,7 @@ function classifyValidationError(message: string): ErrorResponseShape {
   return {
     status: 500,
     code: "internal_error",
-    error: "Internal server error.",
+    error: copy.errors.internalError,
     details,
   };
 }
@@ -304,6 +580,7 @@ function buildFallbackReport(args: {
   locale: Locale;
   result: DynamicValidationResult;
 }): ReportPayload {
+  const copy = getRouteCopy(args.locale);
   const generatedAt = new Date().toISOString();
 
   const nextSteps = Array.isArray(args.result.nextActions)
@@ -311,35 +588,35 @@ function buildFallbackReport(args: {
     : [];
 
   const text = [
-    "BizSproutAI Validation Report",
+    copy.report.reportTitle,
     "============================",
-    `Generated: ${generatedAt}`,
-    `Locale: ${args.locale}`,
-    `Email: ${args.email ?? "not provided"}`,
+    `${copy.report.generatedLabel}: ${generatedAt}`,
+    `${copy.report.localeLabel}: ${args.locale}`,
+    `${copy.report.emailLabel}: ${args.email ?? copy.report.noEmail}`,
     "",
-    "Submitted Idea",
+    copy.report.submittedIdeaTitle,
     "--------------",
     args.idea,
     "",
-    "Summary",
+    copy.report.summaryTitle,
     "-------",
-    args.result.summary?.oneLiner ?? "Validation completed.",
+    args.result.summary?.oneLiner ?? copy.report.completedFallback,
     "",
-    "Next Steps",
+    copy.report.nextStepsTitle,
     "----------",
-    ...(nextSteps.length ? nextSteps : ["No next steps returned."]).map(
+    ...(nextSteps.length ? nextSteps : [copy.report.noNextSteps]).map(
       (item) => `- ${item}`
     ),
     "",
-    "Generated by BizSproutAI",
+    copy.report.generatedBy,
   ].join("\n");
 
   return {
-    filename: "bizsproutai-validation-report.txt",
+    filename: copy.report.filename,
     generatedAt,
     text,
     pdf: null,
-    pdfError: "Primary report builder failed. Returned fallback text report.",
+    pdfError: copy.report.pdfFallbackError,
   };
 }
 
@@ -350,6 +627,8 @@ async function buildReportArtifacts(args: {
   result: DynamicValidationResult;
   requestId: string;
 }): Promise<ReportArtifacts> {
+  const copy = getRouteCopy(args.locale);
+
   let textDocument: ReportArtifacts["textDocument"] = null;
   let pdfDocument: ReportArtifacts["pdfDocument"] = null;
 
@@ -383,6 +662,7 @@ async function buildReportArtifacts(args: {
       `[api/validate][${args.requestId}] text report generation failed`,
       error
     );
+    report.pdfError = copy.errors.reportTextFailed;
   }
 
   try {
@@ -405,16 +685,16 @@ async function buildReportArtifacts(args: {
     };
     report.pdfError = null;
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Failed to build PDF report.";
-
     console.error(
       `[api/validate][${args.requestId}] pdf report generation failed`,
       error
     );
 
     report.pdf = null;
-    report.pdfError = message;
+    report.pdfError =
+      error instanceof Error && error.message.trim().length > 0
+        ? error.message
+        : copy.errors.reportPdfFailed;
   }
 
   return {
@@ -476,6 +756,8 @@ async function persistLead(args: {
   result: DynamicValidationResult;
   report: ReportPayload;
 }): Promise<PersistStatus> {
+  const copy = getRouteCopy(args.input.locale ?? "en");
+
   try {
     const mod = await import("@/src/leads/server/validationLeadsDb");
     const saveValidationLead = (mod as Record<string, unknown>).saveValidationLead;
@@ -505,7 +787,8 @@ async function persistLead(args: {
     return {
       saved: false,
       eventId: null,
-      error: error instanceof Error ? error.message : "Failed to save lead.",
+      error:
+        error instanceof Error ? error.message : copy.errors.leadSaveFailed,
     };
   }
 }
@@ -517,6 +800,8 @@ async function persistValidationRun(args: {
   result: DynamicValidationResult;
   report: ReportPayload;
 }): Promise<ValidationRunStatus> {
+  const copy = getRouteCopy(args.input.locale ?? "en");
+
   try {
     const mod = await import("@/src/validation/server/validationRunsDb");
     const saveBusinessValidationRun = (mod as Record<string, unknown>)
@@ -546,7 +831,7 @@ async function persistValidationRun(args: {
       saved: false,
       runId: null,
       error:
-        error instanceof Error ? error.message : "Failed to save validation run.",
+        error instanceof Error ? error.message : copy.errors.runSaveFailed,
     };
   }
 }
@@ -560,6 +845,8 @@ async function deliverEmails(args: {
   textDocument: ReportArtifacts["textDocument"];
   pdfDocument: ReportArtifacts["pdfDocument"];
 }): Promise<EmailDeliveryStatus> {
+  const copy = getRouteCopy(args.input.locale ?? "en");
+
   try {
     const mod = await import("@/lib/email/ionos");
     const sendValidationEmails = (mod as Record<string, unknown>)
@@ -603,7 +890,9 @@ async function deliverEmails(args: {
       enabled: true,
       sentToUser: false,
       sentToOwner: false,
-      errors: [error instanceof Error ? error.message : "Email delivery failed."],
+      errors: [
+        error instanceof Error ? error.message : copy.errors.emailDeliveryFailed,
+      ],
     };
   }
 }
@@ -620,6 +909,7 @@ export async function OPTIONS() {
 
 export async function POST(request: NextRequest) {
   const requestId = createRequestId();
+  const requestLocale = inferLocaleFromRequest(request);
 
   try {
     console.log(`[api/validate][${requestId}] POST handler reached`);
@@ -636,14 +926,15 @@ export async function POST(request: NextRequest) {
           ok: false,
           requestId,
           code: "invalid_json",
-          error: "Request body must be valid JSON.",
+          error: getRouteCopy(requestLocale).errors.invalidJson,
         },
         400,
         requestId
       );
     }
 
-    const { email, website, input } = parseValidationPayload(body);
+    const { email, website, input } = parseValidationPayload(body, requestLocale);
+    const copy = getRouteCopy(input.locale ?? "en");
 
     console.log(`[api/validate][${requestId}] normalized input`, {
       email,
@@ -658,7 +949,7 @@ export async function POST(request: NextRequest) {
           ok: false,
           requestId,
           code: "invalid_request",
-          error: "Invalid request.",
+          error: copy.errors.invalidRequest,
         },
         400,
         requestId
@@ -671,7 +962,7 @@ export async function POST(request: NextRequest) {
           ok: false,
           requestId,
           code: "missing_email",
-          error: "Email is required to receive your validation report.",
+          error: copy.errors.missingEmail,
         },
         400,
         requestId
@@ -684,7 +975,7 @@ export async function POST(request: NextRequest) {
           ok: false,
           requestId,
           code: "invalid_email",
-          error: "Please provide a valid email address.",
+          error: copy.errors.invalidEmail,
         },
         400,
         requestId
@@ -697,7 +988,7 @@ export async function POST(request: NextRequest) {
           ok: false,
           requestId,
           code: "invalid_input",
-          error: "Validation input is missing an idea.",
+          error: copy.errors.missingIdea,
         },
         400,
         requestId
@@ -766,9 +1057,11 @@ export async function POST(request: NextRequest) {
     console.error(`[api/validate][${requestId}] caught error`, error);
 
     const message =
-      error instanceof Error ? error.message : "Unknown validation error";
+      error instanceof Error
+        ? error.message
+        : getRouteCopy(requestLocale).errors.unknownValidationError;
 
-    const classified = classifyValidationError(message);
+    const classified = classifyValidationError(message, requestLocale);
 
     return sendJson(
       {

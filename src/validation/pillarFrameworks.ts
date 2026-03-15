@@ -63,9 +63,10 @@ export function getPillarStatus(score: number): PillarStatus {
 }
 
 // Helper function to determine verdict from overall score
+// Aligned with decision.ts: 0-39 high risk, 40-69 early stage, 70+ promising
 export function getConstructiveVerdict(overallScore: number): ConstructiveVerdict {
   if (overallScore >= 70) return "promising_execution";
-  if (overallScore >= 45) return "promising_needs_validation";
+  if (overallScore >= 40) return "promising_needs_validation";
   return "high_risk_improve_or_pivot";
 }
 

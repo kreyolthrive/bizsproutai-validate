@@ -90,23 +90,6 @@
     "cta": {
       "getFreeValidation": "Obtener una validación gratis"
     },
-    "sections": {
-      "stopBuilding": {
-        "titleLine1": "Deja de crear",
-        "titleLine2": "negocios que fracasan",
-        "body": "El 90% de las startups fracasan. Nuestra IA valida tu idea, la redefine si es NO-GO y construye todo lo que necesitas para lanzar. Un prompt. Un negocio completo. Totalmente editable para tu visión."
-      },
-      "demo": {
-        "title": "Prueba una validación gratis",
-        "subtitle": "Mira cómo nuestra IA analiza ideas de negocio"
-      },
-      "validation": {
-        "title": "Obtén validación gratis",
-        "placeholder": "Describe tu idea de negocio",
-        "analyzing": "Analizando...",
-        "button": "Validar mi idea"
-      }
-    },
     "operatingModel": {
       "title": "La web es tu centro de control. El móvil es tu control de ejecución.",
       "subtitle": "Configura y optimiza en escritorio, luego ejecuta tu lanzamiento desde tu bolsillo.",
@@ -128,7 +111,7 @@
         "items": [
           "Enfoque diario con 1–3 tareas de impacto",
           "Acciones de lead: WhatsApp, llamada, email",
-          "Compartir links de booking/request/waitlist"
+          "Compartir links de reserva/solicitud/lista de espera"
         ],
         "cta": "Abrir compañero móvil"
       }
@@ -161,9 +144,9 @@
     },
     "labels": {
       "overallScore": "Puntuación general",
-      "failureRisks": "Riesgos de fracaso",
-      "fixes": "Correcciones recomendadas",
-      "alternatives": "Modelos alternativos",
+      "failureRisks": "Áreas a fortalecer",
+      "fixes": "Mejoras recomendadas",
+      "alternatives": "Enfoques alternativos",
       "nextActions": "Próximas acciones",
       "country": "País detectado",
       "category": "Categoría de negocio"
@@ -289,7 +272,7 @@
     },
     "dashboard": {
       "kicker": "Control de lanzamiento",
-      "title": "Dashboard del fundador",
+      "title": "Panel del fundador",
       "subtitle": "Sigue progreso, leads y tareas desde un solo lugar.",
       "stats": {
         "sprint": "Progreso sprint",
@@ -325,12 +308,12 @@
     "brandKit": {
       "title": "Kit de marca",
       "subtitle": "Define una identidad de marca clara antes del lanzamiento.",
-      "essentialsTitle": "Elementos esenciales",
+      "essentialsTitle": "Elementos esenciales de marca",
       "items": [
         "Declaración de posicionamiento de marca",
         "Guía de tono de voz",
         "Dirección de color principal y tipografía",
-        "Pilares de mensaje y lenguaje CTA"
+        "Pilares de mensaje y lenguaje de llamado a la acción"
       ]
     },
     "domains": {
@@ -346,10 +329,10 @@
       "kicker": "Compañero móvil",
       "title": "Gestiona tu lanzamiento desde el teléfono",
       "subtitle": "Sigue tareas y responde leads rápido mientras te mueves.",
-      "copied": "Enlace copiado.",
-      "offline": "Estás sin conexión. Los cambios se guardan localmente.",
+      "copied": "Enlace copiado al portapapeles.",
+      "offline": "Estás sin conexión. Los cambios se guardan localmente y se sincronizan al reconectarte.",
       "noName": "Lead sin nombre",
-      "noLeads": "Todavía no hay leads. Publica tus enlaces para comenzar.",
+      "noLeads": "Todavía no hay leads. Publica tus enlaces para comenzar a captar contactos.",
       "metrics": {
         "leads": "Leads",
         "done": "Hecho"
@@ -365,17 +348,17 @@
         "markDone": "Marcar hecho",
         "call": "Llamar",
         "shareBooking": "Compartir enlace de reserva",
-        "shareRequest": "Compartir enlace de solicitud",
+        "shareRequest": "Compartir enlace de solicitud de servicio",
         "shareWaitlist": "Compartir enlace de lista de espera",
-        "openWeb": "Abrir dashboard web"
+        "openWeb": "Abrir panel web"
       },
       "profile": {
-        "blurb": "Comparte tus enlaces y mantén el impulso diario. Las acciones pequeñas crean tracción."
+        "blurb": "Comparte tus enlaces y mantén el impulso diario. Las acciones pequeñas cada día crean tracción de lanzamiento."
       }
     },
     "socialAgent": {
       "title": "Agente social",
-      "subtitle": "Crea contenido consistente y campañas con un flujo guiado.",
+      "subtitle": "Crea contenido consistente y campañas desde un flujo de trabajo guiado.",
       "quickStartTitle": "Inicio rápido",
       "steps": [
         "Define una oferta clara y una audiencia para esta semana.",
@@ -386,14 +369,14 @@
     "adminLeads": {
       "kicker": "Admin",
       "title": "Leads de validación",
-      "subtitle": "Filtra y segmenta leads capturados desde la landing.",
+      "subtitle": "Filtra y segmenta leads capturados desde la página de validación.",
       "exportCsv": "Exportar CSV",
       "stats": {
-        "total": "Total leads"
+        "total": "Total de leads"
       },
       "filters": {
         "allDecisions": "Todas las decisiones",
-        "ideaCategory": "Categoría",
+        "ideaCategory": "Categoría de idea",
         "source": "Fuente",
         "apply": "Aplicar filtros",
         "reset": "Reiniciar"
@@ -433,7 +416,7 @@
       },
       "placeholders": {
         "fullName": "Tu nombre completo",
-        "email": "tu@ejemplo.com",
+        "email": "you@example.com",
         "phone": "+1 555 123 4567",
         "preferredDateTime": "p. ej., martes 3pm",
         "helpRequest": "Cuéntanos tu objetivo y reto.",
@@ -444,7 +427,7 @@
       "selectService": "Selecciona un servicio",
       "optional": "opcional",
       "submitting": "Enviando...",
-      "thankYouTitle": "Gracias, {name}!",
+      "thankYouTitle": "¡Gracias, {name}!",
       "submitAnother": "Enviar otra respuesta",
       "viewSubmissions": "Ver envíos",
       "errors": {
@@ -518,19 +501,19 @@
   "homepage": {
     "hero": {
       "badge": "Validación IA para mercados reales",
-      "title": "Validate Your Business Idea Before You Build",
-      "subtitle": "BizSproutAI uses AI to classify your idea, score the opportunity, identify risks, and show your next best step.",
+      "title": "Valida tu idea de negocio antes de construir",
+      "subtitle": "BizSproutAI usa IA para clasificar tu idea, puntuar la oportunidad, identificar riesgos y mostrarte el siguiente mejor paso.",
       "supporting": "Diseñado para emprendedores en África, América Latina, el Caribe y la diáspora.",
-      "cta": "Validate My Idea Free"
+      "cta": "Valida mi idea gratis"
     },
     "trust": {
-      "item1": "No credit card required.",
-      "item2": "Your idea stays private.",
-      "item3": "Get a clear score, risks, and next step."
+      "item1": "No se requiere tarjeta de crédito.",
+      "item2": "Tu idea se mantiene privada.",
+      "item3": "Obtén una puntuación clara, riesgos y el siguiente paso."
     },
     "footer": {
-      "prefix": "Questions or partnership ideas? Email us at",
-      "note": "BizSproutAI is a DBA of Kreyol Thrive Biz."
+      "prefix": "¿Preguntas o ideas de alianza? Escríbenos a",
+      "note": "BizSproutAI es un DBA de Kreyol Thrive Biz."
     },
     "whatYouGet": {
       "title": "Lo que recibes",
@@ -541,7 +524,7 @@
     },
     "examples": {
       "title": "Cómo BizSproutAI evalúa ideas",
-      "cta": "¿Quieres este tipo de análisis para tu idea? Describe tu idea y correo arriba.",
+      "cta": "¿Quieres este tipo de análisis para tu idea? Describe tu idea y correo arriba para obtenerlo al instante.",
       "card1": {
         "idea": "Bolsos de cuero hechos a mano vendidos online",
         "demand": "Demanda: crecimiento en productos artesanales y sostenibles.",
@@ -574,7 +557,7 @@
     },
     "afterValidation": {
       "title": "¿Qué pasa después de validar?",
-      "body": "Si tu idea muestra potencial, también te enviamos un preview práctico de sprint de 30 días con pasos de marca, presencia online, contenido y outreach."
+      "body": "Si tu idea muestra potencial, también te enviamos un preview práctico de sprint de 30 días con pasos de marca, presencia online, contenido y acciones de alcance."
     },
     "contact": {
       "title": "¿Preguntas o ideas de colaboración?",
@@ -583,111 +566,111 @@
   },
   "validationHero": {
     "intro": {
-      "eyebrow": "AI business validation",
-      "kicker": "Category-aware scoring and next-step guidance",
-      "title": "Validate your business idea with AI before you build",
-      "body": "BizSproutAI analyzes your idea, classifies the business category, selects the right validation framework, researches the opportunity, scores the business, and shows you the next best move.",
-      "highlight1Title": "Classify the business",
-      "highlight1Body": "Detect the right category so a local service is not judged like SaaS or ecommerce.",
-      "highlight2Title": "Score the opportunity",
-      "highlight2Body": "See market demand, monetization, competition, acquisition, differentiation, and risk in one view.",
-      "highlight3Title": "Move with clarity",
-      "highlight3Body": "Get practical next steps, experiments to run, and the clearest path forward."
+      "eyebrow": "Validación de negocios con IA",
+      "kicker": "Puntuación por categoría y guía de próximos pasos",
+      "title": "Valida tu idea de negocio con IA antes de construir",
+      "body": "BizSproutAI analiza tu idea, clasifica la categoría del negocio, selecciona el marco de validación adecuado, investiga la oportunidad, puntúa el negocio y te muestra el siguiente mejor paso.",
+      "highlight1Title": "Clasificar el negocio",
+      "highlight1Body": "Detectar la categoría correcta para que un servicio local no se evalúe como SaaS o ecommerce.",
+      "highlight2Title": "Puntuar la oportunidad",
+      "highlight2Body": "Ve demanda de mercado, monetización, competencia, adquisición, diferenciación y riesgo en una sola vista.",
+      "highlight3Title": "Avanza con claridad",
+      "highlight3Body": "Obtén próximos pasos prácticos, experimentos a ejecutar y el camino más claro hacia adelante."
     },
     "form": {
-      "ideaLabel": "Describe your business idea",
-      "ideaPlaceholder": "Example: A mobile car detailing service for busy professionals in Miami that offers monthly packages and online booking.",
-      "targetCustomerLabel": "Who is this for?",
-      "targetCustomerPlaceholder": "Busy professionals, new parents, restaurant owners, independent real estate agents",
-      "marketLabel": "What market are you targeting?",
-      "marketPlaceholder": "Local households in Miami, U.S. ecommerce shoppers, SMB teams, creators",
-      "locationLabel": "Where will you operate?",
-      "locationPlaceholder": "Miami, South Florida, nationwide in the U.S., remote-first online",
-      "offerLabel": "What are you offering?",
-      "offerPlaceholder": "Monthly detailing membership, invoicing SaaS, executive coaching package, curated product bundle",
-      "problemLabel": "What problem are you solving?",
-      "problemPlaceholder": "People lose time coordinating this manually and want a faster, easier option.",
-      "pricingLabel": "Pricing idea",
-      "pricingPlaceholder": "$99/month, $149 premium package, $40 per session, 10% marketplace take rate",
-      "budgetLabel": "Budget (optional)",
+      "ideaLabel": "Describe tu idea de negocio",
+      "ideaPlaceholder": "Ejemplo: Un servicio móvil de detallado de autos para profesionales ocupados en Miami que ofrece paquetes mensuales y reservas en línea.",
+      "targetCustomerLabel": "¿Para quién es?",
+      "targetCustomerPlaceholder": "Profesionales ocupados, padres recientes, dueños de restaurantes, agentes inmobiliarios independientes",
+      "marketLabel": "¿Qué mercado estás apuntando?",
+      "marketPlaceholder": "Hogares locales en Miami, compradores de ecommerce en EE.UU., equipos de pymes, creadores",
+      "locationLabel": "¿Dónde vas a operar?",
+      "locationPlaceholder": "Miami, sur de Florida, todo EE.UU., remoto/online",
+      "offerLabel": "¿Qué estás ofreciendo?",
+      "offerPlaceholder": "Membresía mensual de detallado, SaaS de facturación, paquete de coaching ejecutivo, bundle curado de productos",
+      "problemLabel": "¿Qué problema estás resolviendo?",
+      "problemPlaceholder": "Las personas pierden tiempo coordinando esto manualmente y quieren una opción más rápida y fácil.",
+      "pricingLabel": "Idea de precio",
+      "pricingPlaceholder": "$99/mes, $149 paquete premium, $40 por sesión, 10% de comisión marketplace",
+      "budgetLabel": "Presupuesto (opcional)",
       "budgetPlaceholder": "5000",
-      "skillsLabel": "Skills (optional)",
-      "skillsPlaceholder": "Sales, operations, product design, paid ads, coding, industry expertise",
-      "timelineLabel": "Timeline in days (optional)",
+      "skillsLabel": "Habilidades (opcional)",
+      "skillsPlaceholder": "Ventas, operaciones, diseño de producto, anuncios pagados, programación, experiencia en la industria",
+      "timelineLabel": "Plazo en días (opcional)",
       "timelinePlaceholder": "30",
-      "emailLabel": "Email to receive your validation report",
+      "emailLabel": "Email para recibir tu reporte de validación",
       "emailPlaceholder": "nombre@empresa.com",
-      "submit": "Validate My Idea",
-      "validating": "Running AI validation...",
-      "cardTitle": "Tell us about the business you want to build",
-      "cardBody": "Share the core idea first. Add extra context only if you want a more tailored validation.",
-      "cardBadge": "2-minute setup",
-      "moreDetails": "Add more details (optional)",
-      "reassurance1": "No credit card required.",
-      "reassurance2": "Your idea stays private.",
-      "reassurance3": "Get a clear score, risks, and next steps."
+      "submit": "Validar mi idea",
+      "validating": "Ejecutando validación con IA...",
+      "cardTitle": "Cuéntanos sobre el negocio que quieres construir",
+      "cardBody": "Comparte primero la idea principal. Agrega más contexto solo si quieres una validación más personalizada.",
+      "cardBadge": "2 minutos para completar",
+      "moreDetails": "Agregar más detalles (opcional)",
+      "reassurance1": "No se requiere tarjeta de crédito.",
+      "reassurance2": "Tu idea se mantiene privada.",
+      "reassurance3": "Obtén una puntuación clara, riesgos y próximos pasos."
     },
     "sample": {
-      "title": "Try a sample idea"
+      "title": "Prueba una idea de ejemplo"
     },
     "sampleIdeas": [
-      "Online store for handmade leather bags with premium gifting",
-      "Mobile car detailing service for busy professionals in Miami",
-      "AI social media manager for real estate agents"
+      "Tienda online de bolsos de cuero hechos a mano con empaque premium para regalo",
+      "Servicio móvil de detallado de autos para profesionales ocupados en Miami",
+      "Gestor de redes sociales con IA para agentes inmobiliarios"
     ],
     "result": {
-      "awaiting": "Your verdict will appear here",
+      "awaiting": "Tu veredicto aparecerá aquí",
       "go": "PROMETEDOR — LISTO PARA EJECUTAR",
       "conditionalGo": "PROMETEDOR — NECESITA VALIDACIÓN",
       "needsWork": "ETAPA TEMPRANA — VALIDA ANTES DE CONSTRUIR",
       "pivotRecommended": "ALTO RIESGO — MEJORAR O PIVOTAR",
       "panelEyebrow": "Dónde está tu idea hoy",
-      "panelTitle": "Your validation snapshot",
-      "panelBody": "Run validation to see the score, category, risks, and next step for your idea.",
-      "summaryDefault": "Share your idea to get a category-aware validation score, key risks, and the clearest next step.",
-      "summaryTitle": "Verdict summary",
-      "category": "Category",
-      "framework": "Framework",
-      "score": "Validation score",
-      "confidence": "Confidence",
-      "categoryEmpty": "Category will appear here",
-      "frameworkEmpty": "Framework will appear here",
-      "scoreEmpty": "Score will appear here",
-      "confidenceEmpty": "Confidence level will appear here",
-      "verdictEmpty": "Your verdict will appear here",
-      "nextStep": "Next step",
-      "nextStepEmpty": "Your next best step will appear here after validation.",
-      "breakdownTitle": "Opportunity score breakdown",
-      "breakdownHintReady": "Structured scoring across the opportunity",
-      "breakdownHintEmpty": "Scores will appear after validation",
-      "marketDemand": "Market demand",
-      "monetization": "Monetization",
-      "competition": "Competition",
-      "acquisition": "Acquisition",
-      "execution": "Execution feasibility",
-      "differentiation": "Differentiation",
-      "risk": "Risk",
-      "pending": "Pending",
-      "strengths": "Strengths",
-      "weaknesses": "Weaknesses",
-      "keyRisks": "Key risks",
-      "risks": "Risks",
-      "assumptions": "Assumptions to test",
-      "researchSignals": "Research signals",
-      "nextSteps": "Recommended next steps",
-      "nextBestAction": "Next best action",
-      "strengthsEmpty": "Your strongest signals will appear here after validation.",
-      "weaknessesEmpty": "The main gaps or weak points will appear here.",
-      "risksEmpty": "Key risks will appear here once the opportunity is scored.",
-      "assumptionsEmpty": "The assumptions you should test first will appear here.",
-      "researchEmpty": "Market signals and proof points will appear here.",
-      "sprintPending": "Validate your idea to see the next best action to take first.",
-      "ctaTitle": "Next best actions",
-      "ctaBody": "Choose the clearest next move to keep validating, building, or refining the business.",
-      "download": "Download My Validation Report",
-      "downloaded": "Downloaded",
-      "downloadHint": "Run validation to download your report.",
-      "pillarTitle": "Validación de Seis Pilares",
+      "panelTitle": "Tu resumen de validación",
+      "panelBody": "Ejecuta la validación para ver la puntuación, categoría, riesgos y el siguiente paso para tu idea.",
+      "summaryDefault": "Comparte tu idea para obtener una puntuación de validación por categoría, riesgos clave y el siguiente paso más claro.",
+      "summaryTitle": "Resumen del veredicto",
+      "category": "Categoría",
+      "framework": "Marco",
+      "score": "Puntuación de validación",
+      "confidence": "Confianza",
+      "categoryEmpty": "La categoría aparecerá aquí",
+      "frameworkEmpty": "El marco aparecerá aquí",
+      "scoreEmpty": "La puntuación aparecerá aquí",
+      "confidenceEmpty": "El nivel de confianza aparecerá aquí",
+      "verdictEmpty": "Tu veredicto aparecerá aquí",
+      "nextStep": "Siguiente paso",
+      "nextStepEmpty": "Tu siguiente mejor paso aparecerá aquí después de la validación.",
+      "breakdownTitle": "Desglose de puntuación de oportunidad",
+      "breakdownHintReady": "Puntuación estructurada de la oportunidad",
+      "breakdownHintEmpty": "Las puntuaciones aparecerán después de la validación",
+      "marketDemand": "Demanda de mercado",
+      "monetization": "Monetización",
+      "competition": "Competencia",
+      "acquisition": "Adquisición",
+      "execution": "Viabilidad de ejecución",
+      "differentiation": "Diferenciación",
+      "risk": "Riesgo",
+      "pending": "Pendiente",
+      "strengths": "Fortalezas",
+      "weaknesses": "Debilidades",
+      "keyRisks": "Riesgos clave",
+      "risks": "Riesgos",
+      "assumptions": "Supuestos a validar",
+      "researchSignals": "Señales de investigación",
+      "nextSteps": "Próximos pasos recomendados",
+      "nextBestAction": "Siguiente mejor acción",
+      "strengthsEmpty": "Tus señales más fuertes aparecerán aquí después de la validación.",
+      "weaknessesEmpty": "Las principales brechas o puntos débiles aparecerán aquí.",
+      "risksEmpty": "Los riesgos clave aparecerán aquí una vez que se puntúe la oportunidad.",
+      "assumptionsEmpty": "Los supuestos que debes probar primero aparecerán aquí.",
+      "researchEmpty": "Las señales de mercado y puntos de evidencia aparecerán aquí.",
+      "sprintPending": "Valida tu idea para ver la siguiente mejor acción a tomar.",
+      "ctaTitle": "Siguientes mejores acciones",
+      "ctaBody": "Elige el siguiente paso más claro para seguir validando, construyendo o refinando el negocio.",
+      "download": "Descargar mi reporte de validación",
+      "downloaded": "Descargado",
+      "downloadHint": "Ejecuta la validación para descargar tu reporte.",
+      "pillarTitle": "Validación de seis pilares",
       "pillarSubtitle": "Cada pilar evalúa un área clave de viabilidad del negocio",
       "pillarStrong": "Fuerte",
       "pillarModerate": "Necesita trabajo",
@@ -695,45 +678,45 @@
       "pillarAdvice": "Cómo mejorar",
       "pathForward": "Tu camino hacia adelante",
       "nextExperiments": "Próximos experimentos a ejecutar",
-      "pillarProblemDemand": "Problema y Demanda",
-      "pillarCustomerFit": "Cliente y Contexto",
-      "pillarCompetition": "Competencia y Diferenciación",
-      "pillarBusinessModel": "Modelo de Negocio y Dinero",
-      "pillarAcquisition": "Adquisición y Canales",
-      "pillarExecution": "Ejecución y Ajuste del Fundador",
-      "promisingExecution": "Prometedor — Listo para Ejecutar",
-      "promisingNeedsValidation": "Prometedor — Necesita Más Validación",
-      "highRiskImprove": "Alto Riesgo — Mejorar o Pivotar"
+      "pillarProblemDemand": "Problema y demanda",
+      "pillarCustomerFit": "Cliente y contexto",
+      "pillarCompetition": "Competencia y diferenciación",
+      "pillarBusinessModel": "Modelo de negocio y dinero",
+      "pillarAcquisition": "Adquisición y canales",
+      "pillarExecution": "Ejecución y ajuste del fundador",
+      "promisingExecution": "Prometedor — Listo para ejecutar",
+      "promisingNeedsValidation": "Prometedor — Necesita más validación",
+      "highRiskImprove": "Alto riesgo — Mejorar o pivotar"
     },
     "progress": {
-      "title": "Validation pipeline",
-      "detecting": "Detecting business category",
-      "framework": "Selecting framework",
-      "research": "Researching market signals",
-      "scoring": "Scoring idea",
-      "nextSteps": "Generating next steps",
-      "running": "Running",
-      "done": "Done",
-      "pending": "Pending"
+      "title": "Pipeline de validación",
+      "detecting": "Detectando categoría de negocio",
+      "framework": "Seleccionando marco",
+      "research": "Investigando señales de mercado",
+      "scoring": "Puntuando idea",
+      "nextSteps": "Generando próximos pasos",
+      "running": "En proceso",
+      "done": "Listo",
+      "pending": "Pendiente"
     },
     "status": {
-      "emailSent": "Your validation report is on its way to your inbox.",
-      "emailIssue": "Email send issue",
-      "emailAttempted": "Email delivery was attempted.",
-      "emailDisabled": "Email delivery is disabled.",
-      "emailOptional": "Report is ready on this page. Add email next time if you want inbox delivery.",
-      "waitlistTitle": "Waitlist confirmed",
-      "waitlist": "Thank you — you’re on the waitlist. We’ll notify you when this business is ready to launch.",
-      "leadSaved": "Your details have been saved successfully.",
-      "leadIssue": "Lead save issue",
-      "runSaved": "Your validation is ready.",
-      "runIssue": "Validation run issue"
+      "emailSent": "Tu reporte de validación va en camino a tu bandeja de entrada.",
+      "emailIssue": "Problema al enviar email",
+      "emailAttempted": "Se intentó enviar el email.",
+      "emailDisabled": "El envío de email está desactivado.",
+      "emailOptional": "El reporte está listo en esta página. Agrega tu email la próxima vez si quieres recibirlo en tu bandeja.",
+      "waitlistTitle": "Lista de espera confirmada",
+      "waitlist": "Gracias — estás en la lista de espera. Te avisaremos cuando este negocio esté listo para lanzar.",
+      "leadSaved": "Tus datos se guardaron correctamente.",
+      "leadIssue": "Problema al guardar lead",
+      "runSaved": "Tu validación está lista.",
+      "runIssue": "Problema con la validación"
     },
     "errors": {
-      "minIdea": "Please add at least 10 characters so the model can evaluate your idea.",
-      "emailRequired": "Please enter your email so we can deliver the validation report.",
-      "invalidEmail": "Please enter a valid email address.",
-      "generic": "Something went wrong while validating."
+      "minIdea": "Agrega al menos 10 caracteres para que el modelo pueda evaluar tu idea.",
+      "emailRequired": "Ingresa tu email para que podamos enviarte el reporte de validación.",
+      "invalidEmail": "Ingresa un email válido.",
+      "generic": "Algo salió mal durante la validación."
     }
   }
 }

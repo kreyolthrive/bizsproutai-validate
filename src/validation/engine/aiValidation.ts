@@ -406,7 +406,7 @@ function buildPrompt(context: AIValidationContext): string {
         },
         constructiveVerdict: {
           values: ["promising_execution", "promising_needs_validation", "high_risk_improve_or_pivot"],
-          rules: "Use promising_execution for 70+, promising_needs_validation for 45-69, high_risk_improve_or_pivot for <45. NEVER say NO GO.",
+          rules: "Use promising_execution for weightedScore 70+, promising_needs_validation for 40-69, high_risk_improve_or_pivot for 0-39. NEVER say NO GO.",
         },
         pathForward: "1-2 sentence summary of recommended path forward for the founder",
         nextExperiments: "Array of 3-5 concrete experiments/next steps the founder can run in the real world (interviews, pre-sales, landing pages, pricing tests). These are ACTION ITEMS.",
@@ -477,22 +477,23 @@ function buildPrompt(context: AIValidationContext): string {
         "The 'pillarAnalysis' array is REQUIRED and is the most important part of the output. Each pillar MUST have a specific, non-generic summary and advice.",
         "Pillar summaries must reference THIS idea specifically (e.g., 'A hair salon in downtown Miami faces moderate competition from 15+ existing salons' NOT 'Competition exists in the area').",
         "Pillar advice must be actionable and specific (e.g., 'Offer a free first haircut to 20 walk-ins from the nearby WeWork office' NOT 'Consider marketing strategies').",
-        "SCORING CALIBRATION:",
-        "- weightedScore 70-100: Strong idea with clear path to validation. Real demand, manageable competition, testable.",
-        "- weightedScore 50-69: Promising but needs proof. Real pain exists but uncertainty remains. Worth testing.",
-        "- weightedScore 35-49: Risky but testable. Significant barriers but demand exists. Validate specific assumptions first.",
-        "- weightedScore 20-34: Major concerns. Needs significant pivoting or repositioning.",
-        "- weightedScore 0-19: Fundamental issues. No clear demand or insurmountable barriers.",
-        "IMPORTANT: If real pain exists and the idea is testable (even with strong competition), score 35-55, NOT below 32.",
-        "Do not be overly pessimistic. An idea with real demand but strong competition is RISKY, not INVALID.",
+        "SCORING CALIBRATION (these thresholds are STRICT — the system auto-derives verdicts from the score):",
+        "- weightedScore 70-100: Promising — focus on execution and testing. Clear demand, testable model, founder can act now.",
+        "- weightedScore 40-69: Early stage — validate before building. Real signal exists but key assumptions untested.",
+        "- weightedScore 0-39: High risk — improve or pivot. Major gaps in demand, model, or feasibility.",
+        "PILLAR SCORES: Each pillar score is 0-100. Labels are auto-derived: 70+ = strong, 40-69 = moderate, 0-39 = weak.",
+        "Do not be overly pessimistic. An idea with real demand but strong competition is early-stage (40-60), not high-risk.",
         "CONSTRUCTIVE GUIDANCE: Your job is to HELP users refine, improve, or pivot—never to reject.",
         "For ANY score: (1) specific ways to improve, (2) specific ways to test cheaply, (3) pivot suggestions if weak.",
-        "In 'nextExperiments', provide 3-5 concrete real-world experiments (interviews, pre-sales, landing pages, pricing tests) that can be done in <1 week with <$100.",
+        "In 'nextExperiments', ALWAYS provide 3-5 concrete real-world experiments (interviews, pre-sales, landing pages, pricing tests) that can be done in <1 week with <$100. This is REQUIRED regardless of score.",
         "In 'pathForward', give a clear 1-2 sentence recommendation for what the founder should do next.",
-        "In 'constructiveVerdict', use ONLY: promising_execution, promising_needs_validation, or high_risk_improve_or_pivot.",
+        "In 'constructiveVerdict', use ONLY: promising_execution (70+), promising_needs_validation (40-69), or high_risk_improve_or_pivot (0-39).",
         "Even for low-scoring ideas, identify the CORE INSIGHT that might be valuable and suggest how to reposition.",
         "If the idea concerns a restaurant or food truck: evaluate location demand, concept differentiation, daily cover math, and suggest starting smaller (pop-up, cloud kitchen) if risk is high.",
         "For vertical SaaS: evaluate target segment willingness to pay, switching friction, acquisition difficulty, and retention risk.",
+        "RESEARCH SIGNALS: For topOpportunities and biggestRisks, include 1-2 niche-specific facts: typical pricing ranges, known competitors, relevant market trends. NEVER use vague global market numbers ($300B market) or half-sentences like 'No key insight was provided.'",
+        "SECTION LIMITS: strengths (topOpportunities) 3-4 bullets, risks (biggestRisks) 3-5 bullets, assumptions 3-5 bullets, nextExperiments 3-5 items. Every bullet must be specific to THIS idea.",
+        "DEDUPLICATION: Do NOT repeat the same point across strengths, risks, and assumptions. Each section must add unique information.",
         "QUALITY RULES FOR OUTPUT SECTIONS:",
         "- topOpportunities (strengths): Max 3-4 bullets. Each MUST be specific to THIS idea. Do NOT include generic macro facts (global market size, 'economic cycles', names of large consulting firms like McKinsey/BCG/Deloitte, '$300B market'). Do NOT use formulaic phrases that apply to any SaaS (like 'A focused vertical tool can feel more relevant' or 'Recurring workflow usage can create retention'). Good: 'Small shops frequently run out of key items, creating real urgency for automated reorder alerts.' Bad: 'A narrow MVP around one workflow can help.'",
         "- biggestRisks: Each risk must describe what could go WRONG, not what to DO about it. Good: 'You may struggle to stand out because the offer is too generic.' Bad: 'Pick one specific business size.' Risks should read as consequences, not instructions.",
@@ -985,24 +986,11 @@ function buildCriteria(raw: RawAIAnalysis, framework: LoadedFramework): Criterio
   });
 }
 
-function deriveDecision(weightedScore: number, gates: SimplifiedGateResult[]): FrameworkDecision {
-  const passedGateCount = gates.filter((gate) => gate.passed).length;
-
-  // GO: Strong validation, all gates pass
-  if (weightedScore >= 75 && gates.every((gate) => gate.passed)) return "GO";
-  
-  // CONDITIONAL_GO: Promising but needs proof in specific areas
-  // Lowered threshold: 55+ with 3+ gates is still promising
-  if (weightedScore >= 55 && passedGateCount >= 3) return "CONDITIONAL_GO";
-  
-  // NEED_WORK: Risky but testable - real potential exists but significant concerns
-  // This is for ideas where demand exists but competition/switching friction is high
-  // Lowered threshold to 32 to avoid being too harsh on testable ideas
-  if (weightedScore >= 32) return "NEED_WORK";
-  
-  // PIVOT_RECOMMENDED: Idea needs repositioning or pivoting for better market fit
-  // Below 32 - the current form has significant challenges, but the core insight may be valuable
-  // Help users understand how to reposition rather than just rejecting
+function deriveDecision(weightedScore: number, _gates: SimplifiedGateResult[]): FrameworkDecision {
+  // Single source of truth: 0-39 pivot, 40-69 conditional, 70+ go
+  // Aligned with decision.ts thresholds
+  if (weightedScore >= 70) return "GO";
+  if (weightedScore >= 40) return "CONDITIONAL_GO";
   return "PIVOT_RECOMMENDED";
 }
 
@@ -1021,7 +1009,7 @@ function normalizeGates(raw: RawAIAnalysis, businessModelScore: number): Simplif
       maxScore: 20,
       passed: !!problemDemand.passGate1,
       status: problemDemand.passGate1 ? "PASS" : "FAIL",
-      reasoning: toText(problemDemand.reasoning, "AI analysis did not provide gate reasoning."),
+      reasoning: toText(problemDemand.reasoning, ""),
     },
     {
       gate: 2,
@@ -1030,7 +1018,7 @@ function normalizeGates(raw: RawAIAnalysis, businessModelScore: number): Simplif
       maxScore: 15,
       passed: clamp(toNumber(primarySegment.total, 0), 0, 15) >= 9,
       status: clamp(toNumber(primarySegment.total, 0), 0, 15) >= 9 ? "PASS" : "FAIL",
-      reasoning: toText(raw.primarySegment?.reasoning, "AI analysis did not provide gate reasoning."),
+      reasoning: toText(raw.primarySegment?.reasoning, ""),
     },
     {
       gate: 3,
@@ -1039,7 +1027,7 @@ function normalizeGates(raw: RawAIAnalysis, businessModelScore: number): Simplif
       maxScore: 5,
       passed: !!solutionValidation.passGate3,
       status: solutionValidation.passGate3 ? "PASS" : "FAIL",
-      reasoning: toText(solutionValidation.reasoning, "AI analysis did not provide gate reasoning."),
+      reasoning: toText(solutionValidation.reasoning, ""),
     },
     {
       gate: 4,
@@ -1048,7 +1036,7 @@ function normalizeGates(raw: RawAIAnalysis, businessModelScore: number): Simplif
       maxScore: 5,
       passed: !!businessModel.passGate4,
       status: businessModel.passGate4 ? "PASS" : "FAIL",
-      reasoning: toText(businessModel.reasoning, "AI analysis did not provide gate reasoning."),
+      reasoning: toText(businessModel.reasoning, ""),
     },
     {
       gate: 5,
@@ -1057,7 +1045,7 @@ function normalizeGates(raw: RawAIAnalysis, businessModelScore: number): Simplif
       maxScore: 5,
       passed: !!operationalValidation.passGate5,
       status: operationalValidation.passGate5 ? "PASS" : "FAIL",
-      reasoning: toText(operationalValidation.reasoning, "AI analysis did not provide gate reasoning."),
+      reasoning: toText(operationalValidation.reasoning, ""),
     },
   ];
 
@@ -1161,7 +1149,7 @@ function buildAlternatives(raw: RawAIAnalysis, framework: LoadedFramework) {
 
       return {
         model,
-        reason: toText(alternative.reason, "Alternative model suggested by the AI validator."),
+        reason: toText(alternative.reason, ""),
         viability: toScoreBand(toNumber(alternative.viability, 3)),
       };
     })
@@ -1214,12 +1202,9 @@ function extractAIPillarData(raw: RawAIAnalysis): AIGeneratedPillarData | null {
     .filter((p) => typeof p.key === "string" && VALID_PILLAR_KEYS.has(p.key))
     .map((p) => {
       const score = clamp(toNumber(p.score, 50), 0, 100);
-      let status: "strong" | "moderate" | "weak";
-      if (typeof p.status === "string" && (p.status === "strong" || p.status === "moderate" || p.status === "weak")) {
-        status = p.status;
-      } else {
-        status = score >= 70 ? "strong" : score >= 40 ? "moderate" : "weak";
-      }
+      // ALWAYS derive status from score — never trust the LLM label
+      const status: "strong" | "moderate" | "weak" =
+        score >= 70 ? "strong" : score >= 40 ? "moderate" : "weak";
 
       return {
         key: p.key!,
@@ -1259,7 +1244,7 @@ function buildFrameworkReport(
   const operationalValidation = raw.operationalValidation ?? {};
 
   return {
-    oneLineSummary: toText(raw.summary?.oneLiner, "AI analysis completed."),
+    oneLineSummary: toText(raw.summary?.oneLiner, ""),
     missingInfo: toStringArray(raw.missingInfo, 6),
     assumptions: toStringArray(raw.assumptions, 5),
     problemDemand: {
@@ -1269,7 +1254,7 @@ function buildFrameworkReport(
       currentGap: clamp(toNumber(problemDemand.currentGap, 0), 0, 5),
       total: clamp(toNumber(problemDemand.total, 0), 0, 20),
       passGate1: !!problemDemand.passGate1,
-      keyInsight: toText(problemDemand.keyInsight, "No key insight was provided."),
+      keyInsight: toText(problemDemand.keyInsight, ""),
     },
     primarySegment: {
       name: toText(primarySegment.name, "Primary segment"),
@@ -1395,7 +1380,7 @@ export async function analyzeBusinessIdeaWithAI(
     overallScore,
     verdict: toVerdict(overallScore),
     summary: {
-      oneLiner: toText(raw.summary?.oneLiner, "AI analysis completed."),
+      oneLiner: toText(raw.summary?.oneLiner, ""),
       topOpportunities: toStringArray(raw.summary?.topOpportunities, 3),
       biggestRisks: toStringArray(raw.summary?.biggestRisks, 3),
     },

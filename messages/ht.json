@@ -109,7 +109,7 @@
         "title": "Egzekite travay chak jou rapid",
         "body": "Sèvi ak mobil pou fini travay Sprint yo, reponn leads rapid, epi pataje lyen imedyatman.",
         "items": [
-          "Fokus jodi a ak 1–3 travay ki gen gwo enpak",
+          "Fokis jodi a ak 1–3 travay ki gen gwo enpak",
           "Aksyon leads: WhatsApp, rele, email",
           "Pataj rapid pou lyen booking/request/waitlist"
         ],
@@ -144,9 +144,9 @@
     },
     "labels": {
       "overallScore": "Nòt global",
-      "failureRisks": "Risk echèk",
-      "fixes": "Koreksyon rekòmande",
-      "alternatives": "Modèl altènatif",
+      "failureRisks": "Zòn pou ranfòse",
+      "fixes": "Amelyorasyon rekòmande",
+      "alternatives": "Apwòch altènatif",
       "nextActions": "Pwochen aksyon",
       "country": "Peyi detekte",
       "category": "Kategori biznis"
@@ -207,10 +207,10 @@
         "item1": "Tèks hero ak òf la revize",
         "item2": "CTA prensipal la konfigire",
         "item3": "Seksyon kontak oswa lead capture aktif",
-        "item4": "Omwen yon mikro-app anliy epi teste ak yon soumisyon reyèl"
+        "item4": "Omwen yon mikwo-app anliy epi teste ak yon soumisyon reyèl"
       },
       "links": {
-        "title": "URL mikro-app yo",
+        "title": "URL mikwo-app yo",
         "subtitle": "Pataje lyen sa yo nan post sosyal, WhatsApp, ak mesaj outreach.",
         "booking": "Rezèvasyon konsiltasyon",
         "request": "Demann sèvis lokal",
@@ -220,7 +220,7 @@
     },
     "billing": {
       "title": "Fakti",
-      "subtitle": "Jere plan aktyèl ou ak amelyorasyon kap vini yo.",
+      "subtitle": "Jere plan aktyèl ou ak amelyorasyon k ap vini yo.",
       "currentPlanTitle": "Plan aktyèl",
       "currentPlanBody": "Kounye a ou sou nivo validasyon gratis la."
     },
@@ -236,7 +236,7 @@
         },
         {
           "title": "Chwazi premye segman kliyan ou",
-          "excerpt": "Poukisa premye traksayon soti nan yon segman klè, pa tout moun.",
+          "excerpt": "Poukisa premye traksyon soti nan yon segman klè, pa tout moun.",
           "date": "Mas 2026",
           "category": "Go-to-Market"
         },
@@ -254,7 +254,7 @@
       "items": [
         {
           "title": "Fondasyon validasyon",
-          "description": "Aprann nòt lide yo epi detekte sipozisyon ki fèb bonè."
+          "description": "Aprann nòte lide yo epi detekte sipozisyon ki fèb bonè."
         },
         {
           "title": "Dekouvèt kliyan",
@@ -272,7 +272,7 @@
     },
     "dashboard": {
       "kicker": "Kontwòl lansman",
-      "title": "Dashboard fondatè",
+      "title": "Tablo fondatè",
       "subtitle": "Swiv pwogrè, leads, ak travay nan yon sèl kote.",
       "stats": {
         "sprint": "Pwogrè sprint",
@@ -299,7 +299,7 @@
         "waitlist": "Lis datant"
       },
       "today": {
-        "title": "Fokus jodi a",
+        "title": "Fokis jodi a",
         "subtitle": "Fè aksyon sa yo pou avanse lansman ou.",
         "done": "Fini",
         "pending": "An atant"
@@ -330,7 +330,7 @@
       "title": "Jere lansman ou sou telefòn ou",
       "subtitle": "Swiv travay yo epi reponn leads yo rapid pandan ou deplase.",
       "copied": "Lyen an kopye.",
-      "offline": "Ou offline. Chanjman yo sove lokalman.",
+      "offline": "Ou offline. Chanjman yo sove lokalman epi yo ap senkronize lè ou rekonekte.",
       "noName": "Lead san non",
       "noLeads": "Pa gen lead ankò. Pibliye lyen ou yo pou kolekte kontak.",
       "metrics": {
@@ -350,15 +350,15 @@
         "shareBooking": "Pataje lyen rezèvasyon",
         "shareRequest": "Pataje lyen demann sèvis",
         "shareWaitlist": "Pataje lyen lis datant",
-        "openWeb": "Louvri dashboard web"
+        "openWeb": "Louvri tablo web"
       },
       "profile": {
-        "blurb": "Pataje lyen ou yo epi kenbe vitès la chak jou. Ti aksyon chak jou bay traksayon."
+        "blurb": "Pataje lyen ou yo epi kenbe vitès la chak jou. Ti aksyon chak jou bay traksyon."
       }
     },
     "socialAgent": {
       "title": "Ajan sosyal",
-      "subtitle": "Kreye kontni regilye ak kanpay nan yon workflow gid.",
+      "subtitle": "Kreye kontni regilye ak kanpay nan yon workflow gide.",
       "quickStartTitle": "Demaraj rapid",
       "steps": [
         "Defini yon òf klè ak yon odyans pou semèn sa.",
@@ -383,7 +383,7 @@
       },
       "table": {
         "created": "Dat",
-        "email": "Imel",
+        "email": "Imèl",
         "idea": "Lide biznis",
         "decision": "Desizyon",
         "category": "Kategori",
@@ -416,9 +416,9 @@
       },
       "placeholders": {
         "fullName": "Non konplè ou",
-        "email": "ou@egzanp.com",
+        "email": "you@example.com",
         "phone": "+1 555 123 4567",
-        "preferredDateTime": "egzanp: madi 3pm",
+        "preferredDateTime": "egzanp: madi 3è",
         "helpRequest": "Di nou objektif ou ak defi ou.",
         "addressOrNeighborhood": "Zòn, distri oswa katye",
         "requestDescription": "Ki sa ou bezwen nou fè?",
@@ -446,7 +446,7 @@
       "tabs": {
         "bookings": "Rezèvasyon",
         "requests": "Demann sèvis",
-        "waitlist": "Lis atant",
+        "waitlist": "Lis datant",
         "contacts": "Tout kontak"
       },
       "submissions": "Soumisyon",
@@ -478,9 +478,9 @@
         ]
       },
       "waitlist": {
-        "title": "Antre nan lis atant la",
+        "title": "Antre nan lis datant la",
         "description": "Antre bonè pou jwenn aksè priyoritè, mizajou lansman, ak avantaj early-bird.",
-        "buttonLabel": "Antre nan lis atant",
+        "buttonLabel": "Antre nan lis datant",
         "thankYouMessage": "Ou sou lis la. N ap voye mizajou ba ou pa imèl/WhatsApp lè nou pare.",
         "nextStepNote": "Veye bwat resepsyon ou pou mizajou."
       }
@@ -501,30 +501,30 @@
   "homepage": {
     "hero": {
       "badge": "Validasyon AI pou mache reyèl",
-      "title": "Validate Your Business Idea Before You Build",
-      "subtitle": "BizSproutAI uses AI to classify your idea, score the opportunity, identify risks, and show your next best step.",
+      "title": "Valide lide biznis ou anvan ou bati",
+      "subtitle": "BizSproutAI sèvi ak AI pou klase lide ou, nòte opòtinite a, idantifye risk yo, epi montre ou pwochen pi bon etap la.",
       "supporting": "Fèt pou antreprenè nan Lafrik, Amerik Latin, Karayib la, ak dyaspora a.",
-      "cta": "Validate My Idea Free"
+      "cta": "Valide lide mwen gratis"
     },
     "trust": {
-      "item1": "No credit card required.",
-      "item2": "Your idea stays private.",
-      "item3": "Get a clear score, risks, and next step."
+      "item1": "Pa gen kat kredi nesesè.",
+      "item2": "Lide ou rete prive.",
+      "item3": "Jwenn yon nòt klè, risk yo, ak pwochen etap."
     },
     "footer": {
-      "prefix": "Questions or partnership ideas? Email us at",
-      "note": "BizSproutAI is a DBA of Kreyol Thrive Biz."
+      "prefix": "Kesyon oswa lide patenarya? Ekri nou sou",
+      "note": "BizSproutAI se yon DBA de Kreyol Thrive Biz."
     },
     "whatYouGet": {
       "title": "Sa ou jwenn",
-      "intro": "Lè ou voye lide ou, ou resevwa :",
+      "intro": "Lè ou voye lide ou, ou resevwa:",
       "item1": "Yon rezime validasyon AI (GO / KONDISYONÈL GO / BEZWEN TRAVAY / NO GO)",
       "item2": "Yon analiz senp: demand, konpetisyon, ak modèl biznis",
       "item3": "Yon rapò ou ka telechaje plis yon preview sprint lansman 30 jou"
     },
     "examples": {
       "title": "Gade kijan BizSproutAI evalye lide yo",
-      "cta": "Ou vle menm kalite analiz sa pou lide ou? Ekri lide ou ak imel ou anlè a.",
+      "cta": "Ou vle menm kalite analiz sa pou lide ou? Ekri lide ou ak imèl ou anlè a.",
       "card1": {
         "idea": "Sak kwi atizana vann sou entènèt",
         "demand": "Demand: demann ap monte pou pwodwi atizana dirab.",
@@ -566,110 +566,110 @@
   },
   "validationHero": {
     "intro": {
-      "eyebrow": "AI business validation",
-      "kicker": "Category-aware scoring and next-step guidance",
-      "title": "Validate your business idea with AI before you build",
-      "body": "BizSproutAI analyzes your idea, classifies the business category, selects the right validation framework, researches the opportunity, scores the business, and shows you the next best move.",
-      "highlight1Title": "Classify the business",
-      "highlight1Body": "Detect the right category so a local service is not judged like SaaS or ecommerce.",
-      "highlight2Title": "Score the opportunity",
-      "highlight2Body": "See market demand, monetization, competition, acquisition, differentiation, and risk in one view.",
-      "highlight3Title": "Move with clarity",
-      "highlight3Body": "Get practical next steps, experiments to run, and the clearest path forward."
+      "eyebrow": "Validasyon biznis AI",
+      "kicker": "Nòt ki konnen kategori a ak gidans pou pwochen etap",
+      "title": "Valide lide biznis ou ak AI anvan ou bati",
+      "body": "BizSproutAI analize lide ou, klase kategori biznis la, chwazi bon framework validasyon an, fè rechèch sou opòtinite a, nòte biznis la, epi montre ou pwochen pi bon aksyon.",
+      "highlight1Title": "Klase biznis la",
+      "highlight1Body": "Detekte bon kategori a pou yon sèvis lokal pa jije menm jan ak SaaS oswa ecommerce.",
+      "highlight2Title": "Nòte opòtinite a",
+      "highlight2Body": "Wè demand mache, monetizasyon, konpetisyon, akizisyon, diferansyasyon, ak risk nan yon sèl vi.",
+      "highlight3Title": "Avanse ak klète",
+      "highlight3Body": "Jwenn pwochen etap pratik, eksperyans pou fè, ak chemen ki pi klè devan ou."
     },
     "form": {
-      "ideaLabel": "Describe your business idea",
-      "ideaPlaceholder": "Example: A mobile car detailing service for busy professionals in Miami that offers monthly packages and online booking.",
-      "targetCustomerLabel": "Who is this for?",
-      "targetCustomerPlaceholder": "Busy professionals, new parents, restaurant owners, independent real estate agents",
-      "marketLabel": "What market are you targeting?",
-      "marketPlaceholder": "Local households in Miami, U.S. ecommerce shoppers, SMB teams, creators",
-      "locationLabel": "Where will you operate?",
-      "locationPlaceholder": "Miami, South Florida, nationwide in the U.S., remote-first online",
-      "offerLabel": "What are you offering?",
-      "offerPlaceholder": "Monthly detailing membership, invoicing SaaS, executive coaching package, curated product bundle",
-      "problemLabel": "What problem are you solving?",
-      "problemPlaceholder": "People lose time coordinating this manually and want a faster, easier option.",
-      "pricingLabel": "Pricing idea",
-      "pricingPlaceholder": "$99/month, $149 premium package, $40 per session, 10% marketplace take rate",
-      "budgetLabel": "Budget (optional)",
+      "ideaLabel": "Dekri lide biznis ou",
+      "ideaPlaceholder": "Egzanp: Yon sèvis netwayaj machin mobil pou pwofesyonèl okipe nan Miami ki ofri pake chak mwa ak rezèvasyon sou entènèt.",
+      "targetCustomerLabel": "Pou ki moun sa ye?",
+      "targetCustomerPlaceholder": "Pwofesyonèl okipe, nouvo paran, pwopriyetè restoran, ajan imobilye endepandan",
+      "marketLabel": "Ki mache ou vize?",
+      "marketPlaceholder": "Fanmi lokal nan Miami, achetè ecommerce nan Etazini, ekip PME, kreyatè",
+      "locationLabel": "Ki kote ou ap opere?",
+      "locationPlaceholder": "Miami, Sid Florid, tout Etazini, sou entènèt adistans",
+      "offerLabel": "Kisa ou ap ofri?",
+      "offerPlaceholder": "Abonman netwayaj machin chak mwa, SaaS faktirasyon, pake coaching egzekitif, pakè pwodwi seleksyone",
+      "problemLabel": "Ki pwoblèm ou ap rezoud?",
+      "problemPlaceholder": "Moun pèdi tan ap jere sa manyèlman epi yo vle yon opsyon ki pi rapid ak pi fasil.",
+      "pricingLabel": "Lide pri",
+      "pricingPlaceholder": "$99/mwa, $149 pake premium, $40 pa sesyon, 10% to mache",
+      "budgetLabel": "Bidjè (opsyonèl)",
       "budgetPlaceholder": "5000",
-      "skillsLabel": "Skills (optional)",
-      "skillsPlaceholder": "Sales, operations, product design, paid ads, coding, industry expertise",
-      "timelineLabel": "Timeline in days (optional)",
+      "skillsLabel": "Konpetans (opsyonèl)",
+      "skillsPlaceholder": "Vant, operasyon, konsepsyon pwodwi, piblisite peye, kodaj, ekspètiz nan endistri",
+      "timelineLabel": "Delè an jou (opsyonèl)",
       "timelinePlaceholder": "30",
-      "emailLabel": "Email to receive your validation report",
+      "emailLabel": "Imèl pou resevwa rapò validasyon ou",
       "emailPlaceholder": "non@konpayi.com",
-      "submit": "Validate My Idea",
-      "validating": "Running AI validation...",
-      "cardTitle": "Tell us about the business you want to build",
-      "cardBody": "Share the core idea first. Add extra context only if you want a more tailored validation.",
-      "cardBadge": "2-minute setup",
-      "moreDetails": "Add more details (optional)",
-      "reassurance1": "No credit card required.",
-      "reassurance2": "Your idea stays private.",
-      "reassurance3": "Get a clear score, risks, and next steps."
+      "submit": "Valide lide mwen",
+      "validating": "Ap kouri validasyon AI...",
+      "cardTitle": "Di nou biznis ou vle bati a",
+      "cardBody": "Pataje lide prensipal la an premye. Ajoute plis detay sèlman si ou vle yon validasyon ki pi pèsonalize.",
+      "cardBadge": "2 minit pou mete an plas",
+      "moreDetails": "Ajoute plis detay (opsyonèl)",
+      "reassurance1": "Pa gen kat kredi nesesè.",
+      "reassurance2": "Lide ou rete prive.",
+      "reassurance3": "Jwenn yon nòt klè, risk yo, ak pwochen etap."
     },
     "sample": {
-      "title": "Try a sample idea"
+      "title": "Eseye yon egzanp lide"
     },
     "sampleIdeas": [
-      "Online store for handmade leather bags with premium gifting",
-      "Mobile car detailing service for busy professionals in Miami",
-      "AI social media manager for real estate agents"
+      "Boutik sou entènèt pou sak kwi atizana ak kado premium",
+      "Sèvis netwayaj machin mobil pou pwofesyonèl okipe nan Miami",
+      "Jesyonè rezo sosyal AI pou ajan imobilye"
     ],
     "result": {
-      "awaiting": "Your verdict will appear here",
-      "go": "PWOMETAN — PRÊT POU EGZEKITE",
+      "awaiting": "Vèdik ou ap parèt isit la",
+      "go": "PWOMETAN — PARE POU EGZEKITE",
       "conditionalGo": "PWOMETAN — BEZWEN VALIDASYON",
       "needsWork": "PREMYE ETAP — VALIDE ANVAN OU BATI",
       "pivotRecommended": "GWO RISK — AMELYORE OSWA CHANJE DIREKSYON",
-      "panelEyebrow": "Kote ide ou ye jodi a",
-      "panelTitle": "Your validation snapshot",
-      "panelBody": "Run validation to see the score, category, risks, and next step for your idea.",
-      "summaryDefault": "Share your idea to get a category-aware validation score, key risks, and the clearest next step.",
-      "summaryTitle": "Verdict summary",
-      "category": "Category",
+      "panelEyebrow": "Kote lide ou ye jodi a",
+      "panelTitle": "Snapshot validasyon ou",
+      "panelBody": "Kouri validasyon an pou wè nòt la, kategori a, risk yo, ak pwochen etap pou lide ou.",
+      "summaryDefault": "Pataje lide ou pou jwenn yon nòt validasyon ki konnen kategori a, risk kle yo, ak pwochen etap ki pi klè.",
+      "summaryTitle": "Rezime vèdik",
+      "category": "Kategori",
       "framework": "Framework",
-      "score": "Validation score",
-      "confidence": "Confidence",
-      "categoryEmpty": "Category will appear here",
-      "frameworkEmpty": "Framework will appear here",
-      "scoreEmpty": "Score will appear here",
-      "confidenceEmpty": "Confidence level will appear here",
-      "verdictEmpty": "Your verdict will appear here",
-      "nextStep": "Next step",
-      "nextStepEmpty": "Your next best step will appear here after validation.",
-      "breakdownTitle": "Opportunity score breakdown",
-      "breakdownHintReady": "Structured scoring across the opportunity",
-      "breakdownHintEmpty": "Scores will appear after validation",
-      "marketDemand": "Market demand",
-      "monetization": "Monetization",
-      "competition": "Competition",
-      "acquisition": "Acquisition",
-      "execution": "Execution feasibility",
-      "differentiation": "Differentiation",
+      "score": "Nòt validasyon",
+      "confidence": "Konfyans",
+      "categoryEmpty": "Kategori ap parèt isit la",
+      "frameworkEmpty": "Framework ap parèt isit la",
+      "scoreEmpty": "Nòt ap parèt isit la",
+      "confidenceEmpty": "Nivo konfyans ap parèt isit la",
+      "verdictEmpty": "Vèdik ou ap parèt isit la",
+      "nextStep": "Pwochen etap",
+      "nextStepEmpty": "Pwochen pi bon etap ou ap parèt isit la apre validasyon.",
+      "breakdownTitle": "Detay nòt opòtinite",
+      "breakdownHintReady": "Nòt estriktire sou tout opòtinite a",
+      "breakdownHintEmpty": "Nòt yo ap parèt apre validasyon",
+      "marketDemand": "Demand mache",
+      "monetization": "Monetizasyon",
+      "competition": "Konpetisyon",
+      "acquisition": "Akizisyon",
+      "execution": "Fezabilite ekzekisyon",
+      "differentiation": "Diferansyasyon",
       "risk": "Risk",
-      "pending": "Pending",
-      "strengths": "Strengths",
-      "weaknesses": "Weaknesses",
-      "keyRisks": "Key risks",
-      "risks": "Risks",
-      "assumptions": "Assumptions to test",
-      "researchSignals": "Research signals",
-      "nextSteps": "Recommended next steps",
-      "nextBestAction": "Next best action",
-      "strengthsEmpty": "Your strongest signals will appear here after validation.",
-      "weaknessesEmpty": "The main gaps or weak points will appear here.",
-      "risksEmpty": "Key risks will appear here once the opportunity is scored.",
-      "assumptionsEmpty": "The assumptions you should test first will appear here.",
-      "researchEmpty": "Market signals and proof points will appear here.",
-      "sprintPending": "Validate your idea to see the next best action to take first.",
-      "ctaTitle": "Next best actions",
-      "ctaBody": "Choose the clearest next move to keep validating, building, or refining the business.",
-      "download": "Download My Validation Report",
-      "downloaded": "Downloaded",
-      "downloadHint": "Run validation to download your report.",
+      "pending": "An atant",
+      "strengths": "Fòs yo",
+      "weaknesses": "Feblès yo",
+      "keyRisks": "Risk kle yo",
+      "risks": "Risk yo",
+      "assumptions": "Sipozisyon pou teste",
+      "researchSignals": "Siyal rechèch",
+      "nextSteps": "Pwochen etap rekòmande",
+      "nextBestAction": "Pi bon pwochen aksyon",
+      "strengthsEmpty": "Siyal ki pi fò ou yo ap parèt isit la apre validasyon.",
+      "weaknessesEmpty": "Pwen fèb prensipal yo ap parèt isit la.",
+      "risksEmpty": "Risk kle yo ap parèt isit la yon fwa opòtinite a evalye.",
+      "assumptionsEmpty": "Sipozisyon ou ta dwe teste an premye ap parèt isit la.",
+      "researchEmpty": "Siyal mache ak prèv yo ap parèt isit la.",
+      "sprintPending": "Valide lide ou pou wè pi bon pwochen aksyon pou pran an premye.",
+      "ctaTitle": "Pi bon pwochen aksyon",
+      "ctaBody": "Chwazi aksyon ki pi klè pou kontinye valide, bati, oswa rafine biznis la.",
+      "download": "Telechaje rapò validasyon mwen",
+      "downloaded": "Telechaje",
+      "downloadHint": "Kouri validasyon an pou telechaje rapò ou.",
       "pillarTitle": "Validasyon Sis Pilye",
       "pillarSubtitle": "Chak pilye evalye yon zòn kle nan viabilite biznis la",
       "pillarStrong": "Fò",
@@ -684,39 +684,39 @@
       "pillarBusinessModel": "Modèl Biznis ak Lajan",
       "pillarAcquisition": "Akizisyon ak Kanal",
       "pillarExecution": "Ekzekisyon ak Kapasite Fondatè",
-      "promisingExecution": "Prometan — Pare pou Ekzekite",
-      "promisingNeedsValidation": "Prometan — Bezwen Plis Validasyon",
+      "promisingExecution": "Pwometan — Pare pou Egzekite",
+      "promisingNeedsValidation": "Pwometan — Bezwen Plis Validasyon",
       "highRiskImprove": "Gwo Risk — Amelyore oswa Pivote"
     },
     "progress": {
-      "title": "Validation pipeline",
-      "detecting": "Detecting business category",
-      "framework": "Selecting framework",
-      "research": "Researching market signals",
-      "scoring": "Scoring idea",
-      "nextSteps": "Generating next steps",
-      "running": "Running",
-      "done": "Done",
-      "pending": "Pending"
+      "title": "Pipeline validasyon",
+      "detecting": "Ap detekte kategori biznis",
+      "framework": "Ap chwazi framework",
+      "research": "Ap fè rechèch siyal mache",
+      "scoring": "Ap nòte lide a",
+      "nextSteps": "Ap jenere pwochen etap yo",
+      "running": "Ap kouri",
+      "done": "Fini",
+      "pending": "An atant"
     },
     "status": {
-      "emailSent": "Your validation report is on its way to your inbox.",
-      "emailIssue": "Email send issue",
-      "emailAttempted": "Email delivery was attempted.",
-      "emailDisabled": "Email delivery is disabled.",
-      "emailOptional": "Report is ready on this page. Add email next time if you want inbox delivery.",
-      "waitlistTitle": "Waitlist confirmed",
-      "waitlist": "Thank you — you’re on the waitlist. We’ll notify you when this business is ready to launch.",
-      "leadSaved": "Your details have been saved successfully.",
-      "leadIssue": "Lead save issue",
-      "runSaved": "Your validation is ready.",
-      "runIssue": "Validation run issue"
+      "emailSent": "Rapò validasyon ou ap ale nan bwat resepsyon ou.",
+      "emailIssue": "Pwoblèm voye imèl",
+      "emailAttempted": "Nou te eseye voye imèl la.",
+      "emailDisabled": "Livrezon imèl dezaktive.",
+      "emailOptional": "Rapò a pare sou paj sa a. Ajoute imèl ou pwochen fwa si ou vle resevwa li nan bwat resepsyon ou.",
+      "waitlistTitle": "Lis datant konfime",
+      "waitlist": "Mèsi — ou sou lis datant la. N ap avèti ou lè biznis sa a pare pou lanse.",
+      "leadSaved": "Detay ou yo sove avèk siksè.",
+      "leadIssue": "Pwoblèm sove lead",
+      "runSaved": "Validasyon ou pare.",
+      "runIssue": "Pwoblèm validasyon"
     },
     "errors": {
-      "minIdea": "Please add at least 10 characters so the model can evaluate your idea.",
-      "emailRequired": "Tanpri antre imel ou pou nou voye rapò validasyon an.",
-      "invalidEmail": "Please enter a valid email address.",
-      "generic": "Something went wrong while validating."
+      "minIdea": "Tanpri ekri omwen 10 karaktè pou modèl la ka evalye lide ou.",
+      "emailRequired": "Tanpri antre imèl ou pou nou voye rapò validasyon an.",
+      "invalidEmail": "Tanpri antre yon adrès imèl ki valab.",
+      "generic": "Yon bagay mal pase pandan validasyon an."
     }
   }
 }

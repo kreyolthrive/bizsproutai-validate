@@ -2,8 +2,14 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import type { DynamicValidationResult, FrameworkDecision, PillarBasedValidation, PillarResult } from "@/src/validation/types";
-import { resolveFrameworkDecision, resolveOverallScore100 } from "@/src/validation/decision";
+import type {
+  DynamicValidationResult,
+  FrameworkDecision,
+} from "@/src/validation/types";
+import {
+  resolveFrameworkDecision,
+  resolveOverallScore100,
+} from "@/src/validation/decision";
 
 type IdeaEvaluationHeroProps = {
   locale: string;
@@ -44,11 +50,121 @@ type ValidateApiResponse = DynamicValidationResult & {
   };
 };
 
-const FALLBACK_IDEAS = [
-  "Mobile car detailing for busy professionals in Miami.",
-  "SaaS platform that automates invoicing for small creative agencies.",
-  "Online coaching program for first-time managers.",
-];
+type LocalizedCopy = {
+  invalidServerResponse: string;
+  validationFailed: string;
+  awaitingScore: string;
+  pillarTitle: string;
+  pillarSubtitle: string;
+  pillarStrong: string;
+  pillarModerate: string;
+  pillarWeak: string;
+  pillarAdvice: string;
+  pathForward: string;
+  nextExperiments: string;
+  fallbackIdeas: string[];
+};
+
+function getLocalizedCopy(locale: string): LocalizedCopy {
+  switch (locale) {
+    case "fr":
+      return {
+        invalidServerResponse: "Réponse du serveur invalide.",
+        validationFailed: "La validation a échoué.",
+        awaitingScore: "Score en attente",
+        pillarTitle: "Piliers de validation",
+        pillarSubtitle: "Analyse sur 6 dimensions clés de l’entreprise",
+        pillarStrong: "Fort",
+        pillarModerate: "Moyen",
+        pillarWeak: "Faible",
+        pillarAdvice: "Comment améliorer",
+        pathForward: "Voie à suivre",
+        nextExperiments: "Prochaines expériences",
+        fallbackIdeas: [
+          "Service mobile de nettoyage auto pour professionnels occupés à Miami.",
+          "Plateforme SaaS qui automatise la facturation pour les petites agences créatives.",
+          "Programme de coaching en ligne pour les nouveaux managers.",
+        ],
+      };
+    case "ht":
+      return {
+        invalidServerResponse: "Repons sèvè a pa valab.",
+        validationFailed: "Validasyon an echwe.",
+        awaitingScore: "N ap tann nòt la",
+        pillarTitle: "Pilye validasyon yo",
+        pillarSubtitle: "Analiz sou 6 dimansyon kle yon biznis",
+        pillarStrong: "Fò",
+        pillarModerate: "Mwayen",
+        pillarWeak: "Fèb",
+        pillarAdvice: "Kijan pou amelyore",
+        pathForward: "Chemen pou avanse",
+        nextExperiments: "Pwochen eksperyans yo",
+        fallbackIdeas: [
+          "Sèvis netwayaj machin mobil pou pwofesyonèl ki okipe nan Miami.",
+          "Platfòm SaaS ki otomatize fakti pou ti ajans kreyatif yo.",
+          "Pwogram coaching sou entènèt pou moun ki ap jere ekip pou premye fwa.",
+        ],
+      };
+    case "es":
+      return {
+        invalidServerResponse: "Respuesta del servidor no válida.",
+        validationFailed: "La validación falló.",
+        awaitingScore: "Puntuación pendiente",
+        pillarTitle: "Pilares de validación",
+        pillarSubtitle: "Análisis en 6 dimensiones clave del negocio",
+        pillarStrong: "Fuerte",
+        pillarModerate: "Moderado",
+        pillarWeak: "Débil",
+        pillarAdvice: "Cómo mejorar",
+        pathForward: "Camino a seguir",
+        nextExperiments: "Siguientes experimentos",
+        fallbackIdeas: [
+          "Servicio móvil de detallado de autos para profesionales ocupados en Miami.",
+          "Plataforma SaaS que automatiza la facturación para pequeñas agencias creativas.",
+          "Programa de coaching en línea para gerentes primerizos.",
+        ],
+      };
+    case "pt":
+      return {
+        invalidServerResponse: "Resposta do servidor inválida.",
+        validationFailed: "A validação falhou.",
+        awaitingScore: "Pontuação pendente",
+        pillarTitle: "Pilares de validação",
+        pillarSubtitle: "Análise em 6 dimensões-chave do negócio",
+        pillarStrong: "Forte",
+        pillarModerate: "Moderado",
+        pillarWeak: "Fraco",
+        pillarAdvice: "Como melhorar",
+        pathForward: "Caminho a seguir",
+        nextExperiments: "Próximos experimentos",
+        fallbackIdeas: [
+          "Serviço móvel de detalhamento automotivo para profissionais ocupados em Miami.",
+          "Plataforma SaaS que automatiza faturamento para pequenas agências criativas.",
+          "Programa de coaching online para gestores de primeira viagem.",
+        ],
+      };
+    case "en":
+    default:
+      return {
+        invalidServerResponse: "Invalid server response.",
+        validationFailed: "Validation failed.",
+        awaitingScore: "Awaiting score",
+        pillarTitle: "Validation Pillars",
+        pillarSubtitle: "Analysis across 6 key business dimensions",
+        pillarStrong: "Strong",
+        pillarModerate: "Moderate",
+        pillarWeak: "Weak",
+        pillarAdvice: "How to improve",
+        pathForward: "Path Forward",
+        nextExperiments: "Next Experiments",
+        fallbackIdeas: [
+          "Mobile car detailing for busy professionals in Miami.",
+          "SaaS platform that automates invoicing for small creative agencies.",
+          "Online coaching program for first-time managers.",
+        ],
+      };
+  }
+}
 
 function getDecision(result: DynamicValidationResult | null): FrameworkDecision | null {
   if (!result) return null;
@@ -56,17 +172,31 @@ function getDecision(result: DynamicValidationResult | null): FrameworkDecision 
 }
 
 function decisionStyles(decision: FrameworkDecision | null): string {
-  if (decision === "GO") return "bg-emerald-100 text-emerald-800 border border-emerald-200";
-  if (decision === "CONDITIONAL_GO") return "bg-blue-100 text-blue-800 border border-blue-200";
-  if (decision === "NEED_WORK") return "bg-amber-100 text-amber-800 border border-amber-200";
-  if (decision === "PIVOT_RECOMMENDED") return "bg-purple-100 text-purple-800 border border-purple-200";
+  if (decision === "GO") {
+    return "bg-emerald-100 text-emerald-800 border border-emerald-200";
+  }
+  if (decision === "CONDITIONAL_GO") {
+    return "bg-blue-100 text-blue-800 border border-blue-200";
+  }
+  if (decision === "NEED_WORK") {
+    return "bg-amber-100 text-amber-800 border border-amber-200";
+  }
+  if (decision === "PIVOT_RECOMMENDED") {
+    return "bg-purple-100 text-purple-800 border border-purple-200";
+  }
   return "bg-slate-100 text-slate-700 border border-slate-200";
 }
 
 function constructiveVerdictStyles(verdict: string | null | undefined): string {
-  if (verdict === "promising_execution") return "bg-emerald-100 text-emerald-800 border border-emerald-200";
-  if (verdict === "promising_needs_validation") return "bg-blue-100 text-blue-800 border border-blue-200";
-  if (verdict === "high_risk_improve_or_pivot") return "bg-amber-100 text-amber-800 border border-amber-200";
+  if (verdict === "promising_execution") {
+    return "bg-emerald-100 text-emerald-800 border border-emerald-200";
+  }
+  if (verdict === "promising_needs_validation") {
+    return "bg-blue-100 text-blue-800 border border-blue-200";
+  }
+  if (verdict === "high_risk_improve_or_pivot") {
+    return "bg-amber-100 text-amber-800 border border-amber-200";
+  }
   return "bg-slate-100 text-slate-700 border border-slate-200";
 }
 
@@ -87,16 +217,27 @@ function isEmailValid(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function parseOptionalNumber(value: string): number | undefined {
+  if (!value.trim()) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
 function downloadReport(report: ReportPayload): void {
   if (report.pdf?.contentBase64) {
     const byteString = atob(report.pdf.contentBase64);
     const bytes = new Uint8Array(byteString.length);
+
     for (let i = 0; i < byteString.length; i += 1) {
       bytes[i] = byteString.charCodeAt(i);
     }
-    const blob = new Blob([bytes], { type: report.pdf.mimeType || "application/pdf" });
+
+    const blob = new Blob([bytes], {
+      type: report.pdf.mimeType || "application/pdf",
+    });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
+
     link.href = url;
     link.download = report.pdf.filename;
     document.body.appendChild(link);
@@ -109,6 +250,7 @@ function downloadReport(report: ReportPayload): void {
   const blob = new Blob([report.text], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
+
   link.href = url;
   link.download = report.filename;
   document.body.appendChild(link);
@@ -130,15 +272,20 @@ function resolveOverallScore(result: DynamicValidationResult | null): number | n
   return resolveOverallScore100(result);
 }
 
-function scoreCard(label: string, value?: number): { label: string; value: string } {
+function scoreCard(
+  label: string,
+  awaitingScoreLabel: string,
+  value?: number
+): { label: string; value: string } {
   return {
     label,
-    value: typeof value === "number" ? `${value}/100` : "Awaiting score",
+    value: typeof value === "number" ? `${value}/100` : awaitingScoreLabel,
   };
 }
 
 export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
   const t = useTranslations("validationHero");
+  const copy = useMemo(() => getLocalizedCopy(locale), [locale]);
 
   const [idea, setIdea] = useState("");
   const [targetCustomer, setTargetCustomer] = useState("");
@@ -161,46 +308,69 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
 
   const decision = useMemo(() => getDecision(result), [result]);
   const overallScore = useMemo(() => resolveOverallScore(result), [result]);
+
   const confidenceScore = result?.confidenceScore ?? result?.confidence_score;
-  const categoryLabel = toDisplayCategory(result?.businessCategory ?? result?.business_category ?? result?.category);
-  const subcategoryLabel = toDisplayCategory(
-    result?.inferredBusinessModel?.subcategory ?? result?.categoryRouting?.subcategory ?? null
+  const categoryLabel = toDisplayCategory(
+    result?.businessCategory ?? result?.business_category ?? result?.category
   );
+  const subcategoryLabel = toDisplayCategory(
+    result?.inferredBusinessModel?.subcategory ??
+      result?.categoryRouting?.subcategory ??
+      null
+  );
+
   const strengths = result?.strengths ?? result?.summary.topOpportunities ?? [];
-  const keyRisks = result?.keyRisks ?? result?.key_risks ?? result?.summary.biggestRisks ?? [];
-  const nextSteps = result?.recommendedNextSteps ?? result?.recommended_next_steps ?? result?.nextActions ?? [];
+  const keyRisks =
+    result?.keyRisks ?? result?.key_risks ?? result?.summary.biggestRisks ?? [];
+  const nextSteps =
+    result?.recommendedNextSteps ??
+    result?.recommended_next_steps ??
+    result?.nextActions ??
+    [];
   const weaknesses = result?.weaknesses ?? [];
-  const assumptions = result?.assumptionsToTest ?? result?.assumptions_to_test ?? result?.assumptions ?? [];
-  
-  // Extract pillar-based validation
+  const assumptions =
+    result?.assumptionsToTest ?? result?.assumptions_to_test ?? result?.assumptions ?? [];
+
   const pillarValidation = result?.pillarValidation;
   const constructiveVerdict = result?.constructiveVerdict;
   const constructiveVerdictLabel = result?.constructiveVerdictLabel;
   const pillars = pillarValidation?.pillars ?? [];
   const pathForward = pillarValidation?.pathForward;
   const nextExperiments = pillarValidation?.nextExperiments ?? [];
-  
+
   const researchSignals = [
     ...(result?.researchSummary?.demandSignals ?? []),
     ...(result?.researchSummary?.marketTrends ?? []),
     ...(result?.researchSummary?.monetizationNotes ?? []),
   ].slice(0, 4);
+
   const scoreBreakdown = [
-    scoreCard(t("result.marketDemand"), result?.scores?.market_demand),
-    scoreCard(t("result.monetization"), result?.scores?.monetization),
-    scoreCard(t("result.competition"), result?.scores?.competition),
-    scoreCard(t("result.acquisition"), result?.scores?.acquisition),
-    scoreCard(t("result.execution"), result?.scores?.execution_feasibility),
-    scoreCard(t("result.differentiation"), result?.scores?.differentiation),
-    scoreCard(t("result.risk"), result?.scores?.risk),
+    scoreCard(t("result.marketDemand"), copy.awaitingScore, result?.scores?.market_demand),
+    scoreCard(t("result.monetization"), copy.awaitingScore, result?.scores?.monetization),
+    scoreCard(t("result.competition"), copy.awaitingScore, result?.scores?.competition),
+    scoreCard(t("result.acquisition"), copy.awaitingScore, result?.scores?.acquisition),
+    scoreCard(
+      t("result.execution"),
+      copy.awaitingScore,
+      result?.scores?.execution_feasibility
+    ),
+    scoreCard(
+      t("result.differentiation"),
+      copy.awaitingScore,
+      result?.scores?.differentiation
+    ),
+    scoreCard(t("result.risk"), copy.awaitingScore, result?.scores?.risk),
   ];
+
   const frameworkLabel =
     result?.selectedFramework?.frameworkLabel ??
     result?.frameworkUsed ??
     result?.framework_used ??
     result?.framework?.label ??
     "";
+
   const ctas = result?.nextActionCtas ?? [];
+
   const progressSteps = [
     t("progress.detecting"),
     t("progress.framework"),
@@ -209,10 +379,16 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
     t("progress.nextSteps"),
   ];
 
-  const sampleIdeasRaw = t.raw("sampleIdeas") as unknown;
+  let sampleIdeasRaw: unknown;
+  try {
+    sampleIdeasRaw = t.raw("sampleIdeas");
+  } catch {
+    sampleIdeasRaw = null;
+  }
+
   const sampleIdeas = Array.isArray(sampleIdeasRaw)
-    ? (sampleIdeasRaw.filter((item): item is string => typeof item === "string") as string[])
-    : FALLBACK_IDEAS;
+    ? sampleIdeasRaw.filter((item): item is string => typeof item === "string")
+    : copy.fallbackIdeas;
 
   const clearFeedback = () => {
     setError(null);
@@ -220,6 +396,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
     setEmailStatus(null);
     setLeadStatus(null);
     setWaitlistMessage(null);
+
     if (!loading) {
       setActiveProgressStep(-1);
     }
@@ -232,6 +409,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
     }
 
     setActiveProgressStep(0);
+
     const timer = window.setInterval(() => {
       setActiveProgressStep((current) => {
         if (current >= progressSteps.length - 1) return current;
@@ -290,24 +468,29 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
           offer: offer.trim() || undefined,
           problem: problem.trim() || undefined,
           pricingIdea: pricingIdea.trim() || undefined,
-          budgetUsd: budgetUsd.trim() ? Number(budgetUsd) : undefined,
+          budgetUsd: parseOptionalNumber(budgetUsd),
           skillSummary: skillSummary.trim() || undefined,
-          timelineDays: timelineDays.trim() ? Number(timelineDays) : undefined,
-          email: trimmedEmail || undefined,
-          website: typeof formData.get("website") === "string" ? formData.get("website") : undefined,
-          locale: locale === "pt" ? "en" : locale,
+          timelineDays: parseOptionalNumber(timelineDays),
+          email: trimmedEmail,
+          website:
+            typeof formData.get("website") === "string"
+              ? formData.get("website")
+              : undefined,
+          locale,
         }),
       });
 
       const contentType = response.headers.get("content-type") || "";
+
       if (!contentType.includes("application/json")) {
         const text = await response.text();
-        throw new Error(text.slice(0, 120) || "Invalid server response.");
+        throw new Error(text.slice(0, 160) || copy.invalidServerResponse);
       }
 
       const data = (await response.json()) as ValidateApiResponse;
+
       if (!response.ok) {
-        throw new Error(data.error || "Validation failed.");
+        throw new Error(data.error || copy.validationFailed);
       }
 
       setResult(data);
@@ -340,6 +523,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
       } else {
         setLeadStatus(null);
       }
+
       setActiveProgressStep(progressSteps.length - 1);
     } catch (submitError) {
       const message =
@@ -405,7 +589,10 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="target-customer-input">
+                <label
+                  className="block text-sm font-semibold text-[#0b1f4d]"
+                  htmlFor="target-customer-input"
+                >
                   {t("form.targetCustomerLabel")}
                 </label>
                 <input
@@ -419,6 +606,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                   placeholder={t("form.targetCustomerPlaceholder")}
                 />
               </div>
+
               <div className="space-y-2">
                 <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="offer-input">
                   {t("form.offerLabel")}
@@ -440,6 +628,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
               <summary className="cursor-pointer list-none text-sm font-semibold text-[#163761] marker:hidden">
                 {t("form.moreDetails")}
               </summary>
+
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="market-input">
@@ -456,6 +645,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                     placeholder={t("form.marketPlaceholder")}
                   />
                 </div>
+
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="location-input">
                     {t("form.locationLabel")}
@@ -471,6 +661,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                     placeholder={t("form.locationPlaceholder")}
                   />
                 </div>
+
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="pricing-input">
                     {t("form.pricingLabel")}
@@ -486,6 +677,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                     placeholder={t("form.pricingPlaceholder")}
                   />
                 </div>
+
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="problem-input">
                     {t("form.problemLabel")}
@@ -501,6 +693,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                     placeholder={t("form.problemPlaceholder")}
                   />
                 </div>
+
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="budget-input">
                     {t("form.budgetLabel")}
@@ -517,6 +710,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                     placeholder={t("form.budgetPlaceholder")}
                   />
                 </div>
+
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="skills-input">
                     {t("form.skillsLabel")}
@@ -532,6 +726,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                     placeholder={t("form.skillsPlaceholder")}
                   />
                 </div>
+
                 <div className="space-y-2 md:col-span-2">
                   <label className="block text-sm font-semibold text-[#0b1f4d]" htmlFor="timeline-input">
                     {t("form.timelineLabel")}
@@ -583,7 +778,9 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
           </form>
 
           <div className="mt-5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-[#5c6f95]">{t("sample.title")}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-[#5c6f95]">
+              {t("sample.title")}
+            </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {sampleIdeas.map((sample) => (
                 <button
@@ -605,13 +802,18 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
         <div className="brand-panel rounded-[2rem] p-6 sm:p-7">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#0fb085]">{t("result.panelEyebrow")}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#0fb085]">
+                {t("result.panelEyebrow")}
+              </p>
               <h3 className="mt-2 text-2xl font-semibold text-[#0b1f4d]">{t("result.panelTitle")}</h3>
               <p className="mt-2 max-w-lg text-sm leading-6 text-[#44658f]">{t("result.panelBody")}</p>
             </div>
+
             <div
               aria-live="polite"
-              className={`inline-flex rounded-full px-4 py-2 text-xs font-semibold ${decisionStyles(decision)}`}
+              className={`inline-flex rounded-full px-4 py-2 text-xs font-semibold ${decisionStyles(
+                decision
+              )}`}
             >
               {result ? decisionLabel : emptyVerdict}
             </div>
@@ -624,11 +826,16 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                 {loading ? t("progress.running") : result ? t("progress.done") : t("progress.pending")}
               </p>
             </div>
+
             <div className="mt-4 grid gap-2">
               {progressSteps.map((step, index) => {
                 const isDone = !loading && result ? true : index < activeProgressStep;
                 const isRunning = loading && index === activeProgressStep;
-                const statusLabel = isDone ? t("progress.done") : isRunning ? t("progress.running") : t("progress.pending");
+                const statusLabel = isDone
+                  ? t("progress.done")
+                  : isRunning
+                    ? t("progress.running")
+                    : t("progress.pending");
 
                 return (
                   <div
@@ -642,7 +849,9 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                     }`}
                   >
                     <span>{step}</span>
-                    <span className="text-xs font-semibold uppercase tracking-[0.16em]">{statusLabel}</span>
+                    <span className="text-xs font-semibold uppercase tracking-[0.16em]">
+                      {statusLabel}
+                    </span>
                   </div>
                 );
               })}
@@ -652,16 +861,20 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <div className="rounded-[1.65rem] bg-[linear-gradient(145deg,#0b1f4d,#123669)] p-5 text-white shadow-[0_25px_60px_-35px_rgba(11,31,77,0.9)]">
               <p className="text-xs uppercase tracking-[0.25em] text-white/65">{t("result.score")}</p>
-              <p className="mt-2 text-5xl font-semibold">{typeof overallScore === "number" ? overallScore : "—"}</p>
-              <p className="mt-2 text-sm text-white/75">{typeof overallScore === "number" ? decisionLabel : emptyScore}</p>
+              <p className="mt-2 text-5xl font-semibold">
+                {typeof overallScore === "number" ? overallScore : "—"}
+              </p>
+              <p className="mt-2 text-sm text-white/75">
+                {typeof overallScore === "number" ? decisionLabel : emptyScore}
+              </p>
             </div>
+
             <div className="rounded-[1.65rem] border border-[#d6e3f7] bg-[#f7fbff] p-5">
               <p className="text-xs uppercase tracking-[0.25em] text-[#5d7094]">{t("result.category")}</p>
               <p className="mt-3 text-lg font-semibold text-[#14345f]">{categoryLabel || emptyCategory}</p>
-              {subcategoryLabel ? (
-                <p className="mt-1 text-sm text-[#44658f]">{subcategoryLabel}</p>
-              ) : null}
+              {subcategoryLabel ? <p className="mt-1 text-sm text-[#44658f]">{subcategoryLabel}</p> : null}
             </div>
+
             <div className="rounded-[1.65rem] border border-[#d6e3f7] bg-white p-5">
               <p className="text-xs uppercase tracking-[0.25em] text-[#5d7094]">{t("result.confidence")}</p>
               <p className="mt-3 text-lg font-semibold text-[#14345f]">
@@ -677,8 +890,11 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                 {frameworkLabel || t("result.frameworkEmpty")}
               </p>
             </div>
+
             <div className="rounded-[1.5rem] border border-[#d6e3f7] bg-[#f7fbff] p-5">
-              <p className="text-xs uppercase tracking-[0.25em] text-[#5d7094]">{t("result.nextBestAction")}</p>
+              <p className="text-xs uppercase tracking-[0.25em] text-[#5d7094]">
+                {t("result.nextBestAction")}
+              </p>
               <p className="mt-2 text-sm leading-6 text-[#17345f]">{primaryNextStep}</p>
             </div>
           </div>
@@ -690,6 +906,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                   {emailStatus}
                 </p>
               ) : null}
+
               {leadStatus ? (
                 <p className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs font-medium text-emerald-800">
                   {leadStatus}
@@ -705,6 +922,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                 {result ? t("result.breakdownHintReady") : t("result.breakdownHintEmpty")}
               </p>
             </div>
+
             <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {scoreBreakdown.map((item) => (
                 <div key={item.label} className="rounded-[1.2rem] border border-white bg-white px-4 py-3 shadow-sm">
@@ -715,69 +933,84 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
             </div>
           </div>
 
-          {/* Pillar-Based Validation Section */}
-          {pillars.length > 0 && (
+          {pillars.length > 0 ? (
             <div className="mt-6 rounded-[1.5rem] border border-[#d6e3f7] bg-gradient-to-br from-[#f7fbff] to-white p-5">
-              <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+              <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm font-semibold text-[#12345f]">{t("result.pillarTitle") || "Validation Pillars"}</p>
-                  <p className="mt-1 text-xs text-[#5d7094]">{t("result.pillarSubtitle") || "Analysis across 6 key business dimensions"}</p>
+                  <p className="text-sm font-semibold text-[#12345f]">{copy.pillarTitle}</p>
+                  <p className="mt-1 text-xs text-[#5d7094]">{copy.pillarSubtitle}</p>
                 </div>
-                {constructiveVerdictLabel && (
-                  <div className={`inline-flex rounded-full px-4 py-2 text-xs font-semibold border ${constructiveVerdictStyles(constructiveVerdict)}`}>
+
+                {constructiveVerdictLabel ? (
+                  <div
+                    className={`inline-flex rounded-full px-4 py-2 text-xs font-semibold border ${constructiveVerdictStyles(
+                      constructiveVerdict
+                    )}`}
+                  >
                     {constructiveVerdictLabel}
                   </div>
-                )}
+                ) : null}
               </div>
-              
+
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {pillars.map((pillar) => (
                   <div key={pillar.key} className="rounded-[1.2rem] border border-white bg-white p-4 shadow-sm">
-                    <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="mb-2 flex items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#12345f]">{pillar.label}</p>
                       <span className={`text-lg font-bold ${pillarScoreColor(pillar.score)}`}>
                         {pillar.score}
                       </span>
                     </div>
-                    <div className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium border mb-2 ${pillarStatusStyles(pillar.status)}`}>
-                      {pillar.status === "strong" ? (t("result.pillarStrong") || "Strong") :
-                       pillar.status === "moderate" ? (t("result.pillarModerate") || "Moderate") :
-                       (t("result.pillarWeak") || "Weak")}
+
+                    <div
+                      className={`mb-2 inline-flex rounded-full px-2 py-0.5 text-xs font-medium border ${pillarStatusStyles(
+                        pillar.status
+                      )}`}
+                    >
+                      {pillar.status === "strong"
+                        ? copy.pillarStrong
+                        : pillar.status === "moderate"
+                          ? copy.pillarModerate
+                          : copy.pillarWeak}
                     </div>
-                    <p className="text-sm text-[#44658f] mb-3">{pillar.summary}</p>
-                    {pillar.advice.length > 0 && (
+
+                    <p className="mb-3 text-sm text-[#44658f]">{pillar.summary}</p>
+
+                    {pillar.advice.length > 0 ? (
                       <div className="space-y-1">
-                        <p className="text-xs font-medium text-[#5d7094] uppercase tracking-wide">{t("result.pillarAdvice") || "How to improve"}</p>
-                        <ul className="text-xs text-[#234875] space-y-1">
+                        <p className="text-xs font-medium uppercase tracking-wide text-[#5d7094]">
+                          {copy.pillarAdvice}
+                        </p>
+                        <ul className="space-y-1 text-xs text-[#234875]">
                           {pillar.advice.slice(0, 2).map((advice, idx) => (
-                            <li key={idx}>• {advice}</li>
+                            <li key={`${pillar.key}-advice-${idx}`}>• {advice}</li>
                           ))}
                         </ul>
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 ))}
               </div>
-              
-              {pathForward && (
+
+              {pathForward ? (
                 <div className="mt-5 rounded-[1.2rem] border border-emerald-200 bg-emerald-50/70 p-4">
-                  <p className="text-sm font-semibold text-emerald-900">{t("result.pathForward") || "Path Forward"}</p>
+                  <p className="text-sm font-semibold text-emerald-900">{copy.pathForward}</p>
                   <p className="mt-2 text-sm text-emerald-950">{pathForward}</p>
                 </div>
-              )}
-              
-              {nextExperiments.length > 0 && (
+              ) : null}
+
+              {nextExperiments.length > 0 ? (
                 <div className="mt-4 rounded-[1.2rem] border border-blue-200 bg-blue-50/70 p-4">
-                  <p className="text-sm font-semibold text-blue-900">{t("result.nextExperiments") || "Next Experiments"}</p>
+                  <p className="text-sm font-semibold text-blue-900">{copy.nextExperiments}</p>
                   <ul className="mt-2 space-y-1 text-sm text-blue-950">
                     {nextExperiments.slice(0, 3).map((experiment, idx) => (
-                      <li key={idx}>• {experiment}</li>
+                      <li key={`experiment-${idx}`}>• {experiment}</li>
                     ))}
                   </ul>
                 </div>
-              )}
+              ) : null}
             </div>
-          )}
+          ) : null}
 
           <div className="mt-6 grid gap-4 xl:grid-cols-2">
             <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50/70 p-4">
@@ -788,6 +1021,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                 ))}
               </ul>
             </div>
+
             <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50/80 p-4">
               <p className="text-sm font-semibold text-amber-900">{t("result.weaknesses")}</p>
               <ul className="mt-3 space-y-2 text-sm text-amber-950">
@@ -796,6 +1030,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                 ))}
               </ul>
             </div>
+
             <div className="rounded-[1.5rem] border border-rose-200 bg-rose-50/70 p-4">
               <p className="text-sm font-semibold text-rose-900">{t("result.risks")}</p>
               <ul className="mt-3 space-y-2 text-sm text-rose-950">
@@ -804,6 +1039,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                 ))}
               </ul>
             </div>
+
             <div className="rounded-[1.5rem] border border-blue-200 bg-blue-50/70 p-4">
               <p className="text-sm font-semibold text-blue-900">{t("result.assumptions")}</p>
               <ul className="mt-3 space-y-2 text-sm text-blue-950">
@@ -823,6 +1059,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
                 ))}
               </ul>
             </div>
+
             <div className="rounded-[1.5rem] border border-[#d6e3f7] bg-white p-4">
               <p className="text-sm font-semibold text-[#12345f]">{t("result.nextSteps")}</p>
               <ul className="mt-3 space-y-2 text-sm text-[#234875]">
@@ -836,6 +1073,7 @@ export function IdeaEvaluationHero({ locale }: IdeaEvaluationHeroProps) {
           <div className="mt-6 rounded-[1.5rem] border border-[#d6e3f7] bg-[#f7fbff] p-5">
             <p className="text-sm font-semibold text-[#12345f]">{t("result.ctaTitle")}</p>
             <p className="mt-1 text-sm text-[#44658f]">{t("result.ctaBody")}</p>
+
             <div className="mt-4 flex flex-wrap gap-3">
               {ctas.length ? (
                 ctas.map((cta) => (

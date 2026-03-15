@@ -7,6 +7,7 @@ const localeToCountry: Record<Locale, CountryCode> = {
   fr: "FR",
   ht: "HT",
   es: "MX",
+  pt: "BR",
 };
 
 // Country indicators in text

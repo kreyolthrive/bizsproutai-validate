@@ -20,7 +20,11 @@ import { sortRisksBySeverity } from "./evaluateRisks";
 import { suggestAlternatives } from "./suggestAlternatives";
 import { triggerBuildFlow } from "./triggerBuildFlow";
 import { analyzeBusinessIdeaWithAI, resolveValidationContext } from "./aiValidation";
-import { hasInPersonWellnessServiceSignals, hasPhysicalProductSubscriptionSignals, hasVerticalSaasSignals } from "./classifyCategory";
+import {
+  hasInPersonWellnessServiceSignals,
+  hasPhysicalProductSubscriptionSignals,
+  hasVerticalSaasSignals,
+} from "./classifyCategory";
 
 const SCORING_WEIGHTS = {
   problemStrength: 0.3,
@@ -540,7 +544,10 @@ const FRAMEWORK_PROFILES: Record<FrameworkArchetype, FrameworkProfile> = {
 function detectFrameworkProfile(idea: string, category: Category): FrameworkProfile {
   const text = idea.toLowerCase();
 
-  if (hasPhysicalProductSubscriptionSignals(text) || /\bstore|shop|e-?commerce|inventory|shipping|fulfillment|shopify|amazon\b/i.test(text)) {
+  if (
+    hasPhysicalProductSubscriptionSignals(text) ||
+    /\bstore|shop|e-?commerce|inventory|shipping|fulfillment|shopify|amazon\b/i.test(text)
+  ) {
     return FRAMEWORK_PROFILES.ecommerce_product;
   }
 
@@ -556,8 +563,6 @@ function detectFrameworkProfile(idea: string, category: Category): FrameworkProf
     return FRAMEWORK_PROFILES.marketing_agency;
   }
 
-  // Check for vertical SaaS BEFORE generic SaaS or local service
-  // This is CRITICAL: software built FOR local service operators is SaaS, not local service
   if (category === "saas") {
     return FRAMEWORK_PROFILES.saas_product;
   }
@@ -580,24 +585,17 @@ function detectFrameworkProfile(idea: string, category: Category): FrameworkProf
     return FRAMEWORK_PROFILES.online_education_coaching;
   }
 
-  // Only match local service if NOT building software for them
-  // "Build app for barber" = SaaS, "I am a barber starting a business" = local service
   if (/\bcleaning|plumbing|detailing|car wash|salon|barber|repair|real estate agent|realtor|homebuyers|tutoring\b/i.test(text)) {
-    // Check if this is actually about building software for these operators
     if (!hasVerticalSaasSignals(text)) {
       return FRAMEWORK_PROFILES.local_service_business;
     }
-    // If vertical SaaS signals detected, don't fall into local service - will be handled by saas check above
   }
 
-  // Note: "saas" category is already handled above, no need to check again here
   if (category === "consulting") return FRAMEWORK_PROFILES.marketing_agency;
   if (category === "local_service") {
-    // Double-check it's not vertical SaaS that was miscategorized
     if (!hasVerticalSaasSignals(text)) {
       return FRAMEWORK_PROFILES.local_service_business;
     }
-    // If it's actually vertical SaaS, use saas profile
     return FRAMEWORK_PROFILES.saas_product;
   }
   if (category === "health_wellness" && hasInPersonWellnessServiceSignals(text)) {
@@ -865,6 +863,7 @@ function evaluateProblemDemand(
     /no good option|no solution|hard to find/i,
     /inconsistent|unreliable|long wait|poor quality/i,
   ];
+
   let painLevel = 1;
   painLevel += countMatches(text, painSignals) * 1.1;
   painLevel += countMatches(text, profile.gate1Signals.painLevel) * 0.9;
@@ -891,7 +890,10 @@ function evaluateProblemDemand(
   let currentGap = 1;
   currentGap += countMatches(text, gapSignals) * 1;
   currentGap += countMatches(text, profile.gate1Signals.currentGap) * 1;
-  if (clarification.components.solution && /different|unique|specialized|focused|faster|simpler/i.test(text)) {
+  if (
+    clarification.components.solution &&
+    /different|unique|specialized|focused|faster|simpler/i.test(text)
+  ) {
     currentGap += 0.9;
   }
   if (/already works perfectly|well served/i.test(text)) {
@@ -947,7 +949,10 @@ function buildSegmentLibrary(
   const inferred = customers ? customers.replace(/\.$/, "") : "early adopters";
 
   const archetypeSpecific: Partial<
-    Record<Category | FrameworkArchetype, Omit<CustomerSegment, "reachability" | "painLevel" | "payingCapability" | "totalScore">[]>
+    Record<
+      Category | FrameworkArchetype,
+      Omit<CustomerSegment, "reachability" | "painLevel" | "payingCapability" | "totalScore">[]
+    >
   > = {
     restaurant: [
       {
@@ -1066,7 +1071,10 @@ function buildSegmentLibrary(
     }));
   }
 
-  const defaults: Record<Category, Omit<CustomerSegment, "reachability" | "painLevel" | "payingCapability" | "totalScore">[]> = {
+  const defaults: Record<
+    Category,
+    Omit<CustomerSegment, "reachability" | "painLevel" | "payingCapability" | "totalScore">[]
+  > = {
     ecommerce: [
       {
         name: `Niche buyers (${inferred})`,
@@ -1460,7 +1468,9 @@ function validateSolutionFit(
   if (/specific|clear offer|single service|focused package/i.test(text)) painCoverage += 0.4;
   if (profile.id === "food_truck" && /simple menu|limited menu|high traffic|events?/i.test(text)) painCoverage += 0.4;
   if (profile.id === "restaurant" && /cuisine|price point|experience|delivery/i.test(text)) painCoverage += 0.4;
-  if (profile.id === "marketing_agency" && /niche|industry-specific|lead generation|performance/i.test(text)) painCoverage += 0.4;
+  if (profile.id === "marketing_agency" && /niche|industry-specific|lead generation|performance/i.test(text)) {
+    painCoverage += 0.4;
+  }
   if (profile.id === "online_education_coaching" && /outcome|accountability|live|cohort|exam/i.test(text)) {
     painCoverage += 0.4;
   }
@@ -1527,12 +1537,15 @@ function analyzeMarket(
   const segmentStrength = clamp(customerValidation.primarySegment.totalScore / 15, 0.2, 1);
   const sam = Math.round(tam * baseline.earlyAdopterShare * segmentStrength);
 
-  const obtainBoost = (customerValidation.primarySegment.reachability >= 4 ? 0.002 : 0) +
+  const obtainBoost =
+    (customerValidation.primarySegment.reachability >= 4 ? 0.002 : 0) +
     (solutionValidation.differentiation >= 4 ? 0.002 : 0);
   const somShare = baseline.obtainableShare + obtainBoost;
   const som = Math.round(sam * somShare);
 
-  const confidence = clampZeroToFive(2.5 + segmentStrength * 1.4 + (solutionValidation.differentiation >= 3 ? 0.6 : -0.4));
+  const confidence = clampZeroToFive(
+    2.5 + segmentStrength * 1.4 + (solutionValidation.differentiation >= 3 ? 0.6 : -0.4)
+  );
 
   let marketScore = 1;
   const thresholdRatio = som / profile.gate4SomThreshold;
@@ -1545,8 +1558,16 @@ function analyzeMarket(
 
   const passGate4 = som >= profile.gate4SomThreshold;
   const reasoning = passGate4
-    ? `Gate 4 passed on the ${profile.label} framework because Serviceable Obtainable Market exceeds ${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(profile.gate4SomThreshold)}.`
-    : `Gate 4 failed on the ${profile.label} framework because obtainable market is below ${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(profile.gate4SomThreshold)}; tighten niche or pricing model.`;
+    ? `Gate 4 passed on the ${profile.label} framework because Serviceable Obtainable Market exceeds ${new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(profile.gate4SomThreshold)}.`
+    : `Gate 4 failed on the ${profile.label} framework because obtainable market is below ${new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(profile.gate4SomThreshold)}; tighten niche or pricing model.`;
 
   return {
     totalAddressableMarket: tam,
@@ -1566,8 +1587,12 @@ function analyzeMarket(
 
 function parsePriceFromIdea(idea: string): number | null {
   const normalized = idea.replace(/,/g, "");
-  const match = normalized.match(/\$\s*(\d+(?:\.\d+)?)/i) ?? normalized.match(/(\d+(?:\.\d+)?)\s*(?:usd|dollars|\/month|per month|monthly)/i);
+  const match =
+    normalized.match(/\$\s*(\d+(?:\.\d+)?)/i) ??
+    normalized.match(/(\d+(?:\.\d+)?)\s*(?:usd|dollars|\/month|per month|monthly)/i);
+
   if (!match?.[1]) return null;
+
   const value = Number.parseFloat(match[1]);
   if (Number.isNaN(value) || value <= 0) return null;
   return value;
@@ -1626,10 +1651,7 @@ function analyzeBusinessModel(
   };
 }
 
-function evaluateOperationalFeasibility(
-  input: ValidationInput,
-  profile: FrameworkProfile
-): OperationalFeasibilityResult {
+function evaluateOperationalFeasibility(input: ValidationInput, profile: FrameworkProfile): OperationalFeasibilityResult {
   const text = input.idea.toLowerCase();
 
   let score = 1.6;
@@ -1747,9 +1769,10 @@ function buildCriteria(
 
     const risks = scoreBand <= 2 ? [`${criterionDef.label} is currently weak.`] : [];
 
-    const recommendations = scoreBand <= 2
-      ? criterionDef.fixSuggestions.slice(0, 2)
-      : criterionDef.fixSuggestions.slice(0, 1);
+    const recommendations =
+      scoreBand <= 2
+        ? criterionDef.fixSuggestions.slice(0, 2)
+        : criterionDef.fixSuggestions.slice(0, 1);
 
     return {
       key: criterionDef.key,
@@ -1922,7 +1945,11 @@ function buildSummary(
   };
 }
 
-function buildNextActions(decision: FrameworkDecision, fixes: FixSuggestion[], profile: FrameworkProfile): string[] {
+function buildNextActions(
+  decision: FrameworkDecision,
+  fixes: FixSuggestion[],
+  profile: FrameworkProfile
+): string[] {
   const archetypeActions: Record<FrameworkArchetype, string[]> = {
     general: [
       "Interview 10 target customers to validate the highest pain point.",
@@ -2187,6 +2214,7 @@ async function validateIdeaWithHeuristics(
     gate1.passed,
     profile
   );
+
   const gate2Passed = gate1.passed && customerValidation.passGate2;
   const gate2Status = resolveGateStatus(gate1.passed, customerValidation.passGate2, 1);
   gates.push({
@@ -2210,6 +2238,7 @@ async function validateIdeaWithHeuristics(
     categoryConfidence,
     profile
   );
+
   const gate3Passed = gate2Passed && solutionValidation.passGate3;
   const gate3Status = resolveGateStatus(gate2Passed, solutionValidation.passGate3, 2);
   gates.push({
@@ -2232,13 +2261,9 @@ async function validateIdeaWithHeuristics(
     solutionValidation,
     profile
   );
+
   const gate4CanRun = gate3Passed;
-  businessModel = analyzeBusinessModel(
-    category,
-    input,
-    problemDemand,
-    profile
-  );
+  businessModel = analyzeBusinessModel(category, input, problemDemand, profile);
   const gate4Passed = gate4CanRun && businessModel.passGate4;
   const gate4Status = resolveGateStatus(gate4CanRun, businessModel.passGate4, 3);
   gates.push({
@@ -2369,10 +2394,420 @@ async function validateIdeaWithHeuristics(
   };
 }
 
+type TextLocale = "en" | "fr" | "ht" | "es" | "pt";
+
+const LOCALIZED_CATEGORY_LABELS: Record<TextLocale, Record<Category, string>> = {
+  en: {
+    ecommerce: "ecommerce",
+    coaching: "coaching",
+    consulting: "consulting",
+    finance: "finance",
+    tech: "technology",
+    local_service: "local service",
+    saas: "SaaS",
+    marketplace: "marketplace",
+    health_wellness: "health and wellness",
+    edtech: "education",
+    legal_law: "legal",
+  },
+  fr: {
+    ecommerce: "e-commerce",
+    coaching: "coaching",
+    consulting: "conseil",
+    finance: "finance",
+    tech: "technologie",
+    local_service: "service local",
+    saas: "SaaS",
+    marketplace: "place de marché",
+    health_wellness: "santé et bien-être",
+    edtech: "éducation",
+    legal_law: "juridique",
+  },
+  ht: {
+    ecommerce: "komès sou entènèt",
+    coaching: "coaching",
+    consulting: "konsiltasyon",
+    finance: "finans",
+    tech: "teknoloji",
+    local_service: "sèvis lokal",
+    saas: "SaaS",
+    marketplace: "mache platfòm",
+    health_wellness: "sante ak byennèt",
+    edtech: "edikasyon",
+    legal_law: "legal",
+  },
+  es: {
+    ecommerce: "comercio electrónico",
+    coaching: "coaching",
+    consulting: "consultoría",
+    finance: "finanzas",
+    tech: "tecnología",
+    local_service: "servicio local",
+    saas: "SaaS",
+    marketplace: "marketplace",
+    health_wellness: "salud y bienestar",
+    edtech: "educación",
+    legal_law: "legal",
+  },
+  pt: {
+    ecommerce: "comércio eletrônico",
+    coaching: "coaching",
+    consulting: "consultoria",
+    finance: "finanças",
+    tech: "tecnologia",
+    local_service: "serviço local",
+    saas: "SaaS",
+    marketplace: "marketplace",
+    health_wellness: "saúde e bem-estar",
+    edtech: "educação",
+    legal_law: "jurídico",
+  },
+};
+
+const LOCALIZED_FALLBACKS: Record<
+  TextLocale,
+  {
+    oneLiner: (categoryLabel: string) => string;
+    topOpportunities: string[];
+    biggestRisks: string[];
+    nextActions: string[];
+    missingInfo: string[];
+    assumptions: string[];
+    frameworkReportSummary: (categoryLabel: string) => string;
+  }
+> = {
+  en: {
+    oneLiner: (categoryLabel) =>
+      `Your ${categoryLabel} idea has been analyzed. Review the strongest signals, main risks, and next steps below.`,
+    topOpportunities: [
+      "There is a clear opportunity to sharpen the offer for one target segment.",
+      "A focused validation sprint can improve confidence quickly.",
+      "Clearer positioning and pricing tests can strengthen the idea.",
+    ],
+    biggestRisks: [
+      "Customer demand still needs direct validation.",
+      "Pricing and willingness to pay need stronger evidence.",
+      "Acquisition channels should be tested before scaling.",
+    ],
+    nextActions: [
+      "Interview 10 target customers and document the most urgent pain points.",
+      "Test one clear offer with a landing page or manual pilot.",
+      "Validate pricing with real buyers before expanding scope.",
+    ],
+    missingInfo: [
+      "What specific problem does this solve?",
+      "Who is the primary target customer?",
+      "How will early customers discover the offer?",
+    ],
+    assumptions: [
+      "Customers experience this problem often enough to pay for a better solution.",
+      "There is at least one repeatable acquisition channel for early adopters.",
+    ],
+    frameworkReportSummary: (categoryLabel) =>
+      `AI-assisted validation summary for this ${categoryLabel} idea.`,
+  },
+  fr: {
+    oneLiner: (categoryLabel) =>
+      `Votre idée de ${categoryLabel} a été analysée. Consultez ci-dessous les signaux les plus forts, les principaux risques et les prochaines étapes.`,
+    topOpportunities: [
+      "Il existe une opportunité claire d’affiner l’offre pour un segment cible précis.",
+      "Un sprint de validation ciblé peut augmenter rapidement le niveau de confiance.",
+      "Un meilleur positionnement et des tests de prix peuvent renforcer l’idée.",
+    ],
+    biggestRisks: [
+      "La demande client doit encore être validée directement.",
+      "Le prix et la volonté de payer doivent être mieux prouvés.",
+      "Les canaux d’acquisition doivent être testés avant de passer à l’échelle.",
+    ],
+    nextActions: [
+      "Interviewez 10 clients cibles et documentez leurs douleurs les plus urgentes.",
+      "Testez une offre claire avec une landing page ou un pilote manuel.",
+      "Validez le prix avec de vrais acheteurs avant d’élargir le périmètre.",
+    ],
+    missingInfo: [
+      "Quel problème précis cette idée résout-elle ?",
+      "Qui est le client cible principal ?",
+      "Comment les premiers clients découvriront-ils l’offre ?",
+    ],
+    assumptions: [
+      "Les clients ressentent ce problème assez souvent pour payer une meilleure solution.",
+      "Il existe au moins un canal d’acquisition répétable pour les premiers adopteurs.",
+    ],
+    frameworkReportSummary: (categoryLabel) =>
+      `Résumé de validation assisté par IA pour cette idée de ${categoryLabel}.`,
+  },
+  ht: {
+    oneLiner: (categoryLabel) =>
+      `Nou analize lide ${categoryLabel} ou a. Gade pi gwo siyal yo, prensipal risk yo, ak pwochen etap yo anba a.`,
+    topOpportunities: [
+      "Gen yon bon opòtinite pou fè òf la pi klè pou yon sèl segman kliyan.",
+      "Yon sprint validasyon ki konsantre ka ogmante konfyans rapidman.",
+      "Pi bon pozisyonman ak tès pri ka fè lide a vin pi solid.",
+    ],
+    biggestRisks: [
+      "Demann kliyan an toujou bezwen validasyon dirèk.",
+      "Pri a ak volonte pou peye toujou bezwen plis prèv.",
+      "Chanèl akizisyon yo dwe teste anvan ou eseye grandi vit.",
+    ],
+    nextActions: [
+      "Fè entèvyou ak 10 kliyan sib epi dokimante doulè ki pi ijan yo.",
+      "Teste yon òf klè ak yon landing page oswa yon pilòt manyèl.",
+      "Valide pri a ak kliyan reyèl anvan ou elaji pwojè a.",
+    ],
+    missingInfo: [
+      "Ki pwoblèm presi lide sa a rezoud?",
+      "Ki moun ki kliyan prensipal ou a?",
+      "Kijan premye kliyan yo pral dekouvri òf la?",
+    ],
+    assumptions: [
+      "Kliyan yo fè fas ak pwoblèm sa a ase souvan pou yo peye pou yon pi bon solisyon.",
+      "Gen omwen yon chanèl akizisyon repete pou rive jwenn premye adopte yo.",
+    ],
+    frameworkReportSummary: (categoryLabel) =>
+      `Rezime validasyon ki ede ak IA pou lide ${categoryLabel} sa a.`,
+  },
+  es: {
+    oneLiner: (categoryLabel) =>
+      `Tu idea de ${categoryLabel} ha sido analizada. Revisa abajo las señales más fuertes, los riesgos principales y los próximos pasos.`,
+    topOpportunities: [
+      "Existe una oportunidad clara para afinar la oferta para un segmento objetivo.",
+      "Un sprint de validación enfocado puede aumentar la confianza rápidamente.",
+      "Un mejor posicionamiento y pruebas de precio pueden fortalecer la idea.",
+    ],
+    biggestRisks: [
+      "La demanda del cliente todavía necesita validación directa.",
+      "El precio y la disposición a pagar necesitan más evidencia.",
+      "Los canales de adquisición deben probarse antes de escalar.",
+    ],
+    nextActions: [
+      "Entrevista a 10 clientes objetivo y documenta sus dolores más urgentes.",
+      "Prueba una oferta clara con una landing page o un piloto manual.",
+      "Valida el precio con compradores reales antes de ampliar el alcance.",
+    ],
+    missingInfo: [
+      "¿Qué problema específico resuelve esta idea?",
+      "¿Quién es el cliente objetivo principal?",
+      "¿Cómo descubrirán la oferta los primeros clientes?",
+    ],
+    assumptions: [
+      "Los clientes sufren este problema con suficiente frecuencia como para pagar por una mejor solución.",
+      "Existe al menos un canal de adquisición repetible para los primeros adoptantes.",
+    ],
+    frameworkReportSummary: (categoryLabel) =>
+      `Resumen de validación asistido por IA para esta idea de ${categoryLabel}.`,
+  },
+  pt: {
+    oneLiner: (categoryLabel) =>
+      `Sua ideia de ${categoryLabel} foi analisada. Revise abaixo os sinais mais fortes, os principais riscos e os próximos passos.`,
+    topOpportunities: [
+      "Existe uma oportunidade clara para refinar a oferta para um segmento-alvo específico.",
+      "Um sprint de validação focado pode aumentar a confiança rapidamente.",
+      "Melhor posicionamento e testes de preço podem fortalecer a ideia.",
+    ],
+    biggestRisks: [
+      "A demanda do cliente ainda precisa de validação direta.",
+      "Preço e disposição para pagar precisam de evidências mais fortes.",
+      "Os canais de aquisição devem ser testados antes de escalar.",
+    ],
+    nextActions: [
+      "Entreviste 10 clientes-alvo e documente as dores mais urgentes.",
+      "Teste uma oferta clara com uma landing page ou um piloto manual.",
+      "Valide o preço com compradores reais antes de ampliar o escopo.",
+    ],
+    missingInfo: [
+      "Que problema específico esta ideia resolve?",
+      "Quem é o cliente-alvo principal?",
+      "Como os primeiros clientes descobrirão a oferta?",
+    ],
+    assumptions: [
+      "Os clientes enfrentam esse problema com frequência suficiente para pagar por uma solução melhor.",
+      "Existe pelo menos um canal de aquisição repetível para os primeiros adotantes.",
+    ],
+    frameworkReportSummary: (categoryLabel) =>
+      `Resumo de validação assistido por IA para esta ideia de ${categoryLabel}.`,
+  },
+};
+
+const GENERIC_FALLBACK_PATTERNS: RegExp[] = [
+  /^ai analysis completed\.?$/i,
+  /^analysis completed\.?$/i,
+  /^validation complete\.?$/i,
+  /^business idea validation complete\.?$/i,
+  /^your validation is ready\.?$/i,
+  /^review the results below\.?$/i,
+  /^review the strongest signals, main risks, and next steps below\.?$/i,
+  /^not evaluated\.?$/i,
+  /^gate \d+ not evaluated yet\.?$/i,
+  /^additional validation evidence is required\.?$/i,
+  /^more validation is required\.?$/i,
+  /^keep validating assumptions with real customers before building\.?$/i,
+  /^you have room to differentiate with sharper positioning\.?$/i,
+  /^no major opportunities identified\.?$/i,
+  /^no significant risks identified\.?$/i,
+  /^continue validating.*$/i,
+];
+
+const GENERIC_MISSING_INFO_EN = new Set([
+  "What specific problem does this solve?",
+  "Who are your target customers?",
+  "What is your proposed solution?",
+  "How will customers discover your solution?",
+]);
+
+const GENERIC_ASSUMPTIONS_EN = new Set([
+  "Customers experience this problem often enough to pay for a better solution.",
+  "The pricing model can support healthy margins.",
+  "There is at least one repeatable channel to reach early adopters.",
+  "Customers are willing to switch from current alternatives.",
+]);
+
+function resolveTextLocale(locale: string | undefined | null): TextLocale {
+  const normalized = String(locale ?? "en").toLowerCase().trim();
+  if (normalized === "fr") return "fr";
+  if (normalized === "ht" || normalized === "ht-ht") return "ht";
+  if (normalized === "es") return "es";
+  if (normalized === "pt" || normalized === "pt-br" || normalized === "pt-pt") return "pt";
+  return "en";
+}
+
+function cleanText(value: unknown): string {
+  return typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
+}
+
+function isGenericFallbackText(text: string): boolean {
+  const normalized = cleanText(text);
+  if (!normalized) return true;
+  return GENERIC_FALLBACK_PATTERNS.some((pattern) => pattern.test(normalized));
+}
+
+function normalizeStringList(items: unknown, fallback: string[]): string[] {
+  const cleaned = Array.isArray(items)
+    ? items.map((item) => cleanText(item)).filter((item) => item.length > 0)
+    : [];
+
+  if (cleaned.length === 0) return fallback;
+
+  const genericCount = cleaned.filter((item) => isGenericFallbackText(item)).length;
+  if (genericCount === cleaned.length) {
+    return fallback;
+  }
+
+  return cleaned;
+}
+
+function normalizeMissingInfo(locale: TextLocale, items: unknown): string[] {
+  const cleaned = Array.isArray(items)
+    ? items.map((item) => cleanText(item)).filter((item) => item.length > 0)
+    : [];
+
+  if (cleaned.length === 0) return LOCALIZED_FALLBACKS[locale].missingInfo;
+
+  const allGenericEnglish = cleaned.every((item) => GENERIC_MISSING_INFO_EN.has(item) || isGenericFallbackText(item));
+  return allGenericEnglish ? LOCALIZED_FALLBACKS[locale].missingInfo : cleaned;
+}
+
+function normalizeAssumptions(locale: TextLocale, items: unknown): string[] {
+  const cleaned = Array.isArray(items)
+    ? items.map((item) => cleanText(item)).filter((item) => item.length > 0)
+    : [];
+
+  if (cleaned.length === 0) return LOCALIZED_FALLBACKS[locale].assumptions;
+
+  const allGenericEnglish = cleaned.every((item) => GENERIC_ASSUMPTIONS_EN.has(item) || isGenericFallbackText(item));
+  return allGenericEnglish ? LOCALIZED_FALLBACKS[locale].assumptions : cleaned;
+}
+
+function normalizeSummaryForLocale(
+  summary: DynamicValidationResult["summary"] | undefined,
+  locale: TextLocale,
+  category: Category
+): DynamicValidationResult["summary"] {
+  const categoryLabel = LOCALIZED_CATEGORY_LABELS[locale][category];
+  const copy = LOCALIZED_FALLBACKS[locale];
+
+  const oneLiner = cleanText(summary?.oneLiner);
+  const topOpportunities = normalizeStringList(summary?.topOpportunities, copy.topOpportunities);
+  const biggestRisks = normalizeStringList(summary?.biggestRisks, copy.biggestRisks);
+
+  return {
+    oneLiner: oneLiner && !isGenericFallbackText(oneLiner) ? oneLiner : copy.oneLiner(categoryLabel),
+    topOpportunities,
+    biggestRisks,
+  };
+}
+
+function normalizeFrameworkReportForLocale(
+  frameworkReport: SimplifiedFrameworkReport | undefined,
+  locale: TextLocale,
+  category: Category
+): SimplifiedFrameworkReport | undefined {
+  if (!frameworkReport) return frameworkReport;
+
+  const categoryLabel = LOCALIZED_CATEGORY_LABELS[locale][category];
+  const copy = LOCALIZED_FALLBACKS[locale];
+
+  const oneLineSummary = cleanText(frameworkReport.oneLineSummary);
+  const missingInfo = normalizeMissingInfo(locale, frameworkReport.missingInfo);
+  const assumptions = normalizeAssumptions(locale, frameworkReport.assumptions);
+
+  return {
+    ...frameworkReport,
+    oneLineSummary:
+      oneLineSummary && !isGenericFallbackText(oneLineSummary)
+        ? oneLineSummary
+        : copy.frameworkReportSummary(categoryLabel),
+    missingInfo,
+    assumptions,
+  };
+}
+
+function normalizeValidationResultLocale<T extends DynamicValidationResult>(
+  result: T,
+  context: {
+    locale: Locale;
+    category: Category;
+    frameworkProfile: FrameworkProfile;
+  }
+): T {
+  const textLocale = resolveTextLocale(context.locale);
+  const copy = LOCALIZED_FALLBACKS[textLocale];
+
+  const normalizedSummary = normalizeSummaryForLocale(result.summary, textLocale, context.category);
+  const normalizedNextActions = normalizeStringList(result.nextActions, copy.nextActions);
+  const normalizedMissingInfo = normalizeMissingInfo(textLocale, result.missingInfo);
+  const normalizedAssumptions = normalizeAssumptions(textLocale, result.assumptions);
+  const normalizedFrameworkReport = normalizeFrameworkReportForLocale(
+    result.frameworkReport,
+    textLocale,
+    context.category
+  );
+
+  return {
+    ...result,
+    category: result.category ?? context.category,
+    language: context.locale,
+    framework: result.framework ?? {
+      archetype: context.frameworkProfile.id,
+      label: context.frameworkProfile.label,
+    },
+    summary: normalizedSummary,
+    nextActions: normalizedNextActions,
+    missingInfo: normalizedMissingInfo,
+    assumptions: normalizedAssumptions,
+    frameworkReport: normalizedFrameworkReport,
+    meta: {
+      version: result.meta?.version ?? ENGINE_VERSION,
+      iterationCount: result.meta?.iterationCount ?? 1,
+      generatedAt: result.meta?.generatedAt ?? new Date().toISOString(),
+    },
+  } as T;
+}
+
 export async function validateIdeaDynamic(input: ValidationInput): Promise<DynamicValidationResult> {
   const locale: Locale = input.locale || "en";
   const resolvedContext = await resolveValidationContext(input, locale);
   const { country, categoryClassification } = resolvedContext;
+
   const frameworkProfile = detectFrameworkProfile(input.idea, resolvedContext.category);
   const category =
     frameworkProfile.preferredCategory &&
@@ -2390,8 +2825,10 @@ export async function validateIdeaDynamic(input: ValidationInput): Promise<Dynam
     category,
     countryCode: country.code,
   });
+
   const frameworkGuideId = resolvedContext.frameworkHint ?? getDefaultFrameworkGuideId(category);
-  const frameworkGuide = getFrameworkGuide(frameworkGuideId) ?? getFrameworkGuide(getDefaultFrameworkGuideId(category));
+  const frameworkGuide =
+    getFrameworkGuide(frameworkGuideId) ?? getFrameworkGuide(getDefaultFrameworkGuideId(category));
 
   const aiResult = await analyzeBusinessIdeaWithAI({
     input,
@@ -2409,16 +2846,22 @@ export async function validateIdeaDynamic(input: ValidationInput): Promise<Dynam
     },
   });
 
+  const normalizedResult = normalizeValidationResultLocale(aiResult, {
+    locale,
+    category,
+    frameworkProfile,
+  });
+
   return {
-    ...aiResult,
-    frameworkUsed: aiResult.frameworkUsed ?? frameworkGuideId,
+    ...normalizedResult,
+    frameworkUsed: normalizedResult.frameworkUsed ?? frameworkGuideId,
     inferredBusinessModel: {
-      primaryCategory: aiResult.businessCategory ?? aiResult.business_category ?? category,
+      primaryCategory: normalizedResult.businessCategory ?? normalizedResult.business_category ?? category,
       subcategory: resolvedContext.subcategory,
       businessModelType: resolvedContext.businessModelType,
       segment: resolvedContext.segment,
       frameworkId: frameworkGuideId,
-      confidence: Math.round(categoryClassification.confidence * 100),
+      confidence: Math.round(categoryConfidence * 100),
       evidence: categoryClassification.evidence,
     },
   };

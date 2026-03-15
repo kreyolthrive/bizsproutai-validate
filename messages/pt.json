@@ -1,94 +1,94 @@
 {
   "landing": {
     "nav": {
-      "story": "Story",
-      "features": "Features",
+      "story": "Nossa História",
+      "features": "Recursos",
       "faq": "FAQ"
     },
     "hero": {
-      "title": "Validate your business idea",
-      "subtitle": "Our AI validates your idea in minutes—then helps you launch it.",
-      "cta": "Validate My Idea"
+      "title": "Valide sua ideia de negócio",
+      "subtitle": "Nossa IA valida sua ideia em minutos — e depois ajuda você a lançar.",
+      "cta": "Validar Minha Ideia"
     },
     "story": {
-      "headline": "The \"proven strategies\" weren't written for us.",
-      "para1": "When I first tried to build businesses in Haiti, I failed over and over.",
-      "para2": "I even failed my dad's small business.",
-      "para3": "Not because we were lazy. We worked hard. We stayed up late. We did what the books and YouTube videos said. But almost every \"proven\" strategy I found was built for North America or Europe.",
+      "headline": "As \"estratégias comprovadas\" não foram escritas para nós.",
+      "para1": "Quando tentei montar negócios no Haiti pela primeira vez, eu fracassei várias vezes.",
+      "para2": "Eu até fracassei no pequeno negócio do meu pai.",
+      "para3": "Não porque éramos preguiçosos. Trabalhávamos duro. Ficávamos acordados até tarde. Fazíamos o que os livros e vídeos do YouTube diziam. Mas quase toda estratégia \"comprovada\" que eu encontrava foi feita para a América do Norte ou Europa.",
       "breakpoint": {
-        "title": "And that's where it broke.",
-        "para1": "Those models assumed things I didn't have: stable infrastructure, easy access to bank accounts and cards, marketing budgets, and customers who behave like they do in the U.S. or Europe. None of that matched my Haitian reality.",
-        "para2": "So every time I followed the \"right steps\"… I still got the wrong results."
+        "title": "E foi aí que tudo desmoronou.",
+        "para1": "Esses modelos assumiam coisas que eu não tinha: infraestrutura estável, acesso fácil a contas bancárias e cartões, orçamento de marketing e consumidores que se comportam como nos EUA ou na Europa. Nada disso era a realidade do Haiti.",
+        "para2": "Então, toda vez que eu seguia os \"passos certos\"… eu ainda tinha os resultados errados."
       },
-      "global": "What happened to me in Haiti is happening right now across Africa, Latin America, and the Caribbean. People are losing jobs to AI and automation, and they're turning to small businesses and side hustles to survive. But they're handed the same foreign playbooks and expensive tools… and then we're surprised when most of those businesses fail.",
+      "global": "O que aconteceu comigo no Haiti está acontecendo agora mesmo na África, na América Latina e no Caribe. As pessoas estão perdendo empregos para a IA e automação, e estão recorrendo a pequenos negócios e atividades extras para sobreviver. Mas recebem os mesmos manuais estrangeiros e ferramentas caras… e depois ficamos surpresos quando a maioria desses negócios falha.",
       "cycle": {
-        "intro": "If nothing changes, this cycle keeps repeating:",
+        "intro": "Se nada mudar, esse ciclo continua se repetindo:",
         "steps": [
-          "hard work",
-          "wrong strategy",
-          "no results",
-          "discouragement",
-          "give up"
+          "trabalho duro",
+          "estratégia errada",
+          "sem resultados",
+          "desânimo",
+          "desistência"
         ]
       },
       "whyExists": {
-        "label": "Why BizSproutAI exists",
-        "title": "BizSproutAI is built for founders in places like ours.",
-        "para1": "It teaches you how your market really works—how people buy, how they pay, what channels they actually use—then helps you validate your idea with the right framework for your business type (ecommerce, coaching, consulting, tech, finance, and more).",
-        "para2": "Then you follow a step-by-step Launch Sprint to get your first paying customers. No degree. No coding. No more guessing with someone else's playbook."
+        "label": "Por que a BizSproutAI existe",
+        "title": "A BizSproutAI foi feita para fundadores em lugares como o nosso.",
+        "para1": "Ela ensina como seu mercado realmente funciona — como as pessoas compram, como pagam, quais canais realmente usam — e depois ajuda você a validar sua ideia com o framework certo para o seu tipo de negócio (ecommerce, coaching, consultoria, tecnologia, finanças e mais).",
+        "para2": "Depois você segue um Sprint de Lançamento passo a passo para conquistar seus primeiros clientes pagantes. Sem diploma. Sem programação. Sem mais adivinhação com o manual de outra pessoa."
       },
       "ctaCard": {
-        "title": "This is a rare chance to stop building blind.",
-        "body": "If standard startup advice doesn't fit your reality, this is your launch map—built for your world—so your effort actually has a chance to become income, jobs, and real change in your community.",
-        "button": "Join the waitlist",
-        "note": "Be first to access validation + category-specific frameworks."
+        "title": "Esta é uma chance rara de parar de construir no escuro.",
+        "body": "Se os conselhos padrão de startups não se encaixam na sua realidade, este é o seu mapa de lançamento — feito para o seu mundo — para que seu esforço realmente tenha chance de virar renda, empregos e mudança real na sua comunidade.",
+        "button": "Entrar na lista de espera",
+        "note": "Seja o primeiro a acessar validação + frameworks específicos por categoria."
       }
     },
     "features": {
-      "title": "Everything you need to launch",
-      "subtitle": "From idea to income—one platform.",
+      "title": "Tudo que você precisa para lançar",
+      "subtitle": "Da ideia à receita — uma única plataforma.",
       "items": {
         "validate": {
-          "title": "Validate Your Idea",
-          "description": "AI-powered validation specific to your business category and local market conditions."
+          "title": "Valide Sua Ideia",
+          "description": "Validação com IA específica para sua categoria de negócio e condições do mercado local."
         },
         "fix": {
-          "title": "Get Actionable Fixes",
-          "description": "Don't just get a score—get specific recommendations to improve your chances of success."
+          "title": "Receba Melhorias Práticas",
+          "description": "Não receba apenas uma pontuação — receba recomendações específicas para aumentar suas chances de sucesso."
         },
         "build": {
-          "title": "Build Your Business",
-          "description": "Auto-generate your brand, website, and launch content when you're ready to go."
+          "title": "Construa Seu Negócio",
+          "description": "Gere automaticamente sua marca, site e conteúdo de lançamento quando estiver pronto."
         },
         "launch": {
-          "title": "Launch Sprint",
-          "description": "Step-by-step guidance to acquire your first 10 paying customers."
+          "title": "Sprint de Lançamento",
+          "description": "Orientação passo a passo para conquistar seus primeiros 10 clientes pagantes."
         }
       }
     },
     "faq": {
-      "title": "Frequently Asked Questions",
+      "title": "Perguntas Frequentes",
       "items": {
         "what": {
-          "question": "What is BizSproutAI?",
-          "answer": "BizSproutAI is an AI-powered platform that validates your business idea using frameworks specific to your category and local market, then helps you build and launch."
+          "question": "O que é a BizSproutAI?",
+          "answer": "A BizSproutAI é uma plataforma com IA que valida sua ideia de negócio usando frameworks específicos para sua categoria e mercado local, e depois ajuda você a construir e lançar."
         },
         "different": {
-          "question": "How is this different from other tools?",
-          "answer": "Unlike generic startup advice, we adjust validation criteria based on your business category (ecommerce, coaching, fintech, etc.) and your local market conditions (payment methods, trust factors, infrastructure)."
+          "question": "Como isso é diferente de outras ferramentas?",
+          "answer": "Diferente de conselhos genéricos de startups, ajustamos os critérios de validação com base na sua categoria de negócio (ecommerce, coaching, fintech, etc.) e nas condições do seu mercado local (métodos de pagamento, fatores de confiança, infraestrutura)."
         },
         "cost": {
-          "question": "How much does it cost?",
-          "answer": "Basic validation is free. Premium features for building and launching will be available with a subscription."
+          "question": "Quanto custa?",
+          "answer": "A validação básica é gratuita. Recursos premium para construção e lançamento estarão disponíveis por assinatura."
         },
         "countries": {
-          "question": "What countries do you support?",
-          "answer": "We have specific market data for Haiti, Nigeria, Kenya, Mexico, Brazil, and the US, with more countries coming soon. The validation works globally."
+          "question": "Quais países vocês atendem?",
+          "answer": "Temos dados de mercado específicos para Haiti, Nigéria, Quênia, México, Brasil e EUA, com mais países em breve. A validação funciona globalmente."
         }
       }
     },
     "cta": {
-      "getFreeValidation": "Get a free validation"
+      "getFreeValidation": "Fazer uma validação gratuita"
     },
     "operatingModel": {
       "title": "A web é seu centro de controle. O mobile é seu controle de execução.",
@@ -111,25 +111,25 @@
         "items": [
           "Foco diário com 1–3 tarefas de alto impacto",
           "Ações de lead: WhatsApp, ligação, email",
-          "Compartilhar links de booking/request/waitlist"
+          "Compartilhar links de agendamento/solicitação/lista de espera"
         ],
         "cta": "Abrir companheiro mobile"
       }
     }
   },
   "hero": {
-    "title": "Validate your business idea",
-    "subtitle": "Our AI validates your idea in minutes—then helps you launch it.",
-    "cta": "Validate"
+    "title": "Valide sua ideia de negócio",
+    "subtitle": "Nossa IA valida sua ideia em minutos — e depois ajuda você a lançar.",
+    "cta": "Validar"
   },
   "form": {
-    "category": "Category",
-    "idea": "Describe your idea",
-    "ideaPlaceholder": "I want to sell handmade crafts to tourists visiting my city...",
-    "targetMarket": "Target market (optional)",
-    "budgetUsd": "Budget (USD, optional)",
-    "submit": "Validate My Idea",
-    "analyzing": "Analyzing your idea..."
+    "category": "Categoria",
+    "idea": "Descreva sua ideia",
+    "ideaPlaceholder": "Quero vender artesanato para turistas que visitam minha cidade...",
+    "targetMarket": "Mercado-alvo (opcional)",
+    "budgetUsd": "Orçamento (USD, opcional)",
+    "submit": "Validar Minha Ideia",
+    "analyzing": "Analisando sua ideia..."
   },
   "validation": {
     "status": {
@@ -139,32 +139,32 @@
     },
     "verdicts": {
       "go": "Sua ideia está pronta para construir!",
-      "caution": "Promissor—aborde os riscos principais para fortalecer sua posição.",
+      "caution": "Promissor — aborde os riscos principais para fortalecer sua posição.",
       "pivot": "Considere reposicionar ou pivotar para um melhor ajuste de mercado."
     },
     "labels": {
-      "overallScore": "Overall Score",
-      "failureRisks": "Failure Risks",
-      "fixes": "Recommended Fixes",
-      "alternatives": "Alternative Models",
-      "nextActions": "Next Actions",
-      "country": "Detected Country",
-      "category": "Business Category"
+      "overallScore": "Pontuação Geral",
+      "failureRisks": "Pontos a Fortalecer",
+      "fixes": "Melhorias Recomendadas",
+      "alternatives": "Abordagens Alternativas",
+      "nextActions": "Próximas Ações",
+      "country": "País Detectado",
+      "category": "Categoria do Negócio"
     },
     "buttons": {
-      "validate": "Validate",
-      "tryAgain": "Try Again",
-      "startBuilding": "Start Building"
+      "validate": "Validar",
+      "tryAgain": "Tentar Novamente",
+      "startBuilding": "Começar a Construir"
     }
   },
   "common": {
-    "loading": "Loading...",
-    "error": "Something went wrong",
-    "retry": "Retry",
-    "back": "Back",
-    "next": "Next",
-    "submit": "Submit",
-    "cancel": "Cancel"
+    "loading": "Carregando...",
+    "error": "Algo deu errado",
+    "retry": "Tentar novamente",
+    "back": "Voltar",
+    "next": "Próximo",
+    "submit": "Enviar",
+    "cancel": "Cancelar"
   },
   "site": {
     "nav": {
@@ -328,11 +328,11 @@
     "mobile": {
       "kicker": "Companheiro mobile",
       "title": "Gerencie seu lançamento pelo celular",
-      "subtitle": "Acompanhe tarefas e faça follow-up de leads rapidamente.",
+      "subtitle": "Acompanhe tarefas e faça follow-up de leads rapidamente em qualquer lugar.",
       "copied": "Link copiado.",
-      "offline": "Você está offline. As alterações ficam salvas localmente.",
+      "offline": "Você está offline. As alterações ficam salvas localmente e sincronizam ao reconectar.",
       "noName": "Lead sem nome",
-      "noLeads": "Ainda sem leads. Publique seus links para começar.",
+      "noLeads": "Ainda sem leads. Publique seus links para começar a captar contatos.",
       "metrics": {
         "leads": "Leads",
         "done": "Concluído"
@@ -353,7 +353,7 @@
         "openWeb": "Abrir dashboard web"
       },
       "profile": {
-        "blurb": "Compartilhe seus links e mantenha ritmo diário. Ações pequenas geram tração."
+        "blurb": "Compartilhe seus links e mantenha ritmo diário. Pequenas ações todos os dias geram tração de lançamento."
       }
     },
     "socialAgent": {
@@ -416,7 +416,7 @@
       },
       "placeholders": {
         "fullName": "Seu nome completo",
-        "email": "voce@exemplo.com",
+        "email": "you@example.com",
         "phone": "+1 555 123 4567",
         "preferredDateTime": "ex: terça às 15h",
         "helpRequest": "Conte seu objetivo e desafio.",
@@ -444,7 +444,7 @@
       "statusLive": "Ativo",
       "statusDisabled": "Desativado",
       "tabs": {
-        "bookings": "Reservas",
+        "bookings": "Agendamentos",
         "requests": "Solicitações de serviço",
         "waitlist": "Lista de espera",
         "contacts": "Todos os contatos"
@@ -501,55 +501,55 @@
   "homepage": {
     "hero": {
       "badge": "Validação com IA para mercados reais",
-      "title": "Validate Your Business Idea Before You Build",
-      "subtitle": "BizSproutAI uses AI to classify your idea, score the opportunity, identify risks, and show your next best step.",
+      "title": "Valide sua ideia de negócio antes de construir",
+      "subtitle": "A BizSproutAI usa IA para classificar sua ideia, pontuar a oportunidade, identificar riscos e mostrar seu próximo melhor passo.",
       "supporting": "Feito para empreendedores na África, América Latina, Caribe e diáspora.",
-      "cta": "Validate My Idea Free"
+      "cta": "Validar minha ideia grátis"
     },
     "trust": {
-      "item1": "No credit card required.",
-      "item2": "Your idea stays private.",
-      "item3": "Get a clear score, risks, and next step."
+      "item1": "Sem necessidade de cartão de crédito.",
+      "item2": "Sua ideia permanece privada.",
+      "item3": "Receba uma pontuação clara, riscos e próximo passo."
     },
     "footer": {
-      "prefix": "Questions or partnership ideas? Email us at",
-      "note": "BizSproutAI is a DBA of Kreyol Thrive Biz."
+      "prefix": "Dúvidas ou ideias de parceria? Envie um email para",
+      "note": "BizSproutAI é um DBA de Kreyol Thrive Biz."
     },
     "whatYouGet": {
       "title": "O que você recebe",
       "intro": "Ao enviar sua ideia, você recebe:",
       "item1": "Resumo de validação com IA (GO / GO CONDICIONAL / PRECISA MELHORAR / NO GO)",
-      "item2": "Quebra simples: demanda, concorrência e modelo de negócio",
+      "item2": "Análise simples: demanda, concorrência e modelo de negócio",
       "item3": "Relatório para download e prévia de sprint de lançamento de 30 dias"
     },
     "examples": {
       "title": "Veja como a BizSproutAI avalia ideias",
-      "cta": "Quer esse tipo de análise para sua ideia? Descreva sua ideia e email acima.",
+      "cta": "Quer esse tipo de análise para sua ideia? Descreva sua ideia e email acima para receber na hora.",
       "card1": {
         "idea": "Bolsas de couro artesanais vendidas online",
         "demand": "Demanda: crescimento por produtos artesanais e sustentáveis.",
-        "competition": "Concorrência: moderada, com espaço por posicionamento.",
-        "model": "Modelo: venda direta ao consumidor com boa margem.",
+        "competition": "Concorrência: moderada, com espaço por posicionamento de marca.",
+        "model": "Modelo de negócio: venda direta ao consumidor com margens saudáveis.",
         "decision": "Decisão: GO CONDICIONAL"
       },
       "card2": {
         "idea": "Serviço de assinatura de lavagem automotiva móvel",
-        "demand": "Demanda: alta em áreas urbanas focadas em conveniência.",
+        "demand": "Demanda: alta em áreas urbanas onde conveniência importa.",
         "competition": "Concorrência: mercado fragmentado com vários pequenos operadores.",
-        "model": "Modelo: assinaturas geram receita mensal previsível.",
+        "model": "Modelo de negócio: assinaturas geram receita mensal previsível.",
         "decision": "Decisão: GO"
       },
       "card3": {
         "idea": "Página de frases motivacionais no Instagram",
         "demand": "Demanda: categoria de conteúdo muito saturada.",
-        "competition": "Concorrência: extremamente alta e difícil de se diferenciar.",
-        "model": "Modelo: difícil monetizar sem nicho.",
+        "competition": "Concorrência: extremamente alta e difícil de se destacar.",
+        "model": "Modelo de negócio: difícil monetizar sem um nicho.",
         "decision": "Decisão: PRECISA MELHORAR"
       }
     },
     "why": {
       "title": "A maioria dos negócios falha antes do lançamento",
-      "body": "Muitos fundadores começam construindo produto ou site. A BizSproutAI ajuda você a validar antes para não desperdiçar meses na ideia errada.",
+      "body": "Muitos fundadores começam construindo produto ou site primeiro. A BizSproutAI ajuda você a validar sua ideia antes de desperdiçar meses construindo a coisa errada.",
       "item1": "Identifique riscos cedo: baixa demanda ou concorrência pesada.",
       "item2": "Veja exatamente onde melhorar sua oferta e posicionamento.",
       "item3": "Receba seu primeiro plano de lançamento de 30 dias.",
@@ -557,119 +557,119 @@
     },
     "afterValidation": {
       "title": "O que acontece após a validação?",
-      "body": "Se sua ideia mostrar potencial, enviamos também uma prévia prática de sprint de 30 dias com passos de marca, presença online, conteúdo e outreach."
+      "body": "Se sua ideia mostrar potencial, enviamos também uma prévia prática de sprint de 30 dias com fundamentos de marca, passos de presença online, conteúdo e ações de divulgação."
     },
     "contact": {
-      "title": "Dúvidas ou parceria?",
+      "title": "Dúvidas ou ideias de parceria?",
       "prefix": "Fale com a gente em"
     }
   },
   "validationHero": {
     "intro": {
-      "eyebrow": "AI business validation",
-      "kicker": "Category-aware scoring and next-step guidance",
-      "title": "Validate your business idea with AI before you build",
-      "body": "BizSproutAI analyzes your idea, classifies the business category, selects the right validation framework, researches the opportunity, scores the business, and shows you the next best move.",
-      "highlight1Title": "Classify the business",
-      "highlight1Body": "Detect the right category so a local service is not judged like SaaS or ecommerce.",
-      "highlight2Title": "Score the opportunity",
-      "highlight2Body": "See market demand, monetization, competition, acquisition, differentiation, and risk in one view.",
-      "highlight3Title": "Move with clarity",
-      "highlight3Body": "Get practical next steps, experiments to run, and the clearest path forward."
+      "eyebrow": "Validação de negócios com IA",
+      "kicker": "Pontuação por categoria e orientação sobre próximos passos",
+      "title": "Valide sua ideia de negócio com IA antes de construir",
+      "body": "A BizSproutAI analisa sua ideia, classifica a categoria do negócio, seleciona o framework de validação certo, pesquisa a oportunidade, pontua o negócio e mostra seu próximo melhor passo.",
+      "highlight1Title": "Classificar o negócio",
+      "highlight1Body": "Detectar a categoria certa para que um serviço local não seja avaliado como SaaS ou ecommerce.",
+      "highlight2Title": "Pontuar a oportunidade",
+      "highlight2Body": "Veja demanda de mercado, monetização, concorrência, aquisição, diferenciação e risco em uma só visão.",
+      "highlight3Title": "Avançar com clareza",
+      "highlight3Body": "Receba próximos passos práticos, experimentos para executar e o caminho mais claro à frente."
     },
     "form": {
-      "ideaLabel": "Describe your business idea",
-      "ideaPlaceholder": "Example: A mobile car detailing service for busy professionals in Miami that offers monthly packages and online booking.",
-      "targetCustomerLabel": "Who is this for?",
-      "targetCustomerPlaceholder": "Busy professionals, new parents, restaurant owners, independent real estate agents",
-      "marketLabel": "What market are you targeting?",
-      "marketPlaceholder": "Local households in Miami, U.S. ecommerce shoppers, SMB teams, creators",
-      "locationLabel": "Where will you operate?",
-      "locationPlaceholder": "Miami, South Florida, nationwide in the U.S., remote-first online",
-      "offerLabel": "What are you offering?",
-      "offerPlaceholder": "Monthly detailing membership, invoicing SaaS, executive coaching package, curated product bundle",
-      "problemLabel": "What problem are you solving?",
-      "problemPlaceholder": "People lose time coordinating this manually and want a faster, easier option.",
-      "pricingLabel": "Pricing idea",
-      "pricingPlaceholder": "$99/month, $149 premium package, $40 per session, 10% marketplace take rate",
-      "budgetLabel": "Budget (optional)",
+      "ideaLabel": "Descreva sua ideia de negócio",
+      "ideaPlaceholder": "Exemplo: Um serviço móvel de estética automotiva para profissionais ocupados em São Paulo que oferece pacotes mensais e agendamento online.",
+      "targetCustomerLabel": "Para quem é isso?",
+      "targetCustomerPlaceholder": "Profissionais ocupados, pais recentes, donos de restaurante, corretores de imóveis autônomos",
+      "marketLabel": "Qual mercado você está mirando?",
+      "marketPlaceholder": "Famílias locais em São Paulo, compradores de ecommerce no Brasil, equipes PME, criadores de conteúdo",
+      "locationLabel": "Onde você vai operar?",
+      "locationPlaceholder": "São Paulo, Sudeste do Brasil, todo o Brasil, 100% online",
+      "offerLabel": "O que você está oferecendo?",
+      "offerPlaceholder": "Assinatura mensal de estética, SaaS de faturamento, pacote de coaching executivo, curadoria de produtos",
+      "problemLabel": "Que problema você está resolvendo?",
+      "problemPlaceholder": "As pessoas perdem tempo coordenando isso manualmente e querem uma opção mais rápida e fácil.",
+      "pricingLabel": "Ideia de preço",
+      "pricingPlaceholder": "R$99/mês, pacote premium R$149, R$40 por sessão, 10% de taxa do marketplace",
+      "budgetLabel": "Orçamento (opcional)",
       "budgetPlaceholder": "5000",
-      "skillsLabel": "Skills (optional)",
-      "skillsPlaceholder": "Sales, operations, product design, paid ads, coding, industry expertise",
-      "timelineLabel": "Timeline in days (optional)",
+      "skillsLabel": "Habilidades (opcional)",
+      "skillsPlaceholder": "Vendas, operações, design de produto, anúncios pagos, programação, expertise do setor",
+      "timelineLabel": "Prazo em dias (opcional)",
       "timelinePlaceholder": "30",
-      "emailLabel": "Email to receive your validation report",
+      "emailLabel": "Email para receber seu relatório de validação",
       "emailPlaceholder": "nome@empresa.com",
-      "submit": "Validate My Idea",
-      "validating": "Running AI validation...",
-      "cardTitle": "Tell us about the business you want to build",
-      "cardBody": "Share the core idea first. Add extra context only if you want a more tailored validation.",
-      "cardBadge": "2-minute setup",
-      "moreDetails": "Add more details (optional)",
-      "reassurance1": "No credit card required.",
-      "reassurance2": "Your idea stays private.",
-      "reassurance3": "Get a clear score, risks, and next steps."
+      "submit": "Validar Minha Ideia",
+      "validating": "Executando validação com IA...",
+      "cardTitle": "Conte sobre o negócio que você quer construir",
+      "cardBody": "Compartilhe a ideia principal primeiro. Adicione mais contexto apenas se quiser uma validação mais personalizada.",
+      "cardBadge": "Configuração em 2 minutos",
+      "moreDetails": "Adicionar mais detalhes (opcional)",
+      "reassurance1": "Sem necessidade de cartão de crédito.",
+      "reassurance2": "Sua ideia permanece privada.",
+      "reassurance3": "Receba uma pontuação clara, riscos e próximos passos."
     },
     "sample": {
-      "title": "Try a sample idea"
+      "title": "Experimente uma ideia de exemplo"
     },
     "sampleIdeas": [
-      "Online store for handmade leather bags with premium gifting",
-      "Mobile car detailing service for busy professionals in Miami",
-      "AI social media manager for real estate agents"
+      "Loja online de bolsas de couro artesanais com embalagem premium para presente",
+      "Serviço móvel de estética automotiva para profissionais ocupados em São Paulo",
+      "Gerenciador de redes sociais com IA para corretores de imóveis"
     ],
     "result": {
-      "awaiting": "Your verdict will appear here",
+      "awaiting": "Seu resultado aparecerá aqui",
       "go": "PROMISSOR — PRONTO PARA EXECUTAR",
-      "conditionalGo": "PROMISSOR — PRECISA VALIDAÇÃO",
+      "conditionalGo": "PROMISSOR — PRECISA DE VALIDAÇÃO",
       "needsWork": "ESTÁGIO INICIAL — VALIDAR ANTES DE CONSTRUIR",
       "pivotRecommended": "ALTO RISCO — MELHORAR OU PIVOTAR",
       "panelEyebrow": "Onde sua ideia está hoje",
-      "panelTitle": "Your validation snapshot",
-      "panelBody": "Run validation to see the score, category, risks, and next step for your idea.",
-      "summaryDefault": "Share your idea to get a category-aware validation score, key risks, and the clearest next step.",
-      "summaryTitle": "Verdict summary",
-      "category": "Category",
+      "panelTitle": "Seu resumo de validação",
+      "panelBody": "Execute a validação para ver a pontuação, categoria, riscos e próximo passo da sua ideia.",
+      "summaryDefault": "Compartilhe sua ideia para receber uma pontuação de validação por categoria, riscos principais e o próximo passo mais claro.",
+      "summaryTitle": "Resumo do veredito",
+      "category": "Categoria",
       "framework": "Framework",
-      "score": "Validation score",
-      "confidence": "Confidence",
-      "categoryEmpty": "Category will appear here",
-      "frameworkEmpty": "Framework will appear here",
-      "scoreEmpty": "Score will appear here",
-      "confidenceEmpty": "Confidence level will appear here",
-      "verdictEmpty": "Your verdict will appear here",
-      "nextStep": "Next step",
-      "nextStepEmpty": "Your next best step will appear here after validation.",
-      "breakdownTitle": "Opportunity score breakdown",
-      "breakdownHintReady": "Structured scoring across the opportunity",
-      "breakdownHintEmpty": "Scores will appear after validation",
-      "marketDemand": "Market demand",
-      "monetization": "Monetization",
-      "competition": "Competition",
-      "acquisition": "Acquisition",
-      "execution": "Execution feasibility",
-      "differentiation": "Differentiation",
-      "risk": "Risk",
-      "pending": "Pending",
-      "strengths": "Strengths",
-      "weaknesses": "Weaknesses",
-      "keyRisks": "Key risks",
-      "risks": "Risks",
-      "assumptions": "Assumptions to test",
-      "researchSignals": "Research signals",
-      "nextSteps": "Recommended next steps",
-      "nextBestAction": "Next best action",
-      "strengthsEmpty": "Your strongest signals will appear here after validation.",
-      "weaknessesEmpty": "The main gaps or weak points will appear here.",
-      "risksEmpty": "Key risks will appear here once the opportunity is scored.",
-      "assumptionsEmpty": "The assumptions you should test first will appear here.",
-      "researchEmpty": "Market signals and proof points will appear here.",
-      "sprintPending": "Validate your idea to see the next best action to take first.",
-      "ctaTitle": "Next best actions",
-      "ctaBody": "Choose the clearest next move to keep validating, building, or refining the business.",
-      "download": "Download My Validation Report",
-      "downloaded": "Downloaded",
-      "downloadHint": "Run validation to download your report.",
+      "score": "Pontuação de validação",
+      "confidence": "Confiança",
+      "categoryEmpty": "A categoria aparecerá aqui",
+      "frameworkEmpty": "O framework aparecerá aqui",
+      "scoreEmpty": "A pontuação aparecerá aqui",
+      "confidenceEmpty": "O nível de confiança aparecerá aqui",
+      "verdictEmpty": "Seu veredito aparecerá aqui",
+      "nextStep": "Próximo passo",
+      "nextStepEmpty": "Seu próximo melhor passo aparecerá aqui após a validação.",
+      "breakdownTitle": "Detalhamento da pontuação de oportunidade",
+      "breakdownHintReady": "Pontuação estruturada da oportunidade",
+      "breakdownHintEmpty": "As pontuações aparecerão após a validação",
+      "marketDemand": "Demanda de mercado",
+      "monetization": "Monetização",
+      "competition": "Concorrência",
+      "acquisition": "Aquisição",
+      "execution": "Viabilidade de execução",
+      "differentiation": "Diferenciação",
+      "risk": "Risco",
+      "pending": "Pendente",
+      "strengths": "Pontos fortes",
+      "weaknesses": "Pontos fracos",
+      "keyRisks": "Riscos principais",
+      "risks": "Riscos",
+      "assumptions": "Suposições a testar",
+      "researchSignals": "Sinais de pesquisa",
+      "nextSteps": "Próximos passos recomendados",
+      "nextBestAction": "Próxima melhor ação",
+      "strengthsEmpty": "Seus sinais mais fortes aparecerão aqui após a validação.",
+      "weaknessesEmpty": "As principais lacunas ou pontos fracos aparecerão aqui.",
+      "risksEmpty": "Os riscos principais aparecerão aqui após a oportunidade ser pontuada.",
+      "assumptionsEmpty": "As suposições que você deve testar primeiro aparecerão aqui.",
+      "researchEmpty": "Sinais de mercado e provas aparecerão aqui.",
+      "sprintPending": "Valide sua ideia para ver a próxima melhor ação a tomar.",
+      "ctaTitle": "Próximas melhores ações",
+      "ctaBody": "Escolha o próximo passo mais claro para continuar validando, construindo ou refinando o negócio.",
+      "download": "Baixar Meu Relatório de Validação",
+      "downloaded": "Baixado",
+      "downloadHint": "Execute a validação para baixar seu relatório.",
       "pillarTitle": "Validação em Seis Pilares",
       "pillarSubtitle": "Cada pilar avalia uma área-chave de viabilidade do negócio",
       "pillarStrong": "Forte",
@@ -689,34 +689,34 @@
       "highRiskImprove": "Alto Risco — Melhorar ou Pivotar"
     },
     "progress": {
-      "title": "Validation pipeline",
-      "detecting": "Detecting business category",
-      "framework": "Selecting framework",
-      "research": "Researching market signals",
-      "scoring": "Scoring idea",
-      "nextSteps": "Generating next steps",
-      "running": "Running",
-      "done": "Done",
-      "pending": "Pending"
+      "title": "Pipeline de validação",
+      "detecting": "Detectando categoria do negócio",
+      "framework": "Selecionando framework",
+      "research": "Pesquisando sinais de mercado",
+      "scoring": "Pontuando ideia",
+      "nextSteps": "Gerando próximos passos",
+      "running": "Executando",
+      "done": "Concluído",
+      "pending": "Pendente"
     },
     "status": {
-      "emailSent": "Your validation report is on its way to your inbox.",
-      "emailIssue": "Email send issue",
-      "emailAttempted": "Email delivery was attempted.",
-      "emailDisabled": "Email delivery is disabled.",
-      "emailOptional": "Report is ready on this page. Add email next time if you want inbox delivery.",
-      "waitlistTitle": "Waitlist confirmed",
-      "waitlist": "Thank you — you’re on the waitlist. We’ll notify you when this business is ready to launch.",
-      "leadSaved": "Your details have been saved successfully.",
-      "leadIssue": "Lead save issue",
-      "runSaved": "Your validation is ready.",
-      "runIssue": "Validation run issue"
+      "emailSent": "Seu relatório de validação está a caminho da sua caixa de entrada.",
+      "emailIssue": "Problema no envio de email",
+      "emailAttempted": "A entrega do email foi tentada.",
+      "emailDisabled": "A entrega por email está desativada.",
+      "emailOptional": "O relatório está pronto nesta página. Adicione um email na próxima vez se quiser receber na caixa de entrada.",
+      "waitlistTitle": "Lista de espera confirmada",
+      "waitlist": "Obrigado — você está na lista de espera. Avisaremos quando o negócio estiver pronto para lançar.",
+      "leadSaved": "Seus dados foram salvos com sucesso.",
+      "leadIssue": "Problema ao salvar lead",
+      "runSaved": "Sua validação está pronta.",
+      "runIssue": "Problema na execução da validação"
     },
     "errors": {
-      "minIdea": "Please add at least 10 characters so the model can evaluate your idea.",
-      "emailRequired": "Please enter your email so we can deliver the validation report.",
-      "invalidEmail": "Please enter a valid email address.",
-      "generic": "Something went wrong while validating."
+      "minIdea": "Adicione pelo menos 10 caracteres para que o modelo possa avaliar sua ideia.",
+      "emailRequired": "Informe seu email para que possamos enviar o relatório de validação.",
+      "invalidEmail": "Informe um endereço de email válido.",
+      "generic": "Algo deu errado durante a validação."
     }
   }
 }

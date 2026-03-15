@@ -130,6 +130,37 @@ const translations: Record<Locale, {
       medium: "Medio",
       low: "Bajo"
     }
+  },
+  pt: {
+    verdicts: {
+      "go": "Sua ideia está pronta para construir!",
+      "caution": "Promissor—resolva os riscos principais para fortalecer sua posição.",
+      "pivot": "Considere reposicionar ou pivotar para um melhor ajuste ao mercado."
+    },
+    status: {
+      "GO": "AVANÇAR",
+      "FIX": "REFINAR",
+      "REFINE": "REPOSICIONAR"
+    },
+    labels: {
+      overallScore: "Pontuação geral",
+      failureRisks: "Áreas a fortalecer",
+      fixes: "Melhorias recomendadas",
+      alternatives: "Abordagens alternativas",
+      nextActions: "Próximas ações",
+      country: "País detectado",
+      category: "Categoria de negócio",
+      criteria: "Critérios de avaliação",
+      summary: "Resumo",
+      opportunities: "Melhores oportunidades",
+      risks: "Desafios principais"
+    },
+    common: {
+      critical: "Crítico",
+      high: "Alto",
+      medium: "Médio",
+      low: "Baixo"
+    }
   }
 };
 

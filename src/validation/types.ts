@@ -1,4 +1,4 @@
-export type Locale = "en" | "fr" | "ht" | "es";
+export type Locale = "en" | "fr" | "ht" | "es" | "pt";
 
 export type Category =
   | "ecommerce"
