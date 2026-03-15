@@ -44,6 +44,8 @@ type EmbeddedLogo = {
   sourceFile: string;
 };
 
+type UnknownRecord = Record<string, unknown>;
+
 function resolveReportScore(result: DynamicValidationResult): number {
   return resolveOverallScore100(result);
 }
@@ -72,6 +74,16 @@ function normalizeStringArray(value: unknown): string[] {
   return value.filter(
     (item): item is string => typeof item === "string" && item.trim().length > 0
   );
+}
+
+function isRecord(value: unknown): value is UnknownRecord {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readString(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : undefined;
 }
 
 function wrapText(
@@ -248,7 +260,20 @@ function resolveCategory(result: DynamicValidationResult): string {
 }
 
 function resolveCountry(result: DynamicValidationResult): string {
-  return result.country?.code ?? result.country?.name ?? "n/a";
+  const code = readString(result.country?.code);
+  if (code) return code;
+
+  const countryUnknown = result.country as unknown;
+  if (isRecord(countryUnknown)) {
+    const runtimeName =
+      readString(countryUnknown["name"]) ??
+      readString(countryUnknown["label"]) ??
+      readString(countryUnknown["country"]);
+
+    if (runtimeName) return runtimeName;
+  }
+
+  return "n/a";
 }
 
 function resolveFramework(result: DynamicValidationResult): string {
