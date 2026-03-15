@@ -118,12 +118,16 @@ function resolveSummary(result: DynamicValidationResult): string {
 }
 
 function resolveConfidenceScore(result: DynamicValidationResult): number {
+  const metaRecord = isRecord(result.meta)
+    ? (result.meta as UnknownRecord)
+    : undefined;
+
   const candidates: unknown[] = [
     result.confidenceScore,
     result.confidence_score,
-    isRecord(result.meta) ? result.meta["confidence"] : undefined,
-    isRecord(result.meta) ? result.meta["confidenceScore"] : undefined,
-    isRecord(result.meta) ? result.meta["confidence_score"] : undefined,
+    metaRecord?.["confidence"],
+    metaRecord?.["confidenceScore"],
+    metaRecord?.["confidence_score"],
   ];
 
   for (const candidate of candidates) {
