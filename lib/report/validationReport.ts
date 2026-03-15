@@ -13,7 +13,7 @@ type ValidationReportInput = {
   email?: string;
   locale: Locale;
   result: DynamicValidationResult;
-  generatedAt: string;
+  generatedAt?: string;
 };
 
 export type ValidationReportDocument = {
@@ -204,6 +204,7 @@ function buildSection(title: string, lines: string[]): string {
 export function buildValidationReportDocument(
   input: ValidationReportInput
 ): ValidationReportDocument {
+  const generatedAt = input.generatedAt ?? new Date().toISOString();
   const decision = getDecision(input.result);
   const decisionText = decisionLabel(decision);
   const filenameIdea = input.idea.split(/\s+/).slice(0, 6).join("-");
@@ -219,7 +220,7 @@ export function buildValidationReportDocument(
     "BizSproutAI Business Validation Report",
     "=====================================",
     "",
-    `Generated at: ${input.generatedAt}`,
+    `Generated at: ${generatedAt}`,
     `Locale: ${input.locale}`,
     `Email: ${input.email ?? "not provided"}`,
     "",
@@ -245,6 +246,6 @@ export function buildValidationReportDocument(
   return {
     filename,
     text,
-    generatedAt: input.generatedAt,
+    generatedAt,
   };
 }
