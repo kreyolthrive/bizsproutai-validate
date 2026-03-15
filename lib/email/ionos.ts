@@ -104,7 +104,8 @@ type MailAttachment = {
   contentDisposition?: "attachment";
 };
 
-let cachedTransporter: ReturnType<typeof nodemailer.createTransport> | null = null;
+let cachedTransporter: ReturnType<typeof nodemailer.createTransport> | null =
+  null;
 let cachedConfigKey = "";
 
 function sanitize(value: string | undefined): string | undefined {
@@ -132,10 +133,12 @@ function getMailConfig(): MailConfig | null {
   const secure = port === 465;
 
   const from =
-    sanitize(process.env.IONOS_FROM_EMAIL ?? process.env.SMTP_FROM_EMAIL) ?? user;
+    sanitize(process.env.IONOS_FROM_EMAIL ?? process.env.SMTP_FROM_EMAIL) ??
+    user;
 
   const ownerEmail =
-    sanitize(process.env.IONOS_OWNER_EMAIL ?? process.env.LEADS_TO_EMAIL) ?? from;
+    sanitize(process.env.IONOS_OWNER_EMAIL ?? process.env.LEADS_TO_EMAIL) ??
+    from;
 
   return {
     host,
@@ -191,7 +194,8 @@ function resolveReportScore(result: DynamicValidationResult): number {
 
 function buildSummaryLines(result: DynamicValidationResult): string[] {
   const demand = result.frameworkReport?.problemDemand?.total;
-  const competition = result.frameworkReport?.solutionValidation?.differentiation;
+  const competition =
+    result.frameworkReport?.solutionValidation?.differentiation;
   const margin = result.frameworkReport?.businessModelValidation?.margin;
 
   return [
@@ -243,7 +247,9 @@ function normalizeUserEmail(payload: ValidationEmailPayload): string | null {
 }
 
 function normalizeLocale(payload: ValidationEmailPayload): string {
-  return sanitize(("locale" in payload ? payload.locale : undefined) ?? "en") ?? "en";
+  return (
+    sanitize(("locale" in payload ? payload.locale : undefined) ?? "en") ?? "en"
+  );
 }
 
 function normalizeReport(payload: ValidationEmailPayload): NormalizedReport {
@@ -290,7 +296,11 @@ function normalizeReport(payload: ValidationEmailPayload): NormalizedReport {
     pdfBuffer = Buffer.from(payload.pdfBytes);
   }
 
-  if (!pdfBuffer && "attachments" in payload && Array.isArray(payload.attachments)) {
+  if (
+    !pdfBuffer &&
+    "attachments" in payload &&
+    Array.isArray(payload.attachments)
+  ) {
     const pdfAttachment = payload.attachments.find(
       (attachment) =>
         attachment &&
@@ -347,11 +357,13 @@ function buildAttachments(report: NormalizedReport): MailAttachment[] {
 }
 
 function resolveCategory(result: DynamicValidationResult): string {
-  return result.category ?? result.businessCategory ?? result.business_category ?? "n/a";
+  return (
+    result.category ?? result.businessCategory ?? result.business_category ?? "n/a"
+  );
 }
 
 function resolveCountry(result: DynamicValidationResult): string {
-  return result.country?.code ?? result.country?.name ?? "n/a";
+  return result.country?.code ?? "n/a";
 }
 
 function resolveFramework(result: DynamicValidationResult): string {
@@ -369,7 +381,9 @@ function resolveSummary(result: DynamicValidationResult): string {
 }
 
 function resolvePreviewActions(result: DynamicValidationResult): string[] {
-  return Array.isArray(result.nextActions) ? result.nextActions.slice(0, 3) : [];
+  return Array.isArray(result.nextActions)
+    ? result.nextActions.slice(0, 3)
+    : [];
 }
 
 async function sendMailWithAttachmentFallback(params: {
@@ -389,7 +403,11 @@ async function sendMailWithAttachmentFallback(params: {
     return { sent: true, fallbackUsed: false };
   } catch (firstError) {
     if (!params.mail.attachments?.length) {
-      return { sent: false, fallbackUsed: false, error: formatError(firstError) };
+      return {
+        sent: false,
+        fallbackUsed: false,
+        error: formatError(firstError),
+      };
     }
 
     try {
@@ -575,7 +593,9 @@ export async function sendValidationEmails(
   };
 }
 
-export async function sendSmtpTestEmail(to: string): Promise<SmtpTestEmailResult> {
+export async function sendSmtpTestEmail(
+  to: string
+): Promise<SmtpTestEmailResult> {
   const config = getMailConfig();
 
   if (!config) {
