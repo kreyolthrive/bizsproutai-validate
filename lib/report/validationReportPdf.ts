@@ -112,20 +112,27 @@ function wrapText(
   return lines;
 }
 
+function fitImage(
+  imageWidth: number,
+  imageHeight: number,
+  maxWidth: number,
+  maxHeight: number
+): { width: number; height: number } {
+  const widthRatio = maxWidth / imageWidth;
+  const heightRatio = maxHeight / imageHeight;
+  const ratio = Math.min(widthRatio, heightRatio);
+
+  return {
+    width: imageWidth * ratio,
+    height: imageHeight * ratio,
+  };
+}
+
 async function tryEmbedLogo(pdfDoc: PDFDocument): Promise<EmbeddedLogo | null> {
   const candidates = [
     "bizsproutai-logo.png",
     "bizsproutai-logo.jpg",
     "bizsproutai-logo.jpeg",
-    "bizsproutai logo.png",
-    "bizsproutai logo.jpg",
-    "bizsproutai_logo.png",
-    "bizsproutai_logo.jpg",
-    "company-logo.png",
-    "company-logo.jpg",
-    "logo.png",
-    "logo.jpg",
-    "logo.jpeg",
   ];
 
   for (const file of candidates) {
@@ -152,7 +159,9 @@ async function tryEmbedLogo(pdfDoc: PDFDocument): Promise<EmbeddedLogo | null> {
     }
   }
 
-  console.warn("[pdf] No logo file found in public/ matching known candidates.");
+  console.warn(
+    "[pdf] No logo file found in public/ matching bizsproutai-logo.(png|jpg|jpeg)."
+  );
   return null;
 }
 
@@ -322,44 +331,69 @@ export async function buildValidationReportPdf(
   let page = pdfDoc.addPage([PAGE.width, PAGE.height]);
   let y = PAGE.height - PAGE.marginTop;
 
+  const decision = getDecision(input.result);
+  const score = resolveReportScore(input.result);
+  const decisionText = decisionLabel(decision);
+
+  const headerHeight = 92;
+  const headerY = y - headerHeight;
+  const contentWidth = PAGE.width - PAGE.marginX * 2;
+
   page.drawRectangle({
     x: PAGE.marginX,
-    y: y - 88,
-    width: PAGE.width - PAGE.marginX * 2,
-    height: 88,
+    y: headerY,
+    width: contentWidth,
+    height: headerHeight,
     color: rgb(0.06, 0.22, 0.49),
   });
 
   const embeddedLogo = await tryEmbedLogo(pdfDoc);
-
   let titleX = PAGE.marginX + 18;
 
   if (embeddedLogo) {
-    const logoHeight = 34;
-    const logoWidth = (embeddedLogo.image.width / embeddedLogo.image.height) * logoHeight;
+    const badgeX = PAGE.marginX + 16;
+    const badgeY = headerY + 20;
+    const badgeWidth = 124;
+    const badgeHeight = 44;
 
-    page.drawImage(embeddedLogo.image, {
-      x: PAGE.marginX + 16,
-      y: y - 64,
-      width: logoWidth,
-      height: logoHeight,
+    page.drawRectangle({
+      x: badgeX,
+      y: badgeY,
+      width: badgeWidth,
+      height: badgeHeight,
+      color: rgb(1, 1, 1),
     });
 
-    titleX = PAGE.marginX + 16 + logoWidth + 14;
+    const fitted = fitImage(
+      embeddedLogo.image.width,
+      embeddedLogo.image.height,
+      badgeWidth - 16,
+      badgeHeight - 12
+    );
+
+    page.drawImage(embeddedLogo.image, {
+      x: badgeX + (badgeWidth - fitted.width) / 2,
+      y: badgeY + (badgeHeight - fitted.height) / 2,
+      width: fitted.width,
+      height: fitted.height,
+    });
+
+    titleX = badgeX + badgeWidth + 16;
   } else {
     page.drawText("BizSproutAI", {
       x: PAGE.marginX + 16,
-      y: y - 50,
-      size: 14,
+      y: headerY + 38,
+      size: 15,
       font: fontBold,
       color: rgb(1, 1, 1),
     });
-    titleX = PAGE.marginX + 110;
+
+    titleX = PAGE.marginX + 132;
   }
 
   page.drawText("Business Validation Report", {
     x: titleX,
-    y: y - 36,
+    y: headerY + 54,
     size: 16,
     font: fontBold,
     color: rgb(1, 1, 1),
@@ -367,40 +401,52 @@ export async function buildValidationReportPdf(
 
   page.drawText(`Generated ${input.generatedAt}`, {
     x: titleX,
-    y: y - 56,
+    y: headerY + 32,
     size: 9.5,
     font: fontRegular,
     color: rgb(0.89, 0.94, 1),
   });
 
-  const decision = getDecision(input.result);
-  const score = resolveReportScore(input.result);
+  const stripY = headerY - 20;
 
   page.drawRectangle({
-    x: PAGE.width - PAGE.marginX - 130,
-    y: y - 70,
-    width: 114,
-    height: 44,
-    color: rgb(1, 1, 1),
+    x: PAGE.marginX,
+    y: stripY,
+    width: contentWidth,
+    height: 42,
+    color: rgb(0.95, 0.97, 1),
+    borderColor: rgb(0.83, 0.88, 0.97),
+    borderWidth: 1,
   });
 
-  page.drawText(decisionLabel(decision), {
-    x: PAGE.width - PAGE.marginX - 122,
-    y: y - 44,
-    size: 10.5,
+  page.drawText("Decision", {
+    x: PAGE.marginX + 12,
+    y: stripY + 25,
+    size: 8.5,
+    font: fontRegular,
+    color: rgb(0.31, 0.39, 0.52),
+  });
+
+  page.drawText(decisionText, {
+    x: PAGE.marginX + 12,
+    y: stripY + 10,
+    size: 11,
     font: fontBold,
     color: rgb(0.09, 0.18, 0.36),
   });
 
-  page.drawText(`${score}/100`, {
-    x: PAGE.width - PAGE.marginX - 122,
-    y: y - 61,
-    size: 9.5,
+  const scoreText = `${score}/100`;
+  const scoreWidth = fontMono.widthOfTextAtSize(scoreText, 11);
+
+  page.drawText(scoreText, {
+    x: PAGE.width - PAGE.marginX - 12 - scoreWidth,
+    y: stripY + 14,
+    size: 11,
     font: fontMono,
     color: rgb(0.32, 0.36, 0.45),
   });
 
-  y -= 108;
+  y = stripY - 18;
 
   const top = resolveTopOpportunities(input.result);
   const risks = resolveBiggestRisks(input.result);
