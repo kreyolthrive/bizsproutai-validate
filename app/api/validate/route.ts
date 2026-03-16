@@ -8,6 +8,15 @@ import type {
   ValidationInput,
 } from "@/src/validation/types";
 
+import { guardPayloadSize, validateFieldLengths } from "@/src/security/payloadGuard";
+import { runBotChecks } from "@/src/security/botDetection";
+import { isStrictlyValidEmail, checkEmailSendLimit } from "@/src/security/emailGuard";
+import { checkAiCostLimit } from "@/src/security/aiCostGuard";
+import { sanitizeRequestBody } from "@/src/security/inputSanitizer";
+import { safeLogContext } from "@/src/security/piiSanitizer";
+import { checkRateLimit } from "@/src/security/rateLimit";
+import { resolveClientIp, buildRateLimitIdentity } from "@/src/security/requestIdentity";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -97,6 +106,10 @@ type RouteCopy = {
     leadSaveFailed: string;
     runSaveFailed: string;
     emailDeliveryFailed: string;
+    rateLimited: string;
+    disposableEmail: string;
+    emailSendLimit: string;
+    validationLimit: string;
   };
   report: {
     filename: string;
@@ -146,6 +159,10 @@ function getRouteCopy(locale: Locale): RouteCopy {
           leadSaveFailed: "Échec de l’enregistrement du lead.",
           runSaveFailed: "Échec de l’enregistrement du run de validation.",
           emailDeliveryFailed: "Échec de l’envoi de l’e-mail.",
+          rateLimited: "Trop de requêtes. Veuillez réessayer plus tard.",
+          disposableEmail: "Veuillez utiliser une adresse e-mail non jetable.",
+          emailSendLimit: "Cette adresse e-mail a atteint sa limite de validation. Veuillez réessayer plus tard.",
+          validationLimit: "Limite de validation atteinte. Veuillez réessayer plus tard.",
         },
         report: {
           filename: "rapport-validation-bizsproutai.txt",
@@ -188,6 +205,10 @@ function getRouteCopy(locale: Locale): RouteCopy {
           leadSaveFailed: "Echèk pandan anrejistreman lead la.",
           runSaveFailed: "Echèk pandan anrejistreman validasyon an.",
           emailDeliveryFailed: "Echèk pandan voye imèl la.",
+          rateLimited: "Twòp demann. Tanpri eseye ankò pita.",
+          disposableEmail: "Tanpri itilize yon adrès imèl ki pa tanporè.",
+          emailSendLimit: "Adrès imèl sa a rive nan limit validasyon li. Tanpri eseye ankò pita.",
+          validationLimit: "Limit validasyon rive. Tanpri eseye ankò pita.",
         },
         report: {
           filename: "rapo-validasyon-bizsproutai.txt",
@@ -230,6 +251,10 @@ function getRouteCopy(locale: Locale): RouteCopy {
           leadSaveFailed: "No se pudo guardar el lead.",
           runSaveFailed: "No se pudo guardar la ejecución de validación.",
           emailDeliveryFailed: "No se pudo enviar el correo electrónico.",
+          rateLimited: "Demasiadas solicitudes. Inténtalo de nuevo más tarde.",
+          disposableEmail: "Usa un correo electrónico que no sea desechable.",
+          emailSendLimit: "Este correo ha alcanzado su límite de validación. Inténtalo de nuevo más tarde.",
+          validationLimit: "Límite de validación alcanzado. Inténtalo de nuevo más tarde.",
         },
         report: {
           filename: "reporte-validacion-bizsproutai.txt",
@@ -272,6 +297,10 @@ function getRouteCopy(locale: Locale): RouteCopy {
           leadSaveFailed: "Falha ao salvar o lead.",
           runSaveFailed: "Falha ao salvar a execução da validação.",
           emailDeliveryFailed: "Falha ao enviar o e-mail.",
+          rateLimited: "Muitas solicitações. Tente novamente mais tarde.",
+          disposableEmail: "Use um endereço de e-mail não descartável.",
+          emailSendLimit: "Este e-mail atingiu o limite de validação. Tente novamente mais tarde.",
+          validationLimit: "Limite de validação atingido. Tente novamente mais tarde.",
         },
         report: {
           filename: "relatorio-validacao-bizsproutai.txt",
@@ -315,6 +344,10 @@ function getRouteCopy(locale: Locale): RouteCopy {
           leadSaveFailed: "Failed to save lead.",
           runSaveFailed: "Failed to save validation run.",
           emailDeliveryFailed: "Email delivery failed.",
+          rateLimited: "Too many requests. Please try again later.",
+          disposableEmail: "Please use a non-disposable email address.",
+          emailSendLimit: "This email address has reached its validation limit. Please try again later.",
+          validationLimit: "Validation limit reached. Please try again later.",
         },
         report: {
           filename: "bizsproutai-validation-report.txt",
@@ -405,10 +438,6 @@ function normalizeExperienceLevel(
     : undefined;
 }
 
-function isValidEmail(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
 function createRequestId(): string {
   return crypto.randomUUID();
 }
@@ -433,11 +462,10 @@ function sendJson(payload: unknown, status: number, requestId: string) {
 function parseValidationPayload(
   body: unknown,
   requestLocale: Locale
-): { email?: string; website?: string; input: ValidationInput } {
+): { email?: string; input: ValidationInput } {
   const raw = isObject(body) ? body : {};
 
   const email = asTrimmedString(raw.email);
-  const website = asTrimmedString(raw.website);
 
   const idea =
     asTrimmedString(raw.idea) ??
@@ -461,7 +489,7 @@ function parseValidationPayload(
     experienceLevel: normalizeExperienceLevel(raw.experienceLevel),
   };
 
-  return { email, website, input };
+  return { email, input };
 }
 
 function classifyValidationError(
@@ -629,12 +657,16 @@ async function buildReportArtifacts(args: {
 }): Promise<ReportArtifacts> {
   const copy = getRouteCopy(args.locale);
 
+  // Sanitize inputs going into report generation
+  const safeIdea = (args.idea ?? "").slice(0, 5_000);
+  const safeEmail = args.email?.slice(0, 254);
+
   let textDocument: ReportArtifacts["textDocument"] = null;
   let pdfDocument: ReportArtifacts["pdfDocument"] = null;
 
   let report = buildFallbackReport({
-    idea: args.idea,
-    email: args.email,
+    idea: safeIdea,
+    email: safeEmail,
     locale: args.locale,
     result: args.result,
   });
@@ -642,8 +674,8 @@ async function buildReportArtifacts(args: {
   try {
     const reportModule = await import("@/lib/report/validationReport");
     const document = reportModule.buildValidationReportDocument({
-      idea: args.idea,
-      email: args.email,
+      idea: safeIdea,
+      email: safeEmail,
       locale: args.locale,
       result: args.result,
     });
@@ -668,14 +700,20 @@ async function buildReportArtifacts(args: {
   try {
     const pdfModule = await import("@/lib/report/validationReportPdf");
     const pdf = await pdfModule.buildValidationReportPdf({
-      idea: args.idea,
-      email: args.email,
+      idea: safeIdea,
+      email: safeEmail,
       locale: args.locale,
       result: args.result,
       generatedAt: report.generatedAt,
     });
 
     pdfDocument = pdf;
+
+    // Cap PDF size at 5 MB to prevent memory abuse
+    const MAX_PDF_BYTES = 5 * 1024 * 1024;
+    if (pdf.bytes.byteLength > MAX_PDF_BYTES) {
+      throw new Error("Generated PDF exceeds maximum allowed size.");
+    }
 
     report.pdf = {
       filename: pdf.filename,
@@ -910,40 +948,95 @@ export async function OPTIONS() {
 export async function POST(request: NextRequest) {
   const requestId = createRequestId();
   const requestLocale = inferLocaleFromRequest(request);
+  const clientIp = resolveClientIp(request);
+  const startTime = Date.now();
 
   try {
-    console.log(`[api/validate][${requestId}] POST handler reached`);
+    console.log(
+      `[api/validate][${requestId}] POST handler reached`,
+      safeLogContext({ requestId, ip: clientIp })
+    );
 
-    let body: unknown;
-
-    try {
-      body = await request.json();
-    } catch (error) {
-      console.error(`[api/validate][${requestId}] invalid json body`, error);
-
+    /* ── 1. Rate limiting (per IP) ─────────────────────────────── */
+    const rateLimitKey = buildRateLimitIdentity("validate", request);
+    const rateLimitPerHour = parseInt(
+      process.env.RATE_LIMIT_PER_HOUR ?? "10",
+      10
+    );
+    const rateCheck = await checkRateLimit(
+      rateLimitKey,
+      rateLimitPerHour,
+      60 * 60 * 1_000
+    );
+    if (!rateCheck.allowed) {
       return sendJson(
         {
           ok: false,
           requestId,
-          code: "invalid_json",
-          error: getRouteCopy(requestLocale).errors.invalidJson,
+          code: "rate_limited",
+          error: getRouteCopy(requestLocale).errors.rateLimited,
         },
-        400,
+        429,
         requestId
       );
     }
 
-    const { email, website, input } = parseValidationPayload(body, requestLocale);
+    /* ── 2. Payload size guard (before JSON parsing) ───────────── */
+    const payloadCheck = await guardPayloadSize(request);
+    if (!payloadCheck.ok) {
+      return sendJson(
+        {
+          ok: false,
+          requestId,
+          code: payloadCheck.code,
+          error: payloadCheck.message,
+        },
+        payloadCheck.status,
+        requestId
+      );
+    }
+
+    const rawBody = payloadCheck.body;
+
+    /* ── 3. Sanitize input ─────────────────────────────────────── */
+    const body =
+      typeof rawBody === "object" && rawBody !== null && !Array.isArray(rawBody)
+        ? sanitizeRequestBody(rawBody as Record<string, unknown>)
+        : rawBody;
+
+    /* ── 4. Field length validation ────────────────────────────── */
+    if (typeof body === "object" && body !== null && !Array.isArray(body)) {
+      const fieldCheck = validateFieldLengths(body as Record<string, unknown>);
+      if (!fieldCheck.ok) {
+        return sendJson(
+          {
+            ok: false,
+            requestId,
+            code: fieldCheck.code,
+            error: fieldCheck.message,
+          },
+          400,
+          requestId
+        );
+      }
+    }
+
+    const { email, input } = parseValidationPayload(body, requestLocale);
     const copy = getRouteCopy(input.locale ?? "en");
 
-    console.log(`[api/validate][${requestId}] normalized input`, {
-      email,
-      locale: input.locale,
-      ideaPreview: input.idea?.slice(0, 120),
-      honeypotFilled: Boolean(website),
-    });
-
-    if (website) {
+    /* ── 5. Bot detection (honeypot + timing + fingerprint) ────── */
+    const botCheck = await runBotChecks(
+      request,
+      (body as Record<string, unknown>) ?? {},
+      input.idea ?? ""
+    );
+    if (botCheck.blocked) {
+      console.warn(
+        `[api/validate][${requestId}] bot blocked`,
+        safeLogContext({ requestId, ip: clientIp }),
+        { reason: botCheck.reason, score: botCheck.botScore?.score }
+      );
+      // Return generic 400 to not reveal detection
       return sendJson(
         {
           ok: false,
@@ -956,6 +1049,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log(
+      `[api/validate][${requestId}] normalized input`,
+      safeLogContext({
+        requestId,
+        email,
+        ip: clientIp,
+        locale: input.locale,
+        ideaPreview: input.idea?.slice(0, 80),
+      })
+    );
+
+    /* ── 6. Email validation (strict + disposable check) ───────── */
     if (!email) {
       return sendJson(
         {
@@ -969,19 +1074,39 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!isValidEmail(email)) {
+    const emailValidation = isStrictlyValidEmail(email);
+    if (!emailValidation.valid) {
       return sendJson(
         {
           ok: false,
           requestId,
           code: "invalid_email",
-          error: copy.errors.invalidEmail,
+          error:
+            emailValidation.reason === "disposable_email"
+              ? copy.errors.disposableEmail
+              : copy.errors.invalidEmail,
         },
         400,
         requestId
       );
     }
 
+    /* ── 7. Email send rate limit ──────────────────────────────── */
+    const emailSendCheck = await checkEmailSendLimit(email);
+    if (!emailSendCheck.allowed) {
+      return sendJson(
+        {
+          ok: false,
+          requestId,
+          code: "rate_limited",
+          error: copy.errors.emailSendLimit,
+        },
+        429,
+        requestId
+      );
+    }
+
+    /* ── 8. Idea validation ────────────────────────────────────── */
     if (!input.idea?.trim()) {
       return sendJson(
         {
@@ -995,6 +1120,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    /* ── 9. AI cost guard ──────────────────────────────────────── */
+    const costCheck = await checkAiCostLimit(clientIp);
+    if (!costCheck.allowed) {
+      console.warn(
+        `[api/validate][${requestId}] AI cost limit hit`,
+        safeLogContext({ requestId, ip: clientIp }),
+        { reason: costCheck.reason }
+      );
+      return sendJson(
+        {
+          ok: false,
+          requestId,
+          code: "rate_limited",
+          error: copy.errors.validationLimit,
+        },
+        429,
+        requestId
+      );
+    }
+
+    /* ── 10. Run validation pipeline ───────────────────────────── */
     const pipelineModule = await import("@/src/validation/engine/pipeline");
     const runBusinessValidationPipeline =
       pipelineModule.runBusinessValidationPipeline;
@@ -1052,9 +1198,31 @@ export async function POST(request: NextRequest) {
       ...result,
     };
 
+    // Structured observability log for dashboards and alerting
+    console.log(
+      JSON.stringify({
+        event: "validation_completed",
+        requestId,
+        locale: input.locale,
+        durationMs: Date.now() - startTime,
+        verdict: result.finalVerdict ?? null,
+        score: result.overallScore ?? null,
+        reportGenerated: !!artifacts.pdfDocument,
+        emailSentToUser: emailDelivery.sentToUser,
+        emailSentToOwner: emailDelivery.sentToOwner,
+        leadSaved: leadCapture.saved,
+        runSaved: validationRun.saved,
+        aiCostRemaining: costCheck.remainingCalls,
+      })
+    );
+
     return sendJson(response, 200, requestId);
   } catch (error) {
-    console.error(`[api/validate][${requestId}] caught error`, error);
+    console.error(
+      `[api/validate][${requestId}] caught error`,
+      safeLogContext({ requestId, ip: clientIp }),
+      error instanceof Error ? error.message : "Unknown error"
+    );
 
     const message =
       error instanceof Error

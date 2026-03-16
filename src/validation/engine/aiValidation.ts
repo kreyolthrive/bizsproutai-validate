@@ -19,6 +19,7 @@ import type { LoadedFramework } from "./loadFramework";
 import type { CategoryClassification } from "./classifyCategory";
 import type { ProviderName } from "../providers/router";
 import { getAvailableProviders } from "../providers/router";
+import { canCallProvider, recordSuccess, recordFailure } from "@/src/security/circuitBreaker";
 import { triggerBuildFlow } from "./triggerBuildFlow";
 import { categorySchemas, countrySchemas } from "../schemas";
 import { detectCountry } from "./detectCountry";
@@ -728,15 +729,31 @@ async function requestPerplexity(prompt: string): Promise<string> {
 }
 
 async function requestProvider(provider: ProviderName, prompt: string): Promise<string> {
-  switch (provider) {
-    case "chatgpt":
-      return requestOpenAI(prompt);
-    case "claude":
-      return requestAnthropic(prompt);
-    case "perplexity":
-      return requestPerplexity(prompt);
-    default:
-      throw new Error(`Unsupported AI provider: ${provider}`);
+  // Circuit breaker: skip providers that are in open state
+  if (!canCallProvider(provider)) {
+    throw new Error(`Circuit breaker open for provider: ${provider}`);
+  }
+
+  try {
+    let result: string;
+    switch (provider) {
+      case "chatgpt":
+        result = await requestOpenAI(prompt);
+        break;
+      case "claude":
+        result = await requestAnthropic(prompt);
+        break;
+      case "perplexity":
+        result = await requestPerplexity(prompt);
+        break;
+      default:
+        throw new Error(`Unsupported AI provider: ${provider}`);
+    }
+    recordSuccess(provider);
+    return result;
+  } catch (error) {
+    recordFailure(provider);
+    throw error;
   }
 }
 

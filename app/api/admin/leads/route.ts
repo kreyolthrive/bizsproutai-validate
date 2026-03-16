@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { listValidationLeads, type LeadDecision } from "@/src/leads/server/adminLeads";
 import { AdminUnauthorizedError, requireAdminRequest } from "@/src/security/adminAccess";
 import { buildCorsHeaders } from "@/src/security/cors";
+import { checkRateLimit } from "@/src/security/rateLimit";
+import { buildRateLimitIdentity } from "@/src/security/requestIdentity";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -54,17 +56,33 @@ function rowsToCsv(rows: Array<Record<string, unknown>>): string {
 export async function GET(request: NextRequest) {
   const corsHeaders = buildCorsHeaders(request.headers.get("origin"));
   try {
+    // Rate limit admin leads endpoint: 60 requests per minute
+    const rate = await checkRateLimit(
+      buildRateLimitIdentity("admin-leads", request),
+      60,
+      60_000
+    );
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please retry shortly." },
+        {
+          status: 429,
+          headers: { ...corsHeaders, "Retry-After": String(rate.retryAfterSeconds) },
+        }
+      );
+    }
+
     requireAdminRequest(request);
 
     const search = request.nextUrl.searchParams;
     const decision = parseDecision(search.get("decision"));
-    const ideaCategory = search.get("ideaCategory")?.trim() || undefined;
-    const source = search.get("source")?.trim() || undefined;
-    const from = search.get("from")?.trim() || undefined;
-    const to = search.get("to")?.trim() || undefined;
-    const limit = parseNumber(search.get("limit"), 25);
-    const offset = parseNumber(search.get("offset"), 0);
-    const format = search.get("format")?.toLowerCase() || "json";
+    const ideaCategory = search.get("ideaCategory")?.trim().slice(0, 200) || undefined;
+    const source = search.get("source")?.trim().slice(0, 200) || undefined;
+    const from = search.get("from")?.trim().slice(0, 30) || undefined;
+    const to = search.get("to")?.trim().slice(0, 30) || undefined;
+    const limit = Math.min(parseNumber(search.get("limit"), 25), 200);
+    const offset = Math.max(parseNumber(search.get("offset"), 0), 0);
+    const format = search.get("format")?.toLowerCase() === "csv" ? "csv" : "json";
 
     const result = await listValidationLeads({
       decision,
