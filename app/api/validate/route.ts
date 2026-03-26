@@ -13,7 +13,7 @@ import { runBotChecks } from "@/src/security/botDetection";
 import { isStrictlyValidEmail, checkEmailSendLimit } from "@/src/security/emailGuard";
 import { checkAiCostLimit } from "@/src/security/aiCostGuard";
 import { sanitizeRequestBody } from "@/src/security/inputSanitizer";
-import { safeLogContext } from "@/src/security/piiSanitizer";
+import { safeLogContext, redactSensitiveTokens } from "@/src/security/piiSanitizer";
 import { checkRateLimit } from "@/src/security/rateLimit";
 import { resolveClientIp, buildRateLimitIdentity } from "@/src/security/requestIdentity";
 
@@ -497,7 +497,7 @@ function classifyValidationError(
   locale: Locale
 ): ErrorResponseShape {
   const copy = getRouteCopy(locale);
-  const details = message.trim();
+  const details = redactSensitiveTokens(message.trim());
   const lower = details.toLowerCase();
 
   if (lower.includes("email is required")) {
@@ -690,10 +690,10 @@ async function buildReportArtifacts(args: {
       pdfError: null,
     };
   } catch (error) {
-    console.error(
-      `[api/validate][${args.requestId}] text report generation failed`,
-      error
-    );
+    console.error("[api/validate] text report generation failed", {
+      requestId: args.requestId,
+      error,
+    });
     report.pdfError = copy.errors.reportTextFailed;
   }
 
@@ -723,10 +723,10 @@ async function buildReportArtifacts(args: {
     };
     report.pdfError = null;
   } catch (error) {
-    console.error(
-      `[api/validate][${args.requestId}] pdf report generation failed`,
-      error
-    );
+    console.error("[api/validate] pdf report generation failed", {
+      requestId: args.requestId,
+      error,
+    });
 
     report.pdf = null;
     report.pdfError =
@@ -952,10 +952,7 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    console.log(
-      `[api/validate][${requestId}] POST handler reached`,
-      safeLogContext({ requestId, ip: clientIp })
-    );
+    console.log("[api/validate] POST handler reached", safeLogContext({ requestId, ip: clientIp }));
 
     /* ── 1. Rate limiting (per IP) ─────────────────────────────── */
     const rateLimitKey = buildRateLimitIdentity("validate", request);
@@ -969,14 +966,17 @@ export async function POST(request: NextRequest) {
       60 * 60 * 1_000
     );
     if (!rateCheck.allowed) {
+      const isBackendDown = rateCheck.reason === "rate_limit_backend_unavailable";
       return sendJson(
         {
           ok: false,
           requestId,
-          code: "rate_limited",
-          error: getRouteCopy(requestLocale).errors.rateLimited,
+          code: isBackendDown ? "service_unavailable" : "rate_limited",
+          error: isBackendDown
+            ? "Service temporarily unavailable. Please try again in a moment."
+            : getRouteCopy(requestLocale).errors.rateLimited,
         },
-        429,
+        isBackendDown ? 503 : 429,
         requestId
       );
     }
@@ -1031,11 +1031,10 @@ export async function POST(request: NextRequest) {
       input.idea ?? ""
     );
     if (botCheck.blocked) {
-      console.warn(
-        `[api/validate][${requestId}] bot blocked`,
-        safeLogContext({ requestId, ip: clientIp }),
-        { reason: botCheck.reason, score: botCheck.botScore?.score }
-      );
+      console.warn("[api/validate] bot blocked", safeLogContext({ requestId, ip: clientIp }), {
+        reason: botCheck.reason,
+        score: botCheck.botScore?.score,
+      });
       // Return generic 400 to not reveal detection
       return sendJson(
         {
@@ -1050,7 +1049,7 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(
-      `[api/validate][${requestId}] normalized input`,
+      "[api/validate] normalized input",
       safeLogContext({
         requestId,
         email,
@@ -1123,11 +1122,9 @@ export async function POST(request: NextRequest) {
     /* ── 9. AI cost guard ──────────────────────────────────────── */
     const costCheck = await checkAiCostLimit(clientIp);
     if (!costCheck.allowed) {
-      console.warn(
-        `[api/validate][${requestId}] AI cost limit hit`,
-        safeLogContext({ requestId, ip: clientIp }),
-        { reason: costCheck.reason }
-      );
+      console.warn("[api/validate] AI cost limit hit", safeLogContext({ requestId, ip: clientIp }), {
+        reason: costCheck.reason,
+      });
       return sendJson(
         {
           ok: false,
@@ -1218,10 +1215,12 @@ export async function POST(request: NextRequest) {
 
     return sendJson(response, 200, requestId);
   } catch (error) {
+    const rawMessage = error instanceof Error ? error.message : "Unknown error";
+    const safeMessage = redactSensitiveTokens(rawMessage);
     console.error(
-      `[api/validate][${requestId}] caught error`,
+      "[api/validate] caught error",
       safeLogContext({ requestId, ip: clientIp }),
-      error instanceof Error ? error.message : "Unknown error"
+      safeMessage
     );
 
     const message =

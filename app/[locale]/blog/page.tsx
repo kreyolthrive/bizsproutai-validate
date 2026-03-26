@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
+import { getBlogIndexPosts } from "@/src/content/blog";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -10,29 +12,51 @@ export default async function BlogPage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations();
 
-  const posts = [0, 1, 2].map((index) => ({
-    title: t(`pages.blog.posts.${index}.title`),
-    excerpt: t(`pages.blog.posts.${index}.excerpt`),
-    date: t(`pages.blog.posts.${index}.date`),
-    category: t(`pages.blog.posts.${index}.category`),
-  }));
+  const { featured, recent, upcoming } = getBlogIndexPosts(locale);
+
+  const livePosts = [featured, ...recent].filter(Boolean) as NonNullable<typeof featured>[];
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-12">
+    <main className="mx-auto max-w-6xl px-6 pb-16 pt-28 sm:pt-32">
       <div className="max-w-3xl">
-        <h1 className="text-4xl font-bold tracking-tight text-slate-900">
+        <h1 className="font-[family:var(--font-serif)] text-5xl leading-tight text-[var(--landing-green-deep)]">
           {t("pages.blog.title")}
         </h1>
-        <p className="mt-3 text-lg text-slate-600">{t("pages.blog.subtitle")}</p>
+        <p className="mt-4 text-lg text-slate-600">{t("pages.blog.subtitle")}</p>
       </div>
 
-      <section className="mt-10 grid gap-6 md:grid-cols-3">
-        {posts.map((post) => (
-          <article key={post.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="mt-12 grid gap-6 md:grid-cols-3">
+        {/* Live published posts */}
+        {livePosts.map((post) => (
+          <Link
+            key={post.slug}
+            href={`/${locale}/blog/${post.slug}`}
+            className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-[var(--landing-green-deep)] hover:shadow-md"
+          >
             <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">{post.category}</p>
+            <h2 className="mt-3 text-xl font-semibold text-slate-900 group-hover:text-[var(--landing-green-deep)]">
+              {post.title}
+            </h2>
+            <p className="mt-3 flex-1 text-sm leading-6 text-slate-700">{post.excerpt}</p>
+            <p className="mt-5 text-xs font-semibold text-[var(--landing-green-deep)]">Read now →</p>
+          </Link>
+        ))}
+
+        {/* Scheduled / upcoming posts */}
+        {upcoming.slice(0, Math.max(0, 3 - livePosts.length)).map((post) => (
+          <article
+            key={post.title}
+            className="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm opacity-60"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">{post.category}</p>
+              <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                Coming Soon
+              </span>
+            </div>
             <h2 className="mt-3 text-xl font-semibold text-slate-900">{post.title}</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-700">{post.excerpt}</p>
-            <p className="mt-4 text-xs font-medium text-slate-500">{post.date}</p>
+            <p className="mt-3 flex-1 text-sm leading-6 text-slate-700">{post.excerpt}</p>
+            <p className="mt-5 text-xs font-medium text-slate-400">{post.date}</p>
           </article>
         ))}
       </section>

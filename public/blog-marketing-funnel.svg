@@ -1,0 +1,59 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoArrow" x1="540" y1="40" x2="700" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#79D149"/>
+      <stop offset="1" stop-color="#0E8E8E"/>
+    </linearGradient>
+    <linearGradient id="blueBand" x1="170" y1="210" x2="1030" y2="410" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#61B6FF"/>
+      <stop offset="1" stop-color="#0F61C6"/>
+    </linearGradient>
+    <linearGradient id="greenBand" x1="250" y1="440" x2="950" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7EDD4C"/>
+      <stop offset="1" stop-color="#2DA23A"/>
+    </linearGradient>
+    <linearGradient id="orangeBand" x1="340" y1="620" x2="860" y2="735" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB23D"/>
+      <stop offset="1" stop-color="#FF6B00"/>
+    </linearGradient>
+    <linearGradient id="redBand" x1="430" y1="760" x2="770" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF5A4E"/>
+      <stop offset="1" stop-color="#CF222E"/>
+    </linearGradient>
+    <filter id="shadow" x="90" y="150" width="1020" height="730" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="28" stdDeviation="24" flood-color="#0F1F17" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="900" fill="#F8F4ED"/>
+
+  <g>
+    <path d="M593 48C601 39 615 44 615 56V97L669 60C682 51 697 66 688 79L619 181C613 190 600 193 591 188L556 168C546 163 542 151 548 141L593 70V48Z" fill="url(#logoArrow)"/>
+    <rect x="557" y="121" width="30" height="56" rx="6" fill="#2D9E54"/>
+    <rect x="601" y="99" width="30" height="78" rx="6" fill="#47B77C"/>
+    <text x="600" y="245" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="76" font-weight="700" fill="#131A22">bizsprout</text>
+    <text x="836" y="245" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="76" font-weight="700" fill="#41BA4A">ai</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <path d="M160 280C160 238 353 205 600 205C847 205 1040 238 1040 280V392C1040 425 842 455 600 455C358 455 160 425 160 392V280Z" fill="url(#blueBand)"/>
+    <ellipse cx="600" cy="280" rx="440" ry="75" fill="#2C8BE0"/>
+    <text x="600" y="305" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="58" font-weight="700" fill="white">AWARENESS</text>
+    <text x="600" y="372" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="34" font-weight="600" fill="white">Attract &amp; Inform</text>
+
+    <path d="M250 485C250 453 404 428 600 428C796 428 950 453 950 485V595C950 625 794 657 600 657C406 657 250 625 250 595V485Z" fill="url(#greenBand)"/>
+    <ellipse cx="600" cy="485" rx="350" ry="57" fill="#43B13C"/>
+    <text x="600" y="507" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="54" font-weight="700" fill="white">CONSIDERATION</text>
+    <text x="600" y="575" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="32" font-weight="600" fill="white">Engage &amp; Build Trust</text>
+
+    <path d="M330 673C330 650 449 632 600 632C751 632 870 650 870 673V758C870 781 748 806 600 806C452 806 330 781 330 758V673Z" fill="url(#orangeBand)"/>
+    <ellipse cx="600" cy="673" rx="270" ry="41" fill="#F18517"/>
+    <text x="600" y="693" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="50" font-weight="700" fill="white">CONVERSION</text>
+    <text x="600" y="748" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="30" font-weight="600" fill="white">Clear Next Step</text>
+
+    <path d="M430 787C430 772 506 760 600 760C694 760 770 772 770 787L720 862C710 878 658 892 600 892C542 892 490 878 480 862L430 787Z" fill="url(#redBand)"/>
+    <ellipse cx="600" cy="787" rx="170" ry="27" fill="#D93C37"/>
+    <text x="600" y="806" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="42" font-weight="700" fill="white">LOYALTY</text>
+    <text x="600" y="848" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="26" font-weight="600" fill="white">Retain &amp; Delight</text>
+  </g>
+</svg>

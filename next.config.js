@@ -11,13 +11,13 @@ const contentSecurityPolicy = [
   "frame-ancestors 'none'",
   "object-src 'none'",
   isProduction
-    ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com"
-    : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+    ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://app.cal.com"
+    : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://app.cal.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
-  "font-src 'self' data:",
+  "font-src 'self' data: https://app.cal.com",
   isProduction ? "connect-src 'self' https:" : "connect-src 'self' https: ws: wss:",
-  "frame-src 'none'",
+  "frame-src https://app.cal.com https://cal.com",
   isProduction ? "upgrade-insecure-requests" : "",
 ]
   .filter(Boolean)
@@ -76,8 +76,8 @@ const nextConfig = {
       ? [
           {
             source: "/:path*",
-            has: [{ type: "host", value: "www.bizsproutai.com" }],
-            destination: "https://bizsproutai.com/:path*",
+            has: [{ type: "host", value: "www.validate.bizsproutai.com" }],
+            destination: "https://validate.bizsproutai.com/:path*",
             permanent: true
           }
         ]

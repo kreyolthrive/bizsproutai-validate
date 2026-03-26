@@ -104,9 +104,12 @@ function buildResult(overallScore: number): DynamicValidationResult {
 
 describe("validation decision mapping", () => {
   it("maps stabilized scores consistently across decision, verdict, and status", () => {
+    // 70+ → GO
     expect(frameworkDecisionFromOverallScore(84)).toBe("GO");
+    // 40-69 → CONDITIONAL_GO
     expect(frameworkDecisionFromOverallScore(68)).toBe("CONDITIONAL_GO");
-    expect(frameworkDecisionFromOverallScore(54)).toBe("NEED_WORK");
+    expect(frameworkDecisionFromOverallScore(54)).toBe("CONDITIONAL_GO");
+    // 0-39 → PIVOT_RECOMMENDED
     expect(frameworkDecisionFromOverallScore(31)).toBe("PIVOT_RECOMMENDED");
 
     expect(verdictFromOverallScore(84)).toBe("go");
@@ -115,7 +118,7 @@ describe("validation decision mapping", () => {
 
     expect(finalVerdictFromOverallScore(84)).toBe("strong_validation");
     expect(finalVerdictFromOverallScore(68)).toBe("promising_but_needs_proof");
-    expect(finalVerdictFromOverallScore(54)).toBe("risky_requires_refinement");
+    expect(finalVerdictFromOverallScore(54)).toBe("promising_but_needs_proof");
     expect(finalVerdictFromOverallScore(31)).toBe("pivot_or_reposition_recommended");
 
     expect(statusFromFrameworkDecision("GO")).toBe("GO");

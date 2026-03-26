@@ -59,12 +59,20 @@ const countryIndicators: Record<CountryCode, { keywords: string[]; currencies: s
 function containsCurrencyToken(text: string, currency: string): boolean {
   // Symbols can be checked with direct includes.
   if (currency === "$" || currency === "r$") {
-    return text.includes(currency);
+    return text.toLowerCase().includes(currency.toLowerCase());
   }
 
-  const escaped = currency.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`\\b${escaped}\\b`, "i");
-  return regex.test(text);
+  const normalizedText = ` ${text.toLowerCase().replace(/[^a-z0-9$]+/g, " ").trim()} `;
+  const normalizedCurrency = currency
+    .toLowerCase()
+    .replace(/[^a-z0-9$]+/g, " ")
+    .trim();
+
+  if (!normalizedCurrency) {
+    return false;
+  }
+
+  return normalizedText.includes(` ${normalizedCurrency} `);
 }
 
 // Region mappings

@@ -477,14 +477,14 @@ async function tryEmbedLogo(pdfDoc: PDFDocument): Promise<EmbeddedLogo | null> {
         ? await pdfDoc.embedPng(bytes)
         : await pdfDoc.embedJpg(bytes);
 
-      console.log(`[pdf] Embedded logo from public/${file}`);
+      console.log("[pdf] Embedded logo", { sourceFile: file });
 
       return {
         image,
         sourceFile: file,
       };
     } catch (error) {
-      console.error(`[pdf] Failed to embed logo file public/${file}`, error);
+      console.error("[pdf] Failed to embed logo file", { sourceFile: file, error });
     }
   }
 

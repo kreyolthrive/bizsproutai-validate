@@ -618,7 +618,8 @@ describe("AI-driven validation", () => {
 
     expect(result.frameworkReport).toBeDefined();
     expect(result.summary.oneLiner).toMatch(/credible local demand/i);
-    expect(result.status).toBe("FIX");
+    // weightedScore 72 → deriveDecision returns GO → toStatus returns GO
+    expect(result.status).toBe("GO");
     expect(callOrder).toEqual([
       "claude",
       "perplexity",

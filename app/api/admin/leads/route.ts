@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listValidationLeads, type LeadDecision } from "@/src/leads/server/adminLeads";
 import { AdminUnauthorizedError, requireAdminRequest } from "@/src/security/adminAccess";
+import { logAuditEvent } from "@/src/security/auditLog";
 import { buildCorsHeaders } from "@/src/security/cors";
 import { checkRateLimit } from "@/src/security/rateLimit";
-import { buildRateLimitIdentity } from "@/src/security/requestIdentity";
+import { resolveClientIp, buildRateLimitIdentity } from "@/src/security/requestIdentity";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -92,6 +93,12 @@ export async function GET(request: NextRequest) {
       to,
       limit,
       offset,
+    });
+
+    logAuditEvent({
+      event: format === "csv" ? "admin.leads.exported" : "admin.leads.viewed",
+      ip: resolveClientIp(request),
+      detail: `format=${format} limit=${limit} offset=${offset}${decision ? ` decision=${decision}` : ""}`,
     });
 
     if (format === "csv") {

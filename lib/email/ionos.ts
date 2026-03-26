@@ -87,6 +87,15 @@ export type SmtpTestEmailResult = {
   response: string | null;
 };
 
+export type OwnerNotificationEmailResult = {
+  attempted: boolean;
+  enabled: boolean;
+  sent: boolean;
+  error: string | null;
+  messageId: string | null;
+  response: string | null;
+};
+
 type MailConfig = {
   host: string;
   port: number;
@@ -1012,6 +1021,59 @@ export async function sendSmtpTestEmail(
       enabled: true,
       sent: false,
       to,
+      error: formatError(error),
+      messageId: null,
+      response: null,
+    };
+  }
+}
+
+export async function sendOwnerNotificationEmail(payload: {
+  to?: string;
+  replyTo?: string;
+  subject: string;
+  text: string;
+}): Promise<OwnerNotificationEmailResult> {
+  const config = getMailConfig();
+
+  if (!config) {
+    return {
+      attempted: false,
+      enabled: false,
+      sent: false,
+      error: "SMTP credentials missing.",
+      messageId: null,
+      response: null,
+    };
+  }
+
+  const transporter = getTransporter(config);
+  const fromHeader = buildFromHeader(config.from);
+  const to = sanitize(payload.to) ?? config.ownerEmail;
+  const replyTo = sanitize(payload.replyTo);
+
+  try {
+    const info = await transporter.sendMail({
+      from: fromHeader,
+      to,
+      replyTo,
+      subject: payload.subject,
+      text: payload.text,
+    });
+
+    return {
+      attempted: true,
+      enabled: true,
+      sent: true,
+      error: null,
+      messageId: info.messageId ?? null,
+      response: typeof info.response === "string" ? info.response : null,
+    };
+  } catch (error) {
+    return {
+      attempted: true,
+      enabled: true,
+      sent: false,
       error: formatError(error),
       messageId: null,
       response: null,

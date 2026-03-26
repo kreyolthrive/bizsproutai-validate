@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -50,67 +49,8 @@ describe("IdeaEvaluationHero", () => {
     expect(screen.getByText("errors.minIdea")).toBeInTheDocument();
   });
 
-  it("allows validation without an email and shows on-page delivery messaging", async () => {
+  it("requires an email and shows error when submitted without one", async () => {
     const user = userEvent.setup();
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          status: "GO",
-          overall_score: 68,
-          confidenceScore: 74,
-          businessCategory: "saas",
-          frameworkUsed: "saas_v1",
-          summary: {
-            oneLiner: "Promising concept with more proof needed.",
-            topOpportunities: ["Clear niche signal"],
-            biggestRisks: ["Still needs pricing proof"],
-          },
-          strengths: ["Clear niche signal"],
-          weaknesses: ["Still needs pricing proof"],
-          keyRisks: ["Still needs pricing proof"],
-          assumptionsToTest: ["Buyers will pay for the initial workflow"],
-          recommendedNextSteps: ["Interview five buyers"],
-          scores: {
-            market_demand: 70,
-            monetization: 62,
-            competition: 58,
-            acquisition: 60,
-            execution_feasibility: 74,
-            differentiation: 57,
-            risk: 55,
-          },
-          researchSummary: {
-            demandSignals: ["Problem appears frequent."],
-            competitionNotes: [],
-            marketTrends: [],
-            monetizationNotes: [],
-            acquisitionChallenges: [],
-            differentiationOpportunities: [],
-            riskFactors: [],
-            sources: [],
-          },
-          emailDelivery: {
-            attempted: false,
-            enabled: false,
-            sentToUser: false,
-            sentToOwner: false,
-            errors: [],
-          },
-          validationRun: {
-            saved: true,
-            runId: "run-1",
-            error: null,
-          },
-        }),
-        {
-          status: 200,
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      )
-    );
-    vi.stubGlobal("fetch", fetchMock);
 
     render(<IdeaEvaluationHero locale="en" />);
 
@@ -120,10 +60,8 @@ describe("IdeaEvaluationHero", () => {
     );
     await user.click(screen.getByRole("button", { name: "Validate My Idea" }));
 
-    await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalled();
-      expect(screen.getByText("Report is ready on this page. Add email next time if you want inbox delivery.")).toBeInTheDocument();
-    });
+    // Component now requires email before submitting — shows the emailRequired error key
+    expect(screen.getByText("errors.emailRequired")).toBeInTheDocument();
   });
 
   it("fills the form from sample ideas and renders a successful validation result", async () => {

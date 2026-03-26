@@ -1,3 +1,5 @@
+import { requiresDistributedProtection } from "@/src/server/runtimeMode";
+
 type Bucket = {
   count: number;
   expiresAt: number;
@@ -7,6 +9,7 @@ export type RateLimitResult = {
   allowed: boolean;
   remaining: number;
   retryAfterSeconds: number;
+  reason?: string;
 };
 
 type RedisConfig = {
@@ -148,12 +151,29 @@ export async function checkRateLimit(
   const redisConfig = getRedisConfig();
 
   if (!redisConfig) {
+    if (requiresDistributedProtection()) {
+      return {
+        allowed: false,
+        remaining: 0,
+        retryAfterSeconds: 60,
+        reason: "rate_limit_backend_unavailable",
+      };
+    }
     return checkRateLimitInMemory(scopedKey, limit, windowEndMs, windowMs, now);
   }
 
   try {
     return await checkRateLimitInRedis(redisConfig, scopedKey, limit, windowEndMs, windowMs, now);
   } catch (error) {
+    if (requiresDistributedProtection()) {
+      console.error("Rate limit backend unavailable in production.", error);
+      return {
+        allowed: false,
+        remaining: 0,
+        retryAfterSeconds: 60,
+        reason: "rate_limit_backend_unavailable",
+      };
+    }
     if (!hasWarnedRedisFallback()) {
       console.error("Rate limit backend unavailable; falling back to in-memory limiter.", error);
       markWarnedRedisFallback();

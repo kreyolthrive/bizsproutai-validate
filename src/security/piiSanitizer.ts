@@ -30,6 +30,9 @@ export function maskIp(ip: string): string {
   return `${parts[0]}.${parts[1]}.xxx.xxx`;
 }
 
+const TOKEN_REGEX = /\b[0-9a-fA-F]{32,}\b/g;
+const BEARER_REGEX = /Bearer\s+\S+/gi;
+
 /**
  * Redact PII from a string intended for logging.
  */
@@ -38,6 +41,16 @@ export function sanitizeForLog(text: string): string {
     .replace(EMAIL_REGEX, (match) => maskEmail(match))
     .replace(IPV6_REGEX, (match) => maskIp(match))
     .replace(IPV4_REGEX, (match) => maskIp(match));
+}
+
+/**
+ * Redact emails and token-like strings from error messages before logging.
+ */
+export function redactSensitiveTokens(text: string): string {
+  return text
+    .replace(EMAIL_REGEX, "[redacted-email]")
+    .replace(BEARER_REGEX, "Bearer [redacted-token]")
+    .replace(TOKEN_REGEX, "[redacted-token]");
 }
 
 /**

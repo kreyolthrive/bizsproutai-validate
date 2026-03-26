@@ -7,7 +7,8 @@ import {
   signAdminSession,
 } from "@/src/security/adminSession";
 import { buildCorsHeaders } from "@/src/security/cors";
-import { buildRateLimitIdentity } from "@/src/security/requestIdentity";
+import { logAuditEvent } from "@/src/security/auditLog";
+import { resolveClientIp, buildRateLimitIdentity } from "@/src/security/requestIdentity";
 import { checkRateLimit } from "@/src/security/rateLimit";
 
 export const runtime = "nodejs";
@@ -47,7 +48,8 @@ export async function POST(request: NextRequest) {
   const corsHeaders = buildCorsHeaders(request.headers.get("origin"));
   const adminToken = getConfiguredAdminToken();
   if (!adminToken) {
-    return NextResponse.json({ error: "ADMIN_TOKEN not set" }, { status: 500, headers: corsHeaders });
+    console.error("Admin session: ADMIN_TOKEN environment variable is not configured.");
+    return NextResponse.json({ error: "Service unavailable" }, { status: 503, headers: corsHeaders });
   }
 
   const rate = await checkRateLimit(
@@ -83,6 +85,12 @@ export async function POST(request: NextRequest) {
     jti: crypto.randomUUID(),
   });
 
+  logAuditEvent({
+    event: "admin.session.created",
+    ip: resolveClientIp(request),
+    sessionId: session.slice(0, 12) + "…",
+  });
+
   const response = NextResponse.json({ ok: true }, { headers: corsHeaders });
   setSessionCookie(response, session);
   return response;
@@ -90,6 +98,10 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   const corsHeaders = buildCorsHeaders(request.headers.get("origin"));
+  logAuditEvent({
+    event: "admin.session.deleted",
+    ip: resolveClientIp(request),
+  });
   const response = NextResponse.json({ success: true }, { headers: corsHeaders });
   const expiredCookie = {
     value: "",

@@ -16,24 +16,28 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center justify-center gap-1 py-1 text-sm">
-      {locales.map((locale) => (
-        <Link
-          key={locale}
-          href={pathname}
-          locale={locale}
-          onClick={() => handleLanguageChange(locale)}
-          className={
-            locale === currentLocale
-              ? "rounded-md bg-white/20 px-2.5 py-1 font-semibold text-white"
-              : "rounded-md px-2.5 py-1 text-slate-300 transition hover:bg-white/10 hover:text-white"
-          }
-          aria-current={locale === currentLocale ? "page" : undefined}
-        >
-          <span className="sr-only">{localeNames[locale]}</span>
-          {locale.toUpperCase()}
-        </Link>
-      ))}
+    <div className="inline-flex items-center gap-1 rounded-full border border-[rgba(26,58,42,0.06)] bg-[rgba(248,244,237,0.92)] p-1">
+      {locales.map((locale) => {
+        const active = locale === currentLocale;
+
+        return (
+          <Link
+            key={locale}
+            href={pathname}
+            locale={locale}
+            onClick={() => handleLanguageChange(locale)}
+            className={
+              active
+                ? "rounded-full bg-[var(--landing-green-deep)] px-4 py-2 text-sm font-semibold text-white"
+                : "rounded-full px-4 py-2 text-sm font-semibold text-[var(--landing-muted)] transition hover:bg-[rgba(26,58,42,0.06)] hover:text-[var(--landing-green-deep)]"
+            }
+            aria-current={active ? "page" : undefined}
+          >
+            <span className="sr-only">{localeNames[locale]}</span>
+            {locale.toUpperCase()}
+          </Link>
+        );
+      })}
     </div>
   );
 }

@@ -231,7 +231,6 @@ async function saveSprintSettingsToRedis(
 function getDatabaseSync(): (new (path: string) => SqliteDatabaseSync) | null {
   if (sqliteUnavailable) return null;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const sqliteModule = require("node:sqlite");
     return sqliteModule.DatabaseSync as (new (path: string) => SqliteDatabaseSync);
   } catch {

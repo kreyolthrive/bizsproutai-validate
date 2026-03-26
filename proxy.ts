@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale } from "./i18n/config";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL(`/${defaultLocale}`, request.url));
   }

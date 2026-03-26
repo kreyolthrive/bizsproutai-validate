@@ -27,8 +27,11 @@ function resolveDefaultRecipient(): string {
 }
 
 function isEmailTestEnabled(): boolean {
-  if (process.env.EMAIL_TEST_ENABLED === "true") return true;
-  return process.env.NODE_ENV !== "production";
+  // Explicitly disabled in production unless opted in
+  if (process.env.NODE_ENV === "production") {
+    return process.env.EMAIL_TEST_ENABLED === "true";
+  }
+  return true;
 }
 
 export async function POST(request: NextRequest) {
