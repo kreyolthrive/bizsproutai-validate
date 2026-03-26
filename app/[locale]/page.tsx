@@ -645,7 +645,6 @@ export default async function HomePage({ params }: Props) {
           {/* Booking Calendar */}
           <BookingCalendar
             title={lc.bookingTitle}
-            fallbackLabel={lc.bookingFallback}
           />
         </div>
       </section>
