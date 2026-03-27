@@ -15,7 +15,7 @@ export function BookingCalendar({
   title = "Book your free Founder Clarity Session",
 }: BookingCalendarProps) {
   const resolvedLink =
-    calLink ?? process.env.NEXT_PUBLIC_CAL_LINK ?? "";
+    calLink ?? process.env.NEXT_PUBLIC_CAL_LINK ?? "bizsproutai/30-min-founder-clarity-session";
 
   if (!resolvedLink) {
     return null;
