@@ -434,7 +434,7 @@ export default async function HomePage({ params }: Props) {
             </div>
 
             <aside className="landing-reveal lg:sticky lg:top-28">
-              <div className="relative min-h-[380px] overflow-hidden rounded-[24px] sm:min-h-[460px]">
+              <div className="relative min-h-[380px] overflow-hidden rounded-[24px] bg-[var(--landing-green-deep)] sm:min-h-[460px]">
                 <Image
                   src="/Wagner.profile2-CBfCr4Al.png"
                   alt="BizSproutAI founder portrait"
@@ -442,8 +442,8 @@ export default async function HomePage({ params }: Props) {
                   sizes="(max-width: 1024px) 100vw, 34vw"
                   className="object-cover object-top"
                 />
-                {/* Fade out the white bottom of the photo into the page background */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#fdfaf5] to-transparent" />
+                {/* Fade image bottom into the dark container background */}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--landing-green-deep)] to-transparent" />
               </div>
             </aside>
           </div>
