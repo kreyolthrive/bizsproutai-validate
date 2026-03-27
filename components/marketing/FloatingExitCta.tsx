@@ -192,7 +192,9 @@ export function FloatingExitCta({ locale }: Props) {
           {copy.primary} →
         </Link>
         <a
-          href="tel:+18776007007"
+          href="https://cal.com/bizsproutai/30-min-founder-clarity-session"
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={trackRetargetingClick}
           className="inline-flex rounded-full border border-[rgba(26,58,42,0.18)] px-5 py-3 text-sm font-semibold text-[var(--landing-green-deep)] transition hover:border-[var(--landing-green-deep)] hover:bg-[rgba(26,58,42,0.04)]"
         >
