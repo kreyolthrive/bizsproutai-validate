@@ -61,6 +61,15 @@ type Props = {
   initialService?: string;
 };
 
+function getErrorFallback(locale: string) {
+  const lang = locale.toLowerCase().split("-")[0];
+  if (lang === "fr") return "Échec de l\u2019envoi.";
+  if (lang === "es") return "Error al enviar.";
+  if (lang === "ht") return "Echèk soumèt.";
+  if (lang === "pt") return "Falha ao enviar.";
+  return getErrorFallback(locale);
+}
+
 type FormState = {
   name: string;
   businessName: string;
@@ -185,7 +194,7 @@ export function ActionPlanIntake({ copy, locale, initialService }: Props) {
       const payload = (await response.json()) as { error?: string };
 
       if (!response.ok) {
-        throw new Error(payload.error || "Failed to submit.");
+        throw new Error(payload.error || getErrorFallback(locale));
       }
 
       setSubmitted(true);
@@ -195,7 +204,7 @@ export function ActionPlanIntake({ copy, locale, initialService }: Props) {
       setError(
         submissionError instanceof Error
           ? submissionError.message
-          : "Failed to submit."
+          : getErrorFallback(locale)
       );
     } finally {
       setIsSubmitting(false);

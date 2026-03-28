@@ -7,10 +7,20 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
+function getBlogCopy(locale: string) {
+  const lang = locale.toLowerCase().split("-")[0];
+  if (lang === "fr") return { readNow: "Lire maintenant →", comingSoon: "Bientôt" };
+  if (lang === "es") return { readNow: "Leer ahora →", comingSoon: "Próximamente" };
+  if (lang === "ht") return { readNow: "Li kounye a →", comingSoon: "Byento" };
+  if (lang === "pt") return { readNow: "Ler agora →", comingSoon: "Em breve" };
+  return { readNow: "Read now →", comingSoon: "Coming Soon" };
+}
+
 export default async function BlogPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
+  const blogCopy = getBlogCopy(locale);
 
   const { featured, recent, upcoming } = getBlogIndexPosts(locale);
 
@@ -38,7 +48,7 @@ export default async function BlogPage({ params }: Props) {
               {post.title}
             </h2>
             <p className="mt-3 flex-1 text-sm leading-6 text-slate-700">{post.excerpt}</p>
-            <p className="mt-5 text-xs font-semibold text-[var(--landing-green-deep)]">Read now →</p>
+            <p className="mt-5 text-xs font-semibold text-[var(--landing-green-deep)]">{blogCopy.readNow}</p>
           </Link>
         ))}
 
@@ -51,7 +61,7 @@ export default async function BlogPage({ params }: Props) {
             <div className="flex items-start justify-between gap-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">{post.category}</p>
               <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-                Coming Soon
+                {blogCopy.comingSoon}
               </span>
             </div>
             <h2 className="mt-3 text-xl font-semibold text-slate-900">{post.title}</h2>
