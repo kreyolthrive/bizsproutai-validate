@@ -262,7 +262,7 @@ export default async function HomePage({ params }: Props) {
       <LandingPageReveal />
 
       {/* ── HERO ────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden px-5 pb-16 pt-28 lg:px-10 lg:pt-36">
+      <section className="relative overflow-hidden px-5 pb-16 pt-36 md:pt-28 lg:px-10 lg:pt-36">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-[-8%] top-[62%] h-[320px] w-[320px] rounded-full bg-[rgba(74,140,92,0.06)] blur-3xl" />
           <div className="absolute right-[6%] top-[8%] h-[360px] w-[360px] rounded-full bg-[rgba(126,200,80,0.06)] blur-3xl" />
@@ -308,16 +308,16 @@ export default async function HomePage({ params }: Props) {
               </p>
             </div>
 
-            <div className="landing-reveal mt-7 flex flex-wrap items-center gap-5">
+            <div className="landing-reveal mt-7 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
               <a
                 href={actionPlanHref}
-                className="inline-flex items-center rounded-full bg-[var(--landing-green-deep)] px-6 py-3 text-[0.92rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)]"
+                className="inline-flex items-center justify-center rounded-full bg-[var(--landing-green-deep)] px-6 py-3.5 text-[0.92rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)]"
               >
                 {copy.primary} →
               </a>
               <a
                 href={`/${locale}#how`}
-                className="text-[0.92rem] font-semibold text-[var(--landing-muted)] underline underline-offset-[3px] transition hover:text-[var(--landing-green-deep)]"
+                className="text-center text-[0.92rem] font-semibold text-[var(--landing-muted)] underline underline-offset-[3px] transition hover:text-[var(--landing-green-deep)]"
               >
                 {copy.secondary}
               </a>
