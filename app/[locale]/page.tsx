@@ -13,204 +13,209 @@ function getCopy(locale: string) {
 
   if (normalized === "fr") {
     return {
-      heroEyebrow: "Pour les fondateurs en phase de départ",
-      heroLead: "Arrêtez de deviner.",
-      heroEmphasis: "Trouvez votre",
-      heroEnd: "prochain bon mouvement.",
+      heroEyebrow: "Le Sprint Fondateur de 30 Jours",
+      heroLead: "Arrêtez de planifier.",
+      heroEmphasis: "Commencez à construire",
+      heroEnd: "une vraie entreprise.",
       heroBody:
-        "Vous avez une vraie idée de business, parfois plus d'une. BizSproutAI vous aide à couper le bruit, valider vite, et construire la bonne base dès le départ.",
-      primary: "Obtenir mon plan d'action",
-      secondary: "Voir le fonctionnement",
-      trustTitle: "Des fondateurs déjà en pilote",
-      trustBody: "Cohorte précoce ouverte, places limitées",
-      pilotBadge: "Offre pilote active",
-      painEyebrow: "Vous n'êtes pas seul",
+        "Nous vous aidons à transformer votre idée en une offre concrète, un site web et un système client — pour que vous puissiez lancer rapidement et travailler vers votre premier client payant en 30 jours.",
+      primary: "Postuler pour le Sprint",
+      secondary: "Voir comment ça marche",
+      trustTitle: "Programme basé sur les résultats",
+      trustBody: "Inscription limitée, conçu pour les fondateurs prêts à avancer",
+      pilotBadge: "Postuler maintenant",
+      painEyebrow: "Le vrai problème",
       painTitle:
-        "La plupart des fondateurs n'échouent pas à cause d'une mauvaise idée, mais par manque de système",
+        "Vous n'êtes pas bloqué par manque de potentiel. Vous êtes bloqué par manque de chemin clair.",
       painBody:
-        "Nous voyons les mêmes schémas chez les fondateurs en phase de départ. Cela vous ressemble ?",
-      howEyebrow: "Le processus",
-      howTitle: "Des étapes simples, un vrai élan",
+        "La plupart des fondateurs n'ont pas besoin de plus de motivation. Ils ont besoin de structure, de soutien et d'un système qui transforme les idées en action.",
+      howEyebrow: "Comment le sprint fonctionne",
+      howTitle: "Quatre semaines. Une destination claire.",
       howBody:
-        "Pas d'engagement de six mois. Pas de jargon. Juste un chemin clair pour avancer.",
-      servicesEyebrow: "Ce que nous construisons",
-      servicesTitle: "Pas un simple logiciel. Un partenaire de résultats.",
+        "Complétez le sprint, suivez le plan, et si vous n'obtenez pas votre premier client payant en 30 jours, nous continuons à travailler avec vous sans frais supplémentaires jusqu'à ce que vous y arriviez.",
+      servicesEyebrow: "Ce qui est inclus",
+      servicesTitle: "Tout ce dont vous avez besoin. Rien de superflu.",
       servicesBody:
-        "Choisissez ce dont votre business a le plus besoin maintenant. Chaque offre est rapide, cadrée, et pensée pour les fondateurs.",
-      proofEyebrow: "Premiers signaux",
-      proofTitle: "Les fondateurs posent déjà les bonnes questions",
+        "Ce n'est pas un cours que vous achetez et oubliez. Chaque élément essentiel est construit avec vous pendant le sprint, de sorte qu'à la fin, vous possédez un vrai système d'entreprise que vous pouvez réellement utiliser.",
+      proofEyebrow: "À quoi le succès peut ressembler",
+      proofTitle: "De vrais résultats de fondateurs. Un vrai élan commercial.",
       proofBody:
-        "Voici les vraies conversations qui alimentent notre cohorte pilote.",
-      signalCta: "Rejoindre la cohorte fondatrice",
-      ctaEyebrow: "Prêt quand vous l'êtes",
-      ctaTitle: "Vous n'avez pas besoin de plus de conseils.",
-      ctaEmphasis: "Vous avez besoin d'un prochain mouvement.",
+        "L'objectif du Sprint n'est pas de vous laisser avec plus de notes, d'idées ou de plans inachevés. C'est de vous aider à créer des résultats comme ceux-ci.",
+      signalCta: "Postuler pour le prochain Sprint",
+      ctaEyebrow: "Places limitées par sprint",
+      ctaTitle: "Vous planifiez depuis assez longtemps.",
+      ctaEmphasis: "Maintenant il est temps de construire.",
       ctaBody:
-        "Réservez un appel découverte gratuit de 30 minutes. Pas de pitch, pas d'engagement, juste de la clarté sur ce qu'il faut faire d'abord.",
-      ctaPrimary: "Réserver mon appel gratuit",
-      ctaSecondary: "Explorer les services",
+        "C'est un accompagnement concret, pas du contenu passif. Nous ne travaillons qu'avec un nombre limité de fondateurs par sprint afin que chaque participant reçoive l'attention, les retours et le soutien nécessaires pour vraiment se lancer.",
+      ctaPrimary: "Postuler pour le prochain Sprint",
+      ctaSecondary: "Voir comment ça marche",
       emailPrefix: "Vous préférez écrire ?",
     };
   }
 
   if (normalized === "es") {
     return {
-      heroEyebrow: "Para fundadores en etapa inicial",
-      heroLead: "Deja de adivinar.",
-      heroEmphasis: "Descubre tu",
-      heroEnd: "próximo movimiento correcto.",
+      heroEyebrow: "El Sprint de Fundadores de 30 Días",
+      heroLead: "Deja de planificar.",
+      heroEmphasis: "Empieza a construir",
+      heroEnd: "un negocio real.",
       heroBody:
-        "Tienes una idea de negocio real, quizá más de una. BizSproutAI te ayuda a cortar el ruido, validar rápido y construir la base correcta desde el día uno.",
-      primary: "Obtener mi plan de acción",
+        "Te ayudamos a convertir tu idea en una oferta real, un sitio web y un sistema de clientes — para que puedas lanzar rápido y trabajar hacia tu primer cliente de pago en 30 días.",
+      primary: "Aplicar al Sprint",
       secondary: "Ver cómo funciona",
-      trustTitle: "Fundadores ya en piloto",
-      trustBody: "Cohorte inicial abierta, cupos limitados",
-      pilotBadge: "Oferta piloto activa",
-      painEyebrow: "No estás solo",
+      trustTitle: "Programa basado en resultados",
+      trustBody: "Inscripción limitada, diseñado para fundadores listos para actuar",
+      pilotBadge: "Aplicar ahora",
+      painEyebrow: "El verdadero problema",
       painTitle:
-        "La mayoría de los fundadores no fracasan por malas ideas, fracasan por falta de sistema",
+        "No estás estancado por falta de potencial. Estás estancado por falta de un camino claro.",
       painBody:
-        "Vemos los mismos patrones en fundadores en etapa temprana. ¿Te suena?",
-      howEyebrow: "El proceso",
-      howTitle: "Pasos simples, impulso real",
+        "La mayoría de los fundadores no necesitan más motivación. Necesitan estructura, apoyo y un sistema que convierta ideas en acción.",
+      howEyebrow: "Cómo funciona el sprint",
+      howTitle: "Cuatro semanas. Un destino claro.",
       howBody:
-        "Sin contratos de seis meses. Sin jerga. Solo un camino claro para avanzar.",
-      servicesEyebrow: "Lo que construimos",
-      servicesTitle: "No es solo software. Es un socio de resultados.",
-      servicesBody: "Elige lo que tu negocio necesita más ahora mismo.",
-      proofEyebrow: "Señales tempranas",
-      proofTitle: "Los fundadores ya hacen las preguntas correctas",
+        "Completa el sprint, sigue el plan, y si no consigues tu primer cliente de pago en 30 días, seguimos trabajando contigo sin costo adicional hasta que lo logres.",
+      servicesEyebrow: "Qué está incluido",
+      servicesTitle: "Todo lo que necesitas. Nada que no.",
+      servicesBody:
+        "Esto no es un curso que compras y olvidas. Cada pieza esencial se construye contigo durante el sprint, así que cuando termine, tendrás un sistema de negocio real que realmente puedes usar.",
+      proofEyebrow: "Cómo puede verse el éxito",
+      proofTitle: "Resultados reales de fundadores. Impulso real de negocio.",
       proofBody:
-        "Estas son conversaciones reales dentro de nuestra comunidad piloto.",
-      signalCta: "Unirme a la cohorte fundadora",
-      ctaEyebrow: "Listo cuando tú lo estés",
-      ctaTitle: "No necesitas más consejos.",
-      ctaEmphasis: "Necesitas un siguiente paso.",
+        "El objetivo del Sprint no es dejarte con más notas, ideas o planes sin terminar. Es ayudarte a crear resultados como estos.",
+      signalCta: "Aplicar al próximo Sprint",
+      ctaEyebrow: "Lugares limitados por sprint",
+      ctaTitle: "Has estado planificando suficiente tiempo.",
+      ctaEmphasis: "Ahora es momento de construir.",
       ctaBody:
-        "Reserva una llamada de descubrimiento gratuita de 30 minutos. Sin presión, solo claridad sobre qué hacer primero.",
-      ctaPrimary: "Reservar mi llamada gratuita",
-      ctaSecondary: "Explorar servicios",
+        "Este es apoyo práctico, no contenido pasivo. Solo trabajamos con un número limitado de fundadores por sprint para que cada participante reciba el enfoque, la retroalimentación y el apoyo que necesita para realmente lanzar.",
+      ctaPrimary: "Aplicar al próximo Sprint",
+      ctaSecondary: "Ver cómo funciona",
       emailPrefix: "¿Prefieres escribir?",
     };
   }
 
   if (normalized === "ht") {
     return {
-      heroEyebrow: "Pou fondatè ki nan kòmansman",
-      heroLead: "Sispann devinen.",
-      heroEmphasis: "Jwenn",
-      heroEnd: "pwochen bon mouvman ou a.",
+      heroEyebrow: "Sprint Fondatè 30 Jou a",
+      heroLead: "Sispann planifye.",
+      heroEmphasis: "Kòmanse bati",
+      heroEnd: "yon vrè biznis.",
       heroBody:
-        "Ou gen yon vrè lide biznis, petèt plis pase youn. BizSproutAI ede ou retire bri a, valide vit, epi bati bon baz la depi premye jou a.",
-      primary: "Jwenn plan aksyon mwen",
+        "Nou ede ou transfòme lide ou nan yon vrè òf, yon sit wèb, ak yon sistèm kliyan — pou ou ka lanse vit epi travay pou jwenn premye kliyan ki peye ou nan 30 jou.",
+      primary: "Aplike pou Sprint la",
       secondary: "Gade kijan li mache",
-      trustTitle: "Fondatè deja nan pilot",
-      trustBody: "Premye gwoup la ouvè, plas yo limite",
-      pilotBadge: "Òf pilot la aktif",
-      painEyebrow: "Ou pa poukont ou",
+      trustTitle: "Pwogram ki baze sou rezilta",
+      trustBody: "Enskripsyon limite, fèt pou fondatè ki pare pou avanse",
+      pilotBadge: "Aplike kounye a",
+      painEyebrow: "Vrè pwoblèm nan",
       painTitle:
-        "Pifò fondatè pa echwe akoz move lide, yo echwe paske pa gen sistèm",
-      painBody: "Nou wè menm modèl yo souvan nan fondatè k ap kòmanse yo.",
-      howEyebrow: "Pwosesis la",
-      howTitle: "Etap senp, vrè elan",
+        "Ou pa bloke paske ou manke potansyèl. Ou bloke paske ou manke yon chemen klè.",
+      painBody:
+        "Pifò fondatè pa bezwen plis motivasyon. Yo bezwen estrikti, sipò, ak yon sistèm ki transfòme lide yo an aksyon.",
+      howEyebrow: "Kijan sprint la mache",
+      howTitle: "Kat semèn. Yon sèl destinasyon klè.",
       howBody:
-        "Pa gen kontra sis mwa. Pa gen jargon. Jis yon chemen klè pou avanse.",
-      servicesEyebrow: "Sa nou bati",
-      servicesTitle: "Se pa sèlman yon lojisyèl. Se yon patnè rezilta.",
-      servicesBody: "Chwazi sa biznis ou bezwen plis kounye a.",
-      proofEyebrow: "Premye siyal yo",
-      proofTitle: "Fondatè yo deja ap poze bon kestyon yo",
+        "Fini sprint la, swiv plan an, epi si ou pa jwenn premye kliyan ki peye ou nan 30 jou, nou kontinye travay avèk ou san okenn frè anplis jiskaske ou reyisi.",
+      servicesEyebrow: "Kisa ki enkli",
+      servicesTitle: "Tout sa ou bezwen. Anyen ou pa bezwen.",
+      servicesBody:
+        "Sa a se pa yon kou ou achte epi bliye. Chak pyès esansyèl bati avèk ou pandan sprint la, konsa lè li fini, ou posede yon vrè sistèm biznis ou ka reyèlman itilize.",
+      proofEyebrow: "Kisa siksè ka sanble",
+      proofTitle: "Vrè rezilta fondatè. Vrè elan biznis.",
       proofBody:
-        "Sa yo se vrè konvèsasyon ki deja ap fèt nan kominote pilot la.",
-      signalCta: "Antre nan gwoup fondatè a",
-      ctaEyebrow: "Pare lè ou pare",
-      ctaTitle: "Ou pa bezwen plis konsèy.",
-      ctaEmphasis: "Ou bezwen pwochen mouvman ou.",
+        "Objektif Sprint la se pa kite ou ak plis nòt, lide, oswa plan ki pa fini. Se ede ou kreye rezilta tankou sa yo.",
+      signalCta: "Aplike pou pwochen Sprint la",
+      ctaEyebrow: "Plas limite pa sprint",
+      ctaTitle: "Ou te planifye ase lontan.",
+      ctaEmphasis: "Kounye a se lè pou bati.",
       ctaBody:
-        "Pran yon apèl dekouvèt gratis 30 minit. Pa gen pitch, pa gen obligasyon, jis klète sou sa pou fè an premye.",
-      ctaPrimary: "Rezève apèl gratis mwen",
-      ctaSecondary: "Gade sèvis yo",
+        "Sa a se sipò pratik, pa kontni pasif. Nou sèlman travay ak yon kantite limite fondatè pa sprint pou chak patisipan jwenn atansyon, fidbak, ak sipò yo bezwen pou reyèlman lanse.",
+      ctaPrimary: "Aplike pou pwochen Sprint la",
+      ctaSecondary: "Gade kijan li mache",
       emailPrefix: "Ou pito ekri?",
     };
   }
 
   if (normalized === "pt") {
     return {
-      heroEyebrow: "Para fundadores em estágio inicial",
-      heroLead: "Pare de adivinhar.",
-      heroEmphasis: "Descubra seu",
-      heroEnd: "próximo movimento certo.",
+      heroEyebrow: "O Sprint de Fundadores de 30 Dias",
+      heroLead: "Pare de planejar.",
+      heroEmphasis: "Comece a construir",
+      heroEnd: "um negócio real.",
       heroBody:
-        "Você tem uma ideia de negócio real, talvez mais de uma. A BizSproutAI ajuda você a cortar o ruído, validar rápido e construir a base certa desde o começo.",
-      primary: "Receber meu plano de ação",
-      secondary: "Ver como funciona",
-      trustTitle: "Fundadores já no piloto",
-      trustBody: "Cohort inicial aberto, vagas limitadas",
-      pilotBadge: "Oferta piloto ativa",
-      painEyebrow: "Você não está sozinho",
+        "Nós ajudamos você a transformar sua ideia em uma oferta real, um site e um sistema de clientes — para que você possa lançar rápido e trabalhar para conseguir seu primeiro cliente pagante em 30 dias.",
+      primary: "Aplicar para o Sprint",
+      secondary: "Veja como funciona",
+      trustTitle: "Programa baseado em resultados",
+      trustBody: "Inscrição limitada, feito para fundadores prontos para agir",
+      pilotBadge: "Aplicar agora",
+      painEyebrow: "O verdadeiro problema",
       painTitle:
-        "A maioria dos fundadores não falha por ideia ruim, falha por falta de sistema",
-      painBody: "Vemos os mesmos padrões em fundadores em estágio inicial.",
-      howEyebrow: "O processo",
-      howTitle: "Passos simples, impulso real",
+        "Você não está travado por falta de potencial. Você está travado por falta de um caminho claro.",
+      painBody:
+        "A maioria dos fundadores não precisa de mais motivação. Eles precisam de estrutura, apoio e um sistema que transforme ideias em ação.",
+      howEyebrow: "Como o sprint funciona",
+      howTitle: "Quatro semanas. Um destino claro.",
       howBody:
-        "Sem contratos longos. Sem jargão. Apenas um caminho claro para avançar.",
-      servicesEyebrow: "O que construímos",
-      servicesTitle: "Não é só software. É parceria para gerar resultado.",
-      servicesBody: "Escolha o que o seu negócio mais precisa agora.",
-      proofEyebrow: "Sinais iniciais",
-      proofTitle: "Fundadores já estão fazendo as perguntas certas",
+        "Complete o sprint, siga o plano, e se você não conseguir seu primeiro cliente pagante em 30 dias, continuamos trabalhando com você sem custo adicional até que consiga.",
+      servicesEyebrow: "O que está incluído",
+      servicesTitle: "Tudo o que você precisa. Nada que não precisa.",
+      servicesBody:
+        "Isso não é um curso que você compra e esquece. Cada peça essencial é construída com você durante o sprint, então quando terminar, você terá um sistema de negócio real que pode realmente usar.",
+      proofEyebrow: "Como o sucesso pode parecer",
+      proofTitle: "Resultados reais de fundadores. Impulso real de negócio.",
       proofBody:
-        "Estas são conversas reais que orientam nossa cohort piloto.",
-      signalCta: "Entrar na cohort fundadora",
-      ctaEyebrow: "Pronto quando você estiver",
-      ctaTitle: "Você não precisa de mais conselhos.",
-      ctaEmphasis: "Você precisa de um próximo passo.",
+        "O objetivo do Sprint não é deixar você com mais anotações, ideias ou planos inacabados. É ajudar você a criar resultados como estes.",
+      signalCta: "Aplicar para o próximo Sprint",
+      ctaEyebrow: "Vagas limitadas por sprint",
+      ctaTitle: "Você já planejou tempo suficiente.",
+      ctaEmphasis: "Agora é hora de construir.",
       ctaBody:
-        "Agende uma chamada gratuita de 30 minutos. Sem pressão, apenas clareza sobre o que fazer primeiro.",
-      ctaPrimary: "Agendar minha chamada gratuita",
-      ctaSecondary: "Explorar serviços",
+        "Este é um apoio prático, não conteúdo passivo. Trabalhamos apenas com um número limitado de fundadores por sprint para que cada participante receba o foco, o feedback e o apoio necessários para realmente lançar.",
+      ctaPrimary: "Aplicar para o próximo Sprint",
+      ctaSecondary: "Veja como funciona",
       emailPrefix: "Prefere escrever?",
     };
   }
 
   return {
-    heroEyebrow: "For Early-Stage Founders",
-    heroLead: "Stop guessing.",
-    heroEmphasis: "Figure out your",
-    heroEnd: "next right move.",
+    heroEyebrow: "The 30-Day Founder Sprint",
+    heroLead: "Stop planning.",
+    heroEmphasis: "Start building",
+    heroEnd: "a real business.",
     heroBody:
-      "You have a real business idea, maybe more than one. BizSproutAI helps you cut through the noise, validate fast, and build the right foundation from day one.",
-    primary: "Get My Action Plan",
+      "We help you turn your idea into a real offer, website, and client system — so you can launch fast and work toward your first paying customer in 30 days.",
+    primary: "Apply for the Sprint",
     secondary: "See How It Works",
-    trustTitle: "Founders already in pilot",
-    trustBody: "Early cohort open, limited spots",
-    pilotBadge: "Pilot Offer Live",
-    painEyebrow: "You are not alone",
+    trustTitle: "Results-based program",
+    trustBody: "Limited enrollment, built for founders ready to move",
+    pilotBadge: "Apply Now",
+    painEyebrow: "The real problem",
     painTitle:
-      "Most founders do not fail from bad ideas, they fail from no system",
+      "You are not stuck because you lack potential. You are stuck because you lack a clear path.",
     painBody:
-      "We see the same patterns in early-stage founders over and over again. Sound familiar?",
-    howEyebrow: "The Process",
-    howTitle: "Simple steps, real momentum",
+      "Most founders do not need more motivation. They need structure, support, and a system that turns ideas into action.",
+    howEyebrow: "How the sprint works",
+    howTitle: "Four weeks. One clear destination.",
     howBody:
-      "No six-month engagements. No jargon. Just a clear path from confused to moving.",
-    servicesEyebrow: "What We Build",
-    servicesTitle: "Not a software product. A results partner.",
+      "Complete the sprint, follow the plan, and if you do not land your first paying customer in 30 days, we keep working with you at no extra cost until you do.",
+    servicesEyebrow: "What is included",
+    servicesTitle: "Everything you need. Nothing you do not.",
     servicesBody:
-      "Choose what your business needs most right now. Each offer is scoped, fast, and founder-first.",
-    proofEyebrow: "Early Signals",
-    proofTitle: "Founders are already asking the right questions",
+      "This is not a course you buy and forget. Every core piece is built with you during the sprint, so when it is over, you own a real business system you can actually use.",
+    proofEyebrow: "What success can look like",
+    proofTitle: "Real founder outcomes. Real business momentum.",
     proofBody:
-      "These are real conversations happening in our pilot community. We built our offers around them.",
-    signalCta: "Join the founding cohort",
-    ctaEyebrow: "Ready when you are",
-    ctaTitle: "You do not need more advice.",
-    ctaEmphasis: "You need a next move.",
+      "The goal of the Sprint is not to leave you with more notes, ideas, or unfinished plans. It is to help you create outcomes like these.",
+    signalCta: "Apply for the Next Sprint",
+    ctaEyebrow: "Limited spots per sprint",
+    ctaTitle: "You have been planning long enough.",
+    ctaEmphasis: "Now it is time to build.",
     ctaBody:
-      "Book a free 30-minute discovery call. No pitch, no commitment, just clarity on what to do first.",
-    ctaPrimary: "Book My Free Call",
-    ctaSecondary: "Explore Services",
+      "This is hands-on support, not passive content. We only work with a limited number of founders per sprint so every participant gets the focus, feedback, and support they need to actually launch.",
+    ctaPrimary: "Apply for the Next Sprint",
+    ctaSecondary: "See How It Works",
     emailPrefix: "Prefer email?",
   };
 }
@@ -648,6 +653,99 @@ export default async function HomePage({ params }: Props) {
           />
         </div>
       </section>
+
+      {/* ── JSON-LD STRUCTURED DATA (SEO / AEO / GEO) ──── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "BizSproutAI",
+              url: "https://validate.bizsproutai.com",
+              logo: "https://validate.bizsproutai.com/bizsproutai-logo.png",
+              description:
+                "BizSproutAI helps early-stage founders launch their business and land their first paying customer through the 30-Day Founder Sprint program.",
+              sameAs: [],
+              contactPoint: {
+                "@type": "ContactPoint",
+                email: "info@bizsproutai.com",
+                contactType: "customer support",
+              },
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Course",
+              name: "30-Day Founder Sprint",
+              description:
+                "A done-with-you business launch program that helps early-stage founders turn their idea into a real offer, website, and client system — and work toward their first paying customer in 30 days.",
+              provider: {
+                "@type": "Organization",
+                name: "BizSproutAI",
+                url: "https://validate.bizsproutai.com",
+              },
+              hasCourseInstance: {
+                "@type": "CourseInstance",
+                courseMode: "online",
+                duration: "P30D",
+              },
+              offers: {
+                "@type": "Offer",
+                category: "Business Launch Program",
+                availability: "https://schema.org/LimitedAvailability",
+                url: "https://validate.bizsproutai.com/en/action-plan",
+              },
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "What is the 30-Day Founder Sprint?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "A done-with-you business launch program that helps early-stage founders turn their idea into a real offer, website, and client system — and work toward their first paying customer in 30 days.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How much does the 30-Day Founder Sprint cost?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Apply for details on current pricing. The sprint is results-based — if you complete the program and do not land your first paying customer in 30 days, we keep working with you at no extra cost until you do.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What is included in the sprint?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Idea validation and market direction, offer creation, website and messaging built with you, booking and client follow-up system, AI tools configured to save time, a 30-day execution roadmap, and direct support throughout.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Who is the 30-Day Founder Sprint for?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Early-stage founders who have a business idea but need structure, support, and a system to turn it into a real business. Whether you are stuck choosing between ideas, need a website, or want to land your first client, the sprint gives you a clear path.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What happens after the 30 days?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "If you completed the sprint, followed the plan, and did the work but still have not landed your first paying customer, we continue working with you at no extra cost until you do.",
+                  },
+                },
+              ],
+            },
+          ]),
+        }}
+      />
     </main>
   );
 }

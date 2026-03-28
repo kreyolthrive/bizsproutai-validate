@@ -25,9 +25,10 @@ export const seoMetadata: Record<
   { title: string; description: string }
 > = {
   en: {
-    title: "BizSproutAI — Validate your idea. Launch with confidence",
+    title:
+      "30-Day Founder Sprint | BizSproutAI — Launch Your Business & Land Your First Customer",
     description:
-      "AI-powered business validation tailored to your market. Get GO/FIX/STOP verdicts, actionable fixes, and launch guidance for entrepreneurs in emerging markets.",
+      "The 30-Day Founder Sprint is a done-with-you business launch program for early-stage founders. Go from idea to real offer, website, and client system — and work toward your first paying customer in 30 days. Results guarantee included.",
   },
   fr: {
     title: "BizSproutAI — Validez votre idée. Lancez avec confiance",
