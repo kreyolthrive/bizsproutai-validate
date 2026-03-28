@@ -14,12 +14,12 @@ function getCopy(locale: string) {
   if (normalized === "fr") {
     return {
       heroEyebrow: "Le Sprint Fondateur de 30 Jours",
-      heroLead: "Arrêtez de planifier.",
-      heroEmphasis: "Commencez à construire",
-      heroEnd: "une vraie entreprise.",
+      heroLead: "Votre premier client payant",
+      heroEmphasis: "en 30 jours",
+      heroEnd: "— ou on ne s\u2019arrête pas.",
       heroBody:
         "Nous vous aidons à transformer votre idée en une offre concrète, un site web et un système client — pour que vous puissiez lancer rapidement et travailler vers votre premier client payant en 30 jours.",
-      primary: "Postuler pour le Sprint",
+      primary: "Obtenez votre premier client payant",
       secondary: "Voir comment ça marche",
       trustTitle: "Programme basé sur les résultats",
       trustBody: "Inscription limitée, conçu pour les fondateurs prêts à avancer",
@@ -56,12 +56,12 @@ function getCopy(locale: string) {
   if (normalized === "es") {
     return {
       heroEyebrow: "El Sprint de Fundadores de 30 Días",
-      heroLead: "Deja de planificar.",
-      heroEmphasis: "Empieza a construir",
-      heroEnd: "un negocio real.",
+      heroLead: "Tu primer cliente de pago",
+      heroEmphasis: "en 30 días",
+      heroEnd: "— o no paramos.",
       heroBody:
         "Te ayudamos a convertir tu idea en una oferta real, un sitio web y un sistema de clientes — para que puedas lanzar rápido y trabajar hacia tu primer cliente de pago en 30 días.",
-      primary: "Aplicar al Sprint",
+      primary: "Consigue tu primer cliente de pago",
       secondary: "Ver cómo funciona",
       trustTitle: "Programa basado en resultados",
       trustBody: "Inscripción limitada, diseñado para fundadores listos para actuar",
@@ -98,12 +98,12 @@ function getCopy(locale: string) {
   if (normalized === "ht") {
     return {
       heroEyebrow: "Sprint Fondatè 30 Jou a",
-      heroLead: "Sispann planifye.",
-      heroEmphasis: "Kòmanse bati",
-      heroEnd: "yon vrè biznis.",
+      heroLead: "Premye kliyan peyan ou",
+      heroEmphasis: "nan 30 jou",
+      heroEnd: "— oswa nou pa kanpe.",
       heroBody:
         "Nou ede ou transfòme lide ou nan yon vrè òf, yon sit wèb, ak yon sistèm kliyan — pou ou ka lanse vit epi travay pou jwenn premye kliyan ki peye ou nan 30 jou.",
-      primary: "Aplike pou Sprint la",
+      primary: "Jwenn premye kliyan peyan ou",
       secondary: "Gade kijan li mache",
       trustTitle: "Pwogram ki baze sou rezilta",
       trustBody: "Enskripsyon limite, fèt pou fondatè ki pare pou avanse",
@@ -140,12 +140,12 @@ function getCopy(locale: string) {
   if (normalized === "pt") {
     return {
       heroEyebrow: "O Sprint de Fundadores de 30 Dias",
-      heroLead: "Pare de planejar.",
-      heroEmphasis: "Comece a construir",
-      heroEnd: "um negócio real.",
+      heroLead: "Seu primeiro cliente pagante",
+      heroEmphasis: "em 30 dias",
+      heroEnd: "— ou não paramos.",
       heroBody:
         "Nós ajudamos você a transformar sua ideia em uma oferta real, um site e um sistema de clientes — para que você possa lançar rápido e trabalhar para conseguir seu primeiro cliente pagante em 30 dias.",
-      primary: "Aplicar para o Sprint",
+      primary: "Conquiste seu primeiro cliente pagante",
       secondary: "Veja como funciona",
       trustTitle: "Programa baseado em resultados",
       trustBody: "Inscrição limitada, feito para fundadores prontos para agir",
@@ -181,12 +181,12 @@ function getCopy(locale: string) {
 
   return {
     heroEyebrow: "The 30-Day Founder Sprint",
-    heroLead: "Stop planning.",
-    heroEmphasis: "Start building",
-    heroEnd: "a real business.",
+    heroLead: "Your First Paying Client",
+    heroEmphasis: "in 30 Days",
+    heroEnd: "— Or We Don\u2019t Stop.",
     heroBody:
       "We help you turn your idea into a real offer, website, and client system — so you can launch fast and work toward your first paying customer in 30 days.",
-    primary: "Apply for the Sprint",
+    primary: "Get Your First Paying Client",
     secondary: "See How It Works",
     trustTitle: "Results-based program",
     trustBody: "Limited enrollment, built for founders ready to move",
@@ -413,6 +413,10 @@ export default async function HomePage({ params }: Props) {
             </p>
           </div>
 
+          <p className="landing-reveal mx-auto mt-8 max-w-2xl text-center text-[1.05rem] font-semibold leading-relaxed text-[var(--landing-green-deep)]">
+            {lc.howIntro}
+          </p>
+
           <div className="mt-14 grid gap-8 lg:grid-cols-[1.06fr_0.72fr]">
             <div className="space-y-0">
               {lc.howSteps.map((step) => (
@@ -430,9 +434,26 @@ export default async function HomePage({ params }: Props) {
                     <p className="mt-3 max-w-xl text-[0.92rem] leading-7 text-[var(--landing-muted)]">
                       {step.body}
                     </p>
-                    <span className="mt-4 inline-flex rounded-full bg-[rgba(126,200,80,0.12)] px-3.5 py-1.5 text-[0.78rem] font-semibold text-[var(--landing-green-mid)]">
-                      {step.tag}
-                    </span>
+                    <div className="mt-4">
+                      <span className="inline-flex rounded-full bg-[rgba(126,200,80,0.12)] px-3.5 py-1.5 text-[0.78rem] font-semibold text-[var(--landing-green-mid)]">
+                        {step.tag}
+                      </span>
+                      {step.checklist && (
+                        <ul className="mt-3 space-y-1.5">
+                          {step.checklist.map((item) => (
+                            <li key={item} className="flex items-center gap-2 text-[0.88rem] text-[var(--landing-green-deep)]">
+                              <span className="text-[var(--landing-sprout)]">&#10003;</span>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {step.guarantee && (
+                        <p className="mt-4 rounded-xl border border-[rgba(126,200,80,0.3)] bg-[rgba(126,200,80,0.08)] px-4 py-3 text-[0.85rem] font-semibold text-[var(--landing-green-deep)]">
+                          {step.guarantee}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
