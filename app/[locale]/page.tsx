@@ -17,8 +17,13 @@ function getCopy(locale: string) {
       heroLead: "Votre premier client payant",
       heroEmphasis: "en 30 jours",
       heroEnd: "— ou on ne s\u2019arrête pas.",
+      heroSub:
+        "Même si vous partez de zéro — sans audience, sans site web et sans offre claire.",
       heroBody:
-        "Nous vous aidons à transformer votre idée en une offre concrète, un site web et un système client — pour que vous puissiez lancer rapidement et travailler vers votre premier client payant en 30 jours.",
+        "Nous vous accompagnons de l\u2019idée à une offre concrète, un site en ligne et votre premier client payant — étape par étape, à vos côtés.",
+      guaranteeTitle: "Pas de client en 30 jours ? On continue — gratuitement.",
+      guaranteeBody:
+        "Complétez le sprint, suivez le plan, et si vous n\u2019obtenez pas votre premier client, nous continuons sans frais supplémentaires jusqu\u2019à ce que vous y arriviez.",
       primary: "Obtenez votre premier client payant",
       secondary: "Voir comment ça marche",
       trustTitle: "Programme basé sur les résultats",
@@ -59,8 +64,13 @@ function getCopy(locale: string) {
       heroLead: "Tu primer cliente de pago",
       heroEmphasis: "en 30 días",
       heroEnd: "— o no paramos.",
+      heroSub:
+        "Aunque empieces solo con una idea y sin audiencia, sin sitio web y sin una oferta clara.",
       heroBody:
-        "Te ayudamos a convertir tu idea en una oferta real, un sitio web y un sistema de clientes — para que puedas lanzar rápido y trabajar hacia tu primer cliente de pago en 30 días.",
+        "Te llevamos de la idea a una oferta real, sitio web en línea y tu primer cliente de pago — paso a paso, contigo todo el camino.",
+      guaranteeTitle: "¿Sin cliente en 30 días? Seguimos trabajando — gratis.",
+      guaranteeBody:
+        "Completa el sprint, sigue el plan, y si no consigues tu primer cliente, continuamos sin costo adicional hasta que lo logres.",
       primary: "Consigue tu primer cliente de pago",
       secondary: "Ver cómo funciona",
       trustTitle: "Programa basado en resultados",
@@ -101,8 +111,13 @@ function getCopy(locale: string) {
       heroLead: "Premye kliyan peyan ou",
       heroEmphasis: "nan 30 jou",
       heroEnd: "— oswa nou pa kanpe.",
+      heroSub:
+        "Menm si ou kòmanse ak jis yon lide e ou pa gen okenn odyans, okenn sit wèb, ak okenn òf klè.",
       heroBody:
-        "Nou ede ou transfòme lide ou nan yon vrè òf, yon sit wèb, ak yon sistèm kliyan — pou ou ka lanse vit epi travay pou jwenn premye kliyan ki peye ou nan 30 jou.",
+        "Nou pran ou soti nan lide rive nan yon vrè òf, sit wèb an liy, ak premye kliyan peyan ou — etap pa etap, avèk ou tout chemen an.",
+      guaranteeTitle: "Pa gen kliyan nan 30 jou? Nou kontinye travay — gratis.",
+      guaranteeBody:
+        "Fini sprint la, swiv plan an, epi si ou pa jwenn premye kliyan ou, nou kontinye san okenn frè anplis jiskaske ou reyisi.",
       primary: "Jwenn premye kliyan peyan ou",
       secondary: "Gade kijan li mache",
       trustTitle: "Pwogram ki baze sou rezilta",
@@ -143,8 +158,13 @@ function getCopy(locale: string) {
       heroLead: "Seu primeiro cliente pagante",
       heroEmphasis: "em 30 dias",
       heroEnd: "— ou não paramos.",
+      heroSub:
+        "Mesmo que você esteja começando apenas com uma ideia e sem audiência, sem site e sem uma oferta clara.",
       heroBody:
-        "Nós ajudamos você a transformar sua ideia em uma oferta real, um site e um sistema de clientes — para que você possa lançar rápido e trabalhar para conseguir seu primeiro cliente pagante em 30 dias.",
+        "Levamos você da ideia a uma oferta real, site no ar e seu primeiro cliente pagante — passo a passo, com você o caminho todo.",
+      guaranteeTitle: "Sem cliente em 30 dias? Continuamos trabalhando — de graça.",
+      guaranteeBody:
+        "Complete o sprint, siga o plano, e se você não conseguir seu primeiro cliente, continuamos sem custo adicional até que consiga.",
       primary: "Conquiste seu primeiro cliente pagante",
       secondary: "Veja como funciona",
       trustTitle: "Programa baseado em resultados",
@@ -184,9 +204,14 @@ function getCopy(locale: string) {
     heroLead: "Your First Paying Client",
     heroEmphasis: "in 30 Days",
     heroEnd: "— Or We Don\u2019t Stop.",
+    heroSub:
+      "Even if you\u2019re starting with just an idea and no audience, no website, and no clear offer.",
     heroBody:
-      "We help you turn your idea into a real offer, website, and client system — so you can launch fast and work toward your first paying customer in 30 days.",
-    primary: "Get Your First Paying Client",
+      "We take you from idea to real offer, live website, and first paying customer — step by step, with you the whole way.",
+    guaranteeTitle: "No client in 30 days? We keep working — free.",
+    guaranteeBody:
+      "Complete the sprint, follow the plan, and if you don\u2019t land your first customer, we continue at no extra cost until you do.",
+    primary: "Get My First Paying Client",
     secondary: "See How It Works",
     trustTitle: "Results-based program",
     trustBody: "Limited enrollment, built for founders ready to move",
@@ -245,6 +270,16 @@ export default async function HomePage({ params }: Props) {
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1fr_0.82fr]">
           <div>
+            <div className="landing-reveal mb-6 flex items-center gap-3">
+              <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.14)] text-sm font-medium text-[var(--landing-green-mid)]">
+                WD
+              </div>
+              <div>
+                <a href="https://www.desirwagner.com/" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-[var(--landing-green-deep)] hover:underline">Wagner Desir ↗</a>
+                <p className="mt-px text-xs text-[var(--landing-muted)]">BizSproutAI · Founder</p>
+              </div>
+            </div>
+
             <div className="landing-reveal inline-flex items-center gap-2 rounded-full border border-[rgba(126,200,80,0.3)] bg-[rgba(126,200,80,0.14)] px-3.5 py-1.5 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-[var(--landing-green-mid)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--landing-sprout)]" />
               {copy.heroEyebrow}
@@ -264,7 +299,16 @@ export default async function HomePage({ params }: Props) {
               {copy.heroBody}
             </p>
 
-            <div className="landing-reveal mt-7 flex flex-wrap gap-3">
+            <div className="landing-reveal mt-6 max-w-[28rem] rounded-[10px] border border-[rgba(126,200,80,0.3)] border-l-[3px] border-l-[var(--landing-sprout)] bg-[rgba(126,200,80,0.06)] px-5 py-4">
+              <p className="text-[0.88rem] leading-[1.6] text-[var(--landing-muted)]">
+                <strong className="font-semibold text-[var(--landing-green-deep)]">
+                  {copy.guaranteeTitle}
+                </strong>{" "}
+                {copy.guaranteeBody}
+              </p>
+            </div>
+
+            <div className="landing-reveal mt-7 flex flex-wrap items-center gap-5">
               <a
                 href={actionPlanHref}
                 className="inline-flex items-center rounded-full bg-[var(--landing-green-deep)] px-6 py-3 text-[0.92rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)]"
@@ -273,37 +317,10 @@ export default async function HomePage({ params }: Props) {
               </a>
               <a
                 href={`/${locale}#how`}
-                className="inline-flex items-center rounded-full border border-[rgba(26,58,42,0.2)] px-6 py-3 text-[0.92rem] font-semibold text-[var(--landing-green-deep)] transition hover:border-[var(--landing-green-deep)] hover:bg-[rgba(26,58,42,0.04)]"
+                className="text-[0.92rem] font-semibold text-[var(--landing-muted)] underline underline-offset-[3px] transition hover:text-[var(--landing-green-deep)]"
               >
                 {copy.secondary}
               </a>
-            </div>
-
-            <div className="landing-reveal mt-10 flex items-center gap-4">
-              <div className="flex items-center">
-                {["JA", "M", "RL", "DS"].map((item, index) => (
-                  <span
-                    key={item}
-                    className={`${
-                      index === 0
-                        ? "bg-[var(--landing-green-mid)]"
-                        : index === 1
-                          ? "bg-[#3d7a55]"
-                          : index === 2
-                            ? "bg-[var(--landing-green-light)]"
-                            : "bg-[var(--landing-amber)] text-[var(--landing-ink)]"
-                    } -ml-2.5 flex h-9 w-9 items-center justify-center rounded-full border-[2.5px] border-[var(--warm-white)] text-xs font-bold text-white first:ml-0`}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <div className="text-[0.82rem] leading-snug text-[var(--landing-muted)]">
-                <strong className="block text-sm text-[var(--landing-green-deep)]">
-                  {copy.trustTitle}
-                </strong>
-                {copy.trustBody}
-              </div>
             </div>
           </div>
 
@@ -671,6 +688,7 @@ export default async function HomePage({ params }: Props) {
           {/* Booking Calendar */}
           <BookingCalendar
             title={lc.bookingTitle}
+            subtitle={lc.bookingSubtitle}
           />
         </div>
       </section>

@@ -14,7 +14,7 @@ export function getLandingCopy(locale: string) {
     /* ── Hero card ────────────────────────────────── */
     clarityLabel: "Where are you right now?",
     clarityQuestion:
-      "Pick what describes you best so we can match your sprint path.",
+      "Pick what describes you — we\u2019ll match your sprint path.",
     clarityChoices: [
       "I have an idea but no clear offer or direction",
       "I have an offer but no website or system behind it",
@@ -171,13 +171,15 @@ export function getLandingCopy(locale: string) {
 
     /* ── Signal strip ─────────────────────────────── */
     signalStats: [
-      { value: "48h", label: "Time to launch" },
-      { value: "30", label: "Days to first customer" },
+      { value: "48h", label: "System goes live" },
+      { value: "30", label: "Days to first client" },
       { value: "1", label: "Clear destination" },
+      { value: "∞", label: "Support until done" },
     ],
 
     /* ── Booking ──────────────────────────────────── */
-    bookingTitle: "Apply for the next 30-Day Founder Sprint",
+    bookingTitle: "Free 30-Minute Session",
+    bookingSubtitle: "Limited sessions available this week",
     bookingFallback: "Pick a time that works for you",
   };
 
@@ -240,11 +242,13 @@ export function getLandingCopy(locale: string) {
         { quote: "J'ai arrêté d'attendre que tout soit parfait et j'ai commencé à avoir des conversations, envoyer des offres, et créer un élan autour de quelque chose de réel.", name: "De la réflexion excessive à la vraie prospection", role: "Résultat du sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
       ],
       signalStats: [
-        { value: "48h", label: "Délai de lancement" },
+        { value: "48h", label: "Système en ligne" },
         { value: "30", label: "Jours jusqu'au premier client" },
-        { value: "1", label: "Une destination claire" },
+        { value: "1", label: "Destination claire" },
+        { value: "∞", label: "Accompagnement jusqu'au bout" },
       ],
-      bookingTitle: "Postulez au prochain Sprint Fondateur 30 Jours",
+      bookingTitle: "Session gratuite de 30 minutes",
+      bookingSubtitle: "Places limitées cette semaine",
       bookingFallback: "Choisissez un créneau qui vous convient",
     };
   }
@@ -308,11 +312,13 @@ export function getLandingCopy(locale: string) {
         { quote: "Dejé de esperar a que todo se sintiera perfecto y empecé a tener conversaciones, enviar ofertas, y construir impulso alrededor de algo real.", name: "De pensar de más a prospección real", role: "Resultado del sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
       ],
       signalStats: [
-        { value: "48h", label: "Tiempo de lanzamiento" },
-        { value: "30", label: "Días hasta el primer cliente" },
+        { value: "48h", label: "Sistema en línea" },
+        { value: "30", label: "Días hasta primer cliente" },
         { value: "1", label: "Destino claro" },
+        { value: "∞", label: "Apoyo hasta lograrlo" },
       ],
-      bookingTitle: "Aplica al próximo Sprint Fundador de 30 Días",
+      bookingTitle: "Sesión gratuita de 30 minutos",
+      bookingSubtitle: "Sesiones limitadas esta semana",
       bookingFallback: "Elige un horario que te funcione",
     };
   }
@@ -376,11 +382,13 @@ export function getLandingCopy(locale: string) {
         { quote: "Mwen te sispann tann pou tout bagay santi li pafè epi mwen te kòmanse gen konvèsasyon, voye òf, epi bati elan sou yon bagay reyèl.", name: "Soti nan reflechi twòp rive nan vrè pwospeksyon", role: "Rezilta sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
       ],
       signalStats: [
-        { value: "48h", label: "Tan pou lanse" },
+        { value: "48h", label: "Sistèm an liy" },
         { value: "30", label: "Jou rive nan premye kliyan" },
         { value: "1", label: "Destinasyon klè" },
+        { value: "∞", label: "Sipò jiskaske fini" },
       ],
-      bookingTitle: "Aplike pou pwochen Sprint Fondatè 30 Jou a",
+      bookingTitle: "Sesyon gratis 30 minit",
+      bookingSubtitle: "Sesyon limite disponib semèn sa a",
       bookingFallback: "Chwazi yon lè ki bon pou ou",
     };
   }
@@ -444,11 +452,13 @@ export function getLandingCopy(locale: string) {
         { quote: "Parei de esperar tudo ficar perfeito e comecei a ter conversas, enviar ofertas, e construir impulso em torno de algo real.", name: "De pensar demais a prospecção real", role: "Resultado do sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
       ],
       signalStats: [
-        { value: "48h", label: "Tempo para lançar" },
-        { value: "30", label: "Dias até o primeiro cliente" },
+        { value: "48h", label: "Sistema no ar" },
+        { value: "30", label: "Dias até primeiro cliente" },
         { value: "1", label: "Destino claro" },
+        { value: "∞", label: "Apoio até conseguir" },
       ],
-      bookingTitle: "Candidate-se ao próximo Sprint Fundador de 30 Dias",
+      bookingTitle: "Sessão gratuita de 30 minutos",
+      bookingSubtitle: "Sessões limitadas esta semana",
       bookingFallback: "Escolha um horário que funcione para você",
     };
   }
