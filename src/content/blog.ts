@@ -11,6 +11,8 @@ export const VALIDATION_POST_SLUG =
   "validate-an-idea-before-building-too-much";
 export const DEMAND_POST_SLUG =
   "what-market-demand-really-looks-like";
+export const HUMANITY_POST_SLUG =
+  "when-uncertainty-hits-we-need-more-humanity";
 
 type BlogSection = {
   heading: string;
@@ -126,6 +128,102 @@ function localizePost(locale: Locale, post: BlogPost): BlogPost {
 
 const BLOG_POSTS_BY_LOCALE: Record<Locale, BlogPost[]> = {
   en: [
+    {
+      slug: HUMANITY_POST_SLUG,
+      title: "When Uncertainty Hits, We Need More Humanity",
+      excerpt:
+        "Layoffs, AI disruption, and career uncertainty are changing how people work. In moments like this, commentary is not enough. People need compassion, steadiness, and room to rebuild.",
+      category: "Career Transition / Humanity",
+      date: "March 2026",
+      publishedAt: "2026-03-31T09:30:00-04:00",
+      readTime: "8 min read",
+      recommendedCta:
+        "This piece is for anyone navigating layoffs, career disruption, or the difficult space between what felt stable and what comes next.",
+      metaTitle:
+        "When Uncertainty Hits, We Need More Humanity | BizSproutAI Blog",
+      metaDescription:
+        "A reflection on layoffs, AI-driven uncertainty, and how people can move through career disruption with compassion, steadiness, and hope.",
+      keywords: [
+        "career transition",
+        "layoffs",
+        "career uncertainty",
+        "AI and work",
+        "resilience",
+        "humanity at work",
+        "BizSproutAI blog",
+      ],
+      relatedSlugs: [
+        CLARITY_POST_SLUG,
+        VALIDATION_POST_SLUG,
+        FIRST_ASSET_POST_SLUG,
+      ],
+      heroTitle: "When work changes suddenly, people need compassion before commentary.",
+      heroIntro: [
+        "The other day, I came across Samantha's post about her role being eliminated at Meta, and it stayed with me.",
+        "When news like that spreads, it is easy to focus on the company, the decision, or the headline. But behind every eliminated role is a real person. Someone with responsibilities, plans, emotions, and a life that does not pause because a company made a decision.",
+        "That matters even more now. As AI continues to reshape industries and change the nature of work, more people are being pushed into uncertainty. Roles are disappearing, career paths are shifting, and what once felt stable no longer feels guaranteed.",
+      ],
+      sections: [
+        {
+          heading: "This is bigger than one headline",
+          paragraphs: [
+            "Moments like this remind us that work is never only about work. It is also about identity, dignity, provision, momentum, and the plans people quietly carry for themselves and the people they love.",
+            "I am also reminded of an idea often echoed by leaders like Muhammad Yunus and Reid Hoffman: entrepreneurship, adaptability, and the ability to create are not reserved for a special few. The capacity to rebuild exists in more people than they realize.",
+            "For many people around the world, that is not just an inspiring thought. It is reality. People create because they have to. They adapt because waiting is not always an option. They build because survival often requires courage.",
+          ],
+        },
+        {
+          heading: "Pain deserves to be acknowledged before it is solved",
+          paragraphs: [
+            "To Samantha, and to everyone going through something similar, I want to say this clearly: I am sorry. Moments like this can feel deeply unsettling. They can make you question your direction, your value, and what comes next.",
+            "That is why times like this deserve more than hot takes or polished commentary. They deserve compassion.",
+            "Pain does not become smaller just because someone tells you to move on quickly. Loss needs room to be felt. Grief needs room to breathe. Uncertainty needs tenderness before strategy.",
+          ],
+        },
+        {
+          heading: "What to do when uncertainty hits",
+          paragraphs: [
+            "There is no perfect script for a moment like this, but there are grounded next steps that can help you move without pretending the loss is easy.",
+          ],
+          bullets: [
+            "Give yourself permission to feel it. Not every setback needs an immediate solution. Sometimes the first step is simply to breathe, process, and accept that this hurts.",
+            "Do not isolate yourself. Reach out to friends, family, mentors, or former colleagues you trust. Hard moments become heavier when we carry them alone.",
+            "Stabilize before you strategize. Take care of the immediate things in front of you: your emotions, your finances, your responsibilities, and your next few steps.",
+            "Take inventory of what you still have. A lost role does not erase your skills, your experience, your relationships, your ability to learn, or your capacity to rebuild.",
+            "Be open to rethinking your path. For some people, this means another job. For others, it may mean freelancing, consulting, learning a new skill, or building something of their own.",
+            "Move one step at a time. You do not need to figure out your whole life this week. Focus on the next right move, not the entire staircase.",
+            "Protect your hope. Uncertainty has a way of attacking confidence. Do not let one painful chapter convince you that your story is over.",
+          ],
+        },
+        {
+          heading: "Reinvention is not denial",
+          paragraphs: [
+            "Hope is not the same as pretending everything is fine. It does not erase the unfairness of the loss, and it does not make the pain small.",
+            "But painful moments do not always get the final word. Sometimes what feels like an ending slowly becomes the beginning of a new chapter. Not immediately. Not easily. And not without grief. Still, over time, life has a way of opening doors we would not have considered if the old ones had not closed.",
+            "I have seen too many people rebuild after disappointment to believe that a hard moment is the end of the story. Human beings are more resilient than they realize. We break, we grieve, we question, and somehow, little by little, we begin again.",
+          ],
+        },
+      ],
+      keyTakeawaysTitle: "Key takeaways",
+      keyTakeaways: [
+        "Behind every layoff or eliminated role is a human being, not just a headline.",
+        "Compassion matters because uncertainty affects identity, stability, and hope all at once.",
+        "The healthiest first response is often to process, stabilize, and reconnect before trying to solve everything.",
+        "Reinvention is possible, even when the next chapter is not yet clear.",
+      ],
+      reflectionTitle: "Reflection questions",
+      reflectionQuestions: [
+        "What do you need most right now: space to feel, practical stability, or a clearer next step?",
+        "Who can you reach out to this week so you are not carrying the weight alone?",
+        "What strengths, relationships, or skills remain available to you even after this loss?",
+        "What is one grounded next move that would help you regain a little steadiness?",
+      ],
+      ctaTitle: "Need help finding a clearer next step?",
+      ctaBody:
+        "BizSproutAI helps founders and people in transition clarify what to build, what to test, and where to focus when uncertainty makes the path ahead feel harder to read.",
+      ctaLabel: "Contact BizSproutAI",
+      upcomingLabel: "Stay tuned. More blog posts are coming soon.",
+    },
     {
       slug: DEMAND_POST_SLUG,
       title:
@@ -4072,6 +4170,28 @@ export function getAllBlogSlugs(options?: { includeScheduled?: boolean }): strin
     .map((post) => post.slug);
 }
 
+export function getAllBlogRouteParams(options?: { includeScheduled?: boolean }) {
+  return (Object.keys(BLOG_POSTS_BY_LOCALE) as Locale[]).flatMap((locale) =>
+    BLOG_POSTS_BY_LOCALE[locale]
+      .filter((post) =>
+        options?.includeScheduled ? isPublished(post) : isLive(post)
+      )
+      .map((post) => ({
+        locale,
+        slug: post.slug,
+      }))
+  );
+}
+
+export function getAvailableBlogLocales(
+  slug: string,
+  options?: { includeScheduled?: boolean }
+): Locale[] {
+  return (Object.keys(BLOG_POSTS_BY_LOCALE) as Locale[]).filter((locale) =>
+    Boolean(getBlogPost(locale, slug, options))
+  );
+}
+
 export function getBlogIndexPosts(locale: string) {
   const normalized = normalizeLocale(locale);
   const now = new Date();
@@ -4131,6 +4251,12 @@ export function buildBlogPostMetadata(
   const localePrefix = normalized === "en" ? "/en" : `/${normalized}`;
   const url = `${localePrefix}/blog/${post.slug}`;
   const image = post.imageSrc ?? "/og-image.png";
+  const languages = Object.fromEntries(
+    getAvailableBlogLocales(slug).map((availableLocale) => [
+      availableLocale,
+      `/${availableLocale}/blog/${post.slug}`,
+    ])
+  );
 
   return {
     title: post.metaTitle,
@@ -4138,13 +4264,7 @@ export function buildBlogPostMetadata(
     keywords: post.keywords,
     alternates: {
       canonical: url,
-      languages: {
-        en: `/en/blog/${post.slug}`,
-        fr: `/fr/blog/${post.slug}`,
-        ht: `/ht/blog/${post.slug}`,
-        es: `/es/blog/${post.slug}`,
-        pt: `/pt/blog/${post.slug}`,
-      },
+      languages,
     },
     openGraph: {
       title: post.metaTitle,

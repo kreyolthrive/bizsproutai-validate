@@ -5,7 +5,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import {
   buildBlogPostMetadata,
-  getAllBlogSlugs,
+  getAllBlogRouteParams,
   getBlogIndexCopy,
   getBlogPost,
   getRelatedBlogPosts,
@@ -18,15 +18,7 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  const slugs = getAllBlogSlugs({ includeScheduled: true });
-  const locales = ["en", "fr", "ht", "es", "pt"];
-
-  return locales.flatMap((locale) =>
-    slugs.map((slug) => ({
-      locale,
-      slug,
-    }))
-  );
+  return getAllBlogRouteParams({ includeScheduled: true });
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
