@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
+import BlogShareActions from "@/components/blog/BlogShareActions";
 import { Link } from "@/i18n/navigation";
 import {
   buildBlogPostMetadata,
@@ -26,6 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildBlogPostMetadata(locale, slug) ?? {};
 }
 
+async function getRequestOrigin() {
+  const requestHeaders = await headers();
+  const host =
+    requestHeaders.get("x-forwarded-host") ??
+    requestHeaders.get("host") ??
+    "validate.bizsproutai.com";
+  const protocol =
+    requestHeaders.get("x-forwarded-proto") ??
+    (host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https");
+
+  return `${protocol}://${host}`;
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
@@ -36,7 +51,8 @@ export default async function BlogPostPage({ params }: Props) {
   }
   const copy = getBlogIndexCopy(locale);
   const relatedPosts = getRelatedBlogPosts(locale, post.relatedSlugs);
-  const baseUrl = "https://validate.bizsproutai.com";
+  const baseUrl = await getRequestOrigin();
+  const articleUrl = `${baseUrl}/${locale}/blog/${post.slug}`;
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -62,7 +78,7 @@ export default async function BlogPostPage({ params }: Props) {
         url: `${baseUrl}/og-image.png`,
       },
     },
-    mainEntityOfPage: `${baseUrl}/${locale}/blog/${post.slug}`,
+    mainEntityOfPage: articleUrl,
     keywords: post.keywords.join(", "),
   };
   const articleJsonLdText = JSON.stringify(articleJsonLd).replace(
@@ -247,6 +263,13 @@ export default async function BlogPostPage({ params }: Props) {
           <p className="mt-8 text-sm font-medium text-[var(--landing-muted)]">
             {post.upcomingLabel}
           </p>
+
+          <BlogShareActions
+            locale={locale}
+            title={post.title}
+            excerpt={post.excerpt}
+            url={articleUrl}
+          />
         </article>
       </section>
 

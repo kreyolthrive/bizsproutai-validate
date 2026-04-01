@@ -12,8 +12,10 @@ import "@fontsource/syne/700.css";
 import "@fontsource/syne/800.css";
 import "@fontsource/instrument-serif/400.css";
 import { FloatingExitCta } from "@/components/marketing/FloatingExitCta";
+import { Footer } from "@/components/Footer";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNav } from "@/components/MobileNav";
+import { PageAudioPlayer } from "@/components/PageAudioPlayer";
 import { locales, seoMetadata, type Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 
@@ -25,6 +27,7 @@ const LOGO_CANDIDATES = [
   "logo.png",
   "logo.svg",
 ];
+
 
 function pickLogoSrc(): string {
   const publicDir = path.join(process.cwd(), "public");
@@ -49,10 +52,15 @@ function getLayoutCopy(locale: string) {
         cta: "Réserver un appel",
       },
       footer: {
+        description:
+          "Validation, launch planning et systèmes de croissance pour fondateurs ambitieux.",
         note: "Construit pour les fondateurs prêts à avancer.",
+        explore: "Explorer",
+        connect: "Connexion",
         privacy: "Confidentialité",
         terms: "Conditions",
         contact: "Contact",
+        followUs: "Suivez-nous",
       },
     };
   }
@@ -67,10 +75,15 @@ function getLayoutCopy(locale: string) {
         cta: "Reservar llamada",
       },
       footer: {
+        description:
+          "Validación, planificación de lanzamiento y sistemas de crecimiento para fundadores serios.",
         note: "Hecho para fundadores listos para avanzar.",
+        explore: "Explorar",
+        connect: "Conectar",
         privacy: "Privacidad",
         terms: "Términos",
         contact: "Contacto",
+        followUs: "Síguenos",
       },
     };
   }
@@ -85,10 +98,15 @@ function getLayoutCopy(locale: string) {
         cta: "Pran yon apèl",
       },
       footer: {
+        description:
+          "Validasyon, plan lansman ak sistèm kwasans pou fondatè ki pran biznis yo oserye.",
         note: "Bati pou fondatè ki pare pou avanse.",
+        explore: "Eksplore",
+        connect: "Konekte",
         privacy: "Konfidansyalite",
         terms: "Tèm",
         contact: "Kontak",
+        followUs: "Swiv nou",
       },
     };
   }
@@ -103,10 +121,15 @@ function getLayoutCopy(locale: string) {
         cta: "Agendar ligação",
       },
       footer: {
+        description:
+          "Validacao, planejamento de lancamento e sistemas de crescimento para fundadores ambiciosos.",
         note: "Feito para fundadores prontos para avançar.",
+        explore: "Explorar",
+        connect: "Conectar",
         privacy: "Privacidade",
         terms: "Termos",
         contact: "Contato",
+        followUs: "Siga-nos",
       },
     };
   }
@@ -121,10 +144,15 @@ function getLayoutCopy(locale: string) {
       cta: "Book a Free Call",
     },
     footer: {
+      description:
+        "Validation, launch planning, and growth systems for founders building with intention.",
       note: "Built for founders who are ready to move.",
+      explore: "Explore",
+      connect: "Connect",
       privacy: "Privacy",
       terms: "Terms",
       contact: "Contact",
+      followUs: "Follow Us",
     },
   };
 }
@@ -298,38 +326,19 @@ export default async function LocaleLayout({
             </header>
 
             <main id="main-content">
-              {children}
+              <PageAudioPlayer locale={locale} />
+              <div id="page-content" className="pb-12">
+                {children}
+              </div>
             </main>
 
-            <footer role="contentinfo" className="bg-[var(--landing-green-deep)] px-5 py-12 text-white lg:px-10">
-              <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={logoSrc}
-                    alt="BizSproutAI logo"
-                    width={220}
-                    height={52}
-                    className="h-10 w-auto max-w-[220px] object-contain brightness-[1.08]"
-                  />
-                </div>
-
-                <p className="text-sm text-white/60">
-                  © 2026 BizSproutAI. {copy.footer.note}
-                </p>
-
-                <div className="flex items-center gap-5 text-sm text-white/70">
-                  <Link href="/privacy" className="transition hover:text-[var(--landing-sprout)]">
-                    {copy.footer.privacy}
-                  </Link>
-                  <Link href="/terms" className="transition hover:text-[var(--landing-sprout)]">
-                    {copy.footer.terms}
-                  </Link>
-                  <Link href="/contact" className="transition hover:text-[var(--landing-sprout)]">
-                    {copy.footer.contact}
-                  </Link>
-                </div>
-              </div>
-            </footer>
+            <Footer
+              locale={locale}
+              logoSrc={logoSrc}
+              footerCopy={copy.footer}
+              navCopy={{ blog: copy.nav.blog }}
+              homeHref={homeHref}
+            />
 
             <FloatingExitCta locale={locale} />
           </div>
