@@ -2,6 +2,7 @@ import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { LandingPageReveal } from "@/components/marketing/LandingPageReveal";
 import { BookingCalendar } from "@/components/marketing/BookingCalendar";
+import { ValidationWidget } from "@/components/ValidationWidget";
 import { getLandingCopy } from "@/i18n/landingCopy";
 
 type Props = {
@@ -13,237 +14,393 @@ function getCopy(locale: string) {
 
   if (normalized === "fr") {
     return {
-      heroEyebrow: "Le Sprint Fondateur de 30 Jours",
-      heroLead: "Votre premier client payant",
-      heroEmphasis: "en 30 jours",
-      heroEnd: "— ou on ne s\u2019arrête pas.",
-      heroSub:
-        "Même si vous partez de zéro — sans audience, sans site web et sans offre claire.",
+      /* ── Hero ── */
+      heroEyebrow: "Validation d'idée gratuite",
+      heroLead: "Validez votre idée gratuitement.",
+      heroEmphasis: "Obtenez votre prochaine étape la plus claire.",
       heroBody:
-        "Nous vous accompagnons de l\u2019idée à une offre concrète, un site en ligne et votre premier client payant — étape par étape, à vos côtés.",
-      guaranteeTitle: "Pas de client en 30 jours ? On continue — gratuitement.",
-      guaranteeBody:
-        "Complétez le sprint, suivez le plan, et si vous n\u2019obtenez pas votre premier client, nous continuons sans frais supplémentaires jusqu\u2019à ce que vous y arriviez.",
-      primary: "Obtenez votre premier client payant",
+        "BizSproutAI vous aide à voir à quelle étape vous en êtes, ce qu'il faut construire en premier, et ce qu'il faut faire ensuite — avant de perdre du temps à construire la mauvaise chose.",
+      heroNote: "Gratuit. Prend moins d'une minute.",
       secondary: "Voir comment ça marche",
-      trustTitle: "Programme basé sur les résultats",
-      trustBody: "Inscription limitée, conçu pour les fondateurs prêts à avancer",
-      pilotBadge: "Postuler maintenant",
+
+      /* ── Free result section ── */
+      freeResultEyebrow: "Ce que vous obtenez de la validation gratuite",
+      freeResultTitle: "Une vraie clarté. En moins d'une minute.",
+      freeResultBody:
+        "La plupart des fondateurs sont bloqués parce qu'ils ne savent pas à quelle étape ils en sont. La validation gratuite vous donne une image claire de votre situation et le chemin le plus direct vers l'avant.",
+
+      /* ── Pain section ── */
       painEyebrow: "Le vrai problème",
       painTitle:
         "Vous n'êtes pas bloqué par manque de potentiel. Vous êtes bloqué par manque de chemin clair.",
       painBody:
         "La plupart des fondateurs n'ont pas besoin de plus de motivation. Ils ont besoin de structure, de soutien et d'un système qui transforme les idées en action.",
-      howEyebrow: "Comment le sprint fonctionne",
-      howTitle: "Quatre semaines. Une destination claire.",
+
+      /* ── How section ── */
+      howEyebrow: "Comment BizSproutAI fonctionne",
+      howTitle: "Cinq étapes. Une destination claire.",
       howBody:
-        "Complétez le sprint, suivez le plan, et si vous n'obtenez pas votre premier client payant en 30 jours, nous continuons à travailler avec vous sans frais supplémentaires jusqu'à ce que vous y arriviez.",
-      servicesEyebrow: "Ce qui est inclus",
-      servicesTitle: "Tout ce dont vous avez besoin. Rien de superflu.",
+        "De la validation de votre idée à votre premier client payant — BizSproutAI vous accompagne à chaque étape avec des outils, un système, et un soutien concret.",
+      howStepsOverview: [
+        { number: "01", label: "Valider", desc: "Voyez votre étape et votre meilleur prochain mouvement" },
+        { number: "02", label: "Recommander", desc: "Obtenez le bon actif et le bon chemin" },
+        { number: "03", label: "Construire", desc: "Créez votre système de lancement" },
+        { number: "04", label: "Lancer", desc: "Démarrez de vraies conversations" },
+        { number: "05", label: "Améliorer", desc: "Affinez jusqu'à ce que ça fonctionne" },
+      ],
+      howIntroLabel: "Le Sprint Fondateur de 30 Jours — en détail",
+
+      /* ── After validation section ── */
+      afterValidationEyebrow: "La prochaine étape après la validation gratuite",
+      afterValidationTitle: "La validation est juste la première couche.",
+      afterValidationBody:
+        "La validation gratuite vous montre votre étape et votre meilleur prochain mouvement. La plateforme complète BizSproutAI vous emmène de ce prochain mouvement jusqu'à votre premier client payant — avec un soutien concret, un sprint complet, et une aide à la construction à chaque étape.",
+      afterValidationFreeBadge: "Validation gratuite",
+      afterValidationPlatformBadge: "Plateforme complète BizSproutAI",
+      afterValidationFreeItems: [
+        "Votre étape actuelle identifiée",
+        "Premier actif recommandé",
+        "Vos 3–4 prochaines étapes",
+        "Une erreur critique à éviter",
+      ],
+      afterValidationCta: "Débloquez votre sprint complet dans BizSproutAI →",
+
+      /* ── Sprint / services section ── */
+      servicesEyebrow: "La prochaine étape après la validation gratuite",
+      servicesTitle: "De la validation gratuite au lancement complet.",
       servicesBody:
-        "Ce n'est pas un cours que vous achetez et oubliez. Chaque élément essentiel est construit avec vous pendant le sprint, de sorte qu'à la fin, vous possédez un vrai système d'entreprise que vous pouvez réellement utiliser.",
+        "La validation gratuite est la première étape. Le Sprint Fondateur de 30 Jours vous emmène jusqu'au bout — de votre premier actif recommandé jusqu'à votre premier client payant.",
+
+      /* ── Proof section ── */
       proofEyebrow: "À quoi le succès peut ressembler",
       proofTitle: "De vrais résultats de fondateurs. Un vrai élan commercial.",
       proofBody:
-        "L'objectif du Sprint n'est pas de vous laisser avec plus de notes, d'idées ou de plans inachevés. C'est de vous aider à créer des résultats comme ceux-ci.",
-      signalCta: "Postuler pour le prochain Sprint",
-      ctaEyebrow: "Places limitées par sprint",
-      ctaTitle: "Vous planifiez depuis assez longtemps.",
-      ctaEmphasis: "Maintenant il est temps de construire.",
+        "L'objectif du Sprint n'est pas de vous laisser avec plus de notes ou de plans inachevés. C'est de vous aider à créer des résultats comme ceux-ci.",
+
+      /* ── Signal strip ── */
+      signalCta: "Démarrer ma validation gratuite",
+
+      /* ── Final CTA section ── */
+      ctaEyebrow: "Gratuit. Prend moins d'une minute.",
+      ctaTitle: "Prêt à voir à quelle étape vous en êtes ?",
+      ctaEmphasis: "Commencez gratuitement. Avancez vite.",
       ctaBody:
-        "C'est un accompagnement concret, pas du contenu passif. Nous ne travaillons qu'avec un nombre limité de fondateurs par sprint afin que chaque participant reçoive l'attention, les retours et le soutien nécessaires pour vraiment se lancer.",
-      ctaPrimary: "Postuler pour le prochain Sprint",
-      ctaSecondary: "Voir comment ça marche",
+        "Validez votre idée maintenant et obtenez votre prochaine étape la plus claire. Ensuite, utilisez BizSproutAI pour aller de ce prochain mouvement jusqu'à votre premier client payant.",
+      ctaPrimary: "Démarrer ma validation gratuite",
+      ctaSecondary: "Réserver un appel diagnostic gratuit",
       emailPrefix: "Vous préférez écrire ?",
+
+      /* ── Booking section ── */
+      bookingSectionEyebrow: "Vous préférez parler d'abord ?",
+      bookingSectionNote:
+        "L'appel de diagnostic est une option secondaire pour les fondateurs qui préfèrent discuter avant de commencer. La validation gratuite reste la voie la plus rapide.",
     };
   }
 
   if (normalized === "es") {
     return {
-      heroEyebrow: "El Sprint de Fundadores de 30 Días",
-      heroLead: "Tu primer cliente de pago",
-      heroEmphasis: "en 30 días",
-      heroEnd: "— o no paramos.",
-      heroSub:
-        "Aunque empieces solo con una idea y sin audiencia, sin sitio web y sin una oferta clara.",
+      heroEyebrow: "Validación de idea gratuita",
+      heroLead: "Valida tu idea gratis.",
+      heroEmphasis: "Obtén tu próximo paso más claro.",
       heroBody:
-        "Te llevamos de la idea a una oferta real, sitio web en línea y tu primer cliente de pago — paso a paso, contigo todo el camino.",
-      guaranteeTitle: "¿Sin cliente en 30 días? Seguimos trabajando — gratis.",
-      guaranteeBody:
-        "Completa el sprint, sigue el plan, y si no consigues tu primer cliente, continuamos sin costo adicional hasta que lo logres.",
-      primary: "Consigue tu primer cliente de pago",
+        "BizSproutAI te ayuda a ver en qué etapa estás, qué construir primero, y qué hacer después — antes de perder tiempo construyendo lo equivocado.",
+      heroNote: "Gratis. Tarda menos de un minuto.",
       secondary: "Ver cómo funciona",
-      trustTitle: "Programa basado en resultados",
-      trustBody: "Inscripción limitada, diseñado para fundadores listos para actuar",
-      pilotBadge: "Aplicar ahora",
+      freeResultEyebrow: "Qué obtienes de la validación gratuita",
+      freeResultTitle: "Claridad real. En menos de un minuto.",
+      freeResultBody:
+        "La mayoría de los fundadores se quedan atascados porque no saben en qué etapa están. La validación gratuita te da una imagen clara de dónde estás y el camino más directo hacia adelante.",
       painEyebrow: "El verdadero problema",
       painTitle:
         "No estás estancado por falta de potencial. Estás estancado por falta de un camino claro.",
       painBody:
         "La mayoría de los fundadores no necesitan más motivación. Necesitan estructura, apoyo y un sistema que convierta ideas en acción.",
-      howEyebrow: "Cómo funciona el sprint",
-      howTitle: "Cuatro semanas. Un destino claro.",
+      howEyebrow: "Cómo funciona BizSproutAI",
+      howTitle: "Cinco pasos. Un destino claro.",
       howBody:
-        "Completa el sprint, sigue el plan, y si no consigues tu primer cliente de pago en 30 días, seguimos trabajando contigo sin costo adicional hasta que lo logres.",
-      servicesEyebrow: "Qué está incluido",
-      servicesTitle: "Todo lo que necesitas. Nada que no.",
+        "Desde validar tu idea hasta tu primer cliente de pago — BizSproutAI te acompaña en cada paso con herramientas, un sistema y apoyo práctico.",
+      howStepsOverview: [
+        { number: "01", label: "Validar", desc: "Ve tu etapa y tu mejor próximo movimiento" },
+        { number: "02", label: "Recomendar", desc: "Obtén el activo y camino correctos" },
+        { number: "03", label: "Construir", desc: "Crea tu sistema de lanzamiento" },
+        { number: "04", label: "Lanzar", desc: "Inicia conversaciones reales" },
+        { number: "05", label: "Mejorar", desc: "Refina hasta que funcione" },
+      ],
+      howIntroLabel: "El Sprint Fundador de 30 Días — en detalle",
+      afterValidationEyebrow: "El siguiente paso después de la validación gratuita",
+      afterValidationTitle: "La validación es solo la primera capa.",
+      afterValidationBody:
+        "La validación gratuita te muestra tu etapa y tu mejor próximo movimiento. La plataforma completa BizSproutAI te lleva desde ese movimiento hasta tu primer cliente de pago — con apoyo práctico, un sprint completo, y ayuda de construcción en cada etapa.",
+      afterValidationFreeBadge: "Validación gratuita",
+      afterValidationPlatformBadge: "Plataforma completa BizSproutAI",
+      afterValidationFreeItems: [
+        "Tu etapa actual identificada",
+        "Primer activo recomendado",
+        "Tus 3–4 próximos pasos",
+        "Un error crítico a evitar",
+      ],
+      afterValidationCta: "Accede a tu sprint completo en BizSproutAI →",
+      servicesEyebrow: "El siguiente paso después de la validación gratuita",
+      servicesTitle: "De la validación gratuita al lanzamiento completo.",
       servicesBody:
-        "Esto no es un curso que compras y olvidas. Cada pieza esencial se construye contigo durante el sprint, así que cuando termine, tendrás un sistema de negocio real que realmente puedes usar.",
+        "La validación gratuita es el primer paso. El Sprint Fundador de 30 Días te lleva hasta el final — desde tu primer activo recomendado hasta tu primer cliente de pago.",
       proofEyebrow: "Cómo puede verse el éxito",
       proofTitle: "Resultados reales de fundadores. Impulso real de negocio.",
       proofBody:
-        "El objetivo del Sprint no es dejarte con más notas, ideas o planes sin terminar. Es ayudarte a crear resultados como estos.",
-      signalCta: "Aplicar al próximo Sprint",
-      ctaEyebrow: "Lugares limitados por sprint",
-      ctaTitle: "Has estado planificando suficiente tiempo.",
-      ctaEmphasis: "Ahora es momento de construir.",
+        "El objetivo del Sprint no es dejarte con más notas o planes sin terminar. Es ayudarte a crear resultados como estos.",
+      signalCta: "Iniciar mi validación gratuita",
+      ctaEyebrow: "Gratis. Tarda menos de un minuto.",
+      ctaTitle: "¿Listo para ver en qué etapa estás?",
+      ctaEmphasis: "Empieza gratis. Avanza rápido.",
       ctaBody:
-        "Este es apoyo práctico, no contenido pasivo. Solo trabajamos con un número limitado de fundadores por sprint para que cada participante reciba el enfoque, la retroalimentación y el apoyo que necesita para realmente lanzar.",
-      ctaPrimary: "Aplicar al próximo Sprint",
-      ctaSecondary: "Ver cómo funciona",
+        "Valida tu idea ahora y obtén tu próximo paso más claro. Luego usa BizSproutAI para ir desde ese próximo movimiento hasta tu primer cliente de pago.",
+      ctaPrimary: "Iniciar mi validación gratuita",
+      ctaSecondary: "Reservar llamada diagnóstico gratuita",
       emailPrefix: "¿Prefieres escribir?",
+      bookingSectionEyebrow: "¿Prefieres hablar primero?",
+      bookingSectionNote:
+        "La llamada diagnóstico es una opción secundaria para fundadores que prefieren hablar antes de empezar. La validación gratuita sigue siendo la ruta más rápida.",
     };
   }
 
   if (normalized === "ht") {
     return {
-      heroEyebrow: "Sprint Fondatè 30 Jou a",
-      heroLead: "Premye kliyan peyan ou",
-      heroEmphasis: "nan 30 jou",
-      heroEnd: "— oswa nou pa kanpe.",
-      heroSub:
-        "Menm si ou kòmanse ak jis yon lide e ou pa gen okenn odyans, okenn sit wèb, ak okenn òf klè.",
+      heroEyebrow: "Validasyon lide gratis",
+      heroLead: "Valide lide ou gratis.",
+      heroEmphasis: "Jwenn pwochen etap ki pi klè pou ou.",
       heroBody:
-        "Nou pran ou soti nan lide rive nan yon vrè òf, sit wèb an liy, ak premye kliyan peyan ou — etap pa etap, avèk ou tout chemen an.",
-      guaranteeTitle: "Pa gen kliyan nan 30 jou? Nou kontinye travay — gratis.",
-      guaranteeBody:
-        "Fini sprint la, swiv plan an, epi si ou pa jwenn premye kliyan ou, nou kontinye san okenn frè anplis jiskaske ou reyisi.",
-      primary: "Jwenn premye kliyan peyan ou",
+        "BizSproutAI ede ou wè nan ki etap ou ye, kisa pou bati an premye, ak kisa pou fè apre sa — anvan ou pèdi tan ap bati move bagay.",
+      heroNote: "Gratis. Pran mwens pase yon minit.",
       secondary: "Gade kijan li mache",
-      trustTitle: "Pwogram ki baze sou rezilta",
-      trustBody: "Enskripsyon limite, fèt pou fondatè ki pare pou avanse",
-      pilotBadge: "Aplike kounye a",
+      freeResultEyebrow: "Sa ou jwenn nan validasyon gratis",
+      freeResultTitle: "Vrè klète. An mwens pase yon minit.",
+      freeResultBody:
+        "Pifò fondatè bloke paske yo pa konnen nan ki etap yo ye. Validasyon gratis ba ou yon imaj klè kote ou ye ak chemen ki pi dirèk pou avanse.",
       painEyebrow: "Vrè pwoblèm nan",
       painTitle:
         "Ou pa bloke paske ou manke potansyèl. Ou bloke paske ou manke yon chemen klè.",
       painBody:
         "Pifò fondatè pa bezwen plis motivasyon. Yo bezwen estrikti, sipò, ak yon sistèm ki transfòme lide yo an aksyon.",
-      howEyebrow: "Kijan sprint la mache",
-      howTitle: "Kat semèn. Yon sèl destinasyon klè.",
+      howEyebrow: "Kijan BizSproutAI mache",
+      howTitle: "Senk etap. Yon sèl destinasyon klè.",
       howBody:
-        "Fini sprint la, swiv plan an, epi si ou pa jwenn premye kliyan ki peye ou nan 30 jou, nou kontinye travay avèk ou san okenn frè anplis jiskaske ou reyisi.",
-      servicesEyebrow: "Kisa ki enkli",
-      servicesTitle: "Tout sa ou bezwen. Anyen ou pa bezwen.",
+        "Soti nan valide lide ou rive nan premye kliyan peyan ou — BizSproutAI akonpaye ou nan chak etap.",
+      howStepsOverview: [
+        { number: "01", label: "Valide", desc: "Wè etap ou ak pi bon pwochen mouvman ou" },
+        { number: "02", label: "Rekòmande", desc: "Jwenn bon mwayen ak bon chemen" },
+        { number: "03", label: "Bati", desc: "Kreye sistèm lansman ou" },
+        { number: "04", label: "Lanse", desc: "Kòmanse vrè konvèsasyon" },
+        { number: "05", label: "Amelyore", desc: "Rafine jiskaske li mache" },
+      ],
+      howIntroLabel: "Sprint Fondatè 30 Jou a — an detay",
+      afterValidationEyebrow: "Pwochen etap apre validasyon gratis",
+      afterValidationTitle: "Validasyon se jis premye kouch la.",
+      afterValidationBody:
+        "Validasyon gratis montre ou etap ou ak pi bon pwochen mouvman ou. Platfòm konplè BizSproutAI mennen ou soti nan mouvman sa rive nan premye kliyan peyan ou.",
+      afterValidationFreeBadge: "Validasyon gratis",
+      afterValidationPlatformBadge: "Platfòm konplè BizSproutAI",
+      afterValidationFreeItems: [
+        "Etap ou kounye a idantifye",
+        "Premye mwayen rekòmande",
+        "3–4 pwochen etap ou yo",
+        "Yon erè kritik pou evite",
+      ],
+      afterValidationCta: "Deblouke sprint konplè ou nan BizSproutAI →",
+      servicesEyebrow: "Pwochen etap apre validasyon gratis",
+      servicesTitle: "Soti nan validasyon gratis rive nan lanse nèt.",
       servicesBody:
-        "Sa a se pa yon kou ou achte epi bliye. Chak pyès esansyèl bati avèk ou pandan sprint la, konsa lè li fini, ou posede yon vrè sistèm biznis ou ka reyèlman itilize.",
+        "Validasyon gratis se premye etap la. Sprint Fondatè 30 Jou a mennen ou jiskaske finalman.",
       proofEyebrow: "Kisa siksè ka sanble",
       proofTitle: "Vrè rezilta fondatè. Vrè elan biznis.",
       proofBody:
-        "Objektif Sprint la se pa kite ou ak plis nòt, lide, oswa plan ki pa fini. Se ede ou kreye rezilta tankou sa yo.",
-      signalCta: "Aplike pou pwochen Sprint la",
-      ctaEyebrow: "Plas limite pa sprint",
-      ctaTitle: "Ou te planifye ase lontan.",
-      ctaEmphasis: "Kounye a se lè pou bati.",
+        "Objektif Sprint la se pa kite ou ak plis nòt oswa plan ki pa fini. Se ede ou kreye rezilta tankou sa yo.",
+      signalCta: "Kòmanse validasyon gratis mwen",
+      ctaEyebrow: "Gratis. Pran mwens pase yon minit.",
+      ctaTitle: "Pare pou wè nan ki etap ou ye?",
+      ctaEmphasis: "Kòmanse gratis. Avanse vit.",
       ctaBody:
-        "Sa a se sipò pratik, pa kontni pasif. Nou sèlman travay ak yon kantite limite fondatè pa sprint pou chak patisipan jwenn atansyon, fidbak, ak sipò yo bezwen pou reyèlman lanse.",
-      ctaPrimary: "Aplike pou pwochen Sprint la",
-      ctaSecondary: "Gade kijan li mache",
+        "Valide lide ou kounye a epi jwenn pwochen etap ou ki pi klè. Apre sa, itilize BizSproutAI pou ale soti nan mouvman sa rive nan premye kliyan peyan ou.",
+      ctaPrimary: "Kòmanse validasyon gratis mwen",
+      ctaSecondary: "Rezève yon apèl dyagnostik gratis",
       emailPrefix: "Ou pito ekri?",
+      bookingSectionEyebrow: "Ou pito pale an premye?",
+      bookingSectionNote:
+        "Apèl dyagnostik la se yon opsyon segondè pou fondatè ki pito pale anvan yo kòmanse. Validasyon gratis rete wout ki pi rapid la.",
     };
   }
 
   if (normalized === "pt") {
     return {
-      heroEyebrow: "O Sprint de Fundadores de 30 Dias",
-      heroLead: "Seu primeiro cliente pagante",
-      heroEmphasis: "em 30 dias",
-      heroEnd: "— ou não paramos.",
-      heroSub:
-        "Mesmo que você esteja começando apenas com uma ideia e sem audiência, sem site e sem uma oferta clara.",
+      heroEyebrow: "Validação de ideia gratuita",
+      heroLead: "Valide sua ideia gratuitamente.",
+      heroEmphasis: "Obtenha seu próximo passo mais claro.",
       heroBody:
-        "Levamos você da ideia a uma oferta real, site no ar e seu primeiro cliente pagante — passo a passo, com você o caminho todo.",
-      guaranteeTitle: "Sem cliente em 30 dias? Continuamos trabalhando — de graça.",
-      guaranteeBody:
-        "Complete o sprint, siga o plano, e se você não conseguir seu primeiro cliente, continuamos sem custo adicional até que consiga.",
-      primary: "Conquiste seu primeiro cliente pagante",
+        "BizSproutAI ajuda você a ver em que etapa está, o que construir primeiro, e o que fazer a seguir — antes de perder tempo construindo a coisa errada.",
+      heroNote: "Gratuito. Leva menos de um minuto.",
       secondary: "Veja como funciona",
-      trustTitle: "Programa baseado em resultados",
-      trustBody: "Inscrição limitada, feito para fundadores prontos para agir",
-      pilotBadge: "Aplicar agora",
+      freeResultEyebrow: "O que você recebe da validação gratuita",
+      freeResultTitle: "Clareza real. Em menos de um minuto.",
+      freeResultBody:
+        "A maioria dos fundadores trava porque não sabe em que etapa está. A validação gratuita te dá uma imagem clara de onde você está e o caminho mais direto para avançar.",
       painEyebrow: "O verdadeiro problema",
       painTitle:
         "Você não está travado por falta de potencial. Você está travado por falta de um caminho claro.",
       painBody:
         "A maioria dos fundadores não precisa de mais motivação. Eles precisam de estrutura, apoio e um sistema que transforme ideias em ação.",
-      howEyebrow: "Como o sprint funciona",
-      howTitle: "Quatro semanas. Um destino claro.",
+      howEyebrow: "Como o BizSproutAI funciona",
+      howTitle: "Cinco etapas. Um destino claro.",
       howBody:
-        "Complete o sprint, siga o plano, e se você não conseguir seu primeiro cliente pagante em 30 dias, continuamos trabalhando com você sem custo adicional até que consiga.",
-      servicesEyebrow: "O que está incluído",
-      servicesTitle: "Tudo o que você precisa. Nada que não precisa.",
+        "Desde validar sua ideia até seu primeiro cliente pagante — BizSproutAI te acompanha em cada etapa com ferramentas, um sistema e apoio prático.",
+      howStepsOverview: [
+        { number: "01", label: "Validar", desc: "Veja sua etapa e seu melhor próximo movimento" },
+        { number: "02", label: "Recomendar", desc: "Obtenha o ativo e caminho certos" },
+        { number: "03", label: "Construir", desc: "Crie seu sistema de lançamento" },
+        { number: "04", label: "Lançar", desc: "Inicie conversas reais" },
+        { number: "05", label: "Melhorar", desc: "Refine até funcionar" },
+      ],
+      howIntroLabel: "O Sprint Fundador de 30 Dias — em detalhes",
+      afterValidationEyebrow: "O próximo passo após a validação gratuita",
+      afterValidationTitle: "A validação é apenas a primeira camada.",
+      afterValidationBody:
+        "A validação gratuita mostra sua etapa e seu melhor próximo movimento. A plataforma completa BizSproutAI leva você desse próximo movimento até seu primeiro cliente pagante — com apoio prático, um sprint completo, e ajuda de construção em cada etapa.",
+      afterValidationFreeBadge: "Validação gratuita",
+      afterValidationPlatformBadge: "Plataforma completa BizSproutAI",
+      afterValidationFreeItems: [
+        "Sua etapa atual identificada",
+        "Primeiro ativo recomendado",
+        "Seus 3–4 próximos passos",
+        "Um erro crítico a evitar",
+      ],
+      afterValidationCta: "Acesse seu sprint completo no BizSproutAI →",
+      servicesEyebrow: "O próximo passo após a validação gratuita",
+      servicesTitle: "Da validação gratuita ao lançamento completo.",
       servicesBody:
-        "Isso não é um curso que você compra e esquece. Cada peça essencial é construída com você durante o sprint, então quando terminar, você terá um sistema de negócio real que pode realmente usar.",
+        "A validação gratuita é o primeiro passo. O Sprint Fundador de 30 Dias leva você até o fim — do seu primeiro ativo recomendado até seu primeiro cliente pagante.",
       proofEyebrow: "Como o sucesso pode parecer",
       proofTitle: "Resultados reais de fundadores. Impulso real de negócio.",
       proofBody:
-        "O objetivo do Sprint não é deixar você com mais anotações, ideias ou planos inacabados. É ajudar você a criar resultados como estes.",
-      signalCta: "Aplicar para o próximo Sprint",
-      ctaEyebrow: "Vagas limitadas por sprint",
-      ctaTitle: "Você já planejou tempo suficiente.",
-      ctaEmphasis: "Agora é hora de construir.",
+        "O objetivo do Sprint não é deixar você com mais anotações ou planos inacabados. É ajudar você a criar resultados como estes.",
+      signalCta: "Iniciar minha validação gratuita",
+      ctaEyebrow: "Gratuito. Leva menos de um minuto.",
+      ctaTitle: "Pronto para ver em que etapa você está?",
+      ctaEmphasis: "Comece grátis. Avance rápido.",
       ctaBody:
-        "Este é um apoio prático, não conteúdo passivo. Trabalhamos apenas com um número limitado de fundadores por sprint para que cada participante receba o foco, o feedback e o apoio necessários para realmente lançar.",
-      ctaPrimary: "Aplicar para o próximo Sprint",
-      ctaSecondary: "Veja como funciona",
+        "Valide sua ideia agora e obtenha seu próximo passo mais claro. Depois use o BizSproutAI para ir desse próximo movimento até seu primeiro cliente pagante.",
+      ctaPrimary: "Iniciar minha validação gratuita",
+      ctaSecondary: "Agendar chamada diagnóstico gratuita",
       emailPrefix: "Prefere escrever?",
+      bookingSectionEyebrow: "Prefere falar primeiro?",
+      bookingSectionNote:
+        "A chamada diagnóstico é uma opção secundária para fundadores que preferem conversar antes de começar. A validação gratuita continua sendo a rota mais rápida.",
     };
   }
 
   return {
-    heroEyebrow: "The 30-Day Founder Sprint",
-    heroLead: "Your First Paying Client",
-    heroEmphasis: "in 30 Days",
-    heroEnd: "— Or We Don\u2019t Stop.",
-    heroSub:
-      "Even if you\u2019re starting with just an idea and no audience, no website, and no clear offer.",
+    /* ── Hero ── */
+    heroEyebrow: "Free Business Validation",
+    heroLead: "Validate your idea for free.",
+    heroEmphasis: "Get your clearest next step.",
     heroBody:
-      "We take you from idea to real offer, live website, and first paying customer — step by step, with you the whole way.",
-    guaranteeTitle: "No client in 30 days? We keep working — free.",
-    guaranteeBody:
-      "Complete the sprint, follow the plan, and if you don\u2019t land your first customer, we continue at no extra cost until you do.",
-    primary: "Get My First Paying Client",
+      "BizSproutAI helps you see what stage you are in, what to build first, and what to do next — before you waste time building the wrong thing.",
+    heroNote: "Free. Takes under a minute.",
     secondary: "See How It Works",
-    trustTitle: "Results-based program",
-    trustBody: "Limited enrollment, built for founders ready to move",
-    pilotBadge: "Apply Now",
+
+    /* ── Free result section ── */
+    freeResultEyebrow: "What you get from free validation",
+    freeResultTitle: "Real clarity. In under a minute.",
+    freeResultBody:
+      "Most founders get stuck because they do not know which stage they are in. Free validation gives you a clear picture of where you are and the most direct path forward.",
+
+    /* ── Pain section ── */
     painEyebrow: "The real problem",
     painTitle:
       "You are not stuck because you lack potential. You are stuck because you lack a clear path.",
     painBody:
       "Most founders do not need more motivation. They need structure, support, and a system that turns ideas into action.",
-    howEyebrow: "How the sprint works",
-    howTitle: "Four weeks. One clear destination.",
+
+    /* ── How section ── */
+    howEyebrow: "How BizSproutAI works",
+    howTitle: "Five steps. One clear destination.",
     howBody:
-      "Complete the sprint, follow the plan, and if you do not land your first paying customer in 30 days, we keep working with you at no extra cost until you do.",
-    servicesEyebrow: "What is included",
-    servicesTitle: "Everything you need. Nothing you do not.",
+      "From validating your idea to your first paying customer — BizSproutAI guides you through every step with tools, a system, and real execution support.",
+    howStepsOverview: [
+      { number: "01", label: "Validate", desc: "See your stage and your best next move" },
+      { number: "02", label: "Recommend", desc: "Get the right asset and the right path" },
+      { number: "03", label: "Build", desc: "Create your launch system" },
+      { number: "04", label: "Launch", desc: "Start real conversations" },
+      { number: "05", label: "Improve", desc: "Refine until it works" },
+    ],
+    howIntroLabel: "The 30-Day Founder Sprint — in detail",
+
+    /* ── After validation section ── */
+    afterValidationEyebrow: "The next step after free validation",
+    afterValidationTitle: "Validation is just the first layer.",
+    afterValidationBody:
+      "Free validation shows you your stage and your best next move. The full BizSproutAI platform takes you from that next move all the way to your first paying customer — with hands-on support, a complete sprint, and build help at every stage.",
+    afterValidationFreeBadge: "Free Validation",
+    afterValidationPlatformBadge: "Full BizSproutAI Platform",
+    afterValidationFreeItems: [
+      "Your current stage identified",
+      "First asset recommended",
+      "Your 3–4 next steps",
+      "One critical mistake to avoid",
+    ],
+    afterValidationCta: "Unlock your full sprint inside BizSproutAI →",
+
+    /* ── Sprint / services section ── */
+    servicesEyebrow: "The next step after free validation",
+    servicesTitle: "From free validation to full launch.",
     servicesBody:
-      "This is not a course you buy and forget. Every core piece is built with you during the sprint, so when it is over, you own a real business system you can actually use.",
+      "Free validation is the first step. The 30-Day Founder Sprint takes you the rest of the way — from your recommended first asset all the way to your first paying customer.",
+
+    /* ── Proof section ── */
     proofEyebrow: "What success can look like",
     proofTitle: "Real founder outcomes. Real business momentum.",
     proofBody:
       "The goal of the Sprint is not to leave you with more notes, ideas, or unfinished plans. It is to help you create outcomes like these.",
-    signalCta: "Apply for the Next Sprint",
-    ctaEyebrow: "Limited spots per sprint",
-    ctaTitle: "You have been planning long enough.",
-    ctaEmphasis: "Now it is time to build.",
+
+    /* ── Signal strip ── */
+    signalCta: "Start Free Validation",
+
+    /* ── Final CTA section ── */
+    ctaEyebrow: "Free. Takes under a minute.",
+    ctaTitle: "Ready to see what stage you are in?",
+    ctaEmphasis: "Start free. Move fast.",
     ctaBody:
-      "This is hands-on support, not passive content. We only work with a limited number of founders per sprint so every participant gets the focus, feedback, and support they need to actually launch.",
-    ctaPrimary: "Apply for the Next Sprint",
-    ctaSecondary: "See How It Works",
+      "Validate your idea now and get your clearest next step. Then use BizSproutAI to go from that next move all the way to your first paying customer.",
+    ctaPrimary: "Start Free Validation",
+    ctaSecondary: "Book a Free Fit Call",
     emailPrefix: "Prefer email?",
+
+    /* ── Booking section ── */
+    bookingSectionEyebrow: "Prefer to talk first?",
+    bookingSectionNote:
+      "The fit call is a secondary option for founders who prefer to speak before starting. Free validation is still the fastest path.",
   };
 }
+
+const faqItems = [
+  {
+    question: "What do I get from the free validation?",
+    answer:
+      "You get your current stage, your recommended first asset, your clearest 3–4 next steps, and one key mistake to avoid. It is real, specific, and based on where you are right now — not generic advice.",
+  },
+  {
+    question: "What happens after I validate?",
+    answer:
+      "You get a result immediately. If you want to go deeper — full sprint plan, build support, day-by-day execution, and hands-on guidance — you continue into the full BizSproutAI platform.",
+  },
+  {
+    question: "What exactly happens in the full sprint?",
+    answer:
+      "We validate your idea, define the buyer, shape a real offer, build the right launch asset, start outreach, and work toward your first paying customer — step by step with direct support.",
+  },
+  {
+    question: "What if I do not land a first paying customer in 30 days?",
+    answer:
+      "If you complete the sprint, follow the plan, and do the work, we keep working with you at no extra cost until you do.",
+  },
+];
 
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
@@ -251,32 +408,40 @@ export default async function HomePage({ params }: Props) {
 
   const copy = getCopy(locale);
   const lc = getLandingCopy(locale);
-  const actionPlanHref = `/${locale}/action-plan`;
-  const contactHref = `/${locale}/contact`;
+  const validateHref = `/${locale}/validate`;
   const phoneHref = "https://cal.com/bizsproutai/30-min-founder-clarity-session";
-  const serviceHref = (service: string) =>
-    `/${locale}/action-plan?service=${encodeURIComponent(service)}`;
+  const emailHref = "mailto:info@bizsproutai.com";
+  const focusItems = lc.painItems.slice(0, 4);
+  const sprintSteps = lc.howSteps.slice(0, 4);
+  const signalStats = lc.signalStats.slice(0, 4);
 
   return (
     <main className="overflow-x-hidden bg-[var(--warm-white)] text-[var(--ink)]">
       <LandingPageReveal />
 
-      {/* ── HERO ────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden px-5 pb-16 pt-36 md:pt-28 lg:px-10 lg:pt-36">
+      {/* ── Section 1: Hero — Free Validation ── */}
+      <section
+        id="who"
+        className="relative overflow-hidden px-5 pb-16 pt-36 md:pt-28 lg:px-10 lg:pt-36"
+      >
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-[-8%] top-[62%] h-[320px] w-[320px] rounded-full bg-[rgba(74,140,92,0.06)] blur-3xl" />
           <div className="absolute right-[6%] top-[8%] h-[360px] w-[360px] rounded-full bg-[rgba(126,200,80,0.06)] blur-3xl" />
         </div>
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1fr_0.82fr]">
+        <div className="relative mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1fr_0.82fr]">
           <div>
             <div className="landing-reveal mb-6 flex items-center gap-3">
               <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.14)] text-sm font-medium text-[var(--landing-green-mid)]">
                 WD
               </div>
               <div>
-                <a href="https://www.desirwagner.com/" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-[var(--landing-green-deep)] hover:underline">Wagner Desir ↗</a>
-                <p className="mt-px text-xs text-[var(--landing-muted)]">BizSproutAI · Founder</p>
+                <p className="text-sm font-medium text-[var(--landing-green-deep)]">
+                  Wagner Desir
+                </p>
+                <p className="mt-px text-xs text-[var(--landing-muted)]">
+                  Founder, BizSproutAI
+                </p>
               </div>
             </div>
 
@@ -285,90 +450,61 @@ export default async function HomePage({ params }: Props) {
               {copy.heroEyebrow}
             </div>
 
-            <h1 className="landing-reveal mt-6 font-[family:var(--font-serif)] text-[clamp(2.2rem,4.2vw,3.8rem)] leading-[1.06] tracking-[-0.02em] text-[var(--landing-green-deep)]">
+            <h1 className="landing-reveal mt-6 max-w-[13ch] font-[family:var(--font-serif)] text-[clamp(2.6rem,5.2vw,5rem)] leading-[0.96] tracking-[-0.04em] text-[var(--landing-green-deep)]">
               {copy.heroLead}
               <br />
               <em className="text-[var(--landing-green-light)]">
                 {copy.heroEmphasis}
               </em>
-              <br />
-              {copy.heroEnd}
             </h1>
 
-            <p className="landing-reveal mt-5 max-w-[26rem] text-[1.02rem] leading-[1.65] text-[var(--landing-muted)]">
+            <p className="landing-reveal mt-5 max-w-[34rem] text-[1.02rem] leading-[1.65] text-[var(--landing-muted)]">
               {copy.heroBody}
             </p>
 
-            <div className="landing-reveal mt-6 max-w-[28rem] rounded-[10px] border border-[rgba(126,200,80,0.3)] border-l-[3px] border-l-[var(--landing-sprout)] bg-[rgba(126,200,80,0.06)] px-5 py-4">
-              <p className="text-[0.88rem] leading-[1.6] text-[var(--landing-muted)]">
-                <strong className="font-semibold text-[var(--landing-green-deep)]">
-                  {copy.guaranteeTitle}
-                </strong>{" "}
-                {copy.guaranteeBody}
-              </p>
-            </div>
-
-            <div className="landing-reveal mt-7 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
+            <div className="landing-reveal mt-7 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
               <a
-                href={actionPlanHref}
-                className="inline-flex items-center justify-center rounded-full bg-[var(--landing-green-deep)] px-6 py-3.5 text-[0.92rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)]"
+                href={validateHref}
+                className="inline-flex items-center justify-center rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1.05rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.22)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_36px_rgba(26,58,42,0.28)]"
               >
-                {copy.primary} →
+                {lc.validationCta} →
               </a>
               <a
                 href={`/${locale}#how`}
                 className="text-center text-[0.92rem] font-semibold text-[var(--landing-muted)] underline underline-offset-[3px] transition hover:text-[var(--landing-green-deep)]"
               >
-                {copy.secondary}
+                {copy.secondary} ↓
               </a>
             </div>
+            <p className="landing-reveal mt-3 text-[0.8rem] text-[var(--landing-muted)]">
+              {copy.heroNote}
+            </p>
           </div>
 
-          {/* Hero visual card */}
           <div className="landing-reveal">
-            <div className="relative rounded-[20px] bg-[var(--landing-green-deep)] p-5 text-white shadow-[0_20px_50px_rgba(26,58,42,0.16)] sm:p-7">
-              <div className="absolute right-4 top-4 z-[1] rounded-full bg-[var(--landing-amber)] px-3 py-1 text-[0.72rem] font-bold text-[var(--landing-ink)] shadow-[0_4px_16px_rgba(245,166,35,0.35)]">
-                {copy.pilotBadge}
-              </div>
-              <div className="mb-2 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--landing-sprout)]">
-                {lc.clarityLabel}
-              </div>
-              <p className="max-w-md pr-20 font-[family:var(--font-serif)] text-[1.3rem] leading-[1.22] sm:text-[1.45rem]">
-                {lc.clarityQuestion}
-              </p>
-
-              <div className="mt-5 space-y-2.5">
-                {lc.clarityChoices.map((label, index) => (
-                  <div
-                    key={label}
-                    className={`flex items-center gap-3 rounded-xl border px-3.5 py-2.5 text-[0.82rem] ${
-                      index === 0
-                        ? "border-[rgba(126,200,80,0.45)] bg-[rgba(126,200,80,0.18)]"
-                        : "border-white/10 bg-white/[0.06]"
-                    }`}
-                  >
-                    <span
-                      className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${
-                        index === 0 ? "bg-[var(--landing-sprout)]" : "bg-white/25"
-                      }`}
-                    />
-                    {label}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ValidationWidget
+              choices={lc.clarityChoices}
+              clarityLabel={lc.clarityLabel}
+              clarityQuestion={lc.clarityQuestion}
+              validationCta={lc.validationCta}
+              platformBridgeCta={lc.platformBridgeCta}
+              callCta={lc.callCta}
+              callHref={phoneHref}
+              actionHref={phoneHref}
+              locale={locale}
+            />
 
             <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
               {lc.miniCards.map((item) => (
                 <div
                   key={item.title}
-                  className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-[var(--landing-cream)] p-3.5 shadow-sm"
+                  className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-[var(--landing-cream)] p-4 shadow-sm"
                 >
                   <div className="text-[1.15rem]">{item.icon}</div>
-                  <div className="mt-2 text-[0.8rem] font-semibold text-[var(--landing-green-deep)]">
+                  <div className="mt-2 text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
                     {item.title}
                   </div>
-                  <div className="mt-0.5 text-[0.72rem] text-[var(--landing-muted)]">
+                  <div className="mt-0.5 text-[0.75rem] text-[var(--landing-muted)]">
                     {item.subtitle}
                   </div>
                 </div>
@@ -378,14 +514,62 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── PAIN SECTION ──────────────────────────────────── */}
-      <section id="pain" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
+      {/* ── Section 2: What you get for free ── */}
+      <section className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[38rem] text-center">
+          <div className="landing-reveal mx-auto max-w-[44rem] text-center">
+            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
+              {copy.freeResultEyebrow}
+            </p>
+            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
+              {copy.freeResultTitle}
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
+              {copy.freeResultBody}
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {lc.freeFeatures.map((item) => (
+              <article
+                key={item.title}
+                className="landing-reveal rounded-[22px] border border-[rgba(26,58,42,0.07)] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(26,58,42,0.08)]"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[rgba(126,200,80,0.12)] text-xl">
+                  {item.icon}
+                </div>
+                <h3 className="mt-5 font-[family:var(--font-serif)] text-[1.18rem] leading-tight text-[var(--landing-green-deep)]">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-[0.88rem] leading-[1.7] text-[var(--landing-muted)]">
+                  {item.body}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <div className="landing-reveal mt-10 text-center">
+            <a
+              href={validateHref}
+              className="inline-flex items-center justify-center rounded-full bg-[var(--landing-green-deep)] px-10 py-4 text-[1.05rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.2)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_36px_rgba(26,58,42,0.28)]"
+            >
+              {lc.validationCta} →
+            </a>
+            <p className="mt-3 text-[0.8rem] text-[var(--landing-muted)]">
+              Free · No account needed · Takes under a minute
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Section 3: Why founders get stuck (Pain) ── */}
+      <section id="pain" className="px-5 py-20 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="landing-reveal mx-auto max-w-[44rem] text-center">
             <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
               {copy.painEyebrow}
             </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.1] text-[var(--landing-green-deep)]">
+            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
               {copy.painTitle}
             </h2>
             <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
@@ -393,20 +577,19 @@ export default async function HomePage({ params }: Props) {
             </p>
           </div>
 
-          <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {lc.painItems.map((item) => (
+          <div className="mt-14 grid gap-5 md:grid-cols-2">
+            {focusItems.map((item) => (
               <article
                 key={item.title}
-                className="landing-reveal group relative overflow-hidden rounded-[20px] border border-[rgba(26,58,42,0.07)] bg-white p-7 transition hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(26,58,42,0.1)]"
+                className="landing-reveal rounded-[22px] border border-[rgba(26,58,42,0.07)] bg-[var(--landing-cream)] p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(26,58,42,0.08)]"
               >
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-[var(--landing-green-mid)] to-[var(--landing-sprout)] transition-transform group-hover:scale-x-100" />
                 <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[rgba(126,200,80,0.12)] text-xl">
                   {item.icon}
                 </div>
-                <h3 className="mt-5 font-[family:var(--font-serif)] text-[1.25rem] text-[var(--landing-green-deep)]">
+                <h3 className="mt-5 font-[family:var(--font-serif)] text-[1.3rem] leading-tight text-[var(--landing-green-deep)]">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-[0.88rem] leading-[1.6] text-[var(--landing-muted)]">
+                <p className="mt-3 text-[0.92rem] leading-[1.7] text-[var(--landing-muted)]">
                   {item.body}
                 </p>
               </article>
@@ -415,14 +598,14 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ──────────────────────────────────── */}
-      <section id="how" className="px-5 py-20 lg:px-10">
+      {/* ── Section 4: How BizSproutAI works ── */}
+      <section id="how" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[38rem] text-center">
+          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
             <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
               {copy.howEyebrow}
             </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.1] text-[var(--landing-green-deep)]">
+            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
               {copy.howTitle}
             </h2>
             <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
@@ -430,110 +613,210 @@ export default async function HomePage({ params }: Props) {
             </p>
           </div>
 
-          <p className="landing-reveal mx-auto mt-8 max-w-2xl text-center text-[1.05rem] font-semibold leading-relaxed text-[var(--landing-green-deep)]">
-            {lc.howIntro}
-          </p>
+          {/* 5-step process overview */}
+          <div className="mt-12 grid gap-3 sm:grid-cols-5">
+            {copy.howStepsOverview.map((step, i) => (
+              <div
+                key={step.number}
+                className="landing-reveal flex flex-col items-center rounded-[18px] border border-[rgba(26,58,42,0.08)] bg-white p-5 text-center shadow-sm"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(126,200,80,0.14)] font-[family:var(--font-display)] text-sm font-bold text-[var(--landing-green-deep)]">
+                  {step.number}
+                </div>
+                <p className="mt-3 font-semibold text-[0.9rem] text-[var(--landing-green-deep)]">
+                  {step.label}
+                </p>
+                <p className="mt-1 text-[0.75rem] leading-[1.5] text-[var(--landing-muted)]">
+                  {step.desc}
+                </p>
+                {i < copy.howStepsOverview.length - 1 && (
+                  <span className="absolute hidden" />
+                )}
+              </div>
+            ))}
+          </div>
 
-          <div className="mt-14 grid gap-8 lg:grid-cols-[1.06fr_0.72fr]">
-            <div className="space-y-0">
-              {lc.howSteps.map((step) => (
-                <div
-                  key={step.number}
-                  className="landing-reveal group grid gap-5 border-b border-dashed border-[rgba(26,58,42,0.12)] py-8 sm:grid-cols-[68px_1fr]"
-                >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[rgba(26,58,42,0.14)] font-[family:var(--font-display)] text-base font-bold text-[var(--landing-green-deep)] transition group-hover:scale-105 group-hover:border-[var(--landing-green-deep)] group-hover:bg-[var(--landing-green-deep)] group-hover:text-white">
-                    {step.number}
-                  </div>
-                  <div>
-                    <h3 className="font-[family:var(--font-serif)] text-[1.4rem] leading-tight text-[var(--landing-green-deep)]">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 max-w-xl text-[0.92rem] leading-7 text-[var(--landing-muted)]">
-                      {step.body}
-                    </p>
-                    <div className="mt-4">
-                      <span className="inline-flex rounded-full bg-[rgba(126,200,80,0.12)] px-3.5 py-1.5 text-[0.78rem] font-semibold text-[var(--landing-green-mid)]">
-                        {step.tag}
-                      </span>
-                      {step.checklist && (
-                        <ul className="mt-3 space-y-1.5">
-                          {step.checklist.map((item) => (
-                            <li key={item} className="flex items-center gap-2 text-[0.88rem] text-[var(--landing-green-deep)]">
-                              <span className="text-[var(--landing-sprout)]">&#10003;</span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      {step.guarantee && (
-                        <p className="mt-4 rounded-xl border border-[rgba(126,200,80,0.3)] bg-[rgba(126,200,80,0.08)] px-4 py-3 text-[0.85rem] font-semibold text-[var(--landing-green-deep)]">
-                          {step.guarantee}
-                        </p>
-                      )}
+          {/* Sprint weeks detail */}
+          <div className="mt-16">
+            <p className="landing-reveal mb-8 text-center text-[0.78rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
+              {copy.howIntroLabel}
+            </p>
+
+            <div className="grid gap-8 lg:grid-cols-[1.06fr_0.72fr]">
+              <div className="space-y-0">
+                {sprintSteps.map((step) => (
+                  <div
+                    key={step.number}
+                    className="landing-reveal grid gap-5 border-b border-dashed border-[rgba(26,58,42,0.12)] py-8 sm:grid-cols-[68px_1fr]"
+                  >
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[rgba(26,58,42,0.14)] font-[family:var(--font-display)] text-base font-bold text-[var(--landing-green-deep)]">
+                      {step.number}
+                    </div>
+                    <div>
+                      <h3 className="font-[family:var(--font-serif)] text-[1.42rem] leading-tight text-[var(--landing-green-deep)]">
+                        {step.title}
+                      </h3>
+                      <p className="mt-3 max-w-xl text-[0.92rem] leading-7 text-[var(--landing-muted)]">
+                        {step.body}
+                      </p>
+                      <div className="mt-4">
+                        <span className="inline-flex rounded-full bg-[rgba(126,200,80,0.12)] px-3.5 py-1.5 text-[0.78rem] font-semibold text-[var(--landing-green-mid)]">
+                          {step.tag}
+                        </span>
+                        {step.checklist && (
+                          <ul className="mt-3 space-y-1.5">
+                            {step.checklist.map((item) => (
+                              <li
+                                key={item}
+                                className="flex items-center gap-2 text-[0.88rem] text-[var(--landing-green-deep)]"
+                              >
+                                <span className="text-[var(--landing-sprout)]">&#10003;</span>
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {step.guarantee && (
+                          <p className="mt-4 rounded-xl border border-[rgba(126,200,80,0.3)] bg-[rgba(126,200,80,0.08)] px-4 py-3 text-[0.85rem] font-semibold text-[var(--landing-green-deep)]">
+                            {step.guarantee}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            <aside className="landing-reveal lg:sticky lg:top-28">
-              <div className="relative min-h-[380px] overflow-hidden rounded-[24px] bg-[var(--landing-green-deep)] sm:min-h-[460px]">
-                <Image
-                  src="/Wagner.profile2-CBfCr4Al.png"
-                  alt="BizSproutAI founder portrait"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 34vw"
-                  className="object-cover object-top"
-                />
-                {/* Fade image bottom into the dark container background */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--landing-green-deep)] to-transparent" />
+                ))}
               </div>
-            </aside>
+
+              <aside className="landing-reveal lg:sticky lg:top-28">
+                <div className="relative min-h-[380px] overflow-hidden rounded-[24px] bg-[var(--landing-green-deep)] sm:min-h-[460px]">
+                  <Image
+                    src="/Wagner.profile2-CBfCr4Al.png"
+                    alt="BizSproutAI founder portrait"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 34vw"
+                    className="object-cover object-top"
+                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--landing-green-deep)] to-transparent" />
+                </div>
+              </aside>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── SERVICES ──────────────────────────────────────── */}
-      <section
-        id="services"
-        className="overflow-hidden bg-[var(--landing-green-deep)] px-5 py-20 text-white lg:px-10"
-      >
-        <div className="pointer-events-none absolute right-[-120px] top-[-80px] h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(126,200,80,0.1),transparent_70%)]" />
+      {/* ── Section 5: What happens after validation ── */}
+      <section className="px-5 py-20 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[38rem] text-center">
+          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
+            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
+              {copy.afterValidationEyebrow}
+            </p>
+            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
+              {copy.afterValidationTitle}
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
+              {copy.afterValidationBody}
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-6 lg:grid-cols-2">
+            {/* Free column */}
+            <div className="landing-reveal rounded-[24px] border border-[rgba(26,58,42,0.1)] bg-[var(--landing-cream)] p-8">
+              <div className="inline-flex rounded-full border border-[rgba(26,58,42,0.15)] bg-white px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-green-mid)]">
+                {copy.afterValidationFreeBadge}
+              </div>
+              <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.45rem] leading-tight text-[var(--landing-green-deep)]">
+                What you get right now
+              </h3>
+              <ul className="mt-5 space-y-3">
+                {copy.afterValidationFreeItems.map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-[0.92rem] text-[var(--landing-green-deep)]">
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.2)] text-[0.65rem] text-[var(--landing-sprout)]">
+                      ✓
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 rounded-xl border border-[rgba(126,200,80,0.2)] bg-white px-4 py-3">
+                <p className="text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
+                  Free. Takes under a minute.
+                </p>
+                <p className="mt-0.5 text-[0.78rem] text-[var(--landing-muted)]">
+                  No account required to validate.
+                </p>
+              </div>
+            </div>
+
+            {/* Platform column */}
+            <div className="landing-reveal rounded-[24px] bg-[var(--landing-green-deep)] p-8 text-white">
+              <div className="inline-flex rounded-full bg-[var(--landing-amber)] px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-ink)]">
+                {copy.afterValidationPlatformBadge}
+              </div>
+              <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.45rem] leading-tight">
+                What you unlock next
+              </h3>
+              <ul className="mt-5 space-y-3">
+                {lc.platformFeatures.map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-[0.9rem] text-white/85">
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.18)] text-[0.65rem] text-[var(--landing-sprout)]">
+                      ✓
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={phoneHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-[var(--landing-sprout)] px-5 py-3.5 text-[0.92rem] font-semibold text-[var(--landing-ink)] transition hover:brightness-105"
+              >
+                {copy.afterValidationCta}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Section 6: Sprint offer ── */}
+      <section className="overflow-hidden bg-[var(--landing-green-deep)] px-5 py-20 text-white lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
             <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-sprout)]">
               {copy.servicesEyebrow}
             </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.1]">
+            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08]">
               {copy.servicesTitle}
             </h2>
-            <p className="mt-4 text-base leading-7 text-white/60">
+            <p className="mt-4 text-base leading-7 text-white/68">
               {copy.servicesBody}
             </p>
           </div>
 
           <div className="mt-14 grid gap-5 lg:grid-cols-2">
-            {/* Featured service */}
             <article className="landing-reveal grid gap-8 rounded-[24px] border border-[rgba(126,200,80,0.22)] bg-[rgba(126,200,80,0.08)] p-7 lg:col-span-2 lg:grid-cols-2">
               <div>
                 <div className="inline-flex rounded-full bg-[var(--landing-amber)] px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-ink)]">
                   {lc.featuredBadge}
                 </div>
-                <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.5rem] leading-tight sm:text-[1.7rem]">
+                <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.55rem] leading-tight sm:text-[1.8rem]">
                   {lc.featuredTitle}
                 </h3>
-                <p className="mt-4 text-[0.88rem] leading-7 text-white/70">
+                <p className="mt-4 text-[0.9rem] leading-7 text-white/70">
                   {lc.featuredBody}
                 </p>
                 <a
-                  href={serviceHref("idea_validation_sprint")}
-                  className="mt-6 inline-flex text-[0.88rem] font-semibold text-[var(--landing-sprout)] transition hover:gap-2"
+                  href={phoneHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex text-[0.9rem] font-semibold text-[var(--landing-sprout)] transition hover:translate-x-1"
                 >
                   {lc.featuredCta} →
                 </a>
               </div>
               <div className="rounded-[18px] bg-white/[0.05] p-5">
-                <div className="space-y-3 text-[0.88rem] text-white/80">
+                <div className="space-y-3 text-[0.9rem] text-white/82">
                   {lc.featuredChecklist.map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-[rgba(126,200,80,0.18)] text-[0.65rem] text-[var(--landing-sprout)]">
@@ -549,34 +832,31 @@ export default async function HomePage({ params }: Props) {
             {lc.services.map((service) => (
               <article
                 key={service.id}
-                className="landing-reveal rounded-[20px] border border-white/10 bg-white/[0.05] p-7 transition hover:-translate-y-1 hover:border-[rgba(126,200,80,0.35)] hover:bg-white/[0.08]"
+                className="landing-reveal rounded-[20px] border border-white/10 bg-white/[0.05] p-7"
               >
-                <h3 className="font-[family:var(--font-serif)] text-[1.5rem] leading-tight">
+                <h3 className="font-[family:var(--font-serif)] text-[1.45rem] leading-tight">
                   {service.title}
                 </h3>
-                <p className="mt-3 text-[0.88rem] leading-7 text-white/65">
+                <p className="mt-3 text-[0.9rem] leading-7 text-white/65">
                   {service.body}
                 </p>
-                <a
-                  href={serviceHref(service.id)}
-                  className="mt-5 inline-flex text-[0.88rem] font-semibold text-[var(--landing-sprout)] transition hover:gap-2"
-                >
-                  {service.cta} →
-                </a>
+                <p className="mt-5 text-[0.9rem] font-semibold text-[var(--landing-sprout)]">
+                  {service.cta}
+                </p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── PROOF ─────────────────────────────────────────── */}
-      <section id="proof" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
+      {/* ── Section 7: Testimonials ── */}
+      <section id="outcomes" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[38rem] text-center">
+          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
             <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
               {copy.proofEyebrow}
             </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.1] text-[var(--landing-green-deep)]">
+            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
               {copy.proofTitle}
             </h2>
             <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
@@ -588,7 +868,7 @@ export default async function HomePage({ params }: Props) {
             {lc.testimonials.map((item) => (
               <article
                 key={item.name}
-                className="landing-reveal rounded-[20px] border border-[rgba(26,58,42,0.07)] bg-white p-7 shadow-sm transition hover:-translate-y-1"
+                className="landing-reveal rounded-[20px] border border-[rgba(26,58,42,0.07)] bg-white p-7 shadow-sm"
               >
                 <div className="text-base tracking-[0.2em] text-[var(--landing-amber)]">
                   ★★★★★
@@ -603,7 +883,7 @@ export default async function HomePage({ params }: Props) {
                     {item.initial}
                   </div>
                   <div>
-                    <div className="text-[0.85rem] font-semibold text-[var(--landing-ink)]">
+                    <div className="text-[0.86rem] font-semibold text-[var(--landing-ink)]">
                       {item.name}
                     </div>
                     <div className="text-[0.75rem] text-[var(--landing-muted)]">
@@ -617,12 +897,12 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── SIGNAL STRIP ──────────────────────────────────── */}
+      {/* ── Signal stats strip ── */}
       <div className="landing-reveal border-y border-[rgba(26,58,42,0.08)] bg-[var(--warm-white)] px-5 py-10 lg:px-10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-8">
-          <div className="flex flex-wrap gap-10">
-            {lc.signalStats.map((stat) => (
-              <div key={stat.label} className="text-center">
+          <div className="grid flex-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {signalStats.map((stat) => (
+              <div key={stat.label}>
                 <div className="font-[family:var(--font-display)] text-[2rem] font-extrabold text-[var(--landing-green-deep)]">
                   {stat.value}
                 </div>
@@ -634,22 +914,61 @@ export default async function HomePage({ params }: Props) {
           </div>
 
           <a
-            href={actionPlanHref}
-            className="inline-flex rounded-full bg-[var(--landing-green-deep)] px-6 py-3.5 text-base font-semibold text-white transition hover:bg-[var(--landing-green-mid)]"
+            href={validateHref}
+            className="inline-flex rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-bold text-white shadow-[0_4px_20px_rgba(26,58,42,0.2)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_8px_28px_rgba(26,58,42,0.26)]"
           >
             {copy.signalCta} →
           </a>
         </div>
       </div>
 
-      {/* ── CTA + BOOKING ─────────────────────────────────── */}
+      {/* ── FAQ ── */}
+      <section id="faq" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
+            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
+              FAQ
+            </p>
+            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
+              What founders usually want to know before they start.
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
+              Start with the free validation. If you want to go further, the Sprint is the next step.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-4 lg:grid-cols-2">
+            {faqItems.map((item, index) => (
+              <details
+                key={item.question}
+                open={index === 0}
+                className="landing-reveal overflow-hidden rounded-[20px] border border-[rgba(26,58,42,0.08)] bg-white shadow-sm"
+              >
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 px-6 py-5">
+                  <span className="font-[family:var(--font-serif)] text-[1.12rem] leading-tight text-[var(--landing-green-deep)]">
+                    {item.question}
+                  </span>
+                  <span className="text-xl font-light text-[var(--landing-green-light)]">
+                    +
+                  </span>
+                </summary>
+                <div className="px-6 pb-6 text-[0.95rem] leading-7 text-[var(--landing-muted)]">
+                  {item.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Final CTA ── */}
       <section id="cta" className="relative overflow-hidden px-5 py-20 lg:px-10">
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_rgba(126,200,80,0.07),_transparent_70%)]" />
         <div className="relative mx-auto max-w-3xl text-center">
           <p className="landing-reveal text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
             {copy.ctaEyebrow}
           </p>
-          <h2 className="landing-reveal mt-4 font-[family:var(--font-serif)] text-[clamp(1.8rem,3.5vw,3.2rem)] leading-[1.08] text-[var(--landing-green-deep)]">
+          <h2 className="landing-reveal mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
             {copy.ctaTitle}
             <br />
             <em className="text-[var(--landing-green-light)]">
@@ -661,16 +980,16 @@ export default async function HomePage({ params }: Props) {
           </p>
           <div className="landing-reveal mt-8 flex flex-wrap justify-center gap-3">
             <a
-              href={phoneHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex rounded-full bg-[var(--landing-green-deep)] px-7 py-3.5 text-base font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)]"
+              href={validateHref}
+              className="inline-flex rounded-full bg-[var(--landing-green-deep)] px-9 py-4 text-[1.05rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.22)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_12px_36px_rgba(26,58,42,0.28)]"
             >
               {copy.ctaPrimary} →
             </a>
             <a
-              href={`/${locale}#services`}
-              className="inline-flex rounded-full border border-[rgba(26,58,42,0.2)] px-7 py-3.5 text-base font-semibold text-[var(--landing-green-deep)] transition hover:border-[var(--landing-green-deep)] hover:bg-[rgba(26,58,42,0.04)]"
+              href={phoneHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex rounded-full border border-[rgba(26,58,42,0.2)] px-7 py-4 text-base font-semibold text-[var(--landing-green-deep)] transition hover:border-[var(--landing-green-deep)] hover:bg-[rgba(26,58,42,0.04)]"
             >
               {copy.ctaSecondary}
             </a>
@@ -678,22 +997,45 @@ export default async function HomePage({ params }: Props) {
           <p className="landing-reveal mt-6 text-sm text-[var(--landing-muted)]">
             {copy.emailPrefix}{" "}
             <a
-              href={contactHref}
+              href={emailHref}
               className="font-semibold text-[var(--landing-green-deep)] underline underline-offset-4"
             >
               info@bizsproutai.com
             </a>
           </p>
-
-          {/* Booking Calendar */}
-          <BookingCalendar
-            title={lc.bookingTitle}
-            subtitle={lc.bookingSubtitle}
-          />
         </div>
       </section>
 
-      {/* ── JSON-LD STRUCTURED DATA (SEO / AEO / GEO) ──── */}
+      {/* ── Booking calendar — secondary / lower-intent path ── */}
+      <section className="bg-[var(--landing-cream)] px-5 pb-8 pt-6 lg:px-10 lg:pb-16">
+        <div className="mx-auto max-w-5xl">
+          <div className="landing-reveal text-center">
+            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
+              {copy.bookingSectionEyebrow}
+            </p>
+            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.9rem,3.6vw,3rem)] leading-tight text-[var(--landing-green-deep)]">
+              {lc.bookingTitle}
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-[var(--landing-muted)]">
+              {lc.bookingSubheading}
+            </p>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[var(--landing-muted)]">
+              {copy.bookingSectionNote}
+            </p>
+          </div>
+
+          <div className="landing-reveal mt-10 rounded-[28px] border border-[rgba(26,58,42,0.1)] bg-white p-4 shadow-[0_24px_60px_rgba(26,58,42,0.08)] md:p-6">
+            <BookingCalendar
+              title="Founder Sprint Fit Call"
+              subtitle={lc.bookingSubtitle}
+              hideHeader
+              className="max-w-none"
+              frameClassName="overflow-hidden rounded-[1.5rem] border border-[rgba(26,58,42,0.08)] bg-white shadow-[0_18px_50px_rgba(26,58,42,0.08)]"
+            />
+          </div>
+        </div>
+      </section>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -705,7 +1047,7 @@ export default async function HomePage({ params }: Props) {
               url: "https://validate.bizsproutai.com",
               logo: "https://validate.bizsproutai.com/bizsproutai-logo.png",
               description:
-                "BizSproutAI helps early-stage founders launch their business and land their first paying customer through the 30-Day Founder Sprint program.",
+                "BizSproutAI helps early-stage founders validate their idea for free, get their clearest next step, and move into a full 30-day launch sprint with hands-on support.",
               sameAs: [],
               contactPoint: {
                 "@type": "ContactPoint",
@@ -718,7 +1060,7 @@ export default async function HomePage({ params }: Props) {
               "@type": "Course",
               name: "30-Day Founder Sprint",
               description:
-                "A done-with-you business launch program that helps early-stage founders turn their idea into a real offer, website, and client system — and work toward their first paying customer in 30 days.",
+                "A done-with-you founder sprint that helps early-stage founders validate their idea, build the right launch asset, start real conversations, and reach their first paying customer in 30 days.",
               provider: {
                 "@type": "Organization",
                 name: "BizSproutAI",
@@ -733,54 +1075,20 @@ export default async function HomePage({ params }: Props) {
                 "@type": "Offer",
                 category: "Business Launch Program",
                 availability: "https://schema.org/LimitedAvailability",
-                url: "https://validate.bizsproutai.com/en/action-plan",
+                url: "https://cal.com/bizsproutai/30-min-founder-clarity-session",
               },
             },
             {
               "@context": "https://schema.org",
               "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "What is the 30-Day Founder Sprint?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "A done-with-you business launch program that helps early-stage founders turn their idea into a real offer, website, and client system — and work toward their first paying customer in 30 days.",
-                  },
+              mainEntity: faqItems.map((item) => ({
+                "@type": "Question",
+                name: item.question,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: item.answer,
                 },
-                {
-                  "@type": "Question",
-                  name: "How much does the 30-Day Founder Sprint cost?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Apply for details on current pricing. The sprint is results-based — if you complete the program and do not land your first paying customer in 30 days, we keep working with you at no extra cost until you do.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "What is included in the sprint?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Idea validation and market direction, offer creation, website and messaging built with you, booking and client follow-up system, AI tools configured to save time, a 30-day execution roadmap, and direct support throughout.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Who is the 30-Day Founder Sprint for?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Early-stage founders who have a business idea but need structure, support, and a system to turn it into a real business. Whether you are stuck choosing between ideas, need a website, or want to land your first client, the sprint gives you a clear path.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "What happens after the 30 days?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "If you completed the sprint, followed the plan, and did the work but still have not landed your first paying customer, we continue working with you at no extra cost until you do.",
-                  },
-                },
-              ],
+              })),
             },
           ]),
         }}

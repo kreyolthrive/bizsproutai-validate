@@ -11,11 +11,9 @@ import "@fontsource/dm-sans/600.css";
 import "@fontsource/syne/700.css";
 import "@fontsource/syne/800.css";
 import "@fontsource/instrument-serif/400.css";
-import { FloatingExitCta } from "@/components/marketing/FloatingExitCta";
 import { Footer } from "@/components/Footer";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNav } from "@/components/MobileNav";
-import { PageAudioPlayer } from "@/components/PageAudioPlayer";
 import { locales, seoMetadata, type Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 
@@ -47,9 +45,10 @@ function getLayoutCopy(locale: string) {
       nav: {
         pain: "Pour qui",
         how: "Comment ça marche",
-        services: "Services",
+        outcomes: "Résultats",
+        faq: "FAQ",
         blog: "Blog",
-        cta: "Réserver un appel",
+        cta: "Validation gratuite",
       },
       footer: {
         description:
@@ -70,9 +69,10 @@ function getLayoutCopy(locale: string) {
       nav: {
         pain: "Para quién es",
         how: "Cómo funciona",
-        services: "Servicios",
+        outcomes: "Resultados",
+        faq: "FAQ",
         blog: "Blog",
-        cta: "Reservar llamada",
+        cta: "Validación gratuita",
       },
       footer: {
         description:
@@ -93,9 +93,10 @@ function getLayoutCopy(locale: string) {
       nav: {
         pain: "Pou kiyès",
         how: "Kijan li mache",
-        services: "Sèvis",
+        outcomes: "Rezilta",
+        faq: "FAQ",
         blog: "Blog",
-        cta: "Pran yon apèl",
+        cta: "Validasyon gratis",
       },
       footer: {
         description:
@@ -116,9 +117,10 @@ function getLayoutCopy(locale: string) {
       nav: {
         pain: "Para quem é",
         how: "Como funciona",
-        services: "Serviços",
+        outcomes: "Resultados",
+        faq: "FAQ",
         blog: "Blog",
-        cta: "Agendar ligação",
+        cta: "Validação gratuita",
       },
       footer: {
         description:
@@ -138,10 +140,10 @@ function getLayoutCopy(locale: string) {
     nav: {
       pain: "Who It's For",
       how: "How It Works",
-      services: "Services",
+      outcomes: "Outcomes",
+      faq: "FAQ",
       blog: "Blog",
-      podcast: "Podcast",
-      cta: "Book a Free Call",
+      cta: "Start Free Validation",
     },
     footer: {
       description:
@@ -279,21 +281,21 @@ export default async function LocaleLayout({
                 </Link>
 
                 <nav aria-label="Main navigation" className="hidden items-center gap-10 text-base font-medium text-[var(--landing-muted)] lg:flex">
-                  <a href={`${homeHref}#pain`} className="transition hover:text-[var(--landing-green-deep)]">
+                  <a href={`${homeHref}#who`} className="transition hover:text-[var(--landing-green-deep)]">
                     {copy.nav.pain}
                   </a>
                   <a href={`${homeHref}#how`} className="transition hover:text-[var(--landing-green-deep)]">
                     {copy.nav.how}
                   </a>
                   <a
-                    href={`${homeHref}#services`}
+                    href={`${homeHref}#outcomes`}
                     className="transition hover:text-[var(--landing-green-deep)]"
                   >
-                    {copy.nav.services}
+                    {copy.nav.outcomes}
                   </a>
-                  <Link href="/blog" className="transition hover:text-[var(--landing-green-deep)]">
-                    {copy.nav.blog}
-                  </Link>
+                  <a href={`${homeHref}#faq`} className="transition hover:text-[var(--landing-green-deep)]">
+                    {copy.nav.faq}
+                  </a>
                 </nav>
 
                 <div className="flex items-center gap-4">
@@ -301,21 +303,19 @@ export default async function LocaleLayout({
                     <LanguageSwitcher />
                   </div>
                   <a
-                    href="https://cal.com/bizsproutai/30-min-founder-clarity-session"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hidden items-center rounded-full bg-[var(--landing-green-deep)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--landing-green-mid)] lg:inline-flex"
+                    href={`${homeHref}/validate`}
+                    className="hidden items-center rounded-full bg-[var(--landing-green-deep)] px-5 py-3 text-sm font-bold text-white shadow-[0_2px_12px_rgba(26,58,42,0.18)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_6px_20px_rgba(26,58,42,0.22)] lg:inline-flex"
                   >
                     {copy.nav.cta} →
                   </a>
                   <MobileNav
                     links={[
-                      { href: `${homeHref}#pain`, label: copy.nav.pain },
+                      { href: `${homeHref}#who`, label: copy.nav.pain },
                       { href: `${homeHref}#how`, label: copy.nav.how },
-                      { href: `${homeHref}#services`, label: copy.nav.services },
-                      { href: `/${locale}/blog`, label: copy.nav.blog },
+                      { href: `${homeHref}#outcomes`, label: copy.nav.outcomes },
+                      { href: `${homeHref}#faq`, label: copy.nav.faq },
                     ]}
-                    ctaHref="https://cal.com/bizsproutai/30-min-founder-clarity-session"
+                    ctaHref={`${homeHref}/validate`}
                     ctaLabel={copy.nav.cta}
                   />
                 </div>
@@ -326,7 +326,6 @@ export default async function LocaleLayout({
             </header>
 
             <main id="main-content">
-              <PageAudioPlayer locale={locale} />
               <div id="page-content" className="pb-12">
                 {children}
               </div>
@@ -340,7 +339,6 @@ export default async function LocaleLayout({
               homeHref={homeHref}
             />
 
-            <FloatingExitCta locale={locale} />
           </div>
         </NextIntlClientProvider>
       </body>
