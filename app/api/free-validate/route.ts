@@ -371,10 +371,9 @@ export async function POST(req: NextRequest) {
   if (emailRes.status === "fulfilled" && emailRes.value.sent) {
     notificationStatus.resultEmailSent = true;
     logger.info({ event: "result_email_ok", requestId, ts, email });
-    // Mark email_sent in DB — best-effort, does not block response
     const supabase = getSupabase();
     if (supabase) {
-      void supabase
+      await (supabase as any)
         .from("validation_leads")
         .update({ email_sent: true })
         .eq("email", email);
