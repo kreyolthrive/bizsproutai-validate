@@ -6,6 +6,10 @@
       "maxDuration": 60,
       "memory": 1024
     },
+    "app/api/free-validate/route.ts": {
+      "maxDuration": 30,
+      "memory": 512
+    },
     "app/api/admin/**/*.ts": {
       "maxDuration": 15,
       "memory": 256

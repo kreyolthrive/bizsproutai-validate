@@ -4,18 +4,18 @@ import { useEffect, useRef } from "react";
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
 
-type FbqFn = ((...args: unknown[]) => void) & {
-  callMethod?: (...args: unknown[]) => void;
-  queue?: unknown[];
-  loaded?: boolean;
-  version?: string;
-  push?: (...args: unknown[]) => void;
-};
+// Meta Pixel is initialized directly in [locale]/layout.tsx with hardcoded ID.
+// This component handles SPA route-change PageViews + LinkedIn/Google Ads init.
+
+const META_PIXEL_ID = "1089915446436683";
 
 declare global {
   interface Window {
-    fbq?: FbqFn;
-    _fbq?: FbqFn;
+    fbq?: ((...args: unknown[]) => void) & {
+      callMethod?: (...args: unknown[]) => void;
+      queue?: unknown[];
+    };
+    _fbq?: typeof window.fbq;
     lintrk?: (event: string, data?: Record<string, unknown>) => void;
     gtag?: (...args: unknown[]) => void;
     dataLayer?: unknown[];
@@ -29,17 +29,24 @@ function cleanEnv(value: string | undefined): string | null {
   return trimmed ? trimmed : null;
 }
 
-const metaPixelId = cleanEnv(process.env.NEXT_PUBLIC_META_PIXEL_ID);
 const linkedInPartnerId = cleanEnv(process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID);
 const googleAdsId = cleanEnv(process.env.NEXT_PUBLIC_GOOGLE_ADS_ID);
 
 export function RetargetingPixels() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const metaInitialTracked = useRef(false);
   const linkedInInitialTracked = useRef(false);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    // Skip initial render — the inline init script in layout.tsx fires
+    // fbq('init') + fbq('track', 'PageView') synchronously on first load.
+    // This component only fires PageView on SPA route changes after that.
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     const path = pathname || "/";
     const query = searchParams?.toString();
     const pagePath = query ? `${path}?${query}` : path;
@@ -47,12 +54,8 @@ export function RetargetingPixels() {
       ? `${window.location.origin}${pagePath}`
       : pagePath;
 
-    if (metaPixelId && window.fbq) {
-      if (metaInitialTracked.current) {
-        window.fbq("track", "PageView");
-      } else {
-        metaInitialTracked.current = true;
-      }
+    if (window.fbq) {
+      window.fbq("track", "PageView");
     }
 
     if (linkedInPartnerId && window.lintrk) {
@@ -72,41 +75,8 @@ export function RetargetingPixels() {
     }
   }, [pathname, searchParams]);
 
-  if (!metaPixelId && !linkedInPartnerId && !googleAdsId) {
-    return null;
-  }
-
   return (
     <>
-      {metaPixelId ? (
-        <>
-          <Script id="meta-pixel-base" strategy="afterInteractive">
-            {`
-              !function(f,b,e,v,n,t,s){
-                if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)
-              }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${metaPixelId}');
-              fbq('track', 'PageView');
-            `}
-          </Script>
-          <noscript>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt=""
-              height="1"
-              width="1"
-              style={{ display: "none" }}
-              src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
-            />
-          </noscript>
-        </>
-      ) : null}
-
       {linkedInPartnerId ? (
         <>
           <Script id="linkedin-insight-base" strategy="afterInteractive">
@@ -155,3 +125,5 @@ export function RetargetingPixels() {
     </>
   );
 }
+
+export { META_PIXEL_ID };

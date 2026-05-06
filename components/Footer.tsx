@@ -138,7 +138,7 @@ export function Footer({ locale, logoSrc, footerCopy, navCopy, homeHref }: Foote
             </p>
             <nav aria-label="Footer navigation" className="mt-5 flex flex-col gap-3 text-sm">
               <a
-                href={`${homeHref}#pain`}
+                href={`${homeHref}#who`}
                 className="text-white/75 transition hover:text-[var(--landing-sprout)]"
               >
                 {locale === "fr" ? "Pour qui" : locale === "es" ? "Para quién" : locale === "ht" ? "Pou kiyès" : locale === "pt" ? "Para quem" : "Who It's For"}
@@ -217,14 +217,14 @@ export function Footer({ locale, logoSrc, footerCopy, navCopy, homeHref }: Foote
               className="mt-6 inline-flex items-center rounded-full bg-[var(--landing-sprout)] px-5 py-2.5 text-sm font-semibold text-[var(--landing-green-deep)] transition hover:brightness-110"
             >
               {locale === "fr"
-                ? "Réserver un appel"
+                ? "Réserver un appel diagnostic"
                 : locale === "es"
-                  ? "Reservar llamada"
+                  ? "Reservar llamada de ajuste"
                   : locale === "ht"
-                    ? "Pran yon apèl"
+                    ? "Pran yon apèl fit"
                     : locale === "pt"
-                      ? "Agendar ligação"
-                      : "Book a Free Call"}{" "}
+                      ? "Agendar chamada de fit"
+                      : "Book a Free Fit Call"}{" "}
               &rarr;
             </a>
           </div>

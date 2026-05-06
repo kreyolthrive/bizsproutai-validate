@@ -1,201 +1,27 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { trackMeta, trackMetaStandard } from "@/lib/analytics/metaEvents";
+import type { ValidationResult } from "@/lib/validation/engine";
+import { getValidateCopy } from "@/i18n/validateCopy";
+import type { ValidateCopy } from "@/i18n/validateCopy";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// ─── Result view helpers ──────────────────────────────────────────────────────
 
-interface ValidationResult {
-  stage: string;
-  stageTag: string;
-  verdict: string;
-  firstAsset: string;
-  firstAssetReason: string;
-  nextSteps: string[];
-  warning: string;
+/**
+ * Maps the internal English stageTag to a launch-readiness percentage.
+ * Always operates on the English stageTag (never the localised display version)
+ * so the logic is locale-independent.
+ */
+function getReadinessPercent(stageTag: string): number {
+  if (stageTag.includes("Idea")) return 20;
+  if (stageTag.includes("First Asset")) return 45;
+  if (stageTag.includes("Assembly")) return 55;
+  if (stageTag.includes("Optimization")) return 65;
+  if (stageTag.includes("Launch + Scale")) return 85;
+  if (stageTag.includes("Launch-Ready")) return 80;
+  return 50;
 }
-
-// ─── Keyword detection for first asset recommendation ───────────────────────
-
-function detectFirstAsset(
-  idea: string,
-  audience: string,
-  stageIndex: number
-): { asset: string; reason: string } {
-  const text = (idea + " " + audience).toLowerCase();
-
-  if (/booking|appointment|consultation|session|therapy|coaching call|clinic|discovery call/.test(text)) {
-    return {
-      asset: "Booking page",
-      reason:
-        "Your offer requires conversations or appointments. A booking page lets people schedule directly — no complex site needed yet.",
-    };
-  }
-  if (/mobile app|ios app|android app|phone app|flutter|react native|on the go|field worker/.test(text)) {
-    return {
-      asset: "Mobile app",
-      reason:
-        "Your business depends on recurring mobile usage. A mobile app is the right primary asset — but validate the core workflow before building.",
-    };
-  }
-  if (/marketplace|two.sided|connect buyers|gig platform|freelance platform|match.*provider|buy.*sell/.test(text)) {
-    return {
-      asset: "Marketplace web app",
-      reason:
-        "You are building a two-sided platform. This requires a web app — but start with a hand-matched MVP before full automation.",
-    };
-  }
-  if (/\b(saas|software as|dashboard|workspace|user account|login|multi.tenant|platform tool|automation tool)\b/.test(text)) {
-    return {
-      asset: "Web app (SaaS)",
-      reason:
-        "Your offer has user accounts, dashboards, or workflow automation. A web app is the right asset — but validate demand with a landing page first.",
-    };
-  }
-  if (/app|software|platform|tool|portal|login|users\b|accounts\b/.test(text)) {
-    return {
-      asset: "Web app",
-      reason:
-        "Your idea requires user interaction, stored data, or specific workflows that need a web app — not just a static site.",
-    };
-  }
-  if (/funnel|email list|lead magnet|opt.in|nurture|drip|email sequence|free guide|free training/.test(text)) {
-    return {
-      asset: "Lead funnel",
-      reason:
-        "Your model requires nurturing leads before a sale. A funnel collects and converts — start with one clear opt-in and a short email sequence.",
-    };
-  }
-  if (/store|shop|ecommerce|product|sell online|dropship|physical product|inventory/.test(text)) {
-    return {
-      asset: "E-commerce store",
-      reason:
-        "You are selling a physical or digital product online. A simple store (Shopify, Gumroad, or similar) is the right starting point.",
-    };
-  }
-
-  // fallback by stage
-  const fallbacks: { asset: string; reason: string }[] = [
-    {
-      asset: "Simple landing page (offer test)",
-      reason:
-        "Before you build anything complex, test whether people respond to your offer with a single clear page.",
-    },
-    {
-      asset: "Landing page or booking page",
-      reason:
-        "You have an offer — now it needs a home. One clear page with a single CTA is all you need to start getting traction.",
-    },
-    {
-      asset: "Unified website or funnel",
-      reason:
-        "You have pieces — now connect them. One clear path from awareness to conversion is more powerful than multiple disconnected assets.",
-    },
-    {
-      asset: "Full launch system",
-      reason:
-        "You are ready. Connect your asset, outreach, and follow-up into one working system and start sending.",
-    },
-  ];
-  return fallbacks[stageIndex] ?? fallbacks[0];
-}
-
-// ─── Core result logic ───────────────────────────────────────────────────────
-
-function computeResult(
-  stageIndex: number,
-  idea: string,
-  audience: string,
-  hasLiveAsset: boolean,
-  hasTraction: boolean
-): ValidationResult {
-  const { asset, reason } = detectFirstAsset(idea, audience, stageIndex);
-
-  const base: ValidationResult[] = [
-    {
-      stage: "Idea Stage",
-      stageTag: "Idea Stage",
-      verdict: "Too early to build. You need offer clarity first.",
-      firstAsset: asset,
-      firstAssetReason: reason,
-      nextSteps: [
-        "Write one sentence: who you help, what problem you solve, and what you give them",
-        "Share that sentence with 5 real people in your target audience — watch their reaction",
-        "Ask one of them: 'Would you pay for this? What would stop you?' — record the answer",
-        "Only build after at least 3 people say they would pay or sign up",
-      ],
-      warning:
-        "Do not build anything yet. Every day you spend building the wrong thing is a day you could spend validating the right one. Most founders who skip this step rebuild everything within 90 days.",
-    },
-    {
-      stage: "First Asset Stage",
-      stageTag: "First Asset Stage",
-      verdict: "Clear enough to launch. Build the minimum asset now.",
-      firstAsset: asset,
-      firstAssetReason: reason,
-      nextSteps: [
-        "Choose your minimum asset: one page, one CTA, one clear offer — no more",
-        "Launch it this week — imperfect and live beats perfect and invisible",
-        "Write 5 direct outreach messages to people you already know who fit your audience",
-        "Follow up within 24 hours of every response — speed is your biggest advantage right now",
-      ],
-      warning:
-        "Do not wait for the design to be perfect. A clear, specific page outperforms a polished but vague one every time. Ship it today and improve from real feedback — not from your imagination.",
-    },
-    {
-      stage: hasLiveAsset ? "Optimization Stage" : "Assembly Stage",
-      stageTag: hasLiveAsset ? "Optimization Stage" : "Assembly Stage",
-      verdict: hasLiveAsset
-        ? "You have pieces. Connect them before building more."
-        : "You have the components. Now connect them into one clear path.",
-      firstAsset: asset,
-      firstAssetReason: reason,
-      nextSteps: [
-        "List every tool, page, and asset you have — then map the path a client would actually take",
-        "Identify the single moment where most people drop off or get confused",
-        "Fix that one point before touching anything else",
-        "Consolidate to one traffic or outreach source — depth beats breadth right now",
-      ],
-      warning:
-        "Do not add more tools, pages, or platforms before fixing what you already have. Every new addition before consolidation makes the problem harder to diagnose. Stop adding — start connecting.",
-    },
-    {
-      stage: hasTraction ? "Launch + Scale Stage" : "Launch-Ready Stage",
-      stageTag: hasTraction ? "Launch + Scale Stage" : "Launch-Ready Stage",
-      verdict: hasTraction
-        ? "You have traction. Now build systems to scale what works."
-        : "Clear enough to launch. You need execution support, not more planning.",
-      firstAsset: asset,
-      firstAssetReason: reason,
-      nextSteps: hasTraction
-        ? [
-            "Document what is working: which channel, which message, which offer converts best",
-            "Systematize the outreach or acquisition that produced your best results",
-            "Set up a follow-up sequence so no lead goes cold after first contact",
-            "Build the next layer only after current conversion is above 10%",
-          ]
-        : [
-            "Lock your offer messaging and CTA today — no more adjusting, start sending",
-            "Test your booking or checkout flow end to end before launch day",
-            "Prepare your first 30 outreach messages and schedule them over the next 5 days",
-            "Set a hard public launch date — tell someone you trust so you are accountable",
-          ],
-      warning: hasTraction
-        ? "Do not scale what you have not confirmed converts. Scaling a broken funnel just amplifies the problem. Fix conversion first, then scale."
-        : "Do not delay for perfection. Launching at 80% ready teaches you more than planning at 100% ready. The market will tell you what to fix — your imagination cannot.",
-    },
-  ];
-
-  return base[stageIndex] ?? base[0];
-}
-
-// ─── Stage choices ────────────────────────────────────────────────────────────
-
-const STAGE_CHOICES = [
-  "I have an idea but no clear offer or direction",
-  "I have an offer but no launch asset or system behind it",
-  "I have scattered pieces but nothing connected",
-  "I am ready to launch but need hands-on support",
-];
 
 // ─── Step indicators ──────────────────────────────────────────────────────────
 
@@ -229,27 +55,43 @@ interface Props {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const copy = getValidateCopy(locale);
+  const hasPreselectedStage =
+    initialStage != null && initialStage >= 0 && initialStage <= 3;
+
+  // Step order: 0=Stage, 1=Idea, 2=Status, 3=Email+Submit
+  // If stage came from the hero widget, skip step 0 and start at step 1
+  const [step, setStep] = useState<0 | 1 | 2 | 3>(hasPreselectedStage ? 1 : 0);
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [stageIndex, setStageIndex] = useState<number | null>(
-    initialStage != null && initialStage >= 0 && initialStage <= 3
-      ? initialStage
-      : null
+    hasPreselectedStage ? initialStage : null
   );
   const [idea, setIdea] = useState("");
   const [audience, setAudience] = useState("");
   const [hasLiveAsset, setHasLiveAsset] = useState<boolean | null>(null);
   const [hasTraction, setHasTraction] = useState<boolean | null>(null);
   const [result, setResult] = useState<ValidationResult | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitRequestId, setSubmitRequestId] = useState<string | null>(null);
 
-  // If stage was pre-filled from URL, skip to step 2 after first render
   useEffect(() => {
-    if (initialStage != null && initialStage >= 0 && initialStage <= 3) {
-      setStep(2);
-    }
-  }, [initialStage]);
+    trackMetaStandard("ViewContent", { content_name: "FreeValidation", content_type: "product" });
+  }, []);
+
+  function isValidEmail(v: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  }
+
+  function handleStep0Next() {
+    if (stageIndex === null) return;
+    trackMeta("ValidationStarted", { stageIndex });
+    setStep(1);
+  }
 
   function handleStep1Next() {
-    if (stageIndex === null) return;
     setStep(2);
   }
 
@@ -257,63 +99,172 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
     setStep(3);
   }
 
-  function handleSubmit() {
+  // Step 3: validate email, fire analytics, submit all inputs to server
+  async function handleSubmit() {
     if (stageIndex === null || hasLiveAsset === null || hasTraction === null) return;
-    const r = computeResult(stageIndex, idea, audience, hasLiveAsset, hasTraction);
-    setResult(r);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (!isValidEmail(email)) {
+      setEmailError(copy.s3emailError);
+      return;
+    }
+    setEmailError("");
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    const reqId = submitRequestId ?? crypto.randomUUID();
+    if (!submitRequestId) setSubmitRequestId(reqId);
+
+    try {
+      const res = await fetch("/api/free-validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          firstName: firstName.trim(),
+          locale,
+          stageIndex,
+          idea,
+          audience,
+          hasLiveAsset,
+          hasTraction,
+          requestId: reqId,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      if (!data.result) {
+        throw new Error("No result returned from server");
+      }
+
+      trackMetaStandard("Lead");
+      trackMeta("ValidationEmailSubmit", { stageIndex });
+      trackMetaStandard("CompleteRegistration", {
+        content_name: "FreeValidation",
+        stage: data.result.stage,
+      });
+      trackMeta("ValidationComplete", { stage: data.result.stage, stageIndex });
+
+      setResult(data.result as ValidationResult);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      console.error("[FreeValidationFlow] Submit failed:", err);
+      setSubmitError(copy.s3error);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function handleReset() {
-    setStep(1);
+    setStep(0);
+    setEmail("");
+    setFirstName("");
+    setEmailError("");
     setStageIndex(null);
     setIdea("");
     setAudience("");
     setHasLiveAsset(null);
     setHasTraction(null);
     setResult(null);
+    setSubmitError(null);
+    setSubmitRequestId(null);
   }
+
+  useEffect(() => {
+    if (result) {
+      trackMeta("ValidationResultView", { stage: result.stage });
+    }
+  }, [result]);
 
   // ── Result view ────────────────────────────────────────────────────────────
 
   if (result) {
+    // stageTag is always in English (used for logic); stageTagDisplay is localised
+    const readiness = getReadinessPercent(result.stageTag);
+    const { stageUpsells } = copy;
+    const upsell =
+      result.stageTag.includes("Idea") ? stageUpsells.idea
+      : result.stageTag.includes("First Asset") ? stageUpsells.firstAsset
+      : result.stageTag.includes("Assembly") || result.stageTag.includes("Optimization") ? stageUpsells.assemblyOptimization
+      : result.stageTag.includes("Launch + Scale") ? stageUpsells.launchScale
+      : stageUpsells.launchReady;
+
+    const lockedPreviews = copy.lockedPreviewsTemplate.map((t) => ({
+      title: result.domainLabel
+        ? t.titleWithDomain.replace("{domain}", result.domainLabel)
+        : t.titleWithoutDomain,
+      meta: t.meta,
+    }));
+    // Build personalised sub-headline: "Jessica, your results are below…"
+    const subhead = firstName
+      ? `${firstName}, ${copy.rSubhead}`
+      : copy.rSubhead.charAt(0).toUpperCase() + copy.rSubhead.slice(1);
+
     return (
       <div className="mx-auto max-w-2xl">
         {/* Header */}
         <div className="mb-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(126,200,80,0.3)] bg-[rgba(126,200,80,0.12)] px-4 py-1.5 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-green-mid)]">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--landing-sprout)]" />
-            Your Free Validation Result
+            {copy.rBadge}
           </span>
           <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.8rem,3.5vw,2.8rem)] leading-[1.1] text-[var(--landing-green-deep)]">
-            Here is where you stand.
+            {copy.rHeading}
           </h2>
           <p className="mt-2 text-[0.95rem] text-[var(--landing-muted)]">
-            Based on what you shared — here is what BizSproutAI recommends.
+            {subhead}
           </p>
         </div>
 
-        {/* Stage badge */}
+        {/* Stage tag — shows localised display name */}
         <div className="mb-4 flex items-center gap-3">
           <span className="rounded-full bg-[var(--landing-green-deep)] px-4 py-1.5 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-white">
-            {result.stageTag}
+            {result.stageTagDisplay ?? result.stageTag}
           </span>
         </div>
 
-        {/* Verdict */}
-        <div className="rounded-[20px] border border-[rgba(26,58,42,0.1)] bg-white p-6 shadow-sm">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-light)]">
-            Verdict
-          </p>
-          <p className="mt-2 font-[family:var(--font-serif)] text-[1.35rem] leading-[1.3] text-[var(--landing-green-deep)]">
-            {result.verdict}
+        {/* ── Readiness gauge ── */}
+        <div className="rounded-[20px] border border-[rgba(26,58,42,0.08)] bg-white p-5 shadow-sm">
+          <div className="flex items-center justify-between">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-light)]">
+              {copy.rReadinessLabel}
+            </p>
+            <span className="text-[0.85rem] font-bold text-[var(--landing-green-deep)]">
+              {readiness}%
+            </span>
+          </div>
+          <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-[rgba(26,58,42,0.08)]">
+            <div
+              className="h-2.5 rounded-full bg-[var(--landing-sprout)]"
+              style={{ width: `${readiness}%` }}
+            />
+          </div>
+          <p className="mt-2 text-[0.73rem] text-[var(--landing-muted)]">
+            {copy.rReadinessMeta}
           </p>
         </div>
 
-        {/* First asset */}
+        {/* ── Verdict (with domain prefix when available) ── */}
+        <div className="mt-4 rounded-[20px] border border-[rgba(26,58,42,0.1)] bg-white p-6 shadow-sm">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-light)]">
+            {copy.rVerdictLabel}
+          </p>
+          <p className="mt-2 font-[family:var(--font-serif)] text-[1.35rem] leading-[1.3] text-[var(--landing-green-deep)]">
+            {result.domainLabel
+              ? `For a ${result.domainLabel} business at this stage: ${result.verdict.charAt(0).toLowerCase()}${result.verdict.slice(1)}`
+              : result.verdict}
+          </p>
+        </div>
+
+        {/* ── First asset ── */}
         <div className="mt-4 rounded-[20px] border border-[rgba(126,200,80,0.25)] bg-[rgba(126,200,80,0.06)] p-6">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-mid)]">
-            BizSproutAI recommends first
+            {copy.rFirstAssetLabel}
           </p>
           <p className="mt-2 text-[1.15rem] font-semibold text-[var(--landing-green-deep)]">
             {result.firstAsset}
@@ -323,63 +274,123 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
           </p>
         </div>
 
-        {/* Next steps */}
+        {/* ── Next 4 steps ── */}
         <div className="mt-4 rounded-[20px] border border-[rgba(26,58,42,0.08)] bg-white p-6 shadow-sm">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-light)]">
-            Your next 4 steps
+            {copy.rNextStepsLabel}
           </p>
           <ol className="mt-4 space-y-3">
-            {result.nextSteps.map((step, i) => (
+            {result.nextSteps.map((s, i) => (
               <li key={i} className="flex items-start gap-3 text-[0.93rem] leading-[1.6] text-[var(--landing-muted)]">
                 <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.15)] text-[0.72rem] font-bold text-[var(--landing-green-deep)]">
                   {i + 1}
                 </span>
-                {step}
+                {s}
               </li>
             ))}
           </ol>
         </div>
 
-        {/* Warning */}
+        {/* ── Warning ── */}
         <div className="mt-4 rounded-[20px] border border-[rgba(251,191,36,0.35)] bg-[rgba(251,191,36,0.06)] p-6">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[#b45309]">
-            Avoid this mistake
+            {copy.rWarningLabel}
           </p>
           <p className="mt-2 text-[0.93rem] leading-[1.65] text-[var(--landing-muted)]">
             {result.warning}
           </p>
         </div>
 
-        {/* Platform CTA */}
-        <div className="mt-8 rounded-[20px] bg-[var(--landing-green-deep)] p-6 text-white sm:p-8">
+        {/* ── Idea quality note (only shown when description was brief) ── */}
+        {result.ideaQualityNote && (
+          <div className="mt-4 rounded-[20px] border border-[rgba(26,58,42,0.1)] bg-[rgba(26,58,42,0.03)] p-5">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-muted)]">
+              {copy.rNoteLabel}
+            </p>
+            <p className="mt-2 text-[0.88rem] leading-[1.65] text-[var(--landing-muted)]">
+              {result.ideaQualityNote}
+            </p>
+          </div>
+        )}
+
+        {/* ── Locked premium preview ── */}
+        <div className="mt-6 rounded-[20px] border border-[rgba(26,58,42,0.1)] bg-[var(--landing-cream)] p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-[0.88rem]" aria-hidden>🔒</span>
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-muted)]">
+              {copy.rLockedSectionTitle}
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {lockedPreviews.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-[14px] border border-[rgba(26,58,42,0.08)] bg-white p-4"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[0.82rem] font-semibold leading-snug text-[var(--landing-green-deep)]">
+                      {item.title}
+                    </p>
+                    <p className="mt-0.5 text-[0.72rem] text-[var(--landing-muted)]">
+                      {item.meta}
+                    </p>
+                  </div>
+                  <span className="shrink-0 rounded-full border border-[rgba(26,58,42,0.12)] px-2 py-0.5 text-[0.68rem] font-semibold text-[var(--landing-muted)]">
+                    Locked
+                  </span>
+                </div>
+                {/* Blurred placeholder rows */}
+                <div className="mt-3 space-y-1.5">
+                  <div className="h-2 w-4/5 rounded-full bg-[rgba(26,58,42,0.07)]" />
+                  <div className="h-2 w-3/5 rounded-full bg-[rgba(26,58,42,0.05)]" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-4 text-[0.75rem] text-[var(--landing-muted)]">
+            {copy.rLockedMeta}
+          </p>
+        </div>
+
+        {/* ── Stage-specific upsell CTA ── */}
+        <div className="mt-4 rounded-[20px] bg-[var(--landing-green-deep)] p-6 text-white sm:p-8">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-sprout)]">
-            Your next step
+            {copy.rUpsellLabel}
           </p>
           <h3 className="mt-2 font-[family:var(--font-serif)] text-[1.35rem] leading-tight">
-            Want the full diagnosis, sprint plan, and build support?
+            {upsell.headline}
           </h3>
           <p className="mt-2 text-[0.9rem] leading-[1.6] text-white/70">
-            Free validation shows you where you are. The full BizSproutAI platform takes you from
-            here to your first paying customer — with a 30-day sprint, hands-on support, and build
-            help at every stage.
+            {upsell.body}
           </p>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <a
               href={phoneHref}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackMeta("PlatformContinueClick", { stage: result.stage })}
               className="flex flex-1 items-center justify-center rounded-full bg-[var(--landing-sprout)] px-6 py-4 text-[0.95rem] font-semibold text-[var(--landing-ink)] transition hover:brightness-105"
             >
-              Unlock my full sprint inside BizSproutAI →
+              {copy.rPrimaryCta}
             </a>
-            <a
-              href={phoneHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center rounded-full border border-white/20 px-6 py-4 text-[0.9rem] font-semibold text-white/80 transition hover:border-white/40 hover:text-white sm:flex-none"
-            >
-              Book a free fit call
-            </a>
+            <div className="flex flex-col items-center gap-1 sm:flex-none">
+              <a
+                href={phoneHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  trackMetaStandard("Schedule");
+                  trackMeta("FitCallClick", { stage: result.stage });
+                }}
+                className="flex w-full items-center justify-center rounded-full border border-white/20 px-6 py-4 text-[0.9rem] font-semibold text-white/80 transition hover:border-white/40 hover:text-white"
+              >
+                {copy.rFitCta}
+              </a>
+              <span className="text-[0.7rem] text-white/40">{copy.rFitNote}</span>
+            </div>
           </div>
         </div>
 
@@ -387,7 +398,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
           onClick={handleReset}
           className="mt-6 text-[0.82rem] text-[var(--landing-muted)] underline underline-offset-4 transition hover:text-[var(--landing-green-deep)]"
         >
-          ← Validate a different idea
+          {copy.rReset}
         </button>
       </div>
     );
@@ -395,34 +406,36 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
 
   // ── Form view ──────────────────────────────────────────────────────────────
 
+  const totalSteps = 4;
+  const displayStep = step + 1;
+
   return (
     <div className="mx-auto max-w-2xl">
       {/* Progress */}
       <div className="mb-8 flex items-center justify-between">
-        <StepDots total={3} current={step - 1} />
+        <StepDots total={totalSteps} current={step} />
         <span className="text-[0.8rem] text-[var(--landing-muted)]">
-          Step {step} of 3
+          {copy.stepCounter(displayStep, totalSteps)}
         </span>
       </div>
 
-      {/* ── Step 1: Stage ── */}
-      {step === 1 && (
+      {/* ── Step 0: Stage selection ── */}
+      {step === 0 && (
         <div>
           <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-            Free Validation — Step 1
+            {copy.stepLabel(1)}
           </p>
           <h2 className="mt-3 font-[family:var(--font-serif)] text-[clamp(1.65rem,3vw,2.4rem)] leading-[1.12] text-[var(--landing-green-deep)]">
-            Where are you right now?
+            {copy.s0heading}
           </h2>
           <p className="mt-3 text-[0.95rem] leading-[1.65] text-[var(--landing-muted)]">
-            Pick what best describes your current situation. Be honest — the result will be more
-            useful if you are accurate.
+            {copy.s0body}
           </p>
 
           <div className="mt-7 space-y-3">
-            {STAGE_CHOICES.map((label, i) => (
+            {copy.s0choices.map((label, i) => (
               <button
-                key={label}
+                key={i}
                 onClick={() => setStageIndex(i)}
                 className={`flex w-full items-center gap-4 rounded-[16px] border px-5 py-4 text-left text-[0.95rem] leading-[1.5] transition ${
                   stageIndex === i
@@ -447,39 +460,38 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
           </div>
 
           <button
-            onClick={handleStep1Next}
+            onClick={handleStep0Next}
             disabled={stageIndex === null}
             className="mt-8 w-full rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Continue →
+            {copy.s0cta}
           </button>
         </div>
       )}
 
-      {/* ── Step 2: About your idea ── */}
-      {step === 2 && (
+      {/* ── Step 1: About your idea ── */}
+      {step === 1 && (
         <div>
           <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-            Free Validation — Step 2
+            {copy.stepLabel(2)}
           </p>
           <h2 className="mt-3 font-[family:var(--font-serif)] text-[clamp(1.65rem,3vw,2.4rem)] leading-[1.12] text-[var(--landing-green-deep)]">
-            Tell us about your idea.
+            {copy.s1heading}
           </h2>
           <p className="mt-3 text-[0.95rem] leading-[1.65] text-[var(--landing-muted)]">
-            One or two sentences is enough. The more specific you are, the more useful the
-            recommendation will be.
+            {copy.s1body}
           </p>
 
           <div className="mt-7 space-y-5">
             <div>
               <label className="block text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
-                What are you building or offering?
-                <span className="ml-1 font-normal text-[var(--landing-muted)]">(required)</span>
+                {copy.s1ideaLabel}
+                <span className="ml-1 font-normal text-[var(--landing-muted)]">{copy.s1ideaRequired}</span>
               </label>
               <textarea
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
-                placeholder="e.g. A coaching service for first-time founders who want to validate their idea before building."
+                placeholder={copy.s1ideaPlaceholder}
                 rows={3}
                 maxLength={400}
                 className="mt-2 w-full resize-none rounded-[14px] border border-[rgba(26,58,42,0.15)] bg-white px-4 py-3 text-[0.95rem] leading-[1.6] text-[var(--landing-ink)] outline-none transition placeholder:text-[var(--landing-muted)]/60 focus:border-[var(--landing-green-mid)] focus:ring-2 focus:ring-[rgba(126,200,80,0.2)]"
@@ -488,14 +500,14 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
 
             <div>
               <label className="block text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
-                Who is it for?
-                <span className="ml-1 font-normal text-[var(--landing-muted)]">(optional)</span>
+                {copy.s1audienceLabel}
+                <span className="ml-1 font-normal text-[var(--landing-muted)]">{copy.s1audienceOptional}</span>
               </label>
               <input
                 type="text"
                 value={audience}
                 onChange={(e) => setAudience(e.target.value)}
-                placeholder="e.g. Solo founders, freelancers, small service businesses"
+                placeholder={copy.s1audiencePlaceholder}
                 maxLength={200}
                 className="mt-2 w-full rounded-[14px] border border-[rgba(26,58,42,0.15)] bg-white px-4 py-3 text-[0.95rem] text-[var(--landing-ink)] outline-none transition placeholder:text-[var(--landing-muted)]/60 focus:border-[var(--landing-green-mid)] focus:ring-2 focus:ring-[rgba(126,200,80,0.2)]"
               />
@@ -504,45 +516,44 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
 
           <div className="mt-8 flex gap-3">
             <button
-              onClick={() => setStep(1)}
+              onClick={() => setStep(0)}
               className="rounded-full border border-[rgba(26,58,42,0.15)] px-6 py-4 text-[0.95rem] font-semibold text-[var(--landing-muted)] transition hover:border-[rgba(26,58,42,0.3)] hover:text-[var(--landing-green-deep)]"
             >
-              ← Back
+              {copy.back}
             </button>
             <button
-              onClick={handleStep2Next}
+              onClick={handleStep1Next}
               disabled={idea.trim().length < 10}
               className="flex-1 rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Continue →
+              {copy.next}
             </button>
           </div>
         </div>
       )}
 
-      {/* ── Step 3: Current status ── */}
-      {step === 3 && (
+      {/* ── Step 2: Current status ── */}
+      {step === 2 && (
         <div>
           <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-            Free Validation — Step 3
+            {copy.stepLabel(3)}
           </p>
           <h2 className="mt-3 font-[family:var(--font-serif)] text-[clamp(1.65rem,3vw,2.4rem)] leading-[1.12] text-[var(--landing-green-deep)]">
-            What exists right now?
+            {copy.s2heading}
           </h2>
           <p className="mt-3 text-[0.95rem] leading-[1.65] text-[var(--landing-muted)]">
-            Two quick questions to sharpen the recommendation.
+            {copy.s2body}
           </p>
 
           <div className="mt-7 space-y-6">
-            {/* Question 1 */}
             <div>
               <p className="text-[0.88rem] font-semibold text-[var(--landing-green-deep)]">
-                Do you have a live website, landing page, or booking system?
+                {copy.s2liveQ}
               </p>
               <div className="mt-3 flex gap-3">
                 {[
-                  { label: "Yes, something is live", value: true },
-                  { label: "No, nothing live yet", value: false },
+                  { label: copy.s2liveYes, value: true },
+                  { label: copy.s2liveNo, value: false },
                 ].map(({ label, value }) => (
                   <button
                     key={label}
@@ -559,15 +570,14 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
               </div>
             </div>
 
-            {/* Question 2 */}
             <div>
               <p className="text-[0.88rem] font-semibold text-[var(--landing-green-deep)]">
-                Are people already paying, booking, or signing up?
+                {copy.s2tractionQ}
               </p>
               <div className="mt-3 flex gap-3">
                 {[
-                  { label: "Yes, I have some traction", value: true },
-                  { label: "No, not yet", value: false },
+                  { label: copy.s2tractionYes, value: true },
+                  { label: copy.s2tractionNo, value: false },
                 ].map(({ label, value }) => (
                   <button
                     key={label}
@@ -587,22 +597,104 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
 
           <div className="mt-8 flex gap-3">
             <button
-              onClick={() => setStep(2)}
+              onClick={() => setStep(1)}
               className="rounded-full border border-[rgba(26,58,42,0.15)] px-6 py-4 text-[0.95rem] font-semibold text-[var(--landing-muted)] transition hover:border-[rgba(26,58,42,0.3)] hover:text-[var(--landing-green-deep)]"
             >
-              ← Back
+              {copy.back}
             </button>
             <button
-              onClick={handleSubmit}
+              onClick={handleStep2Next}
               disabled={hasLiveAsset === null || hasTraction === null}
               className="flex-1 rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Get My Free Validation →
+              {copy.next}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Step 3: Email capture + Submit ── */}
+      {step === 3 && (
+        <div>
+          <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
+            {copy.stepLabel(4)}
+          </p>
+          <h2 className="mt-3 font-[family:var(--font-serif)] text-[clamp(1.65rem,3vw,2.4rem)] leading-[1.12] text-[var(--landing-green-deep)]">
+            {copy.s3heading}
+          </h2>
+          <p className="mt-3 text-[0.95rem] leading-[1.65] text-[var(--landing-muted)]">
+            {copy.s3body}
+          </p>
+
+          <div className="mt-7 space-y-4">
+            <div>
+              <label className="block text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
+                {copy.s3nameLabel}
+                <span className="ml-1 font-normal text-[var(--landing-muted)]">{copy.s3nameOptional}</span>
+              </label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder={copy.s3namePlaceholder}
+                maxLength={80}
+                autoComplete="given-name"
+                className="mt-2 w-full rounded-[14px] border border-[rgba(26,58,42,0.15)] bg-white px-4 py-3 text-[0.95rem] text-[var(--landing-ink)] outline-none transition placeholder:text-[var(--landing-muted)]/60 focus:border-[var(--landing-green-mid)] focus:ring-2 focus:ring-[rgba(126,200,80,0.2)]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
+                {copy.s3emailLabel}
+                <span className="ml-1 font-normal text-[var(--landing-muted)]">{copy.s3emailRequired}</span>
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (emailError) setEmailError("");
+                }}
+                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                placeholder={copy.s3emailPlaceholder}
+                autoComplete="email"
+                className={`mt-2 w-full rounded-[14px] border bg-white px-4 py-3 text-[0.95rem] text-[var(--landing-ink)] outline-none transition placeholder:text-[var(--landing-muted)]/60 focus:ring-2 focus:ring-[rgba(126,200,80,0.2)] ${
+                  emailError
+                    ? "border-red-400 focus:border-red-400"
+                    : "border-[rgba(26,58,42,0.15)] focus:border-[var(--landing-green-mid)]"
+                }`}
+              />
+              {emailError && (
+                <p className="mt-1.5 text-[0.8rem] text-red-500">{emailError}</p>
+              )}
+            </div>
+          </div>
+
+          {submitError && (
+            <div className="mt-5 rounded-[14px] border border-red-200 bg-red-50 px-4 py-3 text-[0.88rem] text-red-700">
+              {submitError}
+            </div>
+          )}
+
+          <div className="mt-8 flex gap-3">
+            <button
+              onClick={() => setStep(2)}
+              disabled={submitting}
+              className="rounded-full border border-[rgba(26,58,42,0.15)] px-6 py-4 text-[0.95rem] font-semibold text-[var(--landing-muted)] transition hover:border-[rgba(26,58,42,0.3)] hover:text-[var(--landing-green-deep)] disabled:opacity-40"
+            >
+              {copy.back}
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={submitting}
+              className="flex-1 rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {submitting ? copy.s3submitting : copy.s3submit}
             </button>
           </div>
 
-          <p className="mt-4 text-center text-[0.78rem] text-[var(--landing-muted)]">
-            No account needed. Results are instant.
+          <p className="mt-3 text-center text-[0.75rem] text-[var(--landing-muted)]">
+            {copy.s3privacy}
           </p>
         </div>
       )}

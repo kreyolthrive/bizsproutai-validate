@@ -1,5 +1,14 @@
 import { resolveTransport } from "./transport";
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export interface FreeValidationResult {
   stage: string;
   verdict: string;
@@ -15,12 +24,18 @@ function resultEmailHtml(
   result: FreeValidationResult,
   platformUrl: string
 ): string {
+  const safeName = escapeHtml(firstName || "Founder");
+  const safeStage = escapeHtml(result.stage);
+  const safeVerdict = escapeHtml(result.verdict);
+  const safeFirstAsset = escapeHtml(result.firstAsset);
+  const safeFirstAssetReason = result.firstAssetReason ? escapeHtml(result.firstAssetReason) : "";
+  const safeWarning = escapeHtml(result.warning);
   const stepsHtml = result.nextSteps
     .map(
       (step, i) =>
         `<tr>
           <td style="padding:6px 0;vertical-align:top;width:28px;color:#7ec850;font-weight:700;font-size:15px;">${i + 1}.</td>
-          <td style="padding:6px 0;vertical-align:top;color:#374151;font-size:15px;line-height:1.6;">${step}</td>
+          <td style="padding:6px 0;vertical-align:top;color:#374151;font-size:15px;line-height:1.6;">${escapeHtml(step)}</td>
         </tr>`
     )
     .join("");
@@ -40,23 +55,23 @@ function resultEmailHtml(
 
         <!-- Stage badge -->
         <tr><td style="background:#1a3a2a;border-radius:16px 16px 0 0;padding:28px 32px 12px;">
-          <span style="display:inline-block;background:#7ec850;color:#1a3a2a;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px;">${result.stage}</span>
+          <span style="display:inline-block;background:#7ec850;color:#1a3a2a;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px;">${safeStage}</span>
         </td></tr>
 
         <!-- Verdict -->
         <tr><td style="background:#1a3a2a;padding:0 32px 20px;">
           <p style="margin:12px 0 0;color:#fff;font-size:20px;font-weight:600;line-height:1.3;">
-            Hey ${firstName || "Founder"} — here are your free validation results.
+            Hey ${safeName} — here are your free validation results.
           </p>
-          <p style="margin:10px 0 0;color:rgba(255,255,255,0.8);font-size:15px;line-height:1.6;">${result.verdict}</p>
+          <p style="margin:10px 0 0;color:rgba(255,255,255,0.8);font-size:15px;line-height:1.6;">${safeVerdict}</p>
         </td></tr>
 
         <!-- First asset -->
         <tr><td style="background:#1a3a2a;padding:0 32px 20px;">
           <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 18px;">
             <p style="margin:0 0 4px;color:#7ec850;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">Recommended first asset</p>
-            <p style="margin:0;color:#fff;font-size:15px;font-weight:600;">${result.firstAsset}</p>
-            ${result.firstAssetReason ? `<p style="margin:6px 0 0;color:rgba(255,255,255,0.6);font-size:13px;">${result.firstAssetReason}</p>` : ""}
+            <p style="margin:0;color:#fff;font-size:15px;font-weight:600;">${safeFirstAsset}</p>
+            ${safeFirstAssetReason ? `<p style="margin:6px 0 0;color:rgba(255,255,255,0.6);font-size:13px;">${safeFirstAssetReason}</p>` : ""}
           </div>
         </td></tr>
 
@@ -70,7 +85,7 @@ function resultEmailHtml(
         <tr><td style="background:#1a3a2a;padding:0 32px 28px;border-radius:0 0 0 0;">
           <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:14px 18px;">
             <p style="margin:0 0 4px;color:#fbbf24;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">One mistake to avoid</p>
-            <p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;">${result.warning}</p>
+            <p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;">${safeWarning}</p>
           </div>
         </td></tr>
 
@@ -94,6 +109,7 @@ function abandonedEmailHtml(
   locale: string,
   validateUrl: string
 ): string {
+  const safeName = escapeHtml(firstName || "Founder");
   return `<!DOCTYPE html>
 <html lang="${locale}">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Finish Your Free Validation</title></head>
@@ -105,7 +121,7 @@ function abandonedEmailHtml(
           <span style="font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#4a8c5c;">BizSproutAI</span>
         </td></tr>
         <tr><td style="background:#fff;border-radius:16px;padding:32px;">
-          <p style="margin:0 0 8px;color:#1a3a2a;font-size:20px;font-weight:700;">Hey ${firstName || "Founder"} — your free validation is waiting.</p>
+          <p style="margin:0 0 8px;color:#1a3a2a;font-size:20px;font-weight:700;">Hey ${safeName} — your free validation is waiting.</p>
           <p style="margin:0 0 20px;color:#6b7280;font-size:15px;line-height:1.6;">You started a free business validation but didn't get your results. Your stage, recommended first asset, and 4 next steps are still waiting — it only takes a minute to finish.</p>
           <div style="text-align:center;margin:24px 0;">
             <a href="${validateUrl}" style="display:inline-block;background:#1a3a2a;color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:999px;text-decoration:none;">Finish My Free Validation →</a>
@@ -154,18 +170,19 @@ export async function sendFreeValidationOwnerAlert(
   const t = resolveTransport();
   if (!t) return { sent: false, error: "Email transport not configured" };
 
-  const ownerEmail = process.env.IONOS_OWNER_EMAIL ?? process.env.GMAIL_USER ?? "bizsproutai@gmail.com";
+  const ownerEmail = process.env.LEADS_TO_EMAIL ?? process.env.HOSTINGER_FROM_EMAIL;
+  if (!ownerEmail) return { sent: false, error: "Owner email not configured (set LEADS_TO_EMAIL)" };
 
   try {
     await t.transport.sendMail({
       from: `"BizSproutAI Leads" <${t.from}>`,
       to: ownerEmail,
-      subject: `New free validation lead: ${firstName || email} — ${result.stage}`,
-      html: `<p><strong>Email:</strong> ${email}</p>
-<p><strong>Name:</strong> ${firstName || "(not provided)"}</p>
-<p><strong>Stage:</strong> ${result.stage}</p>
-<p><strong>Verdict:</strong> ${result.verdict}</p>
-<p><strong>First Asset:</strong> ${result.firstAsset}</p>`,
+      subject: `New free validation lead: ${escapeHtml(firstName || email)} — ${escapeHtml(result.stage)}`,
+      html: `<p><strong>Email:</strong> ${escapeHtml(email)}</p>
+<p><strong>Name:</strong> ${escapeHtml(firstName || "(not provided)")}</p>
+<p><strong>Stage:</strong> ${escapeHtml(result.stage)}</p>
+<p><strong>Verdict:</strong> ${escapeHtml(result.verdict)}</p>
+<p><strong>First Asset:</strong> ${escapeHtml(result.firstAsset)}</p>`,
     });
     return { sent: true, error: null };
   } catch (err) {

@@ -2,9 +2,10 @@
  * Provider-agnostic email transport.
  *
  * Controlled by EMAIL_PROVIDER env var:
- *   "hostinger" — Hostinger SMTP (HOSTINGER_SMTP_* vars)  [current temporary sender]
+ *   "hostinger" — Hostinger SMTP (HOSTINGER_SMTP_* vars)  [active sender]
  *   "gmail"     — Gmail SMTP via App Password (GMAIL_USER + GMAIL_APP_PASSWORD)
- *   "ionos"     — IONOS SMTP (IONOS_SMTP_* vars)          [default / future branded sender]
+ *   "ionos"     — IONOS SMTP (IONOS_SMTP_* vars)
+ *   "resend"    — Resend API (RESEND_API_KEY + RESEND_FROM_EMAIL)
  *
  * To switch providers: update EMAIL_PROVIDER in Vercel env vars and redeploy.
  * No code changes required.
@@ -20,7 +21,7 @@ export interface ResolvedTransport {
 }
 
 export function resolveTransport(): ResolvedTransport | null {
-  const provider = (process.env.EMAIL_PROVIDER ?? "ionos") as EmailProvider;
+  const provider = (process.env.EMAIL_PROVIDER ?? "hostinger") as EmailProvider;
 
   if (provider === "hostinger") {
     const user = process.env.HOSTINGER_SMTP_USER;

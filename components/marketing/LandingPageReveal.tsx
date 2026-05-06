@@ -10,8 +10,19 @@ export function LandingPageReveal() {
       return;
     }
 
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      elements.forEach((element) => {
+        element.dataset.revealState = "visible";
+      });
+      return;
+    }
+
+    document.documentElement.dataset.motion = "enabled";
+
     if (!("IntersectionObserver" in window)) {
-      elements.forEach((element) => element.classList.add("visible"));
+      elements.forEach((element) => {
+        element.dataset.revealState = "visible";
+      });
       return;
     }
 
@@ -26,7 +37,7 @@ export function LandingPageReveal() {
           const order = Number(element.dataset.revealOrder ?? "0");
 
           window.setTimeout(() => {
-            element.classList.add("visible");
+            element.dataset.revealState = "visible";
           }, order * 60);
 
           observer.unobserve(element);
@@ -37,10 +48,23 @@ export function LandingPageReveal() {
 
     elements.forEach((element, index) => {
       element.dataset.revealOrder = String(index);
+
+      const rect = element.getBoundingClientRect();
+      const isInitiallyVisible = rect.top < window.innerHeight * 0.88;
+
+      if (isInitiallyVisible) {
+        element.dataset.revealState = "visible";
+        return;
+      }
+
+      element.dataset.revealState = "hidden";
       observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      delete document.documentElement.dataset.motion;
+    };
   }, []);
 
   return null;

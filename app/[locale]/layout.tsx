@@ -11,9 +11,11 @@ import "@fontsource/dm-sans/600.css";
 import "@fontsource/syne/700.css";
 import "@fontsource/syne/800.css";
 import "@fontsource/instrument-serif/400.css";
+import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNav } from "@/components/MobileNav";
+import { RetargetingPixels } from "@/components/marketing/RetargetingPixels";
 import { locales, seoMetadata, type Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 
@@ -258,6 +260,30 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        {/* Meta Pixel — BizSproutAI Launch (ID: 1089915446436683) */}
+        {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
+        {/* Meta Pixel init — loads fbevents.js and initializes fbq stub.
+            PageView is fired by RetargetingPixels after React hydration. */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '1089915446436683');
+          fbq('track', 'PageView');
+        ` }} />
+        <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img height="1" width="1" style={{display:"none"}} alt=""
+            src="https://www.facebook.com/tr?id=1089915446436683&ev=PageView&noscript=1"
+          />
+        </noscript>
+      </head>
       <body className="font-[family:var(--font-body)] text-[var(--ink)] antialiased">
         <NextIntlClientProvider messages={messages}>
           <div className="min-h-screen bg-[var(--warm-white)]">
@@ -341,6 +367,9 @@ export default async function LocaleLayout({
 
           </div>
         </NextIntlClientProvider>
+        <Suspense fallback={null}>
+          <RetargetingPixels />
+        </Suspense>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { LandingPageReveal } from "@/components/marketing/LandingPageReveal";
 import { BookingCalendar } from "@/components/marketing/BookingCalendar";
 import { ValidationWidget } from "@/components/ValidationWidget";
+import { LandingPageTracker } from "@/components/marketing/LandingPageTracker";
 import { getLandingCopy } from "@/i18n/landingCopy";
 
 type Props = {
@@ -64,6 +65,13 @@ function getCopy(locale: string) {
         "Une erreur critique à éviter",
       ],
       afterValidationCta: "Débloquez votre sprint complet dans BizSproutAI →",
+      afterValidationFreeTitle: "Ce que vous obtenez maintenant",
+      afterValidationPlatformTitle: "Ce que vous débloquez ensuite",
+      afterValidationFreeNote: "Gratuit. En moins d'une minute. Sans compte.",
+      freeResultCtaNote: "Gratuit · Sans compte · En moins d'une minute",
+      faqTitle: "Ce que les fondateurs veulent généralement savoir avant de commencer.",
+      faqSubtitle: "Commencez par la validation gratuite. Si vous voulez aller plus loin, le Sprint est la prochaine étape.",
+      ctaDiagNote: "30 min de diagnostic · sans argumentaire · juste de la clarté",
 
       /* ── Sprint / services section ── */
       servicesEyebrow: "La prochaine étape après la validation gratuite",
@@ -140,6 +148,13 @@ function getCopy(locale: string) {
         "Un error crítico a evitar",
       ],
       afterValidationCta: "Accede a tu sprint completo en BizSproutAI →",
+      afterValidationFreeTitle: "Lo que obtienes ahora mismo",
+      afterValidationPlatformTitle: "Lo que desbloqueas a continuación",
+      afterValidationFreeNote: "Gratis. Menos de un minuto. Sin cuenta.",
+      freeResultCtaNote: "Gratis · Sin cuenta · Menos de un minuto",
+      faqTitle: "Lo que los fundadores suelen querer saber antes de empezar.",
+      faqSubtitle: "Empieza con la validación gratuita. Si quieres ir más lejos, el Sprint es el siguiente paso.",
+      ctaDiagNote: "30 min de diagnóstico · sin argumentario · solo claridad",
       servicesEyebrow: "El siguiente paso después de la validación gratuita",
       servicesTitle: "De la validación gratuita al lanzamiento completo.",
       servicesBody:
@@ -206,6 +221,13 @@ function getCopy(locale: string) {
         "Yon erè kritik pou evite",
       ],
       afterValidationCta: "Deblouke sprint konplè ou nan BizSproutAI →",
+      afterValidationFreeTitle: "Sa ou jwenn kounye a",
+      afterValidationPlatformTitle: "Sa ou debloke apre",
+      afterValidationFreeNote: "Gratis. Mwens pase yon minit. San kont.",
+      freeResultCtaNote: "Gratis · San kont · Mwens pase yon minit",
+      faqTitle: "Sa fondatè yo vle konnen anvan yo kòmanse.",
+      faqSubtitle: "Kòmanse ak validasyon gratis la. Si ou vle ale pi lwen, Sprint la se pwochen etap la.",
+      ctaDiagNote: "30 minit dyagnostik · pa gen vant · jis klarifikasyon",
       servicesEyebrow: "Pwochen etap apre validasyon gratis",
       servicesTitle: "Soti nan validasyon gratis rive nan lanse nèt.",
       servicesBody:
@@ -272,6 +294,13 @@ function getCopy(locale: string) {
         "Um erro crítico a evitar",
       ],
       afterValidationCta: "Acesse seu sprint completo no BizSproutAI →",
+      afterValidationFreeTitle: "O que você recebe agora",
+      afterValidationPlatformTitle: "O que você desbloqueia a seguir",
+      afterValidationFreeNote: "Gratuito. Menos de um minuto. Sem conta.",
+      freeResultCtaNote: "Gratuito · Sem conta · Menos de um minuto",
+      faqTitle: "O que os fundadores geralmente querem saber antes de começar.",
+      faqSubtitle: "Comece com a validação gratuita. Se quiser ir mais longe, o Sprint é o próximo passo.",
+      ctaDiagNote: "30 min de diagnóstico · sem argumentação · apenas clareza",
       servicesEyebrow: "O próximo passo após a validação gratuita",
       servicesTitle: "Da validação gratuita ao lançamento completo.",
       servicesBody:
@@ -346,6 +375,13 @@ function getCopy(locale: string) {
       "One critical mistake to avoid",
     ],
     afterValidationCta: "Unlock your full sprint inside BizSproutAI →",
+    afterValidationFreeTitle: "What you get right now",
+    afterValidationPlatformTitle: "What you unlock next",
+    afterValidationFreeNote: "Free. Takes under a minute. No account required.",
+    freeResultCtaNote: "Free · No account needed · Takes under a minute",
+    faqTitle: "What founders usually want to know before they start.",
+    faqSubtitle: "Start with the free validation. If you want to go further, the Sprint is the next step.",
+    ctaDiagNote: "30-min diagnostic · no pitch · just clarity",
 
     /* ── Sprint / services section ── */
     servicesEyebrow: "The next step after free validation",
@@ -400,6 +436,21 @@ const faqItems = [
     answer:
       "If you complete the sprint, follow the plan, and do the work, we keep working with you at no extra cost until you do.",
   },
+  {
+    question: "How much does the full Sprint cost?",
+    answer:
+      "The Sprint is an application-only program. Pricing is shared during the fit call — what matters first is whether it is the right fit for where you are right now. The free validation is always the best first step.",
+  },
+  {
+    question: "Do I need technical skills to use BizSproutAI?",
+    answer:
+      "No. The Sprint is designed for founders at any technical level. We work with tools you already have, or help you set up simple ones that require no coding.",
+  },
+  {
+    question: "What if my idea is not ready to launch yet?",
+    answer:
+      "That is exactly what free validation is for. If your idea needs more work before it is launch-ready, the validation will show you what is missing and what to do first — before you invest time or money in the wrong direction.",
+  },
 ];
 
 export default async function HomePage({ params }: Props) {
@@ -417,6 +468,7 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <main className="overflow-x-hidden bg-[var(--warm-white)] text-[var(--ink)]">
+      <LandingPageTracker />
       <LandingPageReveal />
 
       {/* ── Section 1: Hero — Free Validation ── */}
@@ -487,10 +539,7 @@ export default async function HomePage({ params }: Props) {
               clarityLabel={lc.clarityLabel}
               clarityQuestion={lc.clarityQuestion}
               validationCta={lc.validationCta}
-              platformBridgeCta={lc.platformBridgeCta}
-              callCta={lc.callCta}
-              callHref={phoneHref}
-              actionHref={phoneHref}
+              widgetNote={lc.widgetNote}
               locale={locale}
             />
 
@@ -556,7 +605,7 @@ export default async function HomePage({ params }: Props) {
               {lc.validationCta} →
             </a>
             <p className="mt-3 text-[0.8rem] text-[var(--landing-muted)]">
-              Free · No account needed · Takes under a minute
+              {copy.freeResultCtaNote}
             </p>
           </div>
         </div>
@@ -726,7 +775,7 @@ export default async function HomePage({ params }: Props) {
                 {copy.afterValidationFreeBadge}
               </div>
               <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.45rem] leading-tight text-[var(--landing-green-deep)]">
-                What you get right now
+                {copy.afterValidationFreeTitle}
               </h3>
               <ul className="mt-5 space-y-3">
                 {copy.afterValidationFreeItems.map((item) => (
@@ -740,10 +789,7 @@ export default async function HomePage({ params }: Props) {
               </ul>
               <div className="mt-6 rounded-xl border border-[rgba(126,200,80,0.2)] bg-white px-4 py-3">
                 <p className="text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
-                  Free. Takes under a minute.
-                </p>
-                <p className="mt-0.5 text-[0.78rem] text-[var(--landing-muted)]">
-                  No account required to validate.
+                  {copy.afterValidationFreeNote}
                 </p>
               </div>
             </div>
@@ -754,7 +800,7 @@ export default async function HomePage({ params }: Props) {
                 {copy.afterValidationPlatformBadge}
               </div>
               <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.45rem] leading-tight">
-                What you unlock next
+                {copy.afterValidationPlatformTitle}
               </h3>
               <ul className="mt-5 space-y-3">
                 {lc.platformFeatures.map((item) => (
@@ -930,10 +976,10 @@ export default async function HomePage({ params }: Props) {
               FAQ
             </p>
             <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
-              What founders usually want to know before they start.
+              {copy.faqTitle}
             </h2>
             <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
-              Start with the free validation. If you want to go further, the Sprint is the next step.
+              {copy.faqSubtitle}
             </p>
           </div>
 
@@ -978,21 +1024,26 @@ export default async function HomePage({ params }: Props) {
           <p className="landing-reveal mx-auto mt-4 max-w-xl text-base leading-7 text-[var(--landing-muted)]">
             {copy.ctaBody}
           </p>
-          <div className="landing-reveal mt-8 flex flex-wrap justify-center gap-3">
+          <div className="landing-reveal mt-8 flex flex-wrap items-start justify-center gap-3">
             <a
               href={validateHref}
               className="inline-flex rounded-full bg-[var(--landing-green-deep)] px-9 py-4 text-[1.05rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.22)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_12px_36px_rgba(26,58,42,0.28)]"
             >
               {copy.ctaPrimary} →
             </a>
-            <a
-              href={phoneHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex rounded-full border border-[rgba(26,58,42,0.2)] px-7 py-4 text-base font-semibold text-[var(--landing-green-deep)] transition hover:border-[var(--landing-green-deep)] hover:bg-[rgba(26,58,42,0.04)]"
-            >
-              {copy.ctaSecondary}
-            </a>
+            <div className="flex flex-col items-center gap-1">
+              <a
+                href={phoneHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex rounded-full border border-[rgba(26,58,42,0.2)] px-7 py-4 text-base font-semibold text-[var(--landing-green-deep)] transition hover:border-[var(--landing-green-deep)] hover:bg-[rgba(26,58,42,0.04)]"
+              >
+                {copy.ctaSecondary}
+              </a>
+              <span className="text-[0.73rem] text-[var(--landing-muted)]">
+                {copy.ctaDiagNote}
+              </span>
+            </div>
           </div>
           <p className="landing-reveal mt-6 text-sm text-[var(--landing-muted)]">
             {copy.emailPrefix}{" "}

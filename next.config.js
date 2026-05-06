@@ -11,8 +11,8 @@ const contentSecurityPolicy = [
   "frame-ancestors 'none'",
   "object-src 'none'",
   isProduction
-    ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://app.cal.com"
-    : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://app.cal.com",
+    ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://app.cal.com https://connect.facebook.net"
+    : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://app.cal.com https://connect.facebook.net",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https://app.cal.com",

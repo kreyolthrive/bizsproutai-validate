@@ -25,29 +25,28 @@ export const seoMetadata: Record<
   { title: string; description: string }
 > = {
   en: {
-    title:
-      "30-Day Founder Sprint | BizSproutAI — Launch Your Business & Land Your First Customer",
+    title: "Validate Your Business Idea for Free | BizSproutAI",
     description:
-      "The 30-Day Founder Sprint is a done-with-you business launch program for early-stage founders. Go from idea to real offer, website, and client system — and work toward your first paying customer in 30 days. Results guarantee included.",
+      "BizSproutAI helps you validate your business idea, see what stage you're in, and find what to build first — free. Get your stage, recommended first asset, next 4 steps, and the mistake to avoid.",
   },
   fr: {
-    title: "BizSproutAI — Validez votre idée. Lancez avec confiance",
+    title: "Validez votre idée gratuitement | BizSproutAI",
     description:
-      "Validation d'entreprise alimentée par l'IA adaptée à votre marché. Obtenez des verdicts GO/FIX/STOP, des corrections actionnables et des conseils de lancement.",
+      "BizSproutAI vous aide à valider votre idée, identifier votre stade et trouver quoi construire en premier — gratuitement. Résultats en moins d'une minute.",
   },
   ht: {
-    title: "BizSproutAI — Valide ide biznis ou. Lanse ak konfyans",
+    title: "Valide ide biznis ou gratis | BizSproutAI",
     description:
-      "Validasyon biznis ki itilize AI adapte pou mache ou. Jwenn vèdik GO/FIX/STOP, koreksyon aksyonab, ak gidans pou lanse.",
+      "BizSproutAI ede ou valide ide ou, wè kile ou ye, ak jwenn sa pou bati an premye — gratis. Rezilta an mwens pase yon minit.",
   },
   es: {
-    title: "BizSproutAI — Valida tu idea. Lanza con confianza",
+    title: "Valida tu idea de negocio gratis | BizSproutAI",
     description:
-      "Validación de negocios impulsada por IA adaptada a tu mercado. Obtén veredictos GO/FIX/STOP, correcciones accionables y guía de lanzamiento.",
+      "BizSproutAI te ayuda a validar tu idea, ver en qué etapa estás y encontrar qué construir primero — gratis. Resultados en menos de un minuto.",
   },
   pt: {
-    title: "BizSproutAI — Valide sua ideia. Lance com confiança",
+    title: "Valide sua ideia de negócio de graça | BizSproutAI",
     description:
-      "Validação de negócios com IA adaptada ao seu mercado. Receba vereditos GO/FIX/STOP, melhorias acionáveis e orientação de lançamento.",
+      "BizSproutAI ajuda você a validar sua ideia, ver em qual estágio está e encontrar o que construir primeiro — de graça. Resultados em menos de um minuto.",
   },
 };

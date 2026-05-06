@@ -1,6 +1,17 @@
 import { resolveTransport } from "./transport";
 
-const OWNER_EMAIL = "bizsproutai@gmail.com";
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function getOwnerEmail(): string | null {
+  return process.env.LEADS_TO_EMAIL ?? process.env.HOSTINGER_FROM_EMAIL ?? null;
+}
 
 function getFromEmail() {
   return process.env.RESEND_FROM_EMAIL ?? "noreply@validate.bizsproutai.com";
@@ -11,27 +22,29 @@ function getFromEmail() {
 async function sendOwnerViaTransport(data: LeadNotificationData): Promise<{ sent: boolean; error: string | null }> {
   const t = resolveTransport();
   if (!t) return { sent: false, error: "No email transport configured" };
+  const ownerEmail = getOwnerEmail();
+  if (!ownerEmail) return { sent: false, error: "Owner email not configured (set LEADS_TO_EMAIL)" };
 
   const subject = data.completed
-    ? `New free validation lead — ${data.email}`
-    : `New partial lead (email only) — ${data.email}`;
+    ? `New free validation lead — ${escapeHtml(data.email)}`
+    : `New partial lead (email only) — ${escapeHtml(data.email)}`;
 
   const lines = [
-    `<p><strong>Email:</strong> ${data.email}</p>`,
-    `<p><strong>Name:</strong> ${data.firstName || "(not provided)"}</p>`,
+    `<p><strong>Email:</strong> ${escapeHtml(data.email)}</p>`,
+    `<p><strong>Name:</strong> ${escapeHtml(data.firstName || "(not provided)")}</p>`,
     `<p><strong>Status:</strong> ${data.completed ? "✅ Completed validation" : "⚠️ Partial — email only"}</p>`,
-    `<p><strong>Timestamp:</strong> ${data.timestamp}</p>`,
-    data.stage ? `<p><strong>Stage:</strong> ${data.stage}</p>` : "",
-    data.verdict ? `<p><strong>Verdict:</strong> ${data.verdict}</p>` : "",
-    data.firstAsset ? `<p><strong>First Asset:</strong> ${data.firstAsset}</p>` : "",
-    data.idea ? `<p><strong>Idea:</strong> ${data.idea}</p>` : "",
-    data.audience ? `<p><strong>Audience:</strong> ${data.audience}</p>` : "",
+    `<p><strong>Timestamp:</strong> ${escapeHtml(data.timestamp)}</p>`,
+    data.stage ? `<p><strong>Stage:</strong> ${escapeHtml(data.stage)}</p>` : "",
+    data.verdict ? `<p><strong>Verdict:</strong> ${escapeHtml(data.verdict)}</p>` : "",
+    data.firstAsset ? `<p><strong>First Asset:</strong> ${escapeHtml(data.firstAsset)}</p>` : "",
+    data.idea ? `<p><strong>Idea:</strong> ${escapeHtml(data.idea)}</p>` : "",
+    data.audience ? `<p><strong>Audience:</strong> ${escapeHtml(data.audience)}</p>` : "",
   ].join("");
 
   try {
     await t.transport.sendMail({
       from: `"BizSproutAI Leads" <${t.from}>`,
-      to: OWNER_EMAIL,
+      to: ownerEmail,
       subject,
       html: `<div style="font-family:Arial,sans-serif;">${lines}</div>`,
     });
@@ -67,21 +80,24 @@ export async function sendOwnerNotification(
     return { sent: false, error: "RESEND_API_KEY not configured" };
   }
 
+  const ownerEmail = getOwnerEmail();
+  if (!ownerEmail) return { sent: false, error: "Owner email not configured (set LEADS_TO_EMAIL)" };
+
   const subject = data.completed
-    ? `New free validation lead — ${data.email}`
-    : `New partial lead (email only) — ${data.email}`;
+    ? `New free validation lead — ${escapeHtml(data.email)}`
+    : `New partial lead (email only) — ${escapeHtml(data.email)}`;
 
   const rows: [string, string][] = [
-    ["Email", data.email],
-    ["Name", data.firstName || "(not provided)"],
+    ["Email", escapeHtml(data.email)],
+    ["Name", escapeHtml(data.firstName || "(not provided)")],
     ["Status", data.completed ? "✅ Completed validation" : "⚠️ Partial — email only"],
-    ["Timestamp", data.timestamp],
+    ["Timestamp", escapeHtml(data.timestamp)],
   ];
-  if (data.stage) rows.push(["Stage", data.stage]);
-  if (data.verdict) rows.push(["Verdict", data.verdict]);
-  if (data.firstAsset) rows.push(["First Asset", data.firstAsset]);
-  if (data.idea) rows.push(["Business Idea", data.idea]);
-  if (data.audience) rows.push(["Audience", data.audience]);
+  if (data.stage) rows.push(["Stage", escapeHtml(data.stage)]);
+  if (data.verdict) rows.push(["Verdict", escapeHtml(data.verdict)]);
+  if (data.firstAsset) rows.push(["First Asset", escapeHtml(data.firstAsset)]);
+  if (data.idea) rows.push(["Business Idea", escapeHtml(data.idea)]);
+  if (data.audience) rows.push(["Audience", escapeHtml(data.audience)]);
 
   const tableRows = rows
     .map(
@@ -120,7 +136,7 @@ export async function sendOwnerNotification(
       },
       body: JSON.stringify({
         from: `BizSproutAI Leads <${getFromEmail()}>`,
-        to: [OWNER_EMAIL],
+        to: [ownerEmail],
         subject,
         html,
       }),

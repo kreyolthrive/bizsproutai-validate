@@ -447,38 +447,53 @@ function getEmailCopy(locale: Locale): EmailCopy {
 }
 
 function getMailConfig(): MailConfig | null {
-  const user = sanitize(process.env.IONOS_SMTP_USER ?? process.env.SMTP_USER);
-  const pass = sanitize(process.env.IONOS_SMTP_PASS ?? process.env.SMTP_PASS);
+  const provider = process.env.EMAIL_PROVIDER ?? "hostinger";
 
-  if (!user || !pass) return null;
+  let user: string | undefined;
+  let pass: string | undefined;
+  let host: string | undefined;
+  let portStr: string | undefined;
+  let from: string | undefined;
 
-  const host =
-    sanitize(process.env.IONOS_SMTP_HOST ?? process.env.SMTP_HOST) ??
-    "smtp.ionos.com";
+  if (provider === "hostinger") {
+    user = sanitize(process.env.HOSTINGER_SMTP_USER);
+    pass = sanitize(process.env.HOSTINGER_SMTP_PASS);
+    host = sanitize(process.env.HOSTINGER_SMTP_HOST) ?? "smtp.hostinger.com";
+    portStr = sanitize(process.env.HOSTINGER_SMTP_PORT) ?? "465";
+    from = sanitize(process.env.HOSTINGER_FROM_EMAIL) ?? user;
+  } else if (provider === "gmail") {
+    user = sanitize(process.env.GMAIL_USER);
+    pass = sanitize(process.env.GMAIL_APP_PASSWORD);
+    host = "smtp.gmail.com";
+    portStr = "587";
+    from = user;
+  } else {
+    // ionos / legacy fallback
+    user = sanitize(process.env.IONOS_SMTP_USER ?? process.env.SMTP_USER);
+    pass = sanitize(process.env.IONOS_SMTP_PASS ?? process.env.SMTP_PASS);
+    host = sanitize(process.env.IONOS_SMTP_HOST ?? process.env.SMTP_HOST) ?? "smtp.ionos.com";
+    portStr = sanitize(process.env.IONOS_SMTP_PORT ?? process.env.SMTP_PORT) ?? "587";
+    from = sanitize(process.env.IONOS_FROM_EMAIL ?? process.env.SMTP_FROM_EMAIL) ?? user;
+  }
 
-  const parsedPort = Number.parseInt(
-    sanitize(process.env.IONOS_SMTP_PORT ?? process.env.SMTP_PORT) ?? "587",
-    10
-  );
+  if (!user || !pass) {
+    console.warn(`[email/ionos] EMAIL_PROVIDER=${provider} but required SMTP credentials are missing`);
+    return null;
+  }
 
+  const parsedPort = Number.parseInt(portStr ?? "587", 10);
   const port = Number.isFinite(parsedPort) && parsedPort > 0 ? parsedPort : 587;
   const secure = port === 465;
 
-  const from =
-    sanitize(process.env.IONOS_FROM_EMAIL ?? process.env.SMTP_FROM_EMAIL) ??
-    user;
-
-  const ownerEmail =
-    sanitize(process.env.IONOS_OWNER_EMAIL ?? process.env.LEADS_TO_EMAIL) ??
-    from;
+  const ownerEmail = sanitize(process.env.LEADS_TO_EMAIL) ?? from!;
 
   return {
-    host,
+    host: host!,
     port,
     secure,
     user,
     pass,
-    from,
+    from: from!,
     ownerEmail,
   };
 }

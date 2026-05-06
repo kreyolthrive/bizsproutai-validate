@@ -35,11 +35,13 @@ function getSigningSecret(): string {
     process.env.SPRINT_SESSION_SECRET,
     process.env.AUTH_SESSION_SECRET,
     process.env.NEXTAUTH_SECRET,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
   ];
   for (const candidate of candidates) {
     const trimmed = candidate?.trim();
     if (trimmed) return trimmed;
+  }
+  if (process.env.NODE_ENV === "production") {
+    console.error("[sprintSession] SPRINT_SESSION_SECRET is not set — using per-instance random secret. Sessions will not persist across Vercel lambda instances. Set SPRINT_SESSION_SECRET in Vercel env vars.");
   }
   return getFallbackSecret();
 }

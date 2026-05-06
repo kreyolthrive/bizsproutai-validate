@@ -22,6 +22,7 @@ export function getLandingCopy(locale: string) {
       "I am ready to launch but need hands-on support",
     ],
     validationCta: "Start Free Validation",
+    widgetNote: "Free · No account needed · Takes under a minute",
     platformBridgeCta: "Unlock your full sprint inside BizSproutAI",
     callCta: "Or book a free fit call",
 
@@ -198,10 +199,10 @@ export function getLandingCopy(locale: string) {
 
     /* ── Signal strip ─────────────────────────────── */
     signalStats: [
-      { value: "48h", label: "Launch system goes live" },
-      { value: "30", label: "Days to first paying customer" },
-      { value: "1", label: "Clear destination" },
-      { value: "∞", label: "Support continues" },
+      { value: "<1 min", label: "Free validation — see your stage instantly" },
+      { value: "48h", label: "Your launch system goes live" },
+      { value: "30", label: "Days to your first paying customer" },
+      { value: "$0", label: "Cost to start your free validation" },
     ],
 
     /* ── Booking ──────────────────────────────────── */
@@ -229,6 +230,7 @@ export function getLandingCopy(locale: string) {
         "Je suis prêt(e) à lancer mais j'ai besoin d'un accompagnement concret",
       ],
       validationCta: "Démarrer ma validation gratuite",
+      widgetNote: "Gratuit · Sans compte · En moins d'une minute",
       platformBridgeCta: "Accéder à mon sprint complet dans BizSproutAI",
       callCta: "Ou réserver un appel diagnostic gratuit",
       miniCards: [
@@ -278,10 +280,10 @@ export function getLandingCopy(locale: string) {
         { quote: "J'ai arrêté d'attendre que tout soit parfait et j'ai commencé à avoir des conversations, envoyer des offres, et créer un élan autour de quelque chose de réel.", name: "De la réflexion excessive à la vraie prospection", role: "Résultat du sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
       ],
       signalStats: [
-        { value: "48h", label: "Système en ligne" },
+        { value: "<1 min", label: "Validation gratuite — voir votre étape instantanément" },
+        { value: "48h", label: "Votre système de lancement est en ligne" },
         { value: "30", label: "Jours jusqu'au premier client payant" },
-        { value: "1", label: "Destination claire" },
-        { value: "∞", label: "Accompagnement jusqu'au bout" },
+        { value: "0 €", label: "Coût pour démarrer votre validation gratuite" },
       ],
       bookingTitle: "Appel diagnostic Sprint Fondateur gratuit de 30 minutes",
       bookingSubtitle: "Places limitées cette semaine",
@@ -310,6 +312,7 @@ export function getLandingCopy(locale: string) {
         "Estoy listo/a para lanzar pero necesito apoyo práctico",
       ],
       validationCta: "Iniciar mi validación gratuita",
+      widgetNote: "Gratis · Sin cuenta · Menos de un minuto",
       platformBridgeCta: "Acceder a mi sprint completo en BizSproutAI",
       callCta: "O reservar una llamada diagnóstico gratuita",
       miniCards: [
@@ -359,10 +362,10 @@ export function getLandingCopy(locale: string) {
         { quote: "Dejé de esperar a que todo se sintiera perfecto y empecé a tener conversaciones, enviar ofertas, y construir impulso alrededor de algo real.", name: "De pensar de más a prospección real", role: "Resultado del sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
       ],
       signalStats: [
-        { value: "48h", label: "Sistema en línea" },
+        { value: "<1 min", label: "Validación gratuita — ve tu etapa al instante" },
+        { value: "48h", label: "Tu sistema de lanzamiento está en línea" },
         { value: "30", label: "Días hasta el primer cliente de pago" },
-        { value: "1", label: "Destino claro" },
-        { value: "∞", label: "Apoyo hasta lograrlo" },
+        { value: "$0", label: "Costo para iniciar tu validación gratuita" },
       ],
       bookingTitle: "Llamada gratuita de ajuste del Founder Sprint de 30 minutos",
       bookingSubtitle: "Sesiones limitadas esta semana",
@@ -391,6 +394,7 @@ export function getLandingCopy(locale: string) {
         "Mwen pare pou lanse men mwen bezwen sipò konkrè",
       ],
       validationCta: "Kòmanse validasyon gratis mwen",
+      widgetNote: "Gratis · San kont · Mwens pase yon minit",
       platformBridgeCta: "Deblouke sprint konplè mwen nan BizSproutAI",
       callCta: "Oswa rezève yon apèl dyagnostik gratis",
       miniCards: [
@@ -440,10 +444,10 @@ export function getLandingCopy(locale: string) {
         { quote: "Mwen te sispann tann pou tout bagay santi li pafè epi mwen te kòmanse gen konvèsasyon, voye òf, epi bati elan sou yon bagay reyèl.", name: "Soti nan reflechi twòp rive nan vrè pwospeksyon", role: "Rezilta sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
       ],
       signalStats: [
-        { value: "48h", label: "Sistèm an liy" },
+        { value: "<1 min", label: "Validasyon gratis — wè etap ou a imedyatman" },
+        { value: "48h", label: "Sistèm lansman ou an liy" },
         { value: "30", label: "Jou rive nan premye kliyan peyan" },
-        { value: "1", label: "Destinasyon klè" },
-        { value: "∞", label: "Sipò jiskaske fini" },
+        { value: "$0", label: "Pri pou kòmanse validasyon gratis ou" },
       ],
       bookingTitle: "Apèl fit Sprint Fondatè gratis 30 minit",
       bookingSubtitle: "Sesyon limite disponib semèn sa a",
@@ -472,6 +476,7 @@ export function getLandingCopy(locale: string) {
         "Estou pronto/a para lançar mas preciso de apoio prático",
       ],
       validationCta: "Iniciar minha validação gratuita",
+      widgetNote: "Gratuito · Sem conta · Menos de um minuto",
       platformBridgeCta: "Acessar meu sprint completo no BizSproutAI",
       callCta: "Ou agendar uma chamada diagnóstico gratuita",
       miniCards: [
@@ -521,10 +526,10 @@ export function getLandingCopy(locale: string) {
         { quote: "Parei de esperar tudo ficar perfeito e comecei a ter conversas, enviar ofertas, e construir impulso em torno de algo real.", name: "De pensar demais a prospecção real", role: "Resultado do sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
       ],
       signalStats: [
-        { value: "48h", label: "Sistema no ar" },
+        { value: "<1 min", label: "Validação gratuita — veja sua etapa na hora" },
+        { value: "48h", label: "Seu sistema de lançamento no ar" },
         { value: "30", label: "Dias até o primeiro cliente pagante" },
-        { value: "1", label: "Destino claro" },
-        { value: "∞", label: "Apoio até conseguir" },
+        { value: "$0", label: "Custo para iniciar sua validação gratuita" },
       ],
       bookingTitle: "Chamada gratuita de fit do Founder Sprint de 30 minutos",
       bookingSubtitle: "Sessões limitadas esta semana",

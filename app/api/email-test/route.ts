@@ -16,10 +16,9 @@ function isValidEmail(email: string): boolean {
 
 function resolveDefaultRecipient(): string {
   return (
-    process.env.IONOS_OWNER_EMAIL ??
     process.env.LEADS_TO_EMAIL ??
-    process.env.IONOS_SMTP_USER ??
-    process.env.SMTP_USER ??
+    process.env.HOSTINGER_FROM_EMAIL ??
+    process.env.HOSTINGER_SMTP_USER ??
     ""
   )
     .trim()
@@ -48,6 +47,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "Email test endpoint is disabled." },
       { status: 403, headers: corsHeaders }
+    );
+  }
+
+  // Require admin token even when enabled — prevents accidental open access
+  const adminToken = process.env.ADMIN_TOKEN;
+  const authHeader = request.headers.get("authorization");
+  const providedToken = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  if (adminToken && providedToken !== adminToken) {
+    return NextResponse.json(
+      { error: "Unauthorized." },
+      { status: 401, headers: corsHeaders }
     );
   }
 

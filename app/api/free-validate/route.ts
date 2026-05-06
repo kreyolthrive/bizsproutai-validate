@@ -317,8 +317,8 @@ export async function POST(req: NextRequest) {
 
   logger.info({ event: "validation_started", requestId, ts, email, locale, stageIndex });
 
-  // 8. Compute result server-side
-  const result = computeValidationResult(stageIndex, idea, audience, hasLiveAsset, hasTraction);
+  // 8. Compute result server-side (locale passed for translated content)
+  const result = computeValidationResult(stageIndex, idea, audience, hasLiveAsset, hasTraction, locale);
   logger.info({ event: "validation_completed", requestId, ts, email, stage: result.stage, verdict: result.verdict, firstAsset: result.firstAsset, durationMs: Date.now() - startMs });
 
   // 9. Persist to DB — must succeed before notifications
