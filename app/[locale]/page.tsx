@@ -105,6 +105,19 @@ function getCopy(locale: string) {
       trustTitle: "Fondateurs déjà en pilote",
       trustMeta: "Cohorte initiale — places limitées",
 
+      /* ── Pain section alt ── */
+      painAltEyebrow: "Vous n'êtes pas seul(e)",
+      painAltTitle: "La plupart des fondateurs n'échouent pas à cause de ",
+      painAltEmphasis: "mauvaises idées.",
+      painAltSuffix: "Ils échouent par manque de système.",
+      painAltDesc: "Ce sont les schémas que nous observons chez chaque fondateur en début de parcours. Si l'un d'eux vous parle, vous êtes au bon endroit.",
+      bridgeGuaranteeExtra: "Pas de frais cachés. Pas de petits caractères.",
+      bookingHeroTitle: "Appel gratuit de 30 minutes",
+      bookingHeroEmphasis: "Sprint Fondateur — Appel Diagnostic",
+      bookingHeroDesc: "Nous allons tracer votre chemin le plus rapide vers un premier client payant et vous dire si le Sprint est le bon choix. Pas d'argumentaire — juste de la clarté et une action claire à prendre dès aujourd'hui.",
+      bookingAlt: "La validation gratuite reste le chemin le plus rapide.",
+      bookingAltLink: "Démarrer la validation gratuite à la place →",
+
       /* ── Booking section ── */
       bookingSectionEyebrow: "Vous préférez parler d'abord ?",
       bookingSectionNote:
@@ -186,6 +199,18 @@ function getCopy(locale: string) {
       trustTitle: "Fundadores ya en piloto",
       trustMeta: "Cohorte inicial — plazas limitadas",
 
+      painAltEyebrow: "No estás solo/a",
+      painAltTitle: "La mayoría de los fundadores no fracasan por ",
+      painAltEmphasis: "malas ideas.",
+      painAltSuffix: "Fracasan por falta de sistema.",
+      painAltDesc: "Estos son los patrones que vemos en cada fundador en etapa temprana. Si alguno de estos te suena familiar, estás en el lugar correcto.",
+      bridgeGuaranteeExtra: "Sin tarifas ocultas. Sin letra pequeña.",
+      bookingHeroTitle: "Llamada gratuita de 30 minutos",
+      bookingHeroEmphasis: "Sprint Fundador — Llamada Diagnóstico",
+      bookingHeroDesc: "Trazaremos tu camino más rápido hacia un primer cliente de pago y te diremos si el Sprint es el ajuste correcto. Sin argumentario — solo claridad y una acción clara a tomar hoy.",
+      bookingAlt: "La validación gratuita sigue siendo el camino más rápido.",
+      bookingAltLink: "Iniciar la validación gratuita en su lugar →",
+
       bookingSectionEyebrow: "¿Prefieres hablar primero?",
       bookingSectionNote:
         "La llamada diagnóstico es una opción secundaria para fundadores que prefieren hablar antes de empezar. La validación gratuita sigue siendo la ruta más rápida.",
@@ -266,6 +291,18 @@ function getCopy(locale: string) {
       trustTitle: "Fondatè deja nan pilòt",
       trustMeta: "Premye gwoup — plas limite",
 
+      painAltEyebrow: "Ou pa poukont ou",
+      painAltTitle: "Pifò fondatè pa rate akòz ",
+      painAltEmphasis: "move lide.",
+      painAltSuffix: "Yo rate paske yo pa gen sistèm.",
+      painAltDesc: "Sa yo se modèl nou wè nan chak fondatè nan premye etap. Si youn nan sa yo sanble ak sitiyasyon ou, ou nan bon kote.",
+      bridgeGuaranteeExtra: "Pa gen frè kache. Pa gen ti lèt.",
+      bookingHeroTitle: "Apèl gratis 30 minit",
+      bookingHeroEmphasis: "Sprint Fondatè — Apèl Dyagnostik",
+      bookingHeroDesc: "N ap trase chemen ki pi rapid pou ou rive nan premye kliyan peyan epi n ap di ou si Sprint la bon fit pou ou. Pa gen vant — jis klarifikasyon ak yon aksyon klè pou pran jodi a.",
+      bookingAlt: "Validasyon gratis rete wout ki pi rapid la.",
+      bookingAltLink: "Kòmanse validasyon gratis la pito →",
+
       bookingSectionEyebrow: "Ou pito pale an premye?",
       bookingSectionNote:
         "Apèl dyagnostik la se yon opsyon segondè pou fondatè ki pito pale anvan yo kòmanse. Validasyon gratis rete wout ki pi rapid la.",
@@ -345,6 +382,18 @@ function getCopy(locale: string) {
         "Gratuito para começar. Sem conta. Se você entrar no Sprint e ainda não tiver conseguido seu primeiro cliente pagante em 30 dias, continuamos trabalhando com você sem custo adicional até conseguir.",
       trustTitle: "Fundadores já no piloto",
       trustMeta: "Coorte inicial — vagas limitadas",
+
+      painAltEyebrow: "Você não está sozinho/a",
+      painAltTitle: "A maioria dos fundadores não fracassa por causa de ",
+      painAltEmphasis: "ideias ruins.",
+      painAltSuffix: "Eles fracassam por falta de sistema.",
+      painAltDesc: "Esses são os padrões que vemos em cada fundador em estágio inicial. Se algum desses soar familiar, você está no lugar certo.",
+      bridgeGuaranteeExtra: "Sem taxas ocultas. Sem letras miúdas.",
+      bookingHeroTitle: "Chamada gratuita de 30 minutos",
+      bookingHeroEmphasis: "Sprint Fundador — Chamada Diagnóstico",
+      bookingHeroDesc: "Vamos mapear seu caminho mais rápido para um primeiro cliente pagante e te dizer se o Sprint é o ajuste certo. Sem pitch — apenas clareza e uma ação clara para tomar hoje.",
+      bookingAlt: "A validação gratuita ainda é o caminho mais rápido.",
+      bookingAltLink: "Iniciar a validação gratuita →",
 
       bookingSectionEyebrow: "Prefere falar primeiro?",
       bookingSectionNote:
@@ -443,6 +492,23 @@ function getCopy(locale: string) {
       "Free to start. No account needed. If you join the Sprint and still haven't landed your first paying customer in 30 days, we continue working with you at no extra cost until you do.",
     trustTitle: "Founders already in pilot",
     trustMeta: "Early cohort — spots limited",
+
+    /* ── Pain section alt ── */
+    painAltEyebrow: "You're not alone",
+    painAltTitle: "Most founders don't fail from ",
+    painAltEmphasis: "bad ideas.",
+    painAltSuffix: "They fail from no system.",
+    painAltDesc: "These are the patterns we see in every early-stage founder. If any of these sound familiar, you're in the right place.",
+
+    /* ── Bridge section ── */
+    bridgeGuaranteeExtra: "No hidden fees. No fine print.",
+
+    /* ── Booking hero ── */
+    bookingHeroTitle: "Free 30-Minute",
+    bookingHeroEmphasis: "Founder Sprint Fit Call",
+    bookingHeroDesc: "We'll map your fastest path to a first paying customer and tell you whether the Sprint is the right fit. No pitch — just clarity and one clear action to take today.",
+    bookingAlt: "Free validation is still the fastest path.",
+    bookingAltLink: "Start free validation instead →",
 
     /* ── Booking section ── */
     bookingSectionEyebrow: "Prefer to talk first?",
@@ -612,34 +678,38 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── Section 2: Pain — Why founders stall ── */}
-      <section id="pain" className="px-5 py-20 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[44rem] text-center">
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-              {copy.painEyebrow}
+      {/* ── Section 2: Pain ── */}
+      <section id="pain" className="border-t border-[rgba(26,58,42,0.1)] bg-white px-5 py-20 lg:px-10">
+        <div className="mx-auto max-w-[1100px]">
+          <div className="landing-reveal mx-auto mb-14 max-w-[580px] text-center">
+            <p className="mb-3 inline-block text-[0.70rem] font-bold uppercase tracking-[0.10em] text-[var(--landing-green-light)]">
+              {copy.painAltEyebrow}
             </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
-              {copy.painTitle}
+            <h2 className="font-[family:var(--font-serif)] text-[clamp(1.9rem,3.2vw,2.8rem)] leading-[1.15] text-[var(--landing-green-deep)]">
+              {copy.painAltTitle}
+              <em className="italic text-[var(--landing-green-light)]">{copy.painAltEmphasis}</em>
+              <br />
+              {copy.painAltSuffix}
             </h2>
-            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
-              {copy.painBody}
+            <p className="mt-4 text-[1rem] leading-[1.65] text-[var(--landing-muted)]">
+              {copy.painAltDesc}
             </p>
           </div>
 
-          <div className="mt-14 grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-5 lg:grid-cols-3">
             {focusItems.slice(0, 3).map((item) => (
               <article
                 key={item.title}
-                className="landing-reveal rounded-[22px] border border-[rgba(26,58,42,0.07)] bg-[var(--landing-cream)] p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(26,58,42,0.08)]"
+                className="landing-reveal group relative overflow-hidden rounded-[18px] border border-[rgba(26,58,42,0.1)] bg-[var(--warm-white)] p-7 transition duration-[220ms] hover:-translate-y-1 hover:shadow-[0_14px_36px_rgba(26,58,42,0.09)]"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[rgba(126,200,80,0.12)] text-xl">
+                <span className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-[var(--landing-green-mid)] to-[var(--landing-sprout)] transition-transform duration-300 group-hover:scale-x-100" />
+                <div className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-[rgba(126,200,80,0.12)] text-[1.3rem]">
                   {item.icon}
                 </div>
-                <h3 className="mt-5 font-[family:var(--font-serif)] text-[1.3rem] leading-tight text-[var(--landing-green-deep)]">
+                <h3 className="mt-[18px] font-[family:var(--font-serif)] text-[1.2rem] leading-tight text-[var(--landing-green-deep)]">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-[0.92rem] leading-[1.7] text-[var(--landing-muted)]">
+                <p className="mt-2 text-[0.875rem] leading-[1.6] text-[var(--landing-muted)]">
                   {item.body}
                 </p>
               </article>
@@ -648,59 +718,89 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── Section 3: Guarantee + CTA bridge ── */}
-      <section className="bg-[var(--landing-cream)] px-5 py-16 lg:px-10">
+      {/* ── Section 3: Bridge / CTA ── */}
+      <section id="bridge" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
         <div className="mx-auto max-w-3xl text-center">
-          <div className="landing-reveal mx-auto mb-8 flex max-w-xl items-start gap-3 rounded-xl border border-[rgba(26,58,42,0.1)] bg-white/70 px-[18px] py-[14px] text-left [border-left:3px_solid_var(--landing-sprout)]">
+          <p className="landing-reveal mb-3 inline-block text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
+            {copy.ctaEyebrow}
+          </p>
+          <h2 className="landing-reveal font-[family:var(--font-serif)] text-[clamp(2rem,3.6vw,3rem)] leading-[1.12] text-[var(--landing-green-deep)]">
+            {copy.ctaTitle}
+          </h2>
+          <p className="landing-reveal mx-auto mt-4 max-w-xl text-[1rem] leading-[1.65] text-[var(--landing-muted)]">
+            {copy.ctaBody}
+          </p>
+
+          <div className="landing-reveal mx-auto mt-8 mb-8 flex max-w-xl items-start gap-3 rounded-xl border border-[rgba(26,58,42,0.1)] bg-white/70 px-[18px] py-[14px] text-left [border-left:3px_solid_var(--landing-sprout)]">
             <span className="mt-0.5 flex-shrink-0 text-[1.1rem]">🛡️</span>
             <p className="text-[0.85rem] leading-[1.55] text-[var(--landing-ink)]">
               <strong className="font-semibold text-[var(--landing-green-deep)]">{copy.guaranteeTitle}.</strong>{" "}
-              {copy.guaranteeBody}
+              {copy.guaranteeBody}{" "}{copy.bridgeGuaranteeExtra}
             </p>
           </div>
 
-          <div className="landing-reveal flex flex-col items-center gap-3">
+          <div className="landing-reveal flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <a
               href={validateHref}
-              className="inline-flex items-center justify-center rounded-full bg-[var(--landing-green-deep)] px-10 py-4 text-[1.05rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.2)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_36px_rgba(26,58,42,0.28)]"
+              className="inline-flex items-center justify-center rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.2)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_36px_rgba(26,58,42,0.28)]"
             >
               {lc.validationCta} →
             </a>
-            <p className="text-[0.8rem] text-[var(--landing-muted)]">{copy.freeResultCtaNote}</p>
             <a
               href="#booking"
-              className="mt-2 text-[0.88rem] font-semibold text-[var(--landing-muted)] underline underline-offset-4 transition hover:text-[var(--landing-green-deep)]"
+              className="inline-flex items-center justify-center rounded-full border-2 border-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-bold text-[var(--landing-green-deep)] transition hover:-translate-y-0.5 hover:bg-[rgba(26,58,42,0.05)]"
             >
-              {copy.ctaSecondary} ↓
+              {copy.ctaSecondary}
             </a>
-            <p className="text-[0.73rem] text-[var(--landing-muted)]">{copy.ctaDiagNote}</p>
           </div>
+
+          <p className="landing-reveal mt-5 text-[0.75rem] text-[var(--landing-muted)]">
+            {copy.ctaDiagNote}{" "}·{" "}
+            {copy.emailPrefix}{" "}
+            <a href="mailto:info@bizsproutai.com" className="underline underline-offset-2 transition hover:text-[var(--landing-green-deep)]">
+              info@bizsproutai.com
+            </a>
+          </p>
         </div>
       </section>
 
       {/* ── Section 4: Booking calendar ── */}
-      <section id="booking" className="px-5 pb-16 pt-12 lg:px-10">
-        <div className="mx-auto max-w-5xl">
+      <section id="booking" className="relative overflow-hidden bg-[var(--landing-green-deep)] px-5 pb-20 pt-20 lg:px-10">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-[-10%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[rgba(126,200,80,0.07)] blur-3xl" />
+          <div className="absolute bottom-[-10%] right-[-5%] h-[400px] w-[400px] rounded-full bg-[rgba(74,140,92,0.1)] blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-5xl">
           <div className="landing-reveal text-center">
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-              {copy.bookingSectionEyebrow}
-            </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.9rem,3.6vw,3rem)] leading-tight text-[var(--landing-green-deep)]">
-              {lc.bookingTitle}
+            <h2 className="font-[family:var(--font-serif)] text-[clamp(1.9rem,3.6vw,3rem)] leading-tight text-white">
+              {copy.bookingHeroTitle}<br />
+              <em className="italic text-[var(--landing-sprout)]">{copy.bookingHeroEmphasis}</em>
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[var(--landing-muted)]">
-              {lc.bookingSubheading}
+            <p className="mx-auto mt-5 max-w-2xl text-[1rem] leading-[1.65] text-white/70">
+              {copy.bookingHeroDesc}
             </p>
           </div>
 
-          <div className="landing-reveal mt-10 rounded-[28px] border border-[rgba(26,58,42,0.1)] bg-white p-4 shadow-[0_24px_60px_rgba(26,58,42,0.08)] md:p-6">
+          <div className="landing-reveal mt-10 rounded-[28px] border border-white/10 bg-white/[0.04] p-4 shadow-[0_24px_60px_rgba(0,0,0,0.25)] backdrop-blur-sm md:p-6">
             <BookingCalendar
               title="Founder Sprint Fit Call"
               subtitle={lc.bookingSubtitle}
               hideHeader
               className="max-w-none"
-              frameClassName="overflow-hidden rounded-[1.5rem] border border-[rgba(26,58,42,0.08)] bg-white shadow-[0_18px_50px_rgba(26,58,42,0.08)]"
+              frameClassName="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white shadow-[0_18px_50px_rgba(0,0,0,0.15)]"
             />
+          </div>
+
+          <div className="landing-reveal mt-8 text-center">
+            <p className="text-[0.82rem] text-white/50">
+              {copy.bookingAlt}{" "}
+              <a
+                href={validateHref}
+                className="font-semibold text-[var(--landing-sprout)] underline underline-offset-2 transition hover:brightness-110"
+              >
+                {copy.bookingAltLink}
+              </a>
+            </p>
           </div>
         </div>
       </section>

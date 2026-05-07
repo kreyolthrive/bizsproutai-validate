@@ -138,22 +138,22 @@ export function Footer({ locale, logoSrc, footerCopy, navCopy, homeHref }: Foote
             </p>
             <nav aria-label="Footer navigation" className="mt-5 flex flex-col gap-3 text-sm">
               <a
-                href={`${homeHref}#who`}
+                href={`${homeHref}#pain`}
                 className="text-white/75 transition hover:text-[var(--landing-sprout)]"
               >
                 {locale === "fr" ? "Pour qui" : locale === "es" ? "Para quién" : locale === "ht" ? "Pou kiyès" : locale === "pt" ? "Para quem" : "Who It's For"}
               </a>
               <a
-                href={`${homeHref}#how`}
+                href={`${homeHref}#bridge`}
                 className="text-white/75 transition hover:text-[var(--landing-sprout)]"
               >
                 {locale === "fr" ? "Comment ça marche" : locale === "es" ? "Cómo funciona" : locale === "ht" ? "Kijan li mache" : locale === "pt" ? "Como funciona" : "How It Works"}
               </a>
               <a
-                href={`${homeHref}#services`}
+                href={`${homeHref}#booking`}
                 className="text-white/75 transition hover:text-[var(--landing-sprout)]"
               >
-                {locale === "fr" ? "Services" : locale === "es" ? "Servicios" : locale === "ht" ? "Sèvis" : locale === "pt" ? "Serviços" : "Services"}
+                {locale === "fr" ? "Réserver un appel" : locale === "es" ? "Reservar una llamada" : locale === "ht" ? "Rezève yon apèl" : locale === "pt" ? "Agendar chamada" : "Book a Call"}
               </a>
               <Link
                 href="/blog"

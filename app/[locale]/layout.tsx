@@ -47,8 +47,7 @@ function getLayoutCopy(locale: string) {
       nav: {
         pain: "Pour qui",
         how: "Comment ça marche",
-        outcomes: "Résultats",
-        faq: "FAQ",
+        bookCall: "Réserver un appel",
         blog: "Blog",
         cta: "Validation gratuite",
       },
@@ -71,8 +70,7 @@ function getLayoutCopy(locale: string) {
       nav: {
         pain: "Para quién es",
         how: "Cómo funciona",
-        outcomes: "Resultados",
-        faq: "FAQ",
+        bookCall: "Reservar una llamada",
         blog: "Blog",
         cta: "Validación gratuita",
       },
@@ -95,8 +93,7 @@ function getLayoutCopy(locale: string) {
       nav: {
         pain: "Pou kiyès",
         how: "Kijan li mache",
-        outcomes: "Rezilta",
-        faq: "FAQ",
+        bookCall: "Rezève yon apèl",
         blog: "Blog",
         cta: "Validasyon gratis",
       },
@@ -119,8 +116,7 @@ function getLayoutCopy(locale: string) {
       nav: {
         pain: "Para quem é",
         how: "Como funciona",
-        outcomes: "Resultados",
-        faq: "FAQ",
+        bookCall: "Agendar uma chamada",
         blog: "Blog",
         cta: "Validação gratuita",
       },
@@ -142,8 +138,7 @@ function getLayoutCopy(locale: string) {
     nav: {
       pain: "Who It's For",
       how: "How It Works",
-      outcomes: "Outcomes",
-      faq: "FAQ",
+      bookCall: "Book a Call",
       blog: "Blog",
       cta: "Start Free Validation",
     },
@@ -310,20 +305,17 @@ export default async function LocaleLayout({
                 </Link>
 
                 <nav aria-label="Main navigation" className="hidden items-center gap-10 text-base font-medium text-[var(--landing-muted)] lg:flex">
-                  <a href={`${homeHref}#who`} className="transition hover:text-[var(--landing-green-deep)]">
+                  <a href={`${homeHref}#pain`} className="transition hover:text-[var(--landing-green-deep)]">
                     {copy.nav.pain}
                   </a>
-                  <a href={`${homeHref}#how`} className="transition hover:text-[var(--landing-green-deep)]">
+                  <a href={`${homeHref}#bridge`} className="transition hover:text-[var(--landing-green-deep)]">
                     {copy.nav.how}
                   </a>
                   <a
-                    href={`${homeHref}#outcomes`}
+                    href={`${homeHref}#booking`}
                     className="transition hover:text-[var(--landing-green-deep)]"
                   >
-                    {copy.nav.outcomes}
-                  </a>
-                  <a href={`${homeHref}#faq`} className="transition hover:text-[var(--landing-green-deep)]">
-                    {copy.nav.faq}
+                    {copy.nav.bookCall}
                   </a>
                 </nav>
 
@@ -339,10 +331,9 @@ export default async function LocaleLayout({
                   </a>
                   <MobileNav
                     links={[
-                      { href: `${homeHref}#who`, label: copy.nav.pain },
-                      { href: `${homeHref}#how`, label: copy.nav.how },
-                      { href: `${homeHref}#outcomes`, label: copy.nav.outcomes },
-                      { href: `${homeHref}#faq`, label: copy.nav.faq },
+                      { href: `${homeHref}#pain`, label: copy.nav.pain },
+                      { href: `${homeHref}#bridge`, label: copy.nav.how },
+                      { href: `${homeHref}#booking`, label: copy.nav.bookCall },
                     ]}
                     ctaHref={`${homeHref}/validate`}
                     ctaLabel={copy.nav.cta}
