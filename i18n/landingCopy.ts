@@ -12,9 +12,9 @@ export function getLandingCopy(locale: string) {
 
   const base = {
     /* ── Validation widget ────────────────────────── */
-    clarityLabel: "Free Validation — Step 1 of 1",
+    clarityLabel: "Start here — it takes under a minute",
     clarityQuestion:
-      "Where are you right now? Pick what describes you best.",
+      "Where are you on the path to your first customer?",
     clarityChoices: [
       "I have an idea but no clear offer or direction",
       "I have an offer but no launch asset or system behind it",
@@ -220,9 +220,9 @@ export function getLandingCopy(locale: string) {
   if (lang === "fr") {
     return {
       ...base,
-      clarityLabel: "Validation gratuite — Étape 1 sur 1",
+      clarityLabel: "Commencez ici — moins d'une minute",
       clarityQuestion:
-        "Où en êtes-vous maintenant ? Choisissez ce qui vous décrit le mieux.",
+        "Où en êtes-vous sur le chemin vers votre premier client ?",
       clarityChoices: [
         "J'ai une idée mais pas d'offre ni de direction claire",
         "J'ai une offre mais pas d'actif de lancement ni de système derrière",
@@ -302,9 +302,9 @@ export function getLandingCopy(locale: string) {
   if (lang === "es") {
     return {
       ...base,
-      clarityLabel: "Validación gratuita — Paso 1 de 1",
+      clarityLabel: "Empieza aquí — menos de un minuto",
       clarityQuestion:
-        "¿Dónde estás ahora mismo? Elige lo que mejor te describe.",
+        "¿Dónde estás en el camino hacia tu primer cliente?",
       clarityChoices: [
         "Tengo una idea pero no tengo una oferta ni dirección clara",
         "Tengo una oferta pero no tengo un activo de lanzamiento ni un sistema detrás",
@@ -384,9 +384,9 @@ export function getLandingCopy(locale: string) {
   if (lang === "ht") {
     return {
       ...base,
-      clarityLabel: "Validasyon gratis — Etap 1 sou 1",
+      clarityLabel: "Kòmanse isit — mwens pase yon minit",
       clarityQuestion:
-        "Ki kote ou ye kounye a? Chwazi sa ki dekri ou pi byen.",
+        "Ki kote ou ye sou wout rive nan premye kliyan ou?",
       clarityChoices: [
         "Mwen gen yon lide men mwen pa gen yon òf klè ni direksyon",
         "Mwen gen yon òf men mwen pa gen bon mwayen lansman ni sistèm dèyè li",
@@ -466,9 +466,9 @@ export function getLandingCopy(locale: string) {
   if (lang === "pt") {
     return {
       ...base,
-      clarityLabel: "Validação gratuita — Passo 1 de 1",
+      clarityLabel: "Comece aqui — menos de um minuto",
       clarityQuestion:
-        "Onde você está agora? Escolha o que melhor te descreve.",
+        "Onde você está no caminho até o seu primeiro cliente?",
       clarityChoices: [
         "Tenho uma ideia mas nenhuma oferta ou direção clara",
         "Tenho uma oferta mas nenhum ativo de lançamento ou sistema por trás",

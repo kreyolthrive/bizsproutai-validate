@@ -17,18 +17,18 @@ function getCopy(locale: string) {
     return {
       /* ── Hero ── */
       heroEyebrow: "Validation d'idée gratuite",
-      heroLead: "Validez votre idée gratuitement.",
-      heroEmphasis: "Obtenez votre prochaine étape la plus claire.",
+      heroLead: "Amenez votre idée à son premier client.",
+      heroEmphasis: "",
       heroBody:
-        "BizSproutAI vous aide à voir à quelle étape vous en êtes, ce qu'il faut construire en premier, et ce qu'il faut faire ensuite — avant de perdre du temps à construire la mauvaise chose.",
-      heroNote: "Gratuit. Prend moins d'une minute.",
+        "BizSproutAI vous aide à valider votre idée, identifier le bon premier actif, le construire, le distribuer et vous adapter jusqu'à atteindre un vrai résultat de marché.",
+      heroNote: "Première étape gratuite. Obtenez votre étape, le premier actif recommandé et votre prochain mouvement en quelques minutes.",
       secondary: "Voir comment ça marche",
 
       /* ── Free result section ── */
       freeResultEyebrow: "Ce que vous obtenez de la validation gratuite",
-      freeResultTitle: "Une vraie clarté. En moins d'une minute.",
+      freeResultTitle: "Connaissez votre étape. Connaissez votre prochain mouvement.",
       freeResultBody:
-        "La plupart des fondateurs sont bloqués parce qu'ils ne savent pas à quelle étape ils en sont. La validation gratuite vous donne une image claire de votre situation et le chemin le plus direct vers l'avant.",
+        "La plupart des fondateurs calent parce qu'ils travaillent sur la mauvaise chose au mauvais stade. La validation gratuite vous montre exactement où vous en êtes et le chemin le plus direct vers votre premier vrai client.",
 
       /* ── Pain section ── */
       painEyebrow: "Le vrai problème",
@@ -89,11 +89,11 @@ function getCopy(locale: string) {
       signalCta: "Démarrer ma validation gratuite",
 
       /* ── Final CTA section ── */
-      ctaEyebrow: "Gratuit. Prend moins d'une minute.",
-      ctaTitle: "Prêt à voir à quelle étape vous en êtes ?",
-      ctaEmphasis: "Commencez gratuitement. Avancez vite.",
+      ctaEyebrow: "Première étape gratuite. Sans compte.",
+      ctaTitle: "Prêt à amener votre idée vers son premier client ?",
+      ctaEmphasis: "Commencez gratuitement. Avancez avec clarté.",
       ctaBody:
-        "Validez votre idée maintenant et obtenez votre prochaine étape la plus claire. Ensuite, utilisez BizSproutAI pour aller de ce prochain mouvement jusqu'à votre premier client payant.",
+        "Validez votre idée maintenant, obtenez votre étape et votre premier actif recommandé, et suivez le chemin que BizSproutAI construit pour vous — jusqu'à votre premier vrai résultat de marché.",
       ctaPrimary: "Démarrer ma validation gratuite",
       ctaSecondary: "Réserver un appel diagnostic gratuit",
       emailPrefix: "Vous préférez écrire ?",
@@ -108,16 +108,16 @@ function getCopy(locale: string) {
   if (normalized === "es") {
     return {
       heroEyebrow: "Validación de idea gratuita",
-      heroLead: "Valida tu idea gratis.",
-      heroEmphasis: "Obtén tu próximo paso más claro.",
+      heroLead: "Lleva tu idea a su primer cliente.",
+      heroEmphasis: "",
       heroBody:
-        "BizSproutAI te ayuda a ver en qué etapa estás, qué construir primero, y qué hacer después — antes de perder tiempo construyendo lo equivocado.",
-      heroNote: "Gratis. Tarda menos de un minuto.",
+        "BizSproutAI te ayuda a validar tu idea, identificar el primer activo correcto, construirlo, distribuirlo y adaptarte hasta alcanzar un resultado real en el mercado.",
+      heroNote: "Primer paso gratuito. Obtén tu etapa, el primer activo recomendado y tu próximo movimiento en minutos.",
       secondary: "Ver cómo funciona",
       freeResultEyebrow: "Qué obtienes de la validación gratuita",
-      freeResultTitle: "Claridad real. En menos de un minuto.",
+      freeResultTitle: "Conoce tu etapa. Conoce tu próximo movimiento.",
       freeResultBody:
-        "La mayoría de los fundadores se quedan atascados porque no saben en qué etapa están. La validación gratuita te da una imagen clara de dónde estás y el camino más directo hacia adelante.",
+        "La mayoría de los fundadores se estancan porque trabajan en lo incorrecto en la etapa incorrecta. La validación gratuita te muestra exactamente dónde estás y el camino más directo hacia tu primer cliente real.",
       painEyebrow: "El verdadero problema",
       painTitle:
         "No estás estancado por falta de potencial. Estás estancado por falta de un camino claro.",
@@ -164,11 +164,11 @@ function getCopy(locale: string) {
       proofBody:
         "El objetivo del Sprint no es dejarte con más notas o planes sin terminar. Es ayudarte a crear resultados como estos.",
       signalCta: "Iniciar mi validación gratuita",
-      ctaEyebrow: "Gratis. Tarda menos de un minuto.",
-      ctaTitle: "¿Listo para ver en qué etapa estás?",
-      ctaEmphasis: "Empieza gratis. Avanza rápido.",
+      ctaEyebrow: "Primer paso gratuito. Sin cuenta.",
+      ctaTitle: "¿Listo para llevar tu idea a su primer cliente?",
+      ctaEmphasis: "Empieza gratis. Avanza con claridad.",
       ctaBody:
-        "Valida tu idea ahora y obtén tu próximo paso más claro. Luego usa BizSproutAI para ir desde ese próximo movimiento hasta tu primer cliente de pago.",
+        "Valida tu idea ahora, obtén tu etapa y tu primer activo recomendado, y sigue el camino que BizSproutAI construye para ti — hasta tu primer resultado real en el mercado.",
       ctaPrimary: "Iniciar mi validación gratuita",
       ctaSecondary: "Reservar llamada diagnóstico gratuita",
       emailPrefix: "¿Prefieres escribir?",
@@ -181,16 +181,16 @@ function getCopy(locale: string) {
   if (normalized === "ht") {
     return {
       heroEyebrow: "Validasyon lide gratis",
-      heroLead: "Valide lide ou gratis.",
-      heroEmphasis: "Jwenn pwochen etap ki pi klè pou ou.",
+      heroLead: "Mennen lide ou rive nan premye kliyan li.",
+      heroEmphasis: "",
       heroBody:
-        "BizSproutAI ede ou wè nan ki etap ou ye, kisa pou bati an premye, ak kisa pou fè apre sa — anvan ou pèdi tan ap bati move bagay.",
-      heroNote: "Gratis. Pran mwens pase yon minit.",
+        "BizSproutAI ede ou valide lide ou, idantifye premye mwayen ki bon an, bati li, distribye li, epi adapte ou jiskaske ou jwenn yon vrè rezilta nan mache a.",
+      heroNote: "Premye etap gratis. Jwenn etap ou, premye mwayen rekòmande, ak pwochen mouvman ou an kèk minit.",
       secondary: "Gade kijan li mache",
       freeResultEyebrow: "Sa ou jwenn nan validasyon gratis",
-      freeResultTitle: "Vrè klète. An mwens pase yon minit.",
+      freeResultTitle: "Konnen etap ou. Konnen pwochen mouvman ou.",
       freeResultBody:
-        "Pifò fondatè bloke paske yo pa konnen nan ki etap yo ye. Validasyon gratis ba ou yon imaj klè kote ou ye ak chemen ki pi dirèk pou avanse.",
+        "Pifò fondatè bloke paske yo travay sou move bagay nan move etap. Validasyon gratis montre ou egzakteman kote ou ye ak chemen ki pi dirèk pou rive nan premye vrè kliyan ou.",
       painEyebrow: "Vrè pwoblèm nan",
       painTitle:
         "Ou pa bloke paske ou manke potansyèl. Ou bloke paske ou manke yon chemen klè.",
@@ -237,11 +237,11 @@ function getCopy(locale: string) {
       proofBody:
         "Objektif Sprint la se pa kite ou ak plis nòt oswa plan ki pa fini. Se ede ou kreye rezilta tankou sa yo.",
       signalCta: "Kòmanse validasyon gratis mwen",
-      ctaEyebrow: "Gratis. Pran mwens pase yon minit.",
-      ctaTitle: "Pare pou wè nan ki etap ou ye?",
-      ctaEmphasis: "Kòmanse gratis. Avanse vit.",
+      ctaEyebrow: "Premye etap gratis. San kont.",
+      ctaTitle: "Pare pou mennen lide ou rive nan premye kliyan li?",
+      ctaEmphasis: "Kòmanse gratis. Avanse ak klarifikasyon.",
       ctaBody:
-        "Valide lide ou kounye a epi jwenn pwochen etap ou ki pi klè. Apre sa, itilize BizSproutAI pou ale soti nan mouvman sa rive nan premye kliyan peyan ou.",
+        "Valide lide ou kounye a, jwenn etap ou ak premye mwayen rekòmande, epi swiv chemen BizSproutAI bati pou ou — jiskaske ou jwenn premye vrè rezilta ou nan mache a.",
       ctaPrimary: "Kòmanse validasyon gratis mwen",
       ctaSecondary: "Rezève yon apèl dyagnostik gratis",
       emailPrefix: "Ou pito ekri?",
@@ -254,16 +254,16 @@ function getCopy(locale: string) {
   if (normalized === "pt") {
     return {
       heroEyebrow: "Validação de ideia gratuita",
-      heroLead: "Valide sua ideia gratuitamente.",
-      heroEmphasis: "Obtenha seu próximo passo mais claro.",
+      heroLead: "Leve sua ideia ao primeiro cliente.",
+      heroEmphasis: "",
       heroBody:
-        "BizSproutAI ajuda você a ver em que etapa está, o que construir primeiro, e o que fazer a seguir — antes de perder tempo construindo a coisa errada.",
-      heroNote: "Gratuito. Leva menos de um minuto.",
+        "BizSproutAI ajuda você a validar sua ideia, identificar o primeiro ativo certo, construí-lo, distribuí-lo e se adaptar até alcançar um resultado real no mercado.",
+      heroNote: "Primeiro passo gratuito. Obtenha sua etapa, o primeiro ativo recomendado e seu próximo movimento em minutos.",
       secondary: "Veja como funciona",
       freeResultEyebrow: "O que você recebe da validação gratuita",
-      freeResultTitle: "Clareza real. Em menos de um minuto.",
+      freeResultTitle: "Saiba sua etapa. Saiba seu próximo movimento.",
       freeResultBody:
-        "A maioria dos fundadores trava porque não sabe em que etapa está. A validação gratuita te dá uma imagem clara de onde você está e o caminho mais direto para avançar.",
+        "A maioria dos fundadores trava porque está trabalhando na coisa errada na etapa errada. A validação gratuita mostra exatamente onde você está e o caminho mais direto para o seu primeiro cliente real.",
       painEyebrow: "O verdadeiro problema",
       painTitle:
         "Você não está travado por falta de potencial. Você está travado por falta de um caminho claro.",
@@ -310,11 +310,11 @@ function getCopy(locale: string) {
       proofBody:
         "O objetivo do Sprint não é deixar você com mais anotações ou planos inacabados. É ajudar você a criar resultados como estes.",
       signalCta: "Iniciar minha validação gratuita",
-      ctaEyebrow: "Gratuito. Leva menos de um minuto.",
-      ctaTitle: "Pronto para ver em que etapa você está?",
-      ctaEmphasis: "Comece grátis. Avance rápido.",
+      ctaEyebrow: "Primeiro passo gratuito. Sem conta.",
+      ctaTitle: "Pronto para levar sua ideia ao primeiro cliente?",
+      ctaEmphasis: "Comece grátis. Avance com clareza.",
       ctaBody:
-        "Valide sua ideia agora e obtenha seu próximo passo mais claro. Depois use o BizSproutAI para ir desse próximo movimento até seu primeiro cliente pagante.",
+        "Valide sua ideia agora, obtenha sua etapa e o primeiro ativo recomendado, e siga o caminho que o BizSproutAI constrói para você — até o seu primeiro resultado real no mercado.",
       ctaPrimary: "Iniciar minha validação gratuita",
       ctaSecondary: "Agendar chamada diagnóstico gratuita",
       emailPrefix: "Prefere escrever?",
@@ -327,18 +327,18 @@ function getCopy(locale: string) {
   return {
     /* ── Hero ── */
     heroEyebrow: "Free Business Validation",
-    heroLead: "Validate your idea for free.",
-    heroEmphasis: "Get your clearest next step.",
+    heroLead: "Get your idea to its first customer.",
+    heroEmphasis: "",
     heroBody:
-      "BizSproutAI helps you see what stage you are in, what to build first, and what to do next — before you waste time building the wrong thing.",
-    heroNote: "Free. Takes under a minute.",
+      "BizSproutAI helps you validate your idea, identify the right first asset, build it, distribute it, and adapt until you reach a real market outcome.",
+    heroNote: "Free first step. Get your stage, recommended first asset, and next move in minutes.",
     secondary: "See How It Works",
 
     /* ── Free result section ── */
     freeResultEyebrow: "What you get from free validation",
-    freeResultTitle: "Real clarity. In under a minute.",
+    freeResultTitle: "Know your stage. Know your next move.",
     freeResultBody:
-      "Most founders get stuck because they do not know which stage they are in. Free validation gives you a clear picture of where you are and the most direct path forward.",
+      "Most founders stall because they are working on the wrong thing at the wrong stage. Free validation shows you exactly where you are and the most direct path to your first real customer.",
 
     /* ── Pain section ── */
     painEyebrow: "The real problem",
@@ -399,11 +399,11 @@ function getCopy(locale: string) {
     signalCta: "Start Free Validation",
 
     /* ── Final CTA section ── */
-    ctaEyebrow: "Free. Takes under a minute.",
-    ctaTitle: "Ready to see what stage you are in?",
-    ctaEmphasis: "Start free. Move fast.",
+    ctaEyebrow: "Free first step. No account needed.",
+    ctaTitle: "Ready to get your idea to its first customer?",
+    ctaEmphasis: "Start free. Move with clarity.",
     ctaBody:
-      "Validate your idea now and get your clearest next step. Then use BizSproutAI to go from that next move all the way to your first paying customer.",
+      "Validate your idea now, get your stage and recommended first asset, and follow the path BizSproutAI builds for you — all the way to your first real market outcome.",
     ctaPrimary: "Start Free Validation",
     ctaSecondary: "Book a Free Fit Call",
     emailPrefix: "Prefer email?",
@@ -502,12 +502,8 @@ export default async function HomePage({ params }: Props) {
               {copy.heroEyebrow}
             </div>
 
-            <h1 className="landing-reveal mt-6 max-w-[13ch] font-[family:var(--font-serif)] text-[clamp(2.6rem,5.2vw,5rem)] leading-[0.96] tracking-[-0.04em] text-[var(--landing-green-deep)]">
+            <h1 className="landing-reveal mt-6 max-w-[18ch] font-[family:var(--font-serif)] text-[clamp(2.4rem,4.8vw,4.6rem)] leading-[1.02] tracking-[-0.03em] text-[var(--landing-green-deep)]">
               {copy.heroLead}
-              <br />
-              <em className="text-[var(--landing-green-light)]">
-                {copy.heroEmphasis}
-              </em>
             </h1>
 
             <p className="landing-reveal mt-5 max-w-[34rem] text-[1.02rem] leading-[1.65] text-[var(--landing-muted)]">
