@@ -17,10 +17,11 @@ function getCopy(locale: string) {
     return {
       /* ── Hero ── */
       heroEyebrow: "Validation d'idée gratuite",
-      heroLead: "Amenez votre idée à son premier client.",
-      heroEmphasis: "",
+      heroLead: "Amenez votre idée",
+      heroLeadLine2: "à son ",
+      heroEmphasis: "premier client.",
       heroBody:
-        "BizSproutAI vous aide à valider votre idée, identifier le bon premier actif, le construire, le distribuer et vous adapter jusqu'à atteindre un vrai résultat de marché.",
+        "La plupart des fondateurs ne calent pas à cause d'une mauvaise idée. Ils calent parce qu'ils ne savent pas quoi faire en premier. La validation gratuite vous montre exactement où vous en êtes et votre prochain mouvement le plus clair — en moins d'une minute.",
       heroNote: "Première étape gratuite. Obtenez votre étape, le premier actif recommandé et votre prochain mouvement en quelques minutes.",
       secondary: "Voir comment ça marche",
 
@@ -101,9 +102,9 @@ function getCopy(locale: string) {
       /* ── Guarantee + trust ── */
       guaranteeTitle: "Des résultats ou on continue — gratuitement",
       guaranteeBody:
-        "Si vous suivez le plan et n'obtenez pas de client payant en 30 jours, nous continuons à travailler avec vous sans frais supplémentaires jusqu'à ce que ce soit le cas.",
-      trustTitle: "Fondateurs validés cette semaine",
-      trustMeta: "Gratuit · Moins d'une minute · Sans compte",
+        "Gratuit pour commencer. Sans compte. Si vous rejoignez le Sprint et n'avez pas encore décroché votre premier client payant en 30 jours, nous continuons à travailler avec vous sans frais supplémentaires jusqu'à ce que ce soit le cas.",
+      trustTitle: "Fondateurs déjà en pilote",
+      trustMeta: "Cohorte initiale — places limitées",
 
       /* ── Booking section ── */
       bookingSectionEyebrow: "Vous préférez parler d'abord ?",
@@ -115,10 +116,11 @@ function getCopy(locale: string) {
   if (normalized === "es") {
     return {
       heroEyebrow: "Validación de idea gratuita",
-      heroLead: "Lleva tu idea a su primer cliente.",
-      heroEmphasis: "",
+      heroLead: "Lleva tu idea",
+      heroLeadLine2: "a su ",
+      heroEmphasis: "primer cliente.",
       heroBody:
-        "BizSproutAI te ayuda a validar tu idea, identificar el primer activo correcto, construirlo, distribuirlo y adaptarte hasta alcanzar un resultado real en el mercado.",
+        "La mayoría de los fundadores no se estancan por una mala idea. Se estancan porque no saben qué hacer primero. La validación gratuita te dice exactamente dónde estás y tu próximo movimiento más claro — en menos de un minuto.",
       heroNote: "Primer paso gratuito. Obtén tu etapa, el primer activo recomendado y tu próximo movimiento en minutos.",
       secondary: "Ver cómo funciona",
       freeResultEyebrow: "Qué obtienes de la validación gratuita",
@@ -181,9 +183,9 @@ function getCopy(locale: string) {
       emailPrefix: "¿Prefieres escribir?",
       guaranteeTitle: "Resultados o seguimos trabajando — gratis",
       guaranteeBody:
-        "Si sigues el plan y no consigues un cliente de pago en 30 días, seguimos trabajando contigo sin costo adicional hasta que lo logres.",
-      trustTitle: "Fundadores validados esta semana",
-      trustMeta: "Gratis · Menos de 1 min · Sin cuenta",
+        "Gratis para empezar. Sin cuenta. Si te unes al Sprint y aún no has conseguido tu primer cliente de pago en 30 días, seguimos trabajando contigo sin costo adicional hasta que lo logres.",
+      trustTitle: "Fundadores ya en piloto",
+      trustMeta: "Cohorte inicial — plazas limitadas",
 
       bookingSectionEyebrow: "¿Prefieres hablar primero?",
       bookingSectionNote:
@@ -194,10 +196,11 @@ function getCopy(locale: string) {
   if (normalized === "ht") {
     return {
       heroEyebrow: "Validasyon lide gratis",
-      heroLead: "Mennen lide ou rive nan premye kliyan li.",
-      heroEmphasis: "",
+      heroLead: "Mennen lide ou",
+      heroLeadLine2: "rive nan ",
+      heroEmphasis: "premye kliyan li.",
       heroBody:
-        "BizSproutAI ede ou valide lide ou, idantifye premye mwayen ki bon an, bati li, distribye li, epi adapte ou jiskaske ou jwenn yon vrè rezilta nan mache a.",
+        "Pifò fondatè pa bloke akòz yon move lide. Yo bloke paske yo pa konnen sa pou yo fè an premye. Validasyon gratis di ou egzakteman kote ou ye ak pwochen mouvman ou ki pi klè — nan mwens pase yon minit.",
       heroNote: "Premye etap gratis. Jwenn etap ou, premye mwayen rekòmande, ak pwochen mouvman ou an kèk minit.",
       secondary: "Gade kijan li mache",
       freeResultEyebrow: "Sa ou jwenn nan validasyon gratis",
@@ -260,9 +263,9 @@ function getCopy(locale: string) {
       emailPrefix: "Ou pito ekri?",
       guaranteeTitle: "Rezilta oswa nou kontinye — gratis",
       guaranteeBody:
-        "Si ou swiv plan an epi ou pa jwenn yon kliyan peyan nan 30 jou, nou kontinye travay avèk ou san frè siplemantè jiskaske ou jwenn.",
-      trustTitle: "Fondatè validé semèn sa a",
-      trustMeta: "Gratis · Mwens 1 minit · San kont",
+        "Gratis pou kòmanse. San kont. Si ou rantre nan Sprint la epi ou poko jwenn premye kliyan peyan ou nan 30 jou, nou kontinye travay avèk ou san frè siplemantè jiskaske ou jwenn.",
+      trustTitle: "Fondatè deja nan pilòt",
+      trustMeta: "Premye gwoup — plas limite",
 
       bookingSectionEyebrow: "Ou pito pale an premye?",
       bookingSectionNote:
@@ -273,10 +276,11 @@ function getCopy(locale: string) {
   if (normalized === "pt") {
     return {
       heroEyebrow: "Validação de ideia gratuita",
-      heroLead: "Leve sua ideia ao primeiro cliente.",
-      heroEmphasis: "",
+      heroLead: "Leve sua ideia",
+      heroLeadLine2: "ao seu ",
+      heroEmphasis: "primeiro cliente.",
       heroBody:
-        "BizSproutAI ajuda você a validar sua ideia, identificar o primeiro ativo certo, construí-lo, distribuí-lo e se adaptar até alcançar um resultado real no mercado.",
+        "A maioria dos fundadores não trava por causa de uma ideia ruim. Eles travam porque não sabem o que fazer primeiro. A validação gratuita te diz exatamente onde você está e seu próximo movimento mais claro — em menos de um minuto.",
       heroNote: "Primeiro passo gratuito. Obtenha sua etapa, o primeiro ativo recomendado e seu próximo movimento em minutos.",
       secondary: "Veja como funciona",
       freeResultEyebrow: "O que você recebe da validação gratuita",
@@ -339,9 +343,9 @@ function getCopy(locale: string) {
       emailPrefix: "Prefere escrever?",
       guaranteeTitle: "Resultados ou continuamos trabalhando — de graça",
       guaranteeBody:
-        "Se você seguir o plano e não conseguir um cliente pagante em 30 dias, continuamos trabalhando com você sem custo adicional até conseguir.",
-      trustTitle: "Fundadores validados esta semana",
-      trustMeta: "Gratuito · Menos de 1 min · Sem conta",
+        "Gratuito para começar. Sem conta. Se você entrar no Sprint e ainda não tiver conseguido seu primeiro cliente pagante em 30 dias, continuamos trabalhando com você sem custo adicional até conseguir.",
+      trustTitle: "Fundadores já no piloto",
+      trustMeta: "Coorte inicial — vagas limitadas",
 
       bookingSectionEyebrow: "Prefere falar primeiro?",
       bookingSectionNote:
@@ -352,10 +356,11 @@ function getCopy(locale: string) {
   return {
     /* ── Hero ── */
     heroEyebrow: "Free Business Validation",
-    heroLead: "Get your idea to its first customer.",
-    heroEmphasis: "",
+    heroLead: "Get your idea",
+    heroLeadLine2: "to its ",
+    heroEmphasis: "first customer.",
     heroBody:
-      "BizSproutAI helps you validate your idea, identify the right first asset, build it, distribute it, and adapt until you reach a real market outcome.",
+      "Most founders don't stall because of a bad idea. They stall because they don't know what to do first. Free validation tells you exactly where you are and your clearest next move — in under a minute.",
     heroNote: "Free first step. Get your stage, recommended first asset, and next move in minutes.",
     secondary: "See How It Works",
 
@@ -436,9 +441,9 @@ function getCopy(locale: string) {
     /* ── Guarantee + trust ── */
     guaranteeTitle: "Results or we keep working — free",
     guaranteeBody:
-      "If you follow the plan and don't land a paying customer in 30 days, we keep working with you at no extra cost until you do.",
-    trustTitle: "Founders validated this week",
-    trustMeta: "Free · Under 1 min · No account needed",
+      "Free to start. No account needed. If you join the Sprint and still haven't landed your first paying customer in 30 days, we continue working with you at no extra cost until you do.",
+    trustTitle: "Founders already in pilot",
+    trustMeta: "Early cohort — spots limited",
 
     /* ── Booking section ── */
     bookingSectionEyebrow: "Prefer to talk first?",
@@ -535,12 +540,13 @@ export default async function HomePage({ params }: Props) {
               {copy.heroEyebrow}
             </div>
 
-            <h1 className="landing-reveal mt-6 max-w-[18ch] font-[family:var(--font-serif)] text-[clamp(2.4rem,4.8vw,4.6rem)] leading-[1.02] tracking-[-0.03em] text-[var(--landing-green-deep)]">
+            <h1 className="landing-reveal mt-6 max-w-[18ch] font-[family:var(--font-serif)] text-[clamp(2.6rem,4.2vw,3.8rem)] leading-[1.08] tracking-[-0.01em] text-[var(--landing-green-deep)]">
               {copy.heroLead}
               {copy.heroEmphasis && (
                 <>
                   <br />
-                  <em>{copy.heroEmphasis}</em>
+                  {copy.heroLeadLine2}
+                  <em className="italic text-[var(--landing-green-light)]">{copy.heroEmphasis}</em>
                 </>
               )}
             </h1>
@@ -568,32 +574,36 @@ export default async function HomePage({ params }: Props) {
             </p>
 
             {/* Guarantee box */}
-            <div className="landing-reveal mt-8 flex items-start gap-3 rounded-2xl border border-[rgba(126,200,80,0.25)] bg-[rgba(126,200,80,0.07)] px-5 py-4">
-              <span className="mt-0.5 text-[1.1rem]">🛡️</span>
-              <div>
-                <p className="text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
-                  {copy.guaranteeTitle}
-                </p>
-                <p className="mt-0.5 text-[0.78rem] leading-[1.5] text-[var(--landing-muted)]">
-                  {copy.guaranteeBody}
-                </p>
-              </div>
+            <div className="landing-reveal mt-8 flex items-start gap-3 rounded-xl border border-[rgba(26,58,42,0.1)] bg-white/70 px-[18px] py-[14px] [border-left:3px_solid_var(--landing-sprout)]">
+              <span className="mt-0.5 flex-shrink-0 text-[1.1rem]">🛡️</span>
+              <p className="text-[0.85rem] leading-[1.55] text-[var(--landing-ink)]">
+                <strong className="font-semibold text-[var(--landing-green-deep)]">{copy.guaranteeTitle}.</strong>{" "}
+                {copy.guaranteeBody}
+              </p>
             </div>
 
             {/* Micro-trust avatars */}
             <div className="landing-reveal mt-6 flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {["D", "R", "L", "S"].map((initial) => (
+              <div className="flex">
+                {(
+                  [
+                    { i: "D", bg: "bg-[var(--landing-green-mid)]", text: "text-white" },
+                    { i: "R", bg: "bg-[#3d7a55]", text: "text-white" },
+                    { i: "L", bg: "bg-[var(--landing-green-light)]", text: "text-white" },
+                    { i: "S", bg: "bg-[var(--landing-amber)]", text: "text-[var(--landing-ink)]" },
+                  ] as const
+                ).map(({ i, bg, text }, idx) => (
                   <div
-                    key={initial}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--warm-white)] bg-[var(--landing-green-mid)] text-[0.65rem] font-bold text-white"
+                    key={i}
+                    style={{ marginLeft: idx === 0 ? 0 : "-8px" }}
+                    className={`flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full border-2 border-[var(--warm-white)] ${bg} ${text} text-[0.65rem] font-bold`}
                   >
-                    {initial}
+                    {i}
                   </div>
                 ))}
               </div>
               <div>
-                <p className="text-[0.8rem] font-semibold text-[var(--landing-green-deep)]">
+                <p className="text-[0.78rem] font-semibold text-[var(--landing-green-deep)]">
                   {copy.trustTitle}
                 </p>
                 <p className="text-[0.72rem] text-[var(--landing-muted)]">{copy.trustMeta}</p>
@@ -601,33 +611,27 @@ export default async function HomePage({ params }: Props) {
             </div>
 
             {/* Testimonials */}
-            <div className="landing-reveal mt-8 space-y-3">
-              <div className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-white p-4 shadow-sm">
-                <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-muted)]">
-                  &ldquo;I had a scattered idea and no real direction. Two weeks into the Sprint I
-                  had a paid offer and my first client conversation.&rdquo;
-                </p>
-                <p className="mt-2 text-[0.75rem] font-semibold text-[var(--landing-green-deep)]">
-                  Doha M. — Sprint founder
-                </p>
+            <div className="landing-reveal mt-8 space-y-[10px]">
+              <div className="flex gap-3 rounded-[14px] border border-[rgba(26,58,42,0.1)] bg-white p-4 shadow-sm transition hover:translate-x-0.5">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[var(--landing-green-mid)] text-[0.7rem] font-bold text-white">D</div>
+                <div>
+                  <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-ink)]">&ldquo;I had too many ideas and no idea where to start. Getting a clear next step changed everything for me.&rdquo;</p>
+                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Doha</strong> · Early pilot founder</p>
+                </div>
               </div>
-              <div className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-white p-4 shadow-sm">
-                <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-muted)]">
-                  &ldquo;I stopped overthinking and started moving. The validation took under a
-                  minute and the next step was obvious.&rdquo;
-                </p>
-                <p className="mt-2 text-[0.75rem] font-semibold text-[var(--landing-green-deep)]">
-                  Rembert A. — Sprint founder
-                </p>
+              <div className="flex gap-3 rounded-[14px] border border-[rgba(26,58,42,0.1)] bg-white p-4 shadow-sm transition hover:translate-x-0.5">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#4a8c5c] text-[0.7rem] font-bold text-white">R</div>
+                <div>
+                  <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-ink)]">&ldquo;My site hadn&rsquo;t matched my real offer in over a year. Within days we had messaging that finally made sense.&rdquo;</p>
+                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Rembert</strong> · Creative services founder</p>
+                </div>
               </div>
-              <div className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-white p-4 shadow-sm">
-                <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-muted)]">
-                  &ldquo;I had been &lsquo;about to launch&rsquo; for months. After the Sprint, my
-                  system was live and I landed my first paying client in week three.&rdquo;
-                </p>
-                <p className="mt-2 text-[0.75rem] font-semibold text-[var(--landing-green-deep)]">
-                  Liv T. — Sprint founder
-                </p>
+              <div className="flex gap-3 rounded-[14px] border border-[rgba(26,58,42,0.1)] bg-white p-4 shadow-sm transition hover:translate-x-0.5">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[var(--landing-amber)] text-[0.7rem] font-bold text-[var(--landing-ink)]">L</div>
+                <div>
+                  <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-ink)]">&ldquo;I just needed someone to tell me what to build first. That&rsquo;s exactly what the validation did.&rdquo;</p>
+                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Liv</strong> · Service business owner</p>
+                </div>
               </div>
             </div>
           </div>

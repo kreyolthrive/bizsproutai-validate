@@ -16,10 +16,10 @@ export function getLandingCopy(locale: string) {
     clarityQuestion:
       "Where are you on the path to your first customer?",
     clarityChoices: [
-      "I have an idea but no clear offer or direction",
-      "I have an offer but no launch asset or system behind it",
-      "I have scattered pieces but nothing connected",
-      "I am ready to launch but need hands-on support",
+      "I have a business idea but I'm not sure if it's worth pursuing",
+      "I know what I want to offer but I don't know what to build first",
+      "I've started something but I'm stuck and not making money yet",
+      "I'm ready — I just need help getting my first paying customer",
     ],
     validationCta: "Start Free Validation",
     quizCta: "Show Me My Next Move →",
@@ -225,10 +225,10 @@ export function getLandingCopy(locale: string) {
       clarityQuestion:
         "Où en êtes-vous sur le chemin vers votre premier client ?",
       clarityChoices: [
-        "J'ai une idée mais pas d'offre ni de direction claire",
-        "J'ai une offre mais pas d'actif de lancement ni de système derrière",
-        "J'ai des éléments éparpillés mais rien de connecté",
-        "Je suis prêt(e) à lancer mais j'ai besoin d'un accompagnement concret",
+        "J'ai une idée de business mais je ne suis pas sûr(e) si ça vaut la peine de la poursuivre",
+        "Je sais ce que je veux offrir mais je ne sais pas quoi construire en premier",
+        "J'ai commencé quelque chose mais je suis bloqué(e) et je ne gagne pas encore d'argent",
+        "Je suis prêt(e) — j'ai juste besoin d'aide pour obtenir mon premier client payant",
       ],
       validationCta: "Démarrer ma validation gratuite",
       quizCta: "Montre-moi mon prochain mouvement →",
@@ -308,10 +308,10 @@ export function getLandingCopy(locale: string) {
       clarityQuestion:
         "¿Dónde estás en el camino hacia tu primer cliente?",
       clarityChoices: [
-        "Tengo una idea pero no tengo una oferta ni dirección clara",
-        "Tengo una oferta pero no tengo un activo de lanzamiento ni un sistema detrás",
-        "Tengo piezas dispersas pero nada conectado",
-        "Estoy listo/a para lanzar pero necesito apoyo práctico",
+        "Tengo una idea de negocio pero no estoy seguro/a si vale la pena seguirla",
+        "Sé lo que quiero ofrecer pero no sé qué construir primero",
+        "He empezado algo pero estoy estancado/a y aún no gano dinero",
+        "Estoy listo/a — solo necesito ayuda para conseguir mi primer cliente de pago",
       ],
       validationCta: "Iniciar mi validación gratuita",
       quizCta: "Muéstrame mi próximo movimiento →",
@@ -391,10 +391,10 @@ export function getLandingCopy(locale: string) {
       clarityQuestion:
         "Ki kote ou ye sou wout rive nan premye kliyan ou?",
       clarityChoices: [
-        "Mwen gen yon lide men mwen pa gen yon òf klè ni direksyon",
-        "Mwen gen yon òf men mwen pa gen bon mwayen lansman ni sistèm dèyè li",
-        "Mwen gen moso gaye men anyen pa konekte",
-        "Mwen pare pou lanse men mwen bezwen sipò konkrè",
+        "Mwen gen yon lide biznis men mwen pa sèten si li vo lapenn pouswiv li",
+        "Mwen konnen sa mwen vle ofri men mwen pa konnen ki sa pou bati an premye",
+        "Mwen te kòmanse yon bagay men mwen bloke epi mwen pa fè kòb ankò",
+        "Mwen pare — mwen jis bezwen èd pou jwenn premye kliyan peyan mwen",
       ],
       validationCta: "Kòmanse validasyon gratis mwen",
       quizCta: "Montre m pwochen mouvman mwen →",
@@ -474,10 +474,10 @@ export function getLandingCopy(locale: string) {
       clarityQuestion:
         "Onde você está no caminho até o seu primeiro cliente?",
       clarityChoices: [
-        "Tenho uma ideia mas nenhuma oferta ou direção clara",
-        "Tenho uma oferta mas nenhum ativo de lançamento ou sistema por trás",
-        "Tenho peças espalhadas mas nada conectado",
-        "Estou pronto/a para lançar mas preciso de apoio prático",
+        "Tenho uma ideia de negócio mas não tenho certeza se vale a pena seguir em frente",
+        "Sei o que quero oferecer mas não sei o que construir primeiro",
+        "Comecei algo mas estou travado/a e ainda não estou ganhando dinheiro",
+        "Estou pronto/a — só preciso de ajuda para conseguir meu primeiro cliente pagante",
       ],
       validationCta: "Iniciar minha validação gratuita",
       quizCta: "Mostre-me meu próximo passo →",
