@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { LandingPageReveal } from "@/components/marketing/LandingPageReveal";
 import { BookingCalendar } from "@/components/marketing/BookingCalendar";
@@ -452,44 +451,6 @@ function getCopy(locale: string) {
   };
 }
 
-const faqItems = [
-  {
-    question: "What do I get from the free validation?",
-    answer:
-      "You get your current stage, your recommended first asset, your clearest 3–4 next steps, and one key mistake to avoid. It is real, specific, and based on where you are right now — not generic advice.",
-  },
-  {
-    question: "What happens after I validate?",
-    answer:
-      "You get a result immediately. If you want to go deeper — full sprint plan, build support, day-by-day execution, and hands-on guidance — you continue into the full BizSproutAI platform.",
-  },
-  {
-    question: "What exactly happens in the full sprint?",
-    answer:
-      "We validate your idea, define the buyer, shape a real offer, build the right launch asset, start outreach, and work toward your first paying customer — step by step with direct support.",
-  },
-  {
-    question: "What if I do not land a first paying customer in 30 days?",
-    answer:
-      "If you complete the sprint, follow the plan, and do the work, we keep working with you at no extra cost until you do.",
-  },
-  {
-    question: "How much does the full Sprint cost?",
-    answer:
-      "The Sprint is an application-only program. Pricing is shared during the fit call — what matters first is whether it is the right fit for where you are right now. The free validation is always the best first step.",
-  },
-  {
-    question: "Do I need technical skills to use BizSproutAI?",
-    answer:
-      "No. The Sprint is designed for founders at any technical level. We work with tools you already have, or help you set up simple ones that require no coding.",
-  },
-  {
-    question: "What if my idea is not ready to launch yet?",
-    answer:
-      "That is exactly what free validation is for. If your idea needs more work before it is launch-ready, the validation will show you what is missing and what to do first — before you invest time or money in the wrong direction.",
-  },
-];
-
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -497,11 +458,7 @@ export default async function HomePage({ params }: Props) {
   const copy = getCopy(locale);
   const lc = getLandingCopy(locale);
   const validateHref = `/${locale}/validate`;
-  const phoneHref = "https://cal.com/bizsproutai/30-min-founder-clarity-session";
-  const emailHref = "mailto:info@bizsproutai.com";
   const focusItems = lc.painItems.slice(0, 4);
-  const sprintSteps = lc.howSteps.slice(0, 4);
-  const signalStats = lc.signalStats.slice(0, 4);
 
   return (
     <main className="overflow-x-hidden bg-[var(--warm-white)] text-[var(--ink)]">
@@ -655,55 +612,7 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── Section 2: What you get for free ── */}
-      <section className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[44rem] text-center">
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-              {copy.freeResultEyebrow}
-            </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
-              {copy.freeResultTitle}
-            </h2>
-            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
-              {copy.freeResultBody}
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {lc.freeFeatures.map((item) => (
-              <article
-                key={item.title}
-                className="landing-reveal rounded-[22px] border border-[rgba(26,58,42,0.07)] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(26,58,42,0.08)]"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[rgba(126,200,80,0.12)] text-xl">
-                  {item.icon}
-                </div>
-                <h3 className="mt-5 font-[family:var(--font-serif)] text-[1.18rem] leading-tight text-[var(--landing-green-deep)]">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-[0.88rem] leading-[1.7] text-[var(--landing-muted)]">
-                  {item.body}
-                </p>
-              </article>
-            ))}
-          </div>
-
-          <div className="landing-reveal mt-10 text-center">
-            <a
-              href={validateHref}
-              className="inline-flex items-center justify-center rounded-full bg-[var(--landing-green-deep)] px-10 py-4 text-[1.05rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.2)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_36px_rgba(26,58,42,0.28)]"
-            >
-              {lc.validationCta} →
-            </a>
-            <p className="mt-3 text-[0.8rem] text-[var(--landing-muted)]">
-              {copy.freeResultCtaNote}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 3: Why founders get stuck (Pain) ── */}
+      {/* ── Section 2: Pain — Why founders stall ── */}
       <section id="pain" className="px-5 py-20 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <div className="landing-reveal mx-auto max-w-[44rem] text-center">
@@ -718,8 +627,8 @@ export default async function HomePage({ params }: Props) {
             </p>
           </div>
 
-          <div className="mt-14 grid gap-5 md:grid-cols-2">
-            {focusItems.map((item) => (
+          <div className="mt-14 grid gap-5 lg:grid-cols-3">
+            {focusItems.slice(0, 3).map((item) => (
               <article
                 key={item.title}
                 className="landing-reveal rounded-[22px] border border-[rgba(26,58,42,0.07)] bg-[var(--landing-cream)] p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(26,58,42,0.08)]"
@@ -739,418 +648,38 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── Section 4: How BizSproutAI works ── */}
-      <section id="how" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-              {copy.howEyebrow}
-            </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
-              {copy.howTitle}
-            </h2>
-            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
-              {copy.howBody}
+      {/* ── Section 3: Guarantee + CTA bridge ── */}
+      <section className="bg-[var(--landing-cream)] px-5 py-16 lg:px-10">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="landing-reveal mx-auto mb-8 flex max-w-xl items-start gap-3 rounded-xl border border-[rgba(26,58,42,0.1)] bg-white/70 px-[18px] py-[14px] text-left [border-left:3px_solid_var(--landing-sprout)]">
+            <span className="mt-0.5 flex-shrink-0 text-[1.1rem]">🛡️</span>
+            <p className="text-[0.85rem] leading-[1.55] text-[var(--landing-ink)]">
+              <strong className="font-semibold text-[var(--landing-green-deep)]">{copy.guaranteeTitle}.</strong>{" "}
+              {copy.guaranteeBody}
             </p>
           </div>
 
-          {/* 5-step process overview */}
-          <div className="mt-12 grid gap-3 sm:grid-cols-5">
-            {copy.howStepsOverview.map((step, i) => (
-              <div
-                key={step.number}
-                className="landing-reveal flex flex-col items-center rounded-[18px] border border-[rgba(26,58,42,0.08)] bg-white p-5 text-center shadow-sm"
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(126,200,80,0.14)] font-[family:var(--font-display)] text-sm font-bold text-[var(--landing-green-deep)]">
-                  {step.number}
-                </div>
-                <p className="mt-3 font-semibold text-[0.9rem] text-[var(--landing-green-deep)]">
-                  {step.label}
-                </p>
-                <p className="mt-1 text-[0.75rem] leading-[1.5] text-[var(--landing-muted)]">
-                  {step.desc}
-                </p>
-                {i < copy.howStepsOverview.length - 1 && (
-                  <span className="absolute hidden" />
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Sprint weeks detail */}
-          <div className="mt-16">
-            <p className="landing-reveal mb-8 text-center text-[0.78rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-              {copy.howIntroLabel}
-            </p>
-
-            <div className="grid gap-8 lg:grid-cols-[1.06fr_0.72fr]">
-              <div className="space-y-0">
-                {sprintSteps.map((step) => (
-                  <div
-                    key={step.number}
-                    className="landing-reveal grid gap-5 border-b border-dashed border-[rgba(26,58,42,0.12)] py-8 sm:grid-cols-[68px_1fr]"
-                  >
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[rgba(26,58,42,0.14)] font-[family:var(--font-display)] text-base font-bold text-[var(--landing-green-deep)]">
-                      {step.number}
-                    </div>
-                    <div>
-                      <h3 className="font-[family:var(--font-serif)] text-[1.42rem] leading-tight text-[var(--landing-green-deep)]">
-                        {step.title}
-                      </h3>
-                      <p className="mt-3 max-w-xl text-[0.92rem] leading-7 text-[var(--landing-muted)]">
-                        {step.body}
-                      </p>
-                      <div className="mt-4">
-                        <span className="inline-flex rounded-full bg-[rgba(126,200,80,0.12)] px-3.5 py-1.5 text-[0.78rem] font-semibold text-[var(--landing-green-mid)]">
-                          {step.tag}
-                        </span>
-                        {step.checklist && (
-                          <ul className="mt-3 space-y-1.5">
-                            {step.checklist.map((item) => (
-                              <li
-                                key={item}
-                                className="flex items-center gap-2 text-[0.88rem] text-[var(--landing-green-deep)]"
-                              >
-                                <span className="text-[var(--landing-sprout)]">&#10003;</span>
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {step.guarantee && (
-                          <p className="mt-4 rounded-xl border border-[rgba(126,200,80,0.3)] bg-[rgba(126,200,80,0.08)] px-4 py-3 text-[0.85rem] font-semibold text-[var(--landing-green-deep)]">
-                            {step.guarantee}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <aside className="landing-reveal lg:sticky lg:top-28">
-                <div className="relative min-h-[380px] overflow-hidden rounded-[24px] bg-[var(--landing-green-deep)] sm:min-h-[460px]">
-                  <Image
-                    src="/Wagner.profile2-CBfCr4Al.png"
-                    alt="BizSproutAI founder portrait"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 34vw"
-                    className="object-cover object-top"
-                  />
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--landing-green-deep)] to-transparent" />
-                </div>
-              </aside>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 5: What happens after validation ── */}
-      <section className="px-5 py-20 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-              {copy.afterValidationEyebrow}
-            </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
-              {copy.afterValidationTitle}
-            </h2>
-            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
-              {copy.afterValidationBody}
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-6 lg:grid-cols-2">
-            {/* Free column */}
-            <div className="landing-reveal rounded-[24px] border border-[rgba(26,58,42,0.1)] bg-[var(--landing-cream)] p-8">
-              <div className="inline-flex rounded-full border border-[rgba(26,58,42,0.15)] bg-white px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-green-mid)]">
-                {copy.afterValidationFreeBadge}
-              </div>
-              <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.45rem] leading-tight text-[var(--landing-green-deep)]">
-                {copy.afterValidationFreeTitle}
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {copy.afterValidationFreeItems.map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-[0.92rem] text-[var(--landing-green-deep)]">
-                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.2)] text-[0.65rem] text-[var(--landing-sprout)]">
-                      ✓
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 rounded-xl border border-[rgba(126,200,80,0.2)] bg-white px-4 py-3">
-                <p className="text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
-                  {copy.afterValidationFreeNote}
-                </p>
-              </div>
-            </div>
-
-            {/* Platform column */}
-            <div className="landing-reveal rounded-[24px] bg-[var(--landing-green-deep)] p-8 text-white">
-              <div className="inline-flex rounded-full bg-[var(--landing-amber)] px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-ink)]">
-                {copy.afterValidationPlatformBadge}
-              </div>
-              <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.45rem] leading-tight">
-                {copy.afterValidationPlatformTitle}
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {lc.platformFeatures.map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-[0.9rem] text-white/85">
-                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.18)] text-[0.65rem] text-[var(--landing-sprout)]">
-                      ✓
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={phoneHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-[var(--landing-sprout)] px-5 py-3.5 text-[0.92rem] font-semibold text-[var(--landing-ink)] transition hover:brightness-105"
-              >
-                {copy.afterValidationCta}
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 6: Sprint offer ── */}
-      <section className="overflow-hidden bg-[var(--landing-green-deep)] px-5 py-20 text-white lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-sprout)]">
-              {copy.servicesEyebrow}
-            </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08]">
-              {copy.servicesTitle}
-            </h2>
-            <p className="mt-4 text-base leading-7 text-white/68">
-              {copy.servicesBody}
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-5 lg:grid-cols-2">
-            <article className="landing-reveal grid gap-8 rounded-[24px] border border-[rgba(126,200,80,0.22)] bg-[rgba(126,200,80,0.08)] p-7 lg:col-span-2 lg:grid-cols-2">
-              <div>
-                <div className="inline-flex rounded-full bg-[var(--landing-amber)] px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-ink)]">
-                  {lc.featuredBadge}
-                </div>
-                <h3 className="mt-4 font-[family:var(--font-serif)] text-[1.55rem] leading-tight sm:text-[1.8rem]">
-                  {lc.featuredTitle}
-                </h3>
-                <p className="mt-4 text-[0.9rem] leading-7 text-white/70">
-                  {lc.featuredBody}
-                </p>
-                <a
-                  href={phoneHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 inline-flex text-[0.9rem] font-semibold text-[var(--landing-sprout)] transition hover:translate-x-1"
-                >
-                  {lc.featuredCta} →
-                </a>
-              </div>
-              <div className="rounded-[18px] bg-white/[0.05] p-5">
-                <div className="space-y-3 text-[0.9rem] text-white/82">
-                  {lc.featuredChecklist.map((item) => (
-                    <div key={item} className="flex items-center gap-3">
-                      <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-[rgba(126,200,80,0.18)] text-[0.65rem] text-[var(--landing-sprout)]">
-                        ✓
-                      </span>
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </article>
-
-            {lc.services.map((service) => (
-              <article
-                key={service.id}
-                className="landing-reveal rounded-[20px] border border-white/10 bg-white/[0.05] p-7"
-              >
-                <h3 className="font-[family:var(--font-serif)] text-[1.45rem] leading-tight">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-[0.9rem] leading-7 text-white/65">
-                  {service.body}
-                </p>
-                <p className="mt-5 text-[0.9rem] font-semibold text-[var(--landing-sprout)]">
-                  {service.cta}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 7: Testimonials ── */}
-      <section id="outcomes" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-              {copy.proofEyebrow}
-            </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
-              {copy.proofTitle}
-            </h2>
-            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
-              {copy.proofBody}
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-5 lg:grid-cols-3">
-            {lc.testimonials.map((item) => (
-              <article
-                key={item.name}
-                className="landing-reveal rounded-[20px] border border-[rgba(26,58,42,0.07)] bg-white p-7 shadow-sm"
-              >
-                <div className="text-base tracking-[0.2em] text-[var(--landing-amber)]">
-                  ★★★★★
-                </div>
-                <p className="mt-4 font-[family:var(--font-serif)] text-[1.05rem] leading-[1.55] text-[var(--landing-green-deep)]">
-                  &ldquo;{item.quote}&rdquo;
-                </p>
-                <div className="mt-5 flex items-center gap-3">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white ${item.color}`}
-                  >
-                    {item.initial}
-                  </div>
-                  <div>
-                    <div className="text-[0.86rem] font-semibold text-[var(--landing-ink)]">
-                      {item.name}
-                    </div>
-                    <div className="text-[0.75rem] text-[var(--landing-muted)]">
-                      {item.role}
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Signal stats strip ── */}
-      <div className="landing-reveal border-y border-[rgba(26,58,42,0.08)] bg-[var(--warm-white)] px-5 py-10 lg:px-10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-8">
-          <div className="grid flex-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {signalStats.map((stat) => (
-              <div key={stat.label}>
-                <div className="font-[family:var(--font-display)] text-[2rem] font-extrabold text-[var(--landing-green-deep)]">
-                  {stat.value}
-                </div>
-                <div className="mt-1 text-[0.8rem] text-[var(--landing-muted)]">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <a
-            href={validateHref}
-            className="inline-flex rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-bold text-white shadow-[0_4px_20px_rgba(26,58,42,0.2)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_8px_28px_rgba(26,58,42,0.26)]"
-          >
-            {copy.signalCta} →
-          </a>
-        </div>
-      </div>
-
-      {/* ── FAQ ── */}
-      <section id="faq" className="bg-[var(--landing-cream)] px-5 py-20 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="landing-reveal mx-auto max-w-[42rem] text-center">
-            <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-              FAQ
-            </p>
-            <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
-              {copy.faqTitle}
-            </h2>
-            <p className="mt-4 text-base leading-7 text-[var(--landing-muted)]">
-              {copy.faqSubtitle}
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-4 lg:grid-cols-2">
-            {faqItems.map((item, index) => (
-              <details
-                key={item.question}
-                open={index === 0}
-                className="landing-reveal overflow-hidden rounded-[20px] border border-[rgba(26,58,42,0.08)] bg-white shadow-sm"
-              >
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 px-6 py-5">
-                  <span className="font-[family:var(--font-serif)] text-[1.12rem] leading-tight text-[var(--landing-green-deep)]">
-                    {item.question}
-                  </span>
-                  <span className="text-xl font-light text-[var(--landing-green-light)]">
-                    +
-                  </span>
-                </summary>
-                <div className="px-6 pb-6 text-[0.95rem] leading-7 text-[var(--landing-muted)]">
-                  {item.answer}
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Final CTA ── */}
-      <section id="cta" className="relative overflow-hidden px-5 py-20 lg:px-10">
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_rgba(126,200,80,0.07),_transparent_70%)]" />
-        <div className="relative mx-auto max-w-3xl text-center">
-          <p className="landing-reveal text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-            {copy.ctaEyebrow}
-          </p>
-          <h2 className="landing-reveal mt-4 font-[family:var(--font-serif)] text-[clamp(1.95rem,3.8vw,3.4rem)] leading-[1.08] text-[var(--landing-green-deep)]">
-            {copy.ctaTitle}
-            <br />
-            <em className="text-[var(--landing-green-light)]">
-              {copy.ctaEmphasis}
-            </em>
-          </h2>
-          <p className="landing-reveal mx-auto mt-4 max-w-xl text-base leading-7 text-[var(--landing-muted)]">
-            {copy.ctaBody}
-          </p>
-          <div className="landing-reveal mt-8 flex flex-wrap items-start justify-center gap-3">
+          <div className="landing-reveal flex flex-col items-center gap-3">
             <a
               href={validateHref}
-              className="inline-flex rounded-full bg-[var(--landing-green-deep)] px-9 py-4 text-[1.05rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.22)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_12px_36px_rgba(26,58,42,0.28)]"
+              className="inline-flex items-center justify-center rounded-full bg-[var(--landing-green-deep)] px-10 py-4 text-[1.05rem] font-bold text-white shadow-[0_4px_24px_rgba(26,58,42,0.2)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_36px_rgba(26,58,42,0.28)]"
             >
-              {copy.ctaPrimary} →
+              {lc.validationCta} →
             </a>
-            <div className="flex flex-col items-center gap-1">
-              <a
-                href={phoneHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex rounded-full border border-[rgba(26,58,42,0.2)] px-7 py-4 text-base font-semibold text-[var(--landing-green-deep)] transition hover:border-[var(--landing-green-deep)] hover:bg-[rgba(26,58,42,0.04)]"
-              >
-                {copy.ctaSecondary}
-              </a>
-              <span className="text-[0.73rem] text-[var(--landing-muted)]">
-                {copy.ctaDiagNote}
-              </span>
-            </div>
-          </div>
-          <p className="landing-reveal mt-6 text-sm text-[var(--landing-muted)]">
-            {copy.emailPrefix}{" "}
+            <p className="text-[0.8rem] text-[var(--landing-muted)]">{copy.freeResultCtaNote}</p>
             <a
-              href={emailHref}
-              className="font-semibold text-[var(--landing-green-deep)] underline underline-offset-4"
+              href="#booking"
+              className="mt-2 text-[0.88rem] font-semibold text-[var(--landing-muted)] underline underline-offset-4 transition hover:text-[var(--landing-green-deep)]"
             >
-              info@bizsproutai.com
+              {copy.ctaSecondary} ↓
             </a>
-          </p>
+            <p className="text-[0.73rem] text-[var(--landing-muted)]">{copy.ctaDiagNote}</p>
+          </div>
         </div>
       </section>
 
-      {/* ── Booking calendar — secondary / lower-intent path ── */}
-      <section className="bg-[var(--landing-cream)] px-5 pb-8 pt-6 lg:px-10 lg:pb-16">
+      {/* ── Section 4: Booking calendar ── */}
+      <section id="booking" className="px-5 pb-16 pt-12 lg:px-10">
         <div className="mx-auto max-w-5xl">
           <div className="landing-reveal text-center">
             <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
@@ -1159,11 +688,8 @@ export default async function HomePage({ params }: Props) {
             <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.9rem,3.6vw,3rem)] leading-tight text-[var(--landing-green-deep)]">
               {lc.bookingTitle}
             </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-[var(--landing-muted)]">
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[var(--landing-muted)]">
               {lc.bookingSubheading}
-            </p>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[var(--landing-muted)]">
-              {copy.bookingSectionNote}
             </p>
           </div>
 
@@ -1200,7 +726,7 @@ export default async function HomePage({ params }: Props) {
             },
             {
               "@context": "https://schema.org",
-              "@type": "Course",
+              "@type": "Service",
               name: "30-Day Founder Sprint",
               description:
                 "A done-with-you founder sprint that helps early-stage founders validate their idea, build the right launch asset, start real conversations, and reach their first paying customer in 30 days.",
@@ -1209,29 +735,12 @@ export default async function HomePage({ params }: Props) {
                 name: "BizSproutAI",
                 url: "https://validate.bizsproutai.com",
               },
-              hasCourseInstance: {
-                "@type": "CourseInstance",
-                courseMode: "online",
-                duration: "P30D",
-              },
               offers: {
                 "@type": "Offer",
                 category: "Business Launch Program",
                 availability: "https://schema.org/LimitedAvailability",
                 url: "https://cal.com/bizsproutai/30-min-founder-clarity-session",
               },
-            },
-            {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: faqItems.map((item) => ({
-                "@type": "Question",
-                name: item.question,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: item.answer,
-                },
-              })),
             },
           ]),
         }}
