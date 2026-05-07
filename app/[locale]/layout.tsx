@@ -295,15 +295,18 @@ export default async function LocaleLayout({
             </a>
             <header role="banner" className="fixed inset-x-0 top-0 z-50 border-b border-[rgba(26,58,42,0.08)] bg-[rgba(253,250,245,0.9)] backdrop-blur-xl">
               <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-10">
-                <Link href="/" className="flex items-center gap-3" locale={locale}>
+                <Link href="/" className="flex items-center gap-2.5" locale={locale}>
                   <Image
                     src={logoSrc}
-                    alt="BizSproutAI logo"
-                    width={240}
-                    height={56}
-                    className="h-11 w-auto max-w-[240px] object-contain"
+                    alt="BizSproutAI"
+                    width={36}
+                    height={36}
+                    className="h-9 w-9 flex-shrink-0 rounded-lg object-contain"
                     priority
                   />
+                  <span className="hidden text-[1rem] font-bold tracking-[-0.02em] text-[var(--landing-green-deep)] sm:inline">
+                    BizSproutAI
+                  </span>
                 </Link>
 
                 <nav aria-label="Main navigation" className="hidden items-center gap-10 text-base font-medium text-[var(--landing-muted)] lg:flex">

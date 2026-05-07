@@ -2,7 +2,7 @@ import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { LandingPageReveal } from "@/components/marketing/LandingPageReveal";
 import { BookingCalendar } from "@/components/marketing/BookingCalendar";
-import { ValidationWidget } from "@/components/ValidationWidget";
+import { HeroQuizCard } from "@/components/marketing/HeroQuizCard";
 import { LandingPageTracker } from "@/components/marketing/LandingPageTracker";
 import { getLandingCopy } from "@/i18n/landingCopy";
 
@@ -98,6 +98,13 @@ function getCopy(locale: string) {
       ctaSecondary: "Réserver un appel diagnostic gratuit",
       emailPrefix: "Vous préférez écrire ?",
 
+      /* ── Guarantee + trust ── */
+      guaranteeTitle: "Des résultats ou on continue — gratuitement",
+      guaranteeBody:
+        "Si vous suivez le plan et n'obtenez pas de client payant en 30 jours, nous continuons à travailler avec vous sans frais supplémentaires jusqu'à ce que ce soit le cas.",
+      trustTitle: "Fondateurs validés cette semaine",
+      trustMeta: "Gratuit · Moins d'une minute · Sans compte",
+
       /* ── Booking section ── */
       bookingSectionEyebrow: "Vous préférez parler d'abord ?",
       bookingSectionNote:
@@ -172,6 +179,12 @@ function getCopy(locale: string) {
       ctaPrimary: "Iniciar mi validación gratuita",
       ctaSecondary: "Reservar llamada diagnóstico gratuita",
       emailPrefix: "¿Prefieres escribir?",
+      guaranteeTitle: "Resultados o seguimos trabajando — gratis",
+      guaranteeBody:
+        "Si sigues el plan y no consigues un cliente de pago en 30 días, seguimos trabajando contigo sin costo adicional hasta que lo logres.",
+      trustTitle: "Fundadores validados esta semana",
+      trustMeta: "Gratis · Menos de 1 min · Sin cuenta",
+
       bookingSectionEyebrow: "¿Prefieres hablar primero?",
       bookingSectionNote:
         "La llamada diagnóstico es una opción secundaria para fundadores que prefieren hablar antes de empezar. La validación gratuita sigue siendo la ruta más rápida.",
@@ -245,6 +258,12 @@ function getCopy(locale: string) {
       ctaPrimary: "Kòmanse validasyon gratis mwen",
       ctaSecondary: "Rezève yon apèl dyagnostik gratis",
       emailPrefix: "Ou pito ekri?",
+      guaranteeTitle: "Rezilta oswa nou kontinye — gratis",
+      guaranteeBody:
+        "Si ou swiv plan an epi ou pa jwenn yon kliyan peyan nan 30 jou, nou kontinye travay avèk ou san frè siplemantè jiskaske ou jwenn.",
+      trustTitle: "Fondatè validé semèn sa a",
+      trustMeta: "Gratis · Mwens 1 minit · San kont",
+
       bookingSectionEyebrow: "Ou pito pale an premye?",
       bookingSectionNote:
         "Apèl dyagnostik la se yon opsyon segondè pou fondatè ki pito pale anvan yo kòmanse. Validasyon gratis rete wout ki pi rapid la.",
@@ -318,6 +337,12 @@ function getCopy(locale: string) {
       ctaPrimary: "Iniciar minha validação gratuita",
       ctaSecondary: "Agendar chamada diagnóstico gratuita",
       emailPrefix: "Prefere escrever?",
+      guaranteeTitle: "Resultados ou continuamos trabalhando — de graça",
+      guaranteeBody:
+        "Se você seguir o plano e não conseguir um cliente pagante em 30 dias, continuamos trabalhando com você sem custo adicional até conseguir.",
+      trustTitle: "Fundadores validados esta semana",
+      trustMeta: "Gratuito · Menos de 1 min · Sem conta",
+
       bookingSectionEyebrow: "Prefere falar primeiro?",
       bookingSectionNote:
         "A chamada diagnóstico é uma opção secundária para fundadores que preferem conversar antes de começar. A validação gratuita continua sendo a rota mais rápida.",
@@ -408,6 +433,13 @@ function getCopy(locale: string) {
     ctaSecondary: "Book a Free Fit Call",
     emailPrefix: "Prefer email?",
 
+    /* ── Guarantee + trust ── */
+    guaranteeTitle: "Results or we keep working — free",
+    guaranteeBody:
+      "If you follow the plan and don't land a paying customer in 30 days, we keep working with you at no extra cost until you do.",
+    trustTitle: "Founders validated this week",
+    trustMeta: "Free · Under 1 min · No account needed",
+
     /* ── Booking section ── */
     bookingSectionEyebrow: "Prefer to talk first?",
     bookingSectionNote:
@@ -482,6 +514,7 @@ export default async function HomePage({ params }: Props) {
         </div>
 
         <div className="relative mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1fr_0.82fr]">
+          {/* Left column */}
           <div>
             <div className="landing-reveal mb-6 flex items-center gap-3">
               <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.14)] text-sm font-medium text-[var(--landing-green-mid)]">
@@ -504,6 +537,12 @@ export default async function HomePage({ params }: Props) {
 
             <h1 className="landing-reveal mt-6 max-w-[18ch] font-[family:var(--font-serif)] text-[clamp(2.4rem,4.8vw,4.6rem)] leading-[1.02] tracking-[-0.03em] text-[var(--landing-green-deep)]">
               {copy.heroLead}
+              {copy.heroEmphasis && (
+                <>
+                  <br />
+                  <em>{copy.heroEmphasis}</em>
+                </>
+              )}
             </h1>
 
             <p className="landing-reveal mt-5 max-w-[34rem] text-[1.02rem] leading-[1.65] text-[var(--landing-muted)]">
@@ -527,34 +566,87 @@ export default async function HomePage({ params }: Props) {
             <p className="landing-reveal mt-3 text-[0.8rem] text-[var(--landing-muted)]">
               {copy.heroNote}
             </p>
+
+            {/* Guarantee box */}
+            <div className="landing-reveal mt-8 flex items-start gap-3 rounded-2xl border border-[rgba(126,200,80,0.25)] bg-[rgba(126,200,80,0.07)] px-5 py-4">
+              <span className="mt-0.5 text-[1.1rem]">🛡️</span>
+              <div>
+                <p className="text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
+                  {copy.guaranteeTitle}
+                </p>
+                <p className="mt-0.5 text-[0.78rem] leading-[1.5] text-[var(--landing-muted)]">
+                  {copy.guaranteeBody}
+                </p>
+              </div>
+            </div>
+
+            {/* Micro-trust avatars */}
+            <div className="landing-reveal mt-6 flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {["D", "R", "L", "S"].map((initial) => (
+                  <div
+                    key={initial}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--warm-white)] bg-[var(--landing-green-mid)] text-[0.65rem] font-bold text-white"
+                  >
+                    {initial}
+                  </div>
+                ))}
+              </div>
+              <div>
+                <p className="text-[0.8rem] font-semibold text-[var(--landing-green-deep)]">
+                  {copy.trustTitle}
+                </p>
+                <p className="text-[0.72rem] text-[var(--landing-muted)]">{copy.trustMeta}</p>
+              </div>
+            </div>
+
+            {/* Testimonials */}
+            <div className="landing-reveal mt-8 space-y-3">
+              <div className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-white p-4 shadow-sm">
+                <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-muted)]">
+                  &ldquo;I had a scattered idea and no real direction. Two weeks into the Sprint I
+                  had a paid offer and my first client conversation.&rdquo;
+                </p>
+                <p className="mt-2 text-[0.75rem] font-semibold text-[var(--landing-green-deep)]">
+                  Doha M. — Sprint founder
+                </p>
+              </div>
+              <div className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-white p-4 shadow-sm">
+                <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-muted)]">
+                  &ldquo;I stopped overthinking and started moving. The validation took under a
+                  minute and the next step was obvious.&rdquo;
+                </p>
+                <p className="mt-2 text-[0.75rem] font-semibold text-[var(--landing-green-deep)]">
+                  Rembert A. — Sprint founder
+                </p>
+              </div>
+              <div className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-white p-4 shadow-sm">
+                <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-muted)]">
+                  &ldquo;I had been &lsquo;about to launch&rsquo; for months. After the Sprint, my
+                  system was live and I landed my first paying client in week three.&rdquo;
+                </p>
+                <p className="mt-2 text-[0.75rem] font-semibold text-[var(--landing-green-deep)]">
+                  Liv T. — Sprint founder
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className="landing-reveal">
-            <ValidationWidget
-              choices={lc.clarityChoices}
-              clarityLabel={lc.clarityLabel}
-              clarityQuestion={lc.clarityQuestion}
-              validationCta={lc.validationCta}
-              widgetNote={lc.widgetNote}
+          {/* Right column */}
+          <div className="landing-reveal lg:sticky lg:top-28">
+            <HeroQuizCard
+              eyebrow={lc.clarityLabel}
+              question={lc.clarityQuestion}
+              options={lc.clarityChoices}
+              cta={lc.quizCta}
+              footer={lc.widgetNote}
+              outcomes={lc.miniCards.map((c) => ({
+                icon: c.icon,
+                label: c.title,
+                sub: c.subtitle,
+              }))}
               locale={locale}
             />
-
-            <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
-              {lc.miniCards.map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-2xl border border-[rgba(26,58,42,0.08)] bg-[var(--landing-cream)] p-4 shadow-sm"
-                >
-                  <div className="text-[1.15rem]">{item.icon}</div>
-                  <div className="mt-2 text-[0.82rem] font-semibold text-[var(--landing-green-deep)]">
-                    {item.title}
-                  </div>
-                  <div className="mt-0.5 text-[0.75rem] text-[var(--landing-muted)]">
-                    {item.subtitle}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
