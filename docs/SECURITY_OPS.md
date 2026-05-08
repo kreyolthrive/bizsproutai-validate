@@ -54,7 +54,6 @@ Vercel's Firewall sits in front of your application code. Configure it via the V
 | `ANTHROPIC_API_KEY` | Vercel env (server only) | **NEVER** |
 | `PERPLEXITY_API_KEY` | Vercel env (server only) | **NEVER** |
 | `IONOS_SMTP_PASS` | Vercel env (server only) | **NEVER** |
-| `UPSTASH_REDIS_REST_TOKEN` | Vercel env (server only) | **NEVER** |
 | `NEXT_PUBLIC_SUPABASE_URL` | Vercel env (public) | Yes (RLS protects data) |
 | `NEXT_PUBLIC_POSTHOG_KEY` | Vercel env (public) | Yes |
 

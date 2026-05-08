@@ -35,6 +35,7 @@ interface FreeValidateResponse {
   notificationStatus: NotificationStatus | null;
   error?: string;
   code?: string;
+  validationLeadId?: string | null;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -322,7 +323,7 @@ export async function POST(req: NextRequest) {
   logger.info({ event: "validation_completed", requestId, ts, email, stage: result.stage, verdict: result.verdict, firstAsset: result.firstAsset, durationMs: Date.now() - startMs });
 
   // 9. Persist to DB — must succeed before notifications
-  const { saved: leadSaved } = await saveFullLead(
+  const { saved: leadSaved, leadId: validationLeadId } = await saveFullLead(
     email, firstName, locale, stageIndex, idea, audience,
     hasLiveAsset, hasTraction, result, ts, requestId
   );
@@ -397,7 +398,7 @@ export async function POST(req: NextRequest) {
   });
 
   return NextResponse.json(
-    { ok: true, requestId, result, leadSaved, notificationStatus },
+    { ok: true, requestId, result, leadSaved, notificationStatus, validationLeadId },
     { headers: { "X-Request-Id": requestId } }
   );
 }

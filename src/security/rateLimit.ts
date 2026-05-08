@@ -1,4 +1,18 @@
-import { requiresDistributedProtection } from "@/src/server/runtimeMode";
+/**
+ * IP-based rate limiter.
+ *
+ * Uses Upstash/Vercel KV Redis when configured (UPSTASH_REDIS_REST_URL +
+ * UPSTASH_REDIS_REST_TOKEN, or KV_REST_API_URL + KV_REST_API_TOKEN) for
+ * cross-instance consistency on Vercel.
+ *
+ * Redis is OPTIONAL. When not configured — or when it errors — the limiter
+ * falls back to an in-memory bucket per serverless instance. In-memory rate
+ * limiting is best-effort on Vercel (not shared across instances), but it
+ * will never block a request simply because Redis is unavailable.
+ *
+ * To add distributed rate limiting later: set UPSTASH_REDIS_REST_URL and
+ * UPSTASH_REDIS_REST_TOKEN in your Vercel environment variables.
+ */
 
 type Bucket = {
   count: number;
@@ -36,17 +50,11 @@ function getStore(): Map<string, Bucket> {
 }
 
 function hasWarnedRedisFallback(): boolean {
-  const globalRef = globalThis as typeof globalThis & {
-    [WARNED_GLOBAL_KEY]?: boolean;
-  };
-  return globalRef[WARNED_GLOBAL_KEY] === true;
+  return (globalThis as Record<string, unknown>)[WARNED_GLOBAL_KEY] === true;
 }
 
 function markWarnedRedisFallback(): void {
-  const globalRef = globalThis as typeof globalThis & {
-    [WARNED_GLOBAL_KEY]?: boolean;
-  };
-  globalRef[WARNED_GLOBAL_KEY] = true;
+  (globalThis as Record<string, unknown>)[WARNED_GLOBAL_KEY] = true;
 }
 
 function getRedisConfig(): RedisConfig | null {
@@ -150,32 +158,19 @@ export async function checkRateLimit(
   const scopedKey = `${key}:${windowId}`;
   const redisConfig = getRedisConfig();
 
+  // No Redis configured — use in-memory best-effort limiter.
+  // This is not shared across Vercel serverless instances, but it will
+  // never block a request simply because Redis is unavailable.
   if (!redisConfig) {
-    if (requiresDistributedProtection()) {
-      return {
-        allowed: false,
-        remaining: 0,
-        retryAfterSeconds: 60,
-        reason: "rate_limit_backend_unavailable",
-      };
-    }
     return checkRateLimitInMemory(scopedKey, limit, windowEndMs, windowMs, now);
   }
 
   try {
     return await checkRateLimitInRedis(redisConfig, scopedKey, limit, windowEndMs, windowMs, now);
   } catch (error) {
-    if (requiresDistributedProtection()) {
-      console.error("Rate limit backend unavailable in production.", error);
-      return {
-        allowed: false,
-        remaining: 0,
-        retryAfterSeconds: 60,
-        reason: "rate_limit_backend_unavailable",
-      };
-    }
+    // Redis error — fail open to in-memory. Never block because backend is down.
     if (!hasWarnedRedisFallback()) {
-      console.error("Rate limit backend unavailable; falling back to in-memory limiter.", error);
+      console.warn("[rateLimit] Redis backend error — falling back to in-memory limiter.", error);
       markWarnedRedisFallback();
     }
     return checkRateLimitInMemory(scopedKey, limit, windowEndMs, windowMs, now);

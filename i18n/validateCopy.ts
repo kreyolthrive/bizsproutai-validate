@@ -97,6 +97,8 @@ export interface ValidateCopy {
   rLockedSectionTitle: string;
   rLockedMeta: string;
   rUpsellLabel: string;
+  /** Label for the secondary fit-call section (distinct from rUpsellLabel) */
+  rFitCallLabel: string;
   rPrimaryCta: string;
   rFitCta: string;
   rFitNote: string;
@@ -128,6 +130,26 @@ export interface ValidateCopy {
   footerNotePre: string;
   footerNoteCta: string;
   footerNotePost: string;
+
+  // ── Result: idea callout + stage context note ────────────────────────────────
+  /** Label above the quoted idea excerpt in the result view */
+  rSubmittedIdeaLabel: string;
+  /** Small note beside the stage tag pill, e.g. "Based on your selected stage and idea description." */
+  rStageContextNote: string;
+
+  // ── Page-level intro copy (rendered above the form in validate/page.tsx) ─────
+  pageHeadline: string;
+  pageSubcopy: string;
+  pageReassurance: string;
+
+  // ── Waitlist section (result view) ───────────────────────────────────────────
+  rWaitlistHeadline: string;
+  rWaitlistBody: string;
+  rWaitlistCta: string;
+  rWaitlistSubmitting: string;
+  rWaitlistSuccess: string;
+  rWaitlistError: string;
+  rWaitlistEmailError: string;
 }
 
 // ─── English ──────────────────────────────────────────────────────────────────
@@ -137,19 +159,22 @@ const en: ValidateCopy = {
   trustMeta: "Free · No account required · Results in under a minute",
 
   stepLabel: (n) => `Free Validation — Step ${n}`,
-  stepCounter: (cur, tot) => `Step ${cur} of ${tot}`,
+  stepCounter: (cur, tot) =>
+    cur === 1
+      ? `Step ${cur} of ${tot} — takes about 2 minutes`
+      : `Step ${cur} of ${tot}`,
 
   back: "← Back",
   next: "Continue →",
 
   s0heading: "Where are you right now?",
   s0body:
-    "Pick what best describes your current situation. Be honest — the result will be more useful if you are accurate.",
+    "Pick the option that best describes where you are. Honest answers get more useful results.",
   s0choices: [
-    "I have an idea but no clear offer or direction",
-    "I have an offer but no launch asset or system behind it",
-    "I have scattered pieces but nothing connected",
-    "I am ready to launch but need hands-on support",
+    "I only have an idea",
+    "I'm already building",
+    "I have something but no customers",
+    "I have customers and want growth",
   ],
   s0cta: "Continue →",
 
@@ -173,7 +198,7 @@ const en: ValidateCopy = {
   s2tractionYes: "Yes, I have some traction",
   s2tractionNo: "No, not yet",
 
-  s3heading: "Where should we send your results?",
+  s3heading: "Where should we send your validation result?",
   s3body:
     "Your results will appear on screen instantly. We will also send a copy to your inbox so you can reference it later.",
   s3nameLabel: "First name",
@@ -184,7 +209,7 @@ const en: ValidateCopy = {
   s3emailPlaceholder: "you@example.com",
   s3submit: "Get My Free Validation →",
   s3submitting: "Getting your results…",
-  s3privacy: "No spam. Results appear instantly. Unsubscribe anytime.",
+  s3privacy: "No payment required. Your result will show your stage, first asset, and next move.",
   s3emailError: "Please enter a valid email address.",
   s3error: "Something went wrong getting your results. Please try again in a moment.",
 
@@ -202,7 +227,10 @@ const en: ValidateCopy = {
   rLockedSectionTitle: "Your full analysis would also include",
   rLockedMeta:
     "These insights are specific to your idea and require the full AI-powered analysis.",
+  rSubmittedIdeaLabel: "Submitted idea",
+  rStageContextNote: "Based on your selected stage and idea description.",
   rUpsellLabel: "Your next step",
+  rFitCallLabel: "Want deeper help?",
   rPrimaryCta: "Unlock my full sprint inside BizSproutAI →",
   rFitCta: "Book a free fit call",
   rFitNote: "30-min diagnostic · no pitch",
@@ -253,6 +281,21 @@ const en: ValidateCopy = {
     "Free validation is designed to give you real clarity, not a generic quiz result. After validation, continue into",
   footerNoteCta: "BizSproutAI",
   footerNotePost: "for the full sprint, build support, and execution system.",
+
+  pageHeadline: "Get your idea to its first customer.",
+  pageSubcopy:
+    "Start with a free validation. In about 2 minutes, BizSproutAI will show your stage, what to build first, what mistake to avoid, and your next 4 execution steps.",
+  pageReassurance: "Free first step. No payment required.",
+
+  rWaitlistHeadline: "Your validation is ready. Join the BizSproutAI waitlist.",
+  rWaitlistBody:
+    "BizSproutAI is being built to help founders move from idea to first customer by identifying what to build first, building it, distributing it, and adapting until the outcome lands.",
+  rWaitlistCta: "Join the Waitlist →",
+  rWaitlistSubmitting: "Joining…",
+  rWaitlistSuccess:
+    "You're on the list. We'll reach out as BizSproutAI opens for founders.",
+  rWaitlistError: "Something went wrong. Please try again in a moment.",
+  rWaitlistEmailError: "Please enter a valid email address.",
 };
 
 // ─── French ───────────────────────────────────────────────────────────────────
@@ -328,7 +371,10 @@ const fr: ValidateCopy = {
   rLockedSectionTitle: "Votre analyse complète inclurait aussi",
   rLockedMeta:
     "Ces informations sont spécifiques à votre idée et nécessitent l'analyse complète propulsée par l'IA.",
+  rSubmittedIdeaLabel: "Idée soumise",
+  rStageContextNote: "Basé sur votre étape sélectionnée et la description de votre idée.",
   rUpsellLabel: "Votre prochaine étape",
+  rFitCallLabel: "Besoin d'une aide plus approfondie ?",
   rPrimaryCta: "Accéder à mon sprint complet dans BizSproutAI →",
   rFitCta: "Réserver un appel découverte gratuit",
   rFitNote: "30 min de diagnostic · sans argumentaire commercial",
@@ -379,6 +425,21 @@ const fr: ValidateCopy = {
     "La validation gratuite est conçue pour vous donner une vraie clarté, pas un résultat de quiz générique. Après la validation, continuez dans",
   footerNoteCta: "BizSproutAI",
   footerNotePost: "pour le sprint complet, le support à la construction et le système d'exécution.",
+
+  pageHeadline: "De l'idée à votre premier client.",
+  pageSubcopy:
+    "Commencez avec une validation gratuite. En environ 2 minutes, BizSproutAI vous montrera votre stade, ce qu'il faut construire en premier, l'erreur à éviter et vos 4 prochaines étapes.",
+  pageReassurance: "Première étape gratuite. Aucun paiement requis.",
+
+  rWaitlistHeadline: "Votre validation est prête. Rejoignez la liste d'attente BizSproutAI.",
+  rWaitlistBody:
+    "BizSproutAI est conçu pour aider les fondateurs à passer de l'idée au premier client en identifiant ce qu'il faut construire en premier, en le construisant, en le distribuant et en s'adaptant jusqu'au résultat.",
+  rWaitlistCta: "Rejoindre la liste d'attente →",
+  rWaitlistSubmitting: "Inscription…",
+  rWaitlistSuccess:
+    "Vous êtes sur la liste. Nous vous contacterons à l'ouverture de BizSproutAI.",
+  rWaitlistError: "Une erreur s'est produite. Veuillez réessayer dans un moment.",
+  rWaitlistEmailError: "Veuillez entrer une adresse e-mail valide.",
 };
 
 // ─── Haitian Creole ───────────────────────────────────────────────────────────
@@ -454,7 +515,10 @@ const ht: ValidateCopy = {
   rLockedSectionTitle: "Analiz konplè ou ta gen ladan tou",
   rLockedMeta:
     "Enfòmasyon sa yo espesifik pou lide ou epi yo bezwen analiz konplè ki alimante pa IA.",
+  rSubmittedIdeaLabel: "Lide soumèt",
+  rStageContextNote: "Baze sou etap ou chwazi a ak deskripsyon lide ou.",
   rUpsellLabel: "Pwochen etap ou",
+  rFitCallLabel: "Bezwen plis èd ?",
   rPrimaryCta: "Debloke sprint konplè mwen nan BizSproutAI →",
   rFitCta: "Rezève yon apèl dekouvèt gratis",
   rFitNote: "30 minit dyagnostik · pa gen vant",
@@ -505,6 +569,21 @@ const ht: ValidateCopy = {
     "Validasyon gratis la fèt pou ba ou yon vrè klarifikasyon, pa yon rezilta kiz jenerik. Apre validasyon an, kontinye nan",
   footerNoteCta: "BizSproutAI",
   footerNotePost: "pou sprint konplè a, sipò bati, ak sistèm ekzekisyon.",
+
+  pageHeadline: "De lide ou a premye kliyan ou.",
+  pageSubcopy:
+    "Kòmanse ak yon validasyon gratis. Nan anviwon 2 minit, BizSproutAI pral montre etap ou, sa pou bati an premye, erè pou evite, ak 4 pwochen etap ekzekisyon ou.",
+  pageReassurance: "Premye etap gratis. Pa gen peman obligatwa.",
+
+  rWaitlistHeadline: "Validasyon ou prè. Rantre nan lis datant BizSproutAI.",
+  rWaitlistBody:
+    "BizSproutAI ap bati pou ede fondatè yo pase de lide a premye kliyan an pa idantifye sa pou bati an premye, bati li, distribiye li, epi adapte jouk rezilta a rive.",
+  rWaitlistCta: "Rantre nan lis datant →",
+  rWaitlistSubmitting: "Ap enskri…",
+  rWaitlistSuccess:
+    "Ou sou lis la. Nou pral kontakte ou lè BizSproutAI ouvri pou fondatè yo.",
+  rWaitlistError: "Te gen yon erè. Tanpri eseye ankò nan yon moman.",
+  rWaitlistEmailError: "Tanpri antre yon adrès imèl valid.",
 };
 
 // ─── Spanish ──────────────────────────────────────────────────────────────────
@@ -580,7 +659,10 @@ const es: ValidateCopy = {
   rLockedSectionTitle: "Tu análisis completo también incluiría",
   rLockedMeta:
     "Estos datos son específicos para tu idea y requieren el análisis completo impulsado por IA.",
+  rSubmittedIdeaLabel: "Idea enviada",
+  rStageContextNote: "Basado en tu etapa seleccionada y la descripción de tu idea.",
   rUpsellLabel: "Tu próximo paso",
+  rFitCallLabel: "¿Necesitas ayuda más profunda?",
   rPrimaryCta: "Desbloquear mi sprint completo en BizSproutAI →",
   rFitCta: "Reservar una llamada de diagnóstico gratuita",
   rFitNote: "30 min de diagnóstico · sin argumentario de ventas",
@@ -631,6 +713,21 @@ const es: ValidateCopy = {
     "La validación gratuita está diseñada para darte claridad real, no un resultado de quiz genérico. Después de la validación, continúa en",
   footerNoteCta: "BizSproutAI",
   footerNotePost: "para el sprint completo, soporte de construcción y sistema de ejecución.",
+
+  pageHeadline: "De tu idea a tu primer cliente.",
+  pageSubcopy:
+    "Empieza con una validación gratuita. En aproximadamente 2 minutos, BizSproutAI te mostrará tu etapa, qué construir primero, qué error evitar y tus próximos 4 pasos de ejecución.",
+  pageReassurance: "Primer paso gratuito. Sin pago requerido.",
+
+  rWaitlistHeadline: "Tu validación está lista. Únete a la lista de espera de BizSproutAI.",
+  rWaitlistBody:
+    "BizSproutAI se está construyendo para ayudar a los fundadores a pasar de la idea al primer cliente identificando qué construir primero, construyéndolo, distribuyéndolo y adaptándolo hasta lograr el resultado.",
+  rWaitlistCta: "Unirse a la lista de espera →",
+  rWaitlistSubmitting: "Uniéndome…",
+  rWaitlistSuccess:
+    "Estás en la lista. Te contactaremos cuando BizSproutAI abra para fundadores.",
+  rWaitlistError: "Algo salió mal. Por favor intenta de nuevo en un momento.",
+  rWaitlistEmailError: "Por favor ingresa una dirección de correo válida.",
 };
 
 // ─── Portuguese ───────────────────────────────────────────────────────────────
@@ -706,7 +803,10 @@ const pt: ValidateCopy = {
   rLockedSectionTitle: "Sua análise completa também incluiria",
   rLockedMeta:
     "Esses insights são específicos para sua ideia e exigem a análise completa impulsionada por IA.",
+  rSubmittedIdeaLabel: "Ideia enviada",
+  rStageContextNote: "Baseado na sua etapa selecionada e na descrição da sua ideia.",
   rUpsellLabel: "Seu próximo passo",
+  rFitCallLabel: "Quer ajuda mais aprofundada?",
   rPrimaryCta: "Desbloquear meu sprint completo no BizSproutAI →",
   rFitCta: "Agendar uma chamada de diagnóstico gratuita",
   rFitNote: "30 min de diagnóstico · sem argumentação de vendas",
@@ -757,6 +857,21 @@ const pt: ValidateCopy = {
     "A validação gratuita é projetada para dar clareza real, não um resultado de quiz genérico. Após a validação, continue no",
   footerNoteCta: "BizSproutAI",
   footerNotePost: "para o sprint completo, suporte de construção e sistema de execução.",
+
+  pageHeadline: "Da sua ideia ao primeiro cliente.",
+  pageSubcopy:
+    "Comece com uma validação gratuita. Em cerca de 2 minutos, BizSproutAI mostrará sua etapa, o que construir primeiro, o erro a evitar e seus próximos 4 passos de execução.",
+  pageReassurance: "Primeiro passo gratuito. Sem pagamento necessário.",
+
+  rWaitlistHeadline: "Sua validação está pronta. Entre na lista de espera do BizSproutAI.",
+  rWaitlistBody:
+    "O BizSproutAI está sendo construído para ajudar fundadores a ir da ideia ao primeiro cliente identificando o que construir primeiro, construindo, distribuindo e adaptando até o resultado chegar.",
+  rWaitlistCta: "Entrar na lista de espera →",
+  rWaitlistSubmitting: "Entrando…",
+  rWaitlistSuccess:
+    "Você está na lista. Entraremos em contato quando o BizSproutAI abrir para fundadores.",
+  rWaitlistError: "Algo deu errado. Por favor tente novamente em um momento.",
+  rWaitlistEmailError: "Por favor insira um endereço de e-mail válido.",
 };
 
 // ─── Locale map ───────────────────────────────────────────────────────────────

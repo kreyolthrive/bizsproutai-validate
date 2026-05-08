@@ -76,6 +76,11 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitRequestId, setSubmitRequestId] = useState<string | null>(null);
+  const [waitlistState, setWaitlistState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistName, setWaitlistName] = useState("");
+  const [waitlistEmailError, setWaitlistEmailError] = useState("");
+  const [serverLeadId, setServerLeadId] = useState<string | null>(null);
 
   useEffect(() => {
     trackMetaStandard("ViewContent", { content_name: "FreeValidation", content_type: "product" });
@@ -142,14 +147,16 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
         throw new Error("No result returned from server");
       }
 
-      trackMetaStandard("Lead");
-      trackMeta("ValidationEmailSubmit", { stageIndex });
+      trackMetaStandard("Lead", { content_name: "FreeValidation", source: "free_validation" });
       trackMetaStandard("CompleteRegistration", {
         content_name: "FreeValidation",
         stage: data.result.stage,
       });
-      trackMeta("ValidationComplete", { stage: data.result.stage, stageIndex });
+      trackMeta("ValidationCompleted", { stage: data.result.stage, stageIndex });
 
+      setWaitlistEmail(email);
+      setWaitlistName(firstName);
+      setServerLeadId((data as any).validationLeadId ?? null);
       setResult(data.result as ValidationResult);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
@@ -173,6 +180,41 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
     setResult(null);
     setSubmitError(null);
     setSubmitRequestId(null);
+    setWaitlistState("idle");
+    setWaitlistEmail("");
+    setWaitlistName("");
+    setWaitlistEmailError("");
+    setServerLeadId(null);
+  }
+
+  async function handleWaitlist() {
+    if (!isValidEmail(waitlistEmail)) {
+      setWaitlistEmailError(copy.rWaitlistEmailError);
+      return;
+    }
+    setWaitlistEmailError("");
+    setWaitlistState("submitting");
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: waitlistEmail.trim().toLowerCase(),
+          name: waitlistName.trim() || undefined,
+          source: "free_validation_result",
+          locale,
+          validationLeadId: serverLeadId ?? undefined,
+          stage: result?.stage,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || `Server error ${res.status}`);
+      trackMeta("WaitlistJoined", { source: "free_validation", locale });
+      setWaitlistState("success");
+    } catch (err) {
+      console.error("[FreeValidationFlow] Waitlist join failed:", err);
+      setWaitlistState("error");
+    }
   }
 
   useEffect(() => {
@@ -221,10 +263,25 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
           </p>
         </div>
 
-        {/* Stage tag — shows localised display name */}
-        <div className="mb-4 flex items-center gap-3">
+        {/* ── Submitted idea callout ── */}
+        {idea && (
+          <div className="mb-6 rounded-[14px] border border-[rgba(26,58,42,0.1)] bg-[rgba(26,58,42,0.03)] px-4 py-3">
+            <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-muted)]">
+              {copy.rSubmittedIdeaLabel}
+            </p>
+            <p className="mt-1.5 text-[0.88rem] italic leading-[1.55] text-[var(--landing-green-deep)]">
+              &ldquo;{idea.length > 160 ? idea.slice(0, 160).trimEnd() + "\u2026" : idea}&rdquo;
+            </p>
+          </div>
+        )}
+
+        {/* Stage tag + context note */}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
           <span className="rounded-full bg-[var(--landing-green-deep)] px-4 py-1.5 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-white">
             {result.stageTagDisplay ?? result.stageTag}
+          </span>
+          <span className="text-[0.75rem] text-[var(--landing-muted)]">
+            {copy.rStageContextNote}
           </span>
         </div>
 
@@ -355,42 +412,93 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
           </p>
         </div>
 
-        {/* ── Stage-specific upsell CTA ── */}
-        <div className="mt-4 rounded-[20px] bg-[var(--landing-green-deep)] p-6 text-white sm:p-8">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-sprout)]">
+        {/* ── Waitlist CTA — PRIMARY ── */}
+        <div className="mt-6 rounded-[20px] border-2 border-[var(--landing-sprout)] bg-white p-6 sm:p-8">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-mid)]">
             {copy.rUpsellLabel}
           </p>
-          <h3 className="mt-2 font-[family:var(--font-serif)] text-[1.35rem] leading-tight">
+          <h3 className="mt-2 font-[family:var(--font-serif)] text-[1.35rem] leading-tight text-[var(--landing-green-deep)]">
+            {copy.rWaitlistHeadline}
+          </h3>
+          <p className="mt-2 text-[0.9rem] leading-[1.6] text-[var(--landing-muted)]">
+            {copy.rWaitlistBody}
+          </p>
+
+          {waitlistState === "success" ? (
+            <div className="mt-5 rounded-[14px] border border-[rgba(126,200,80,0.35)] bg-[rgba(126,200,80,0.1)] px-5 py-4 text-center">
+              <p className="text-[0.95rem] font-semibold text-[var(--landing-green-deep)]">
+                {copy.rWaitlistSuccess}
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="mt-5 space-y-3">
+                <input
+                  type="email"
+                  value={waitlistEmail}
+                  onChange={(e) => {
+                    setWaitlistEmail(e.target.value);
+                    if (waitlistEmailError) setWaitlistEmailError("");
+                  }}
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  className={`w-full rounded-[14px] border bg-white px-4 py-3 text-[0.95rem] text-[var(--landing-ink)] outline-none transition placeholder:text-[var(--landing-muted)]/60 focus:ring-2 focus:ring-[rgba(126,200,80,0.2)] ${
+                    waitlistEmailError
+                      ? "border-red-400 focus:border-red-400"
+                      : "border-[rgba(26,58,42,0.15)] focus:border-[var(--landing-green-mid)]"
+                  }`}
+                />
+                {waitlistEmailError && (
+                  <p className="text-[0.8rem] text-red-500">{waitlistEmailError}</p>
+                )}
+                <input
+                  type="text"
+                  value={waitlistName}
+                  onChange={(e) => setWaitlistName(e.target.value)}
+                  placeholder="First name (optional)"
+                  autoComplete="given-name"
+                  className="w-full rounded-[14px] border border-[rgba(26,58,42,0.15)] bg-white px-4 py-3 text-[0.95rem] text-[var(--landing-ink)] outline-none transition placeholder:text-[var(--landing-muted)]/60 focus:border-[var(--landing-green-mid)] focus:ring-2 focus:ring-[rgba(126,200,80,0.2)]"
+                />
+              </div>
+              {waitlistState === "error" && (
+                <p className="mt-2 text-[0.8rem] text-red-500">{copy.rWaitlistError}</p>
+              )}
+              <button
+                onClick={handleWaitlist}
+                disabled={waitlistState === "submitting"}
+                className="mt-4 w-full rounded-full bg-[var(--landing-sprout)] px-8 py-4 text-[1rem] font-semibold text-[var(--landing-ink)] transition hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_10px_30px_rgba(126,200,80,0.3)] disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                {waitlistState === "submitting" ? copy.rWaitlistSubmitting : copy.rWaitlistCta}
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* ── Stage-specific context + Fit Call — SECONDARY ── */}
+        <div className="mt-4 rounded-[20px] bg-[var(--landing-green-deep)] p-6 text-white sm:p-8">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-sprout)]">
+            {copy.rFitCallLabel}
+          </p>
+          <h3 className="mt-2 font-[family:var(--font-serif)] text-[1.2rem] leading-tight">
             {upsell.headline}
           </h3>
-          <p className="mt-2 text-[0.9rem] leading-[1.6] text-white/70">
+          <p className="mt-2 text-[0.88rem] leading-[1.6] text-white/70">
             {upsell.body}
           </p>
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-5 flex flex-col items-start gap-1">
             <a
               href={phoneHref}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackMeta("PlatformContinueClick", { stage: result.stage })}
-              className="flex flex-1 items-center justify-center rounded-full bg-[var(--landing-sprout)] px-6 py-4 text-[0.95rem] font-semibold text-[var(--landing-ink)] transition hover:brightness-105"
+              onClick={() => {
+                trackMetaStandard("Schedule");
+                trackMeta("FitCallClick", { stage: result.stage });
+              }}
+              className="flex items-center justify-center rounded-full border border-white/25 px-6 py-3 text-[0.9rem] font-semibold text-white/80 transition hover:border-white/50 hover:text-white"
             >
-              {copy.rPrimaryCta}
+              {copy.rFitCta}
             </a>
-            <div className="flex flex-col items-center gap-1 sm:flex-none">
-              <a
-                href={phoneHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  trackMetaStandard("Schedule");
-                  trackMeta("FitCallClick", { stage: result.stage });
-                }}
-                className="flex w-full items-center justify-center rounded-full border border-white/20 px-6 py-4 text-[0.9rem] font-semibold text-white/80 transition hover:border-white/40 hover:text-white"
-              >
-                {copy.rFitCta}
-              </a>
-              <span className="text-[0.7rem] text-white/40">{copy.rFitNote}</span>
-            </div>
+            <span className="ml-1 text-[0.7rem] text-white/40">{copy.rFitNote}</span>
           </div>
         </div>
 
