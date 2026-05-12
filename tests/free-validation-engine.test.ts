@@ -51,6 +51,21 @@ describe("stage assignment", () => {
     const r = compute(99, "some idea");
     expect(r.stage).toBe("Idea Stage");
   });
+
+  it("negative stageIndex falls back to Idea Stage", () => {
+    const r = compute(-1, "some idea");
+    expect(r.stage).toBe("Idea Stage");
+  });
+
+  it("null stageIndex falls back to Idea Stage", () => {
+    const r = compute(null as unknown as number, "some idea");
+    expect(r.stage).toBe("Idea Stage");
+  });
+
+  it("undefined stageIndex falls back to Idea Stage", () => {
+    const r = compute(undefined as unknown as number, "some idea");
+    expect(r.stage).toBe("Idea Stage");
+  });
 });
 
 // ─── Verdict correctness ──────────────────────────────────────────────────────
@@ -116,9 +131,9 @@ describe("first asset detection", () => {
     expect(r.firstAsset).toBe("Mobile app");
   });
 
-  it("marketplace idea → Marketplace web app", () => {
+  it("marketplace idea → Marketplace pilot page", () => {
     const r = compute(2, "marketplace to connect buyers and sellers of handmade goods");
-    expect(r.firstAsset).toBe("Marketplace web app");
+    expect(r.firstAsset).toBe("Marketplace pilot page");
   });
 
   it("SaaS / dashboard idea → Web app (SaaS)", () => {
@@ -132,9 +147,9 @@ describe("first asset detection", () => {
     expect(r.firstAsset).toBe("Web app");
   });
 
-  it("e-commerce idea → E-commerce store", () => {
+  it("e-commerce idea → Preorder product page", () => {
     const r = compute(1, "online store selling handmade candles and physical products");
-    expect(r.firstAsset).toBe("E-commerce store");
+    expect(r.firstAsset).toBe("Preorder product page");
   });
 
   it("funnel / lead magnet idea → Lead funnel", () => {
@@ -157,11 +172,11 @@ describe("first asset detection", () => {
     const knownAssets = new Set([
       "Booking page",
       "Mobile app",
-      "Marketplace web app",
+      "Marketplace pilot page",
       "Web app (SaaS)",
       "Web app",
       "Lead funnel",
-      "E-commerce store",
+      "Preorder product page",
       "Simple landing page (offer test)",
       "Landing page or booking page",
       "Unified website or funnel",
@@ -204,9 +219,9 @@ describe("scenario coverage", () => {
     expect(r.nextSteps[0]).toContain("asset");
   });
 
-  it("marketplace idea: stage 2 assembled, marketplace asset detected", () => {
+  it("marketplace idea: stage 2 assembled, marketplace pilot page detected", () => {
     const r = compute(2, "two-sided gig platform connecting freelance photographers with clients", "businesses");
-    expect(r.firstAsset).toBe("Marketplace web app");
+    expect(r.firstAsset).toBe("Marketplace pilot page");
     expect(r.stage).toMatch(/Assembly Stage|Optimization Stage/);
   });
 

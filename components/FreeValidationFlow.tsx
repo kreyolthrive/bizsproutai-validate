@@ -306,14 +306,18 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
           </p>
         </div>
 
-        {/* ── Verdict (with domain prefix when available) ── */}
+        {/* ── Verdict — uses niche label when detected, domain label as fallback ── */}
         <div className="mt-4 rounded-[20px] border border-[rgba(26,58,42,0.1)] bg-white p-6 shadow-sm">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-light)]">
             {copy.rVerdictLabel}
           </p>
           <p className="mt-2 font-[family:var(--font-serif)] text-[1.35rem] leading-[1.3] text-[var(--landing-green-deep)]">
-            {result.domainLabel
-              ? `For a ${result.domainLabel} business at this stage: ${result.verdict.charAt(0).toLowerCase()}${result.verdict.slice(1)}`
+            {(result.nicheLabel || (locale === "en" && result.domainLabel))
+              ? (() => {
+                  const label = result.nicheLabel ?? result.domainLabel ?? "";
+                  const article = /^[aeiou]/i.test(label) ? "an" : "a";
+                  return `For ${article} ${label} at this stage: ${result.verdict.charAt(0).toLowerCase()}${result.verdict.slice(1)}`;
+                })()
               : result.verdict}
           </p>
         </div>
@@ -327,17 +331,17 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
             {result.firstAsset}
           </p>
           <p className="mt-2 text-[0.9rem] leading-[1.6] text-[var(--landing-muted)]">
-            {result.firstAssetReason}
+            {result.ideaContext?.nicheAssetReason ?? result.firstAssetReason}
           </p>
         </div>
 
-        {/* ── Next 4 steps ── */}
+        {/* ── Next steps — niche-specific when detected, generic fallback ── */}
         <div className="mt-4 rounded-[20px] border border-[rgba(26,58,42,0.08)] bg-white p-6 shadow-sm">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-light)]">
             {copy.rNextStepsLabel}
           </p>
           <ol className="mt-4 space-y-3">
-            {result.nextSteps.map((s, i) => (
+            {(result.nicheSteps ?? result.nextSteps).map((s, i) => (
               <li key={i} className="flex items-start gap-3 text-[0.93rem] leading-[1.6] text-[var(--landing-muted)]">
                 <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(126,200,80,0.15)] text-[0.72rem] font-bold text-[var(--landing-green-deep)]">
                   {i + 1}
@@ -354,7 +358,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
             {copy.rWarningLabel}
           </p>
           <p className="mt-2 text-[0.93rem] leading-[1.65] text-[var(--landing-muted)]">
-            {result.warning}
+            {result.ideaContext?.nicheMistake ?? result.warning}
           </p>
         </div>
 
