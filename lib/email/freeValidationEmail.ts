@@ -170,7 +170,10 @@ export async function sendFreeValidationOwnerAlert(
   const t = resolveTransport();
   if (!t) return { sent: false, error: "Email transport not configured" };
 
-  const ownerEmail = process.env.LEADS_TO_EMAIL ?? process.env.HOSTINGER_FROM_EMAIL;
+  const ownerEmail =
+    process.env.LEADS_TO_EMAIL ??
+    process.env.IONOS_OWNER_EMAIL ??
+    process.env.HOSTINGER_FROM_EMAIL;
   if (!ownerEmail) return { sent: false, error: "Owner email not configured (set LEADS_TO_EMAIL)" };
 
   try {

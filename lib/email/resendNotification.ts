@@ -10,7 +10,12 @@ function escapeHtml(s: string): string {
 }
 
 function getOwnerEmail(): string | null {
-  return process.env.LEADS_TO_EMAIL ?? process.env.HOSTINGER_FROM_EMAIL ?? null;
+  return (
+    process.env.LEADS_TO_EMAIL ??
+    process.env.IONOS_OWNER_EMAIL ??
+    process.env.HOSTINGER_FROM_EMAIL ??
+    null
+  );
 }
 
 function getFromEmail() {

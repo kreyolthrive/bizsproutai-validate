@@ -137,7 +137,9 @@ async function saveFullLead(
   hasTraction: boolean,
   result: ValidationResult,
   timestamp: string,
-  requestId: string
+  requestId: string,
+  pageUrl: string | null,
+  userAgent: string | null
 ): Promise<{ leadId: string | null; saved: boolean }> {
   const supabase = getSupabase();
   if (!supabase) {
@@ -162,6 +164,8 @@ async function saveFullLead(
         completed: true,
         requestId,
         submittedAt: timestamp,
+        page_url: pageUrl,
+        user_agent: userAgent,
         result: {
           stage: result.stage,
           verdict: result.verdict,
@@ -181,12 +185,59 @@ async function saveFullLead(
   }
 }
 
+async function updateLeadNotificationStatus(
+  email: string,
+  status: NotificationStatus,
+  notifiedAt: string
+): Promise<void> {
+  const supabase = getSupabase();
+  if (!supabase) return;
+
+  try {
+    const { data } = await (supabase as any)
+      .from("validation_leads")
+      .select("metadata")
+      .eq("email", email)
+      .maybeSingle();
+
+    const current = (data?.metadata as Record<string, unknown>) ?? {};
+    await (supabase as any)
+      .from("validation_leads")
+      .update({
+        metadata: {
+          ...current,
+          owner_notification_status: status.ownerNotified ? "sent" : "failed",
+          owner_notification_error: status.ownerError ?? null,
+          result_email_status: status.resultEmailSent ? "sent" : "failed",
+          result_email_error: status.emailError ?? null,
+          notified_at: notifiedAt,
+        },
+      })
+      .eq("email", email);
+  } catch (err) {
+    logger.warn({ event: "notification_status_update_fail", requestId: "n/a", ts: new Date().toISOString(), email, error: String(err) });
+  }
+}
+
 // ─── Route handler ────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   const requestId = crypto.randomUUID();
   const ts = new Date().toISOString();
   const startMs = Date.now();
+
+  // Env health check — warn once per invocation so Vercel logs surface misconfigs
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    logger.warn({ event: "env_health", requestId, ts, warning: "Supabase not configured — leads will not be persisted" });
+  }
+  const ownerEmailResolved =
+    process.env.LEADS_TO_EMAIL ?? process.env.IONOS_OWNER_EMAIL ?? process.env.HOSTINGER_FROM_EMAIL;
+  if (!ownerEmailResolved) {
+    logger.warn({ event: "env_health", requestId, ts, warning: "No owner email configured — set LEADS_TO_EMAIL or IONOS_OWNER_EMAIL" });
+  }
+  if (!process.env.EMAIL_PROVIDER) {
+    logger.warn({ event: "env_health", requestId, ts, warning: "EMAIL_PROVIDER not set — defaulting to ionos transport" });
+  }
 
   // 1. Payload size guard
   const sizeCheck = await guardPayloadSize(req);
@@ -289,6 +340,9 @@ export async function POST(req: NextRequest) {
   // ── Full validation ────────────────────────────────────────────────────────
 
   // 6. Extract validated full-validation fields
+  const pageUrl = req.headers.get("referer") ?? req.headers.get("origin") ?? null;
+  const userAgent = req.headers.get("user-agent") ?? null;
+
   const stageIndex = rawStage as number;
   const idea = (rawIdea as string).trim().slice(0, MAX_IDEA_CHARS);
 
@@ -325,8 +379,18 @@ export async function POST(req: NextRequest) {
   // 9. Persist to DB — must succeed before notifications
   const { saved: leadSaved, leadId: validationLeadId } = await saveFullLead(
     email, firstName, locale, stageIndex, idea, audience,
-    hasLiveAsset, hasTraction, result, ts, requestId
+    hasLiveAsset, hasTraction, result, ts, requestId, pageUrl, userAgent
   );
+
+  if (!leadSaved) {
+    logger.error({
+      event: "lead_save_critical",
+      requestId, ts, email, firstName,
+      stageIndex, stage: result.stage, verdict: result.verdict, firstAsset: result.firstAsset,
+      idea, audience, locale,
+      message: "CRITICAL: Lead not persisted — manual recovery required",
+    });
+  }
 
   // 10. Cache for dedup (regardless of DB outcome — result is correct)
   if (clientRequestId) cacheResult(clientRequestId, result);
@@ -384,6 +448,10 @@ export async function POST(req: NextRequest) {
     notificationStatus.emailError = err;
     logger.error({ event: "result_email_fail", requestId, ts, email, error: err });
   }
+
+  // 12. Persist notification outcomes to lead metadata
+  const notifiedAt = new Date().toISOString();
+  updateLeadNotificationStatus(email, notificationStatus, notifiedAt).catch(() => {});
 
   logger.info({
     event: "request_complete",
