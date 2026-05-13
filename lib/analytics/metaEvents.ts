@@ -2,8 +2,15 @@
 // Safe to call server-side (no-ops when window is undefined).
 // Window.fbq type is declared in RetargetingPixels.tsx.
 
+// Only fire pixel events on the production domain — never from localhost,
+// preview branches, or any other non-production origin.
+const isProductionTrackingDomain =
+  typeof window !== "undefined" &&
+  window.location.hostname === "validate.bizsproutai.com";
+
 function fbq(method: string, event: string, data?: Record<string, unknown>) {
   if (typeof window === "undefined" || !window.fbq) return;
+  if (!isProductionTrackingDomain) return;
   if (data) {
     window.fbq(method, event, data);
   } else {

@@ -149,6 +149,8 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
 
       trackMetaStandard("Lead", { content_name: "FreeValidation", source: "free_validation" });
       trackMetaStandard("CompleteRegistration", {
+        value: 1.00,
+        currency: "USD",
         content_name: "FreeValidation",
         stage: data.result.stage,
       });
