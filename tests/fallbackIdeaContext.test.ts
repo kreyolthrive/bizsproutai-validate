@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildFallbackIdeaContext, hasBroadUnclearOutcomes } from "@/lib/validation/ideaContexts";
+import { buildFallbackIdeaContext, hasBroadUnclearOutcomes, hasAllInOnePlatformScope } from "@/lib/validation/ideaContexts";
 import { computeValidationResult } from "@/lib/validation/engine";
 
 // ─── buildFallbackIdeaContext unit tests ──────────────────────────────────────
@@ -254,5 +254,82 @@ describe("computeValidationResult — non-English locale skips fallback", () => 
     );
     expect(r.ideaContext).toBeNull();
     expect(r.warning).toBeTruthy();
+  });
+});
+
+// ─── All-in-one platform regression — hasAllInOnePlatformScope ────────────────
+
+describe("hasAllInOnePlatformScope", () => {
+  it("detects explicit 'all-in-one' language", () => {
+    expect(hasAllInOnePlatformScope("An all-in-one platform for entrepreneurs")).toBe(true);
+  });
+
+  it("detects 4+ major business functions", () => {
+    expect(
+      hasAllInOnePlatformScope(
+        "A platform with marketing, sales, branding, websites, content, and customer management"
+      )
+    ).toBe(true);
+  });
+
+  it("does NOT flag a focused SaaS with 2-3 functions", () => {
+    expect(hasAllInOnePlatformScope("A SaaS dashboard for content and analytics")).toBe(false);
+  });
+
+  it("does NOT flag a non-platform idea", () => {
+    expect(hasAllInOnePlatformScope("I want to start a cleaning service")).toBe(false);
+  });
+});
+
+// ─── All-in-one entrepreneur platform regression ──────────────────────────────
+
+describe("All-in-one entrepreneur platform regression", () => {
+  const PROMPT =
+    "I want to build an all-in-one platform that helps entrepreneurs with marketing, sales, branding, websites, content, and customer management.";
+
+  it("hasAllInOnePlatformScope returns true for this prompt", () => {
+    expect(hasAllInOnePlatformScope(PROMPT)).toBe(true);
+  });
+
+  it("firstAsset is 'Workflow clarity test', not 'Web app'", () => {
+    const r = computeValidationResult(0, PROMPT, "", false, false);
+    expect(r.firstAsset).toBe("Workflow clarity test");
+    expect(r.firstAsset).not.toBe("Web app");
+  });
+
+  it("domainLabel is 'all-in-one platform idea', not 'web app'", () => {
+    const r = computeValidationResult(0, PROMPT, "", false, false);
+    expect(r.domainLabel).toBe("all-in-one platform idea");
+    expect(r.domainLabel).not.toMatch(/web app/i);
+  });
+
+  it("firstAssetReason mentions workflow or platform scope", () => {
+    const r = computeValidationResult(0, PROMPT, "", false, false);
+    expect(r.firstAssetReason).toMatch(/workflow|platform|too many functions|scope/i);
+  });
+
+  it("nicheMistake warns about all-in-one scope", () => {
+    const r = computeValidationResult(0, PROMPT, "", false, false);
+    expect(r.ideaContext?.nicheMistake).toMatch(/all.in.one|scope|one problem|narrow/i);
+  });
+
+  it("nicheSteps mention choosing one customer segment", () => {
+    const r = computeValidationResult(0, PROMPT, "", false, false);
+    expect(r.nicheSteps![0]).toMatch(/segment|coaches|freelancers|one.{0,20}(customer|type|group)/i);
+  });
+
+  it("nicheSteps mention choosing one workflow", () => {
+    const r = computeValidationResult(0, PROMPT, "", false, false);
+    expect(r.nicheSteps![1]).toMatch(/workflow|lead capture|content|sales/i);
+  });
+
+  it("nicheLabel is null — no niche template should match", () => {
+    const r = computeValidationResult(0, PROMPT, "", false, false);
+    expect(r.nicheLabel).toBeNull();
+  });
+
+  it("does NOT trigger isBroadFallback — different path from vague life-improvement prompt", () => {
+    const r = computeValidationResult(0, PROMPT, "", false, false);
+    expect(r.firstAsset).not.toBe("Idea clarity test");
   });
 });

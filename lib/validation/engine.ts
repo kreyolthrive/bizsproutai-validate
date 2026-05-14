@@ -1,5 +1,5 @@
 import { getEngineTranslations } from "./engineTranslations";
-import { detectIdeaContext, buildFallbackIdeaContext, hasBroadUnclearOutcomes } from "./ideaContexts";
+import { detectIdeaContext, buildFallbackIdeaContext, hasBroadUnclearOutcomes, hasAllInOnePlatformScope } from "./ideaContexts";
 import type { IdeaContext, IdeaStageKey } from "./ideaContexts";
 
 export type { IdeaContext };
@@ -194,11 +194,21 @@ export function computeValidationResult(
     (assetKey === "webApp" || assetKey === "saas") &&
     hasBroadUnclearOutcomes(idea, audience);
 
+  // All-in-one platform fallback: idea covers 4+ major business functions or uses
+  // explicit "all-in-one" language. Override webApp with a workflow clarity prompt.
+  const isAllInOnePlatform =
+    !isBroadFallback &&
+    ideaContext?.nicheLabel === null &&
+    (assetKey === "webApp" || assetKey === "saas") &&
+    hasAllInOnePlatformScope(idea);
+
   // For AI SaaS prompts the base asset key is "saas" → "Web app (SaaS)", which sounds
   // like a recommendation to build the SaaS app. The nicheAssetReason already says
   // "demo page / workflow audit CTA", so align the label to match.
   const firstAsset = isBroadFallback
     ? "Idea clarity test"
+    : isAllInOnePlatform
+    ? "Workflow clarity test"
     : ideaContext?.nicheLabel === "AI-powered SaaS product" && assetKey === "saas"
     ? "SaaS demo page"
     : ideaContext?.nicheLabel === "local service business" && assetKey === "booking"
@@ -235,6 +245,8 @@ export function computeValidationResult(
   // idea context instead.
   const finalDomainLabel = isBroadFallback
     ? "early-stage idea"
+    : isAllInOnePlatform
+    ? "all-in-one platform idea"
     : ideaContext?.nicheLabel === "consumer app or pre-launch product"
     ? "consumer app"
     : ideaContext?.nicheLabel === "online course or education product"
@@ -264,9 +276,17 @@ export function computeValidationResult(
       ? "clear enough to test, but the offer needs sharper outcome and consultation positioning."
       : base.verdict;
 
+  // When the asset label is overridden to a non-standard value, align the reason text
+  // so the email shows a coherent description rather than the generic webApp reason.
+  const firstAssetReason =
+    isAllInOnePlatform && ideaContext?.nicheAssetReason
+      ? ideaContext.nicheAssetReason
+      : base.firstAssetReason;
+
   return {
     ...base,
     firstAsset,
+    firstAssetReason,
     verdict,
     domainLabel: finalDomainLabel,
     ideaQualityNote: needsQualityNote(idea, audience) ? t.ideaQualityNote : null,

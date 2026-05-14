@@ -181,6 +181,22 @@ describe("first asset detection", () => {
       "Landing page or booking page",
       "Unified website or funnel",
       "Full launch system",
+      // Override values (triggered by specific idea signals, not in the ideas array below)
+      "Idea clarity test",
+      "Workflow clarity test",
+      "SaaS demo page",
+      "Service booking page",
+      "Service consultation page",
+      "Marketplace interest page",
+      "Preorder product page",
+      "App waitlist page",
+      "Workshop signup page",
+      "Template landing page",
+      "Community resource page",
+      "Wellness service page",
+      "Wellness challenge page",
+      "Real estate lead-capture page",
+      "Buyer readiness page",
     ]);
 
     const ideas = [
@@ -241,5 +257,28 @@ describe("scenario coverage", () => {
     expect(r.stage).toBe("Launch + Scale Stage");
     expect(r.verdict).toMatch(/scale/i);
     expect(r.nextSteps[0]).toMatch(/document|working/i);
+  });
+});
+
+// ─── All-in-one platform regression ──────────────────────────────────────────
+
+describe("All-in-one platform regression — computeValidationResult", () => {
+  const PROMPT =
+    "I want to build an all-in-one platform that helps entrepreneurs with marketing, sales, branding, websites, content, and customer management.";
+
+  it("firstAsset is 'Workflow clarity test', not 'Web app'", () => {
+    const r = compute(0, PROMPT);
+    expect(r.firstAsset).toBe("Workflow clarity test");
+    expect(r.firstAsset).not.toBe("Web app");
+  });
+
+  it("domainLabel does not say 'web app'", () => {
+    const r = compute(0, PROMPT);
+    expect(r.domainLabel).not.toMatch(/web app/i);
+  });
+
+  it("domainLabel is 'all-in-one platform idea'", () => {
+    const r = compute(0, PROMPT);
+    expect(r.domainLabel).toBe("all-in-one platform idea");
   });
 });

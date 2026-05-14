@@ -549,31 +549,31 @@ const NICHE_TEMPLATES: NicheTemplate[] = [
     pattern:
       /\bmarketplace\b|two.sided (platform|market)|connect (buyers and sellers|freelancers and clients|providers and buyers)|gig (platform|economy platform)|peer.to.peer (market|platform)|platform (that connects|connecting) (buyers|sellers|providers|freelancers)|\bconnects\b.{0,80}\b(products|sellers?|vendors?)\b|\bconnects\b.{0,60}\bsell\b|\b(sellers?|vendors?)\b.{0,50}\bbuyers?\b|\bbuyers?\b.{0,50}\b(sellers?|vendors?)\b/,
     nicheLabel: "two-sided marketplace",
-    audienceLabel: "both buyers and service providers or sellers",
+    audienceLabel: "both buyers and vendors or sellers",
     useCaseLabel: "marketplace transaction",
     customerActorLabel: "buyer or seller",
     actionTargetLabel: "transaction",
     nicheMistake:
       "Building the marketplace platform before validating that both sides will show up. Two-sided platforms fail because sellers will not list without buyers, and buyers will not come without supply. The fastest way to fail is to build the platform and wait. The fastest way to prove it works is to manually broker the first 10 transactions yourself.",
     nicheAssetReason:
-      "Two simple intake forms — one for buyers and one for providers or sellers — test whether real demand and real supply exist before you invest in platform development. If you cannot get 20 providers to fill out a supply form, the platform will face the same cold-start problem after you build it.",
+      "Two simple intake forms — one for buyers and one for vendors or sellers — test whether real demand and real supply exist before you invest in platform development. If you cannot get 20 vendors to fill out a supply form, the platform will face the same cold-start problem after you build it.",
     steps: {
       early: [
-        "Pick one geography (one city or region) and one transaction type (one specific service or product category) — not the full vision yet.",
+        "Pick one buyer segment and one product or service category first — not the full platform vision. For example: one city or region and one service type, or one diaspora community and one product category.",
         "Create a buyer intake form: what they are looking for, when they need it, and what they would pay.",
-        "Create a provider or seller intake form: what they offer, their pricing, and whether they have capacity right now.",
+        "Create a vendor or seller intake form: what they offer, their pricing, and whether they have capacity right now.",
         "Manually broker 5–10 transactions using the intake forms and your own coordination — prove the transaction works before you automate anything.",
       ],
       mid: [
         "Identify which side of the market is harder to acquire — supply or demand — and focus the next month entirely on that side.",
         "Map where each transaction breaks down: matching, pricing, trust, or payment — fix the biggest failure point first.",
-        "Talk to 5 providers and 5 buyers who completed a transaction: what would make them use the marketplace again instead of going direct?",
+        "Talk to 5 vendors and 5 buyers who completed a transaction: what would make them use the marketplace again instead of going direct?",
         "Find the one acquisition channel that brings the highest-intent buyers — they drive the economics — and go deep before adding supply-side marketing.",
       ],
       late: [
         "Document your best transaction type — the category with the most repeat usage and highest satisfaction on both sides — and build your growth motion around it.",
-        "Build a retention mechanic that gives buyers a reason to return to the marketplace instead of going direct to the provider they found.",
-        "Identify your top 20% of providers by transaction volume and give them something meaningful — priority placement, lower fees, or early access — to keep them active.",
+        "Build a retention mechanic that gives buyers a reason to return to the marketplace instead of going direct to the vendor they found.",
+        "Identify your top 20% of vendors by transaction volume and give them something meaningful — priority placement, lower fees, or early access — to keep them active.",
         "Expand to a second city or category only after your first market has liquidity: regular transactions happening without your direct facilitation.",
       ],
     },
@@ -882,6 +882,8 @@ const FALLBACK_ASSET_REASONS: Record<string, string> = {
     "A product page with a pre-order or waitlist option tests real purchase intent before you invest in inventory, fulfillment, or a full storefront. Someone entering their payment details is a stronger signal than any survey response.",
   broadIdea:
     "This idea has multiple broad outcomes — improve lives, make money, stay motivated, become successful — but no specific audience, urgent problem, or paid use case yet. A clarity test helps narrow the idea before building a platform.",
+  allInOne:
+    "This idea covers too many functions at once. A workflow clarity test identifies which single problem your target customer finds most painful before you invest in building the full platform.",
 };
 
 function fallbackAssetReason(assetKey: string): string {
@@ -889,6 +891,31 @@ function fallbackAssetReason(assetKey: string): string {
     FALLBACK_ASSET_REASONS[assetKey] ??
     "A focused landing page with a single promise and one call to action is the fastest way to test whether strangers will take action on your idea — before you invest time and money building the product."
   );
+}
+
+/**
+ * Returns true when an idea describes an all-in-one platform covering 4+ major
+ * business function categories, or uses explicit "all-in-one" language.
+ * Used to override the default "Web app" recommendation with "Workflow clarity test."
+ */
+export function hasAllInOnePlatformScope(idea: string): boolean {
+  const text = idea.toLowerCase();
+  if (/\ball.in.one\b|all in one|everything in one/.test(text)) return true;
+  const functionSignals = [
+    /\bmarketing\b/,
+    /\bsales\b/,
+    /\bbranding\b/,
+    /\bwebsites?\b/,
+    /\bcontent\b/,
+    /\bcustomer management\b|\bcrm\b/,
+    /\banalytics\b/,
+    /\binvoicing\b/,
+    /\bpayroll\b/,
+    /\baccounting\b/,
+    /\bproject management\b/,
+    /\bhr\b|\bhuman resources\b/,
+  ];
+  return functionSignals.filter((r) => r.test(text)).length >= 4;
 }
 
 /**
@@ -951,6 +978,13 @@ function fallbackMistake(idea: string, audience: string): string {
   return "Most early-stage products fail because the founder confirmed interest but not willingness to pay. Find 3 people who match your target customer description and ask them to commit — even $1 — before investing significant time in the build.";
 }
 
+const ALL_IN_ONE_EARLY_STEPS: string[] = [
+  "Choose one customer segment first — for example coaches, local service owners, freelancers, creators, or ecommerce sellers — not all entrepreneurs at once.",
+  "Choose one workflow to solve first: lead capture, follow-up, content creation, sales tracking, website launch, or customer management — not all of them.",
+  "Interview 5–10 people in that segment to confirm which single workflow causes the most pain right now.",
+  "Build one simple workflow test or demo page for that one problem before adding any other platform features.",
+];
+
 const FALLBACK_STEPS: Record<StageGroup, string[]> = {
   early: [
     "Write one sentence naming your target customer, their specific problem, and why they have it right now — if you cannot write it in one sentence, the idea needs more narrowing first.",
@@ -979,7 +1013,11 @@ export function buildFallbackIdeaContext(
   const isBroad =
     (assetKey === "webApp" || assetKey === "saas") &&
     hasBroadUnclearOutcomes(idea, audience);
-  const effectiveAssetKey = isBroad ? "broadIdea" : assetKey;
+  const isAllInOne =
+    !isBroad &&
+    (assetKey === "webApp" || assetKey === "saas") &&
+    hasAllInOnePlatformScope(idea);
+  const effectiveAssetKey = isBroad ? "broadIdea" : isAllInOne ? "allInOne" : assetKey;
   return {
     nicheLabel: null,
     audienceLabel: audience.trim().length >= 5 ? audience.trim() : "your target customers",
@@ -988,6 +1026,6 @@ export function buildFallbackIdeaContext(
     actionTargetLabel: "solution",
     nicheMistake: fallbackMistake(idea, audience),
     nicheAssetReason: fallbackAssetReason(effectiveAssetKey),
-    nicheSteps: FALLBACK_STEPS[group],
+    nicheSteps: isAllInOne && group === "early" ? ALL_IN_ONE_EARLY_STEPS : FALLBACK_STEPS[group],
   };
 }
