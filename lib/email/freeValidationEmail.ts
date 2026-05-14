@@ -34,8 +34,8 @@ function resultEmailHtml(
     .map(
       (step, i) =>
         `<tr>
-          <td style="padding:6px 0;vertical-align:top;width:28px;color:#7ec850;font-weight:700;font-size:15px;">${i + 1}.</td>
-          <td style="padding:6px 0;vertical-align:top;color:#374151;font-size:15px;line-height:1.6;">${escapeHtml(step)}</td>
+          <td style="padding:8px 0;vertical-align:top;width:28px;color:#9bdc7b;font-weight:700;font-size:16px;font-family:Arial,Helvetica,sans-serif;">${i + 1}.</td>
+          <td style="padding:8px 0;vertical-align:top;color:#ffffff;font-size:16px;line-height:1.65;font-family:Arial,Helvetica,sans-serif;">${escapeHtml(step)}</td>
         </tr>`
     )
     .join("");
@@ -43,58 +43,58 @@ function resultEmailHtml(
   return `<!DOCTYPE html>
 <html lang="${locale}">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your Free Validation Results</title></head>
-<body style="margin:0;padding:0;background:#f5f0eb;font-family:'DM Sans',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0eb;padding:32px 16px;">
+<body style="margin:0;padding:0;background:#f6f7f3;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f6f7f3;padding:32px 16px;">
     <tr><td align="center">
       <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
 
         <!-- Logo / Brand -->
         <tr><td style="padding-bottom:24px;text-align:center;">
-          <span style="font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#4a8c5c;">BizSproutAI</span>
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#4a8c5c;font-family:Arial,Helvetica,sans-serif;">BizSproutAI</span>
         </td></tr>
 
         <!-- Stage badge -->
-        <tr><td style="background:#1a3a2a;border-radius:16px 16px 0 0;padding:28px 32px 12px;">
-          <span style="display:inline-block;background:#7ec850;color:#1a3a2a;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px;">${safeStage}</span>
+        <tr><td style="background:#0f2f22;border-radius:16px 16px 0 0;padding:28px 28px 12px;">
+          <span style="display:inline-block;background:#9bdc7b;color:#0f2f22;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px;font-family:Arial,Helvetica,sans-serif;">${safeStage}</span>
         </td></tr>
 
         <!-- Verdict -->
-        <tr><td style="background:#1a3a2a;padding:0 32px 20px;">
-          <p style="margin:12px 0 0;color:#fff;font-size:20px;font-weight:600;line-height:1.3;">
+        <tr><td style="background:#0f2f22;padding:0 28px 20px;">
+          <p style="margin:12px 0 0;color:#ffffff;font-size:20px;font-weight:600;line-height:1.4;font-family:Arial,Helvetica,sans-serif;">
             Hey ${safeName} — here are your free validation results.
           </p>
-          <p style="margin:10px 0 0;color:rgba(255,255,255,0.8);font-size:15px;line-height:1.6;">${safeVerdict}</p>
+          <p style="margin:10px 0 0;color:#dbe7dc;font-size:16px;line-height:1.65;font-family:Arial,Helvetica,sans-serif;">${safeVerdict}</p>
         </td></tr>
 
         <!-- First asset -->
-        <tr><td style="background:#1a3a2a;padding:0 32px 20px;">
-          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 18px;">
-            <p style="margin:0 0 4px;color:#7ec850;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">Recommended first asset</p>
-            <p style="margin:0;color:#fff;font-size:15px;font-weight:600;">${safeFirstAsset}</p>
-            ${safeFirstAssetReason ? `<p style="margin:6px 0 0;color:rgba(255,255,255,0.6);font-size:13px;">${safeFirstAssetReason}</p>` : ""}
+        <tr><td style="background:#0f2f22;padding:0 28px 20px;">
+          <div style="background:#1e4530;border:1px solid #2d6040;border-radius:12px;padding:16px 20px;">
+            <p style="margin:0 0 6px;color:#9bdc7b;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;font-family:Arial,Helvetica,sans-serif;">Recommended first asset</p>
+            <p style="margin:0;color:#ffffff;font-size:16px;font-weight:600;font-family:Arial,Helvetica,sans-serif;">${safeFirstAsset}</p>
+            ${safeFirstAssetReason ? `<p style="margin:8px 0 0;color:#b8d4bb;font-size:14px;line-height:1.6;font-family:Arial,Helvetica,sans-serif;">${safeFirstAssetReason}</p>` : ""}
           </div>
         </td></tr>
 
         <!-- Next steps -->
-        <tr><td style="background:#1a3a2a;padding:0 32px 20px;">
-          <p style="margin:0 0 10px;color:#7ec850;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">Your next 4 steps</p>
+        <tr><td style="background:#0f2f22;padding:0 28px 20px;">
+          <p style="margin:0 0 12px;color:#9bdc7b;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;font-family:Arial,Helvetica,sans-serif;">Your next 4 steps</p>
           <table cellpadding="0" cellspacing="0" width="100%">${stepsHtml}</table>
         </td></tr>
 
         <!-- Warning -->
-        <tr><td style="background:#1a3a2a;padding:0 32px 28px;border-radius:0 0 0 0;">
-          <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:14px 18px;">
-            <p style="margin:0 0 4px;color:#fbbf24;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;">One mistake to avoid</p>
-            <p style="margin:0;color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;">${safeWarning}</p>
+        <tr><td style="background:#0f2f22;padding:0 28px 28px;">
+          <div style="background:#2a2a10;border:1px solid #7a6000;border-radius:12px;padding:16px 20px;">
+            <p style="margin:0 0 6px;color:#fbbf24;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;font-family:Arial,Helvetica,sans-serif;">One mistake to avoid</p>
+            <p style="margin:0;color:#e8eee9;font-size:15px;line-height:1.65;font-family:Arial,Helvetica,sans-serif;">${safeWarning}</p>
           </div>
         </td></tr>
 
         <!-- CTA -->
-        <tr><td style="background:#fff;border-radius:0 0 16px 16px;padding:28px 32px 32px;text-align:center;">
-          <p style="margin:0 0 6px;color:#6b7280;font-size:13px;">Ready to go further?</p>
-          <p style="margin:0 0 20px;color:#1a3a2a;font-size:17px;font-weight:700;">Unlock your full sprint inside BizSproutAI</p>
-          <a href="${platformUrl}" style="display:inline-block;background:#1a3a2a;color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:999px;text-decoration:none;">Get My Full Sprint →</a>
-          <p style="margin:20px 0 0;color:#9ca3af;font-size:12px;">You're receiving this because you completed a free validation on BizSproutAI.</p>
+        <tr><td style="background:#ffffff;border-radius:0 0 16px 16px;padding:28px 28px 32px;text-align:center;">
+          <p style="margin:0 0 6px;color:#6b7280;font-size:14px;font-family:Arial,Helvetica,sans-serif;">Ready to go further?</p>
+          <p style="margin:0 0 20px;color:#0f2f22;font-size:18px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">Unlock your full sprint inside BizSproutAI</p>
+          <a href="${platformUrl}" style="display:inline-block;background:#0f2f22;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:999px;text-decoration:none;font-family:Arial,Helvetica,sans-serif;">Get My Full Sprint →</a>
+          <p style="margin:20px 0 0;color:#9ca3af;font-size:12px;font-family:Arial,Helvetica,sans-serif;">You're receiving this because you completed a free validation on BizSproutAI.</p>
         </td></tr>
 
       </table>
