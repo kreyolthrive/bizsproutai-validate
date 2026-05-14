@@ -128,9 +128,9 @@ describe("Marketplace regression — homeowner handyman Miami prompt", () => {
     expect(ctx!.nicheLabel).toBe("two-sided marketplace");
   });
 
-  it("firstAsset is 'Marketplace pilot page', not 'Marketplace web app'", () => {
+  it("firstAsset is 'Marketplace interest page', not 'Marketplace web app'", () => {
     const result = computeValidationResult(0, PROMPT, "", false, false);
-    expect(result.firstAsset).toBe("Marketplace pilot page");
+    expect(result.firstAsset).toBe("Marketplace interest page");
     expect(result.firstAsset).not.toBe("Marketplace web app");
   });
 
@@ -621,4 +621,42 @@ describe("Multilingual non-leakage — no English verdict prefix in localized ou
       expect(r.ideaContext).toBeNull();
     });
   }
+});
+
+// ─── Marketplace regression — broad Haitian products commerce platform ────────
+
+describe("Marketplace regression — broad Haitian products commerce platform", () => {
+  const PROMPT = "I want to build a platform that connects all Haitian products to sell";
+
+  it("detectIdeaContext labels it as two-sided marketplace, not null", () => {
+    const ctx = detectIdeaContext(PROMPT, "", "idea");
+    expect(ctx).not.toBeNull();
+    expect(ctx!.nicheLabel).toBe("two-sided marketplace");
+  });
+
+  it("firstAsset is 'Marketplace interest page', not 'Web app'", () => {
+    const result = computeValidationResult(0, PROMPT, "", false, false);
+    expect(result.firstAsset).toBe("Marketplace interest page");
+    expect(result.firstAsset).not.toBe("Web app");
+  });
+
+  it("domainLabel does not say 'web app'", () => {
+    const result = computeValidationResult(0, PROMPT, "", false, false);
+    expect(result.domainLabel).not.toMatch(/web app/i);
+  });
+
+  it("domainLabel is marketplace-related", () => {
+    const result = computeValidationResult(0, PROMPT, "", false, false);
+    expect(result.domainLabel).toMatch(/marketplace/i);
+  });
+
+  it("nicheMistake warns about validating both buyer and seller sides", () => {
+    const ctx = detectIdeaContext(PROMPT, "", "idea");
+    expect(ctx!.nicheMistake).toMatch(/both sides|supply|demand|seller|buyer/i);
+  });
+
+  it("nicheSteps mention narrowing product category or buyer segment", () => {
+    const ctx = detectIdeaContext(PROMPT, "", "idea");
+    expect(ctx!.nicheSteps[0]).toMatch(/geography|city|transaction type/i);
+  });
 });

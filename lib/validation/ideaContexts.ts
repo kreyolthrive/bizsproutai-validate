@@ -547,7 +547,7 @@ const NICHE_TEMPLATES: NicheTemplate[] = [
   // ── 15. Marketplace ──────────────────────────────────────────────────────
   {
     pattern:
-      /\bmarketplace\b|two.sided (platform|market)|connect (buyers and sellers|freelancers and clients|providers and buyers)|gig (platform|economy platform)|peer.to.peer (market|platform)|platform (that connects|connecting) (buyers|sellers|providers|freelancers)/,
+      /\bmarketplace\b|two.sided (platform|market)|connect (buyers and sellers|freelancers and clients|providers and buyers)|gig (platform|economy platform)|peer.to.peer (market|platform)|platform (that connects|connecting) (buyers|sellers|providers|freelancers)|\bconnects\b.{0,80}\b(products|sellers?|vendors?)\b|\bconnects\b.{0,60}\bsell\b|\b(sellers?|vendors?)\b.{0,50}\bbuyers?\b|\bbuyers?\b.{0,50}\b(sellers?|vendors?)\b/,
     nicheLabel: "two-sided marketplace",
     audienceLabel: "both buyers and service providers or sellers",
     useCaseLabel: "marketplace transaction",

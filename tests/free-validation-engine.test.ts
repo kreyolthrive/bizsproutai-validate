@@ -131,9 +131,9 @@ describe("first asset detection", () => {
     expect(r.firstAsset).toBe("Mobile app");
   });
 
-  it("marketplace idea → Marketplace pilot page", () => {
+  it("marketplace idea → Marketplace interest page", () => {
     const r = compute(2, "marketplace to connect buyers and sellers of handmade goods");
-    expect(r.firstAsset).toBe("Marketplace pilot page");
+    expect(r.firstAsset).toBe("Marketplace interest page");
   });
 
   it("SaaS / dashboard idea → Web app (SaaS)", () => {
@@ -172,7 +172,7 @@ describe("first asset detection", () => {
     const knownAssets = new Set([
       "Booking page",
       "Mobile app",
-      "Marketplace pilot page",
+      "Marketplace interest page",
       "Web app (SaaS)",
       "Web app",
       "Lead funnel",
@@ -221,7 +221,7 @@ describe("scenario coverage", () => {
 
   it("marketplace idea: stage 2 assembled, marketplace pilot page detected", () => {
     const r = compute(2, "two-sided gig platform connecting freelance photographers with clients", "businesses");
-    expect(r.firstAsset).toBe("Marketplace pilot page");
+    expect(r.firstAsset).toBe("Marketplace interest page");
     expect(r.stage).toMatch(/Assembly Stage|Optimization Stage/);
   });
 

@@ -71,6 +71,16 @@ function detectAssetKey(
       text
     );
   if (!hasOnlineCourseSignal && /\bapps?\b|software|platform|tool|portal|login|users\b|accounts\b/.test(text)) {
+    // Broad commerce marketplace signals override the generic "platform/tool → webApp" default.
+    // "platform that connects...products...to sell", "connects sellers/vendors", explicit
+    // two-sided language all indicate a marketplace idea, not a web app to build now.
+    if (
+      /\bconnects\b.{0,80}\b(products|sellers?|vendors?)\b|\bconnects\b.{0,60}\bsell\b|\b(sellers?|vendors?)\b.{0,50}\bbuyers?\b|\bbuyers?\b.{0,50}\b(sellers?|vendors?)\b/.test(
+        text
+      )
+    ) {
+      return "marketplace";
+    }
     return "webApp";
   }
   if (/funnel|email list|lead magnet|opt.in|nurture|drip|email sequence|free guide|free training/.test(text)) {
@@ -196,7 +206,7 @@ export function computeValidationResult(
     : ideaContext?.nicheLabel === "coaching or consulting practice" && assetKey === "booking"
     ? "Service consultation page"
     : ideaContext?.nicheLabel === "two-sided marketplace" && assetKey === "marketplace"
-    ? "Marketplace pilot page"
+    ? "Marketplace interest page"
     : ideaContext?.nicheLabel === "product or ecommerce business" && assetKey === "ecommerce"
     ? "Preorder product page"
     : ideaContext?.nicheLabel === "consumer app or pre-launch product"
