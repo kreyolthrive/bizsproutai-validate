@@ -6,6 +6,35 @@ import type { ValidationResult } from "@/lib/validation/engine";
 import { getValidateCopy } from "@/i18n/validateCopy";
 import type { ValidateCopy } from "@/i18n/validateCopy";
 
+// ─── Attribution ──────────────────────────────────────────────────────────────
+
+interface Attribution {
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_content: string | null;
+  utm_term: string | null;
+  fbclid: string | null;
+  page_url: string | null;
+  referrer: string | null;
+  user_agent: string | null;
+}
+
+function captureAttribution(): Attribution {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utm_source: params.get("utm_source"),
+    utm_medium: params.get("utm_medium"),
+    utm_campaign: params.get("utm_campaign"),
+    utm_content: params.get("utm_content"),
+    utm_term: params.get("utm_term"),
+    fbclid: params.get("fbclid"),
+    page_url: window.location.href,
+    referrer: document.referrer || null,
+    user_agent: navigator.userAgent,
+  };
+}
+
 // ─── Result view helpers ──────────────────────────────────────────────────────
 
 /**
@@ -62,6 +91,11 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
   // Step order: 0=Stage, 1=Idea, 2=Status, 3=Email+Submit
   // If stage came from the hero widget, skip step 0 and start at step 1
   const [step, setStep] = useState<0 | 1 | 2 | 3>(hasPreselectedStage ? 1 : 0);
+  const [attribution, setAttribution] = useState<Attribution>({
+    utm_source: null, utm_medium: null, utm_campaign: null,
+    utm_content: null, utm_term: null, fbclid: null,
+    page_url: null, referrer: null, user_agent: null,
+  });
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -83,6 +117,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
   const [serverLeadId, setServerLeadId] = useState<string | null>(null);
 
   useEffect(() => {
+    setAttribution(captureAttribution());
     trackMetaStandard("ViewContent", { content_name: "FreeValidation", content_type: "product" });
   }, []);
 
@@ -134,6 +169,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
           hasLiveAsset,
           hasTraction,
           requestId: reqId,
+          attribution,
         }),
       });
 
@@ -147,14 +183,32 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
         throw new Error("No result returned from server");
       }
 
+      const isInternalTest = !!(data as any).isInternalTest;
+      const leadType = (data as any).leadType ?? "unknown";
+      const leadSaved = !!(data as any).leadSaved;
+      const metaFired = leadSaved && !isInternalTest;
+
       trackMetaStandard("Lead", { content_name: "FreeValidation", source: "free_validation" });
-      trackMetaStandard("CompleteRegistration", {
-        value: 1.00,
-        currency: "USD",
-        content_name: "FreeValidation",
-        stage: data.result.stage,
-      });
+      if (metaFired) {
+        trackMetaStandard("CompleteRegistration", {
+          value: 1.00,
+          currency: "USD",
+          content_name: "FreeValidation",
+          stage: data.result.stage,
+        });
+      }
       trackMeta("ValidationCompleted", { stage: data.result.stage, stageIndex });
+
+      console.log(JSON.stringify({
+        event: "lead_saved",
+        lead_type: leadType,
+        internal_test: isInternalTest,
+        utm_source: attribution.utm_source,
+        utm_campaign: attribution.utm_campaign,
+        utm_content: attribution.utm_content,
+        fbclid_present: !!attribution.fbclid,
+        meta_complete_registration_fired: metaFired,
+      }));
 
       setWaitlistEmail(email);
       setWaitlistName(firstName);

@@ -18,6 +18,33 @@ const MAX_IDEA_CHARS = 2_000;
 const MAX_AUDIENCE_CHARS = 500;
 const MAX_NAME_CHARS = 80;
 
+const INTERNAL_TEST_PATTERNS = [
+  "kreyolthrive",
+  "wagner",
+  "waner",
+  "beyourbest",
+  "bizsproutai",
+  "loadtest+",
+  "example.com",
+];
+
+function isInternalTestEmail(email: string): boolean {
+  const lower = email.toLowerCase();
+  return INTERNAL_TEST_PATTERNS.some((p) => lower.includes(p));
+}
+
+interface AttributionData {
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_content: string | null;
+  utm_term: string | null;
+  fbclid: string | null;
+  page_url: string | null;
+  referrer: string | null;
+  user_agent: string | null;
+}
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface NotificationStatus {
@@ -36,6 +63,8 @@ interface FreeValidateResponse {
   error?: string;
   code?: string;
   validationLeadId?: string | null;
+  isInternalTest?: boolean;
+  leadType?: string;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -139,7 +168,10 @@ async function saveFullLead(
   timestamp: string,
   requestId: string,
   pageUrl: string | null,
-  userAgent: string | null
+  userAgent: string | null,
+  attribution: AttributionData | null,
+  isInternalTest: boolean,
+  leadType: string
 ): Promise<{ leadId: string | null; saved: boolean }> {
   const supabase = getSupabase();
   if (!supabase) {
@@ -164,8 +196,17 @@ async function saveFullLead(
         completed: true,
         requestId,
         submittedAt: timestamp,
-        page_url: pageUrl,
-        user_agent: userAgent,
+        page_url: attribution?.page_url ?? pageUrl,
+        user_agent: attribution?.user_agent ?? userAgent,
+        referrer: attribution?.referrer ?? null,
+        utm_source: attribution?.utm_source ?? null,
+        utm_medium: attribution?.utm_medium ?? null,
+        utm_campaign: attribution?.utm_campaign ?? null,
+        utm_content: attribution?.utm_content ?? null,
+        utm_term: attribution?.utm_term ?? null,
+        fbclid: attribution?.fbclid ?? null,
+        internal_test: isInternalTest,
+        lead_type: leadType,
         result: {
           stage: result.stage,
           verdict: result.verdict,
@@ -343,6 +384,27 @@ export async function POST(req: NextRequest) {
   const pageUrl = req.headers.get("referer") ?? req.headers.get("origin") ?? null;
   const userAgent = req.headers.get("user-agent") ?? null;
 
+  // Read client-side attribution (UTM params, fbclid, page_url, referrer)
+  const rawAttribution = body.attribution;
+  const attribution: AttributionData | null =
+    rawAttribution && typeof rawAttribution === "object" && !Array.isArray(rawAttribution)
+      ? {
+          utm_source: typeof (rawAttribution as any).utm_source === "string" ? (rawAttribution as any).utm_source : null,
+          utm_medium: typeof (rawAttribution as any).utm_medium === "string" ? (rawAttribution as any).utm_medium : null,
+          utm_campaign: typeof (rawAttribution as any).utm_campaign === "string" ? (rawAttribution as any).utm_campaign : null,
+          utm_content: typeof (rawAttribution as any).utm_content === "string" ? (rawAttribution as any).utm_content : null,
+          utm_term: typeof (rawAttribution as any).utm_term === "string" ? (rawAttribution as any).utm_term : null,
+          fbclid: typeof (rawAttribution as any).fbclid === "string" ? (rawAttribution as any).fbclid : null,
+          page_url: typeof (rawAttribution as any).page_url === "string" ? (rawAttribution as any).page_url : null,
+          referrer: typeof (rawAttribution as any).referrer === "string" ? (rawAttribution as any).referrer : null,
+          user_agent: typeof (rawAttribution as any).user_agent === "string" ? (rawAttribution as any).user_agent : null,
+        }
+      : null;
+
+  // Classify lead before saving
+  const internalTest = isInternalTestEmail(email);
+  const leadType = internalTest ? "internal_test" : "external";
+
   const stageIndex = rawStage as number;
   const idea = (rawIdea as string).trim().slice(0, MAX_IDEA_CHARS);
 
@@ -379,8 +441,21 @@ export async function POST(req: NextRequest) {
   // 9. Persist to DB — must succeed before notifications
   const { saved: leadSaved, leadId: validationLeadId } = await saveFullLead(
     email, firstName, locale, stageIndex, idea, audience,
-    hasLiveAsset, hasTraction, result, ts, requestId, pageUrl, userAgent
+    hasLiveAsset, hasTraction, result, ts, requestId, pageUrl, userAgent,
+    attribution, internalTest, leadType
   );
+
+  logger.info({
+    event: "lead_saved",
+    requestId, ts, email,
+    lead_type: leadType,
+    internal_test: internalTest,
+    utm_source: attribution?.utm_source ?? null,
+    utm_campaign: attribution?.utm_campaign ?? null,
+    utm_content: attribution?.utm_content ?? null,
+    fbclid_present: !!(attribution?.fbclid),
+    db_saved: leadSaved,
+  });
 
   if (!leadSaved) {
     logger.error({
@@ -453,20 +528,29 @@ export async function POST(req: NextRequest) {
   const notifiedAt = new Date().toISOString();
   updateLeadNotificationStatus(email, notificationStatus, notifiedAt).catch(() => {});
 
+  const metaCompleteRegistrationFired = leadSaved && !internalTest;
+
   logger.info({
     event: "request_complete",
     requestId,
     ts,
     email,
     stage: result.stage,
+    lead_type: leadType,
+    internal_test: internalTest,
     leadSaved,
     ownerNotified: notificationStatus.ownerNotified,
     emailSent: notificationStatus.resultEmailSent,
+    meta_complete_registration_fired: metaCompleteRegistrationFired,
     durationMs: Date.now() - startMs,
   });
 
   return NextResponse.json(
-    { ok: true, requestId, result, leadSaved, notificationStatus, validationLeadId },
+    {
+      ok: true, requestId, result, leadSaved, notificationStatus, validationLeadId,
+      isInternalTest: internalTest,
+      leadType,
+    },
     { headers: { "X-Request-Id": requestId } }
   );
 }
