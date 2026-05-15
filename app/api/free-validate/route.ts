@@ -13,6 +13,9 @@ import { guardPayloadSize } from "@/src/security/payloadGuard";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Bump this string any time you need to confirm a new build is live in Vercel logs.
+const ROUTE_VERSION = "2026-05-15-v3";
+
 const VALID_LOCALES = new Set(["en", "fr", "ht", "es", "pt"]);
 const MAX_IDEA_CHARS = 2_000;
 const MAX_AUDIENCE_CHARS = 500;
@@ -172,12 +175,53 @@ async function saveFullLead(
   attribution: AttributionData | null,
   isInternalTest: boolean,
   leadType: string
-): Promise<{ leadId: string | null; saved: boolean }> {
+): Promise<{ leadId: string | null; saved: boolean; savedMetadata: Record<string, unknown> }> {
   const supabase = getSupabase();
   if (!supabase) {
     logger.warn({ event: "db_skip", requestId, ts: timestamp, email, reason: "Supabase not configured" });
-    return { leadId: null, saved: false };
+    return { leadId: null, saved: false, savedMetadata: {} };
   }
+
+  const metadata: Record<string, unknown> = {
+    route_version: ROUTE_VERSION,
+    stageIndex,
+    audience: audience || null,
+    hasLiveAsset,
+    hasTraction,
+    completed: true,
+    requestId,
+    submittedAt: timestamp,
+    page_url: attribution?.page_url ?? pageUrl,
+    user_agent: attribution?.user_agent ?? userAgent,
+    referrer: attribution?.referrer ?? null,
+    utm_source: attribution?.utm_source ?? null,
+    utm_medium: attribution?.utm_medium ?? null,
+    utm_campaign: attribution?.utm_campaign ?? null,
+    utm_content: attribution?.utm_content ?? null,
+    utm_term: attribution?.utm_term ?? null,
+    fbclid: attribution?.fbclid ?? null,
+    internal_test: isInternalTest,
+    lead_type: leadType,
+    result: {
+      stage: result.stage,
+      verdict: result.verdict,
+      firstAsset: result.firstAsset,
+      firstAssetReason: result.firstAssetReason,
+      nextSteps: result.nextSteps,
+      warning: result.warning,
+    },
+  };
+
+  logger.info({
+    event: "metadata_before_insert",
+    route_version: ROUTE_VERSION,
+    requestId, ts: timestamp, email,
+    metadata_keys: Object.keys(metadata),
+    internal_test: metadata.internal_test,
+    lead_type: metadata.lead_type,
+    utm_source: metadata.utm_source,
+    fbclid: metadata.fbclid,
+  });
 
   try {
     const data = await upsertByEmail(supabase, {
@@ -188,46 +232,22 @@ async function saveFullLead(
       source: "free-validation",
       consent_marketing: false,
       email_sent: false,
-      metadata: {
-        stageIndex,
-        audience: audience || null,
-        hasLiveAsset,
-        hasTraction,
-        completed: true,
-        requestId,
-        submittedAt: timestamp,
-        page_url: attribution?.page_url ?? pageUrl,
-        user_agent: attribution?.user_agent ?? userAgent,
-        referrer: attribution?.referrer ?? null,
-        utm_source: attribution?.utm_source ?? null,
-        utm_medium: attribution?.utm_medium ?? null,
-        utm_campaign: attribution?.utm_campaign ?? null,
-        utm_content: attribution?.utm_content ?? null,
-        utm_term: attribution?.utm_term ?? null,
-        fbclid: attribution?.fbclid ?? null,
-        internal_test: isInternalTest,
-        lead_type: leadType,
-        result: {
-          stage: result.stage,
-          verdict: result.verdict,
-          firstAsset: result.firstAsset,
-          firstAssetReason: result.firstAssetReason,
-          nextSteps: result.nextSteps,
-          warning: result.warning,
-        },
-      },
+      metadata,
       updated_at: timestamp,
     });
-    logger.info({ event: "db_save_ok", requestId, ts: timestamp, email, leadId: data?.id, stage: result.stage });
-    return { leadId: data?.id ?? null, saved: true };
+    logger.info({ event: "db_save_ok", route_version: ROUTE_VERSION, requestId, ts: timestamp, email, leadId: data?.id, stage: result.stage });
+    return { leadId: data?.id ?? null, saved: true, savedMetadata: metadata };
   } catch (err) {
-    logger.error({ event: "db_save_fail", requestId, ts: timestamp, email, error: String(err) });
-    return { leadId: null, saved: false };
+    logger.error({ event: "db_save_fail", route_version: ROUTE_VERSION, requestId, ts: timestamp, email, error: String(err) });
+    return { leadId: null, saved: false, savedMetadata: {} };
   }
 }
 
+// Accepts the already-saved metadata from saveFullLead so it never re-reads from DB
+// (a re-read risks clobbering internal_test/lead_type/attribution if it returns null).
 async function updateLeadNotificationStatus(
   email: string,
+  savedMetadata: Record<string, unknown>,
   status: NotificationStatus,
   notifiedAt: string
 ): Promise<void> {
@@ -235,18 +255,11 @@ async function updateLeadNotificationStatus(
   if (!supabase) return;
 
   try {
-    const { data } = await (supabase as any)
-      .from("validation_leads")
-      .select("metadata")
-      .eq("email", email)
-      .maybeSingle();
-
-    const current = (data?.metadata as Record<string, unknown>) ?? {};
     await (supabase as any)
       .from("validation_leads")
       .update({
         metadata: {
-          ...current,
+          ...savedMetadata,
           owner_notification_status: status.ownerNotified ? "sent" : "failed",
           owner_notification_error: status.ownerError ?? null,
           result_email_status: status.resultEmailSent ? "sent" : "failed",
@@ -266,6 +279,8 @@ export async function POST(req: NextRequest) {
   const requestId = crypto.randomUUID();
   const ts = new Date().toISOString();
   const startMs = Date.now();
+
+  logger.info({ event: "request_received", route_version: ROUTE_VERSION, requestId, ts });
 
   // Env health check — warn once per invocation so Vercel logs surface misconfigs
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -405,6 +420,20 @@ export async function POST(req: NextRequest) {
   const internalTest = isInternalTestEmail(email);
   const leadType = internalTest ? "internal_test" : "external";
 
+  logger.info({
+    event: "request_body_parsed",
+    route_version: ROUTE_VERSION,
+    requestId, ts, email,
+    attribution_received: attribution !== null,
+    attribution_keys: attribution
+      ? Object.entries(attribution)
+          .filter(([, v]) => v !== null)
+          .map(([k]) => k)
+      : [],
+    internal_test_result: internalTest,
+    lead_type: leadType,
+  });
+
   const stageIndex = rawStage as number;
   const idea = (rawIdea as string).trim().slice(0, MAX_IDEA_CHARS);
 
@@ -439,7 +468,7 @@ export async function POST(req: NextRequest) {
   logger.info({ event: "validation_completed", requestId, ts, email, stage: result.stage, verdict: result.verdict, firstAsset: result.firstAsset, durationMs: Date.now() - startMs });
 
   // 9. Persist to DB — must succeed before notifications
-  const { saved: leadSaved, leadId: validationLeadId } = await saveFullLead(
+  const { saved: leadSaved, leadId: validationLeadId, savedMetadata } = await saveFullLead(
     email, firstName, locale, stageIndex, idea, audience,
     hasLiveAsset, hasTraction, result, ts, requestId, pageUrl, userAgent,
     attribution, internalTest, leadType
@@ -524,9 +553,9 @@ export async function POST(req: NextRequest) {
     logger.error({ event: "result_email_fail", requestId, ts, email, error: err });
   }
 
-  // 12. Persist notification outcomes to lead metadata
+  // 12. Persist notification outcomes to lead metadata — pass savedMetadata to avoid clobbering
   const notifiedAt = new Date().toISOString();
-  updateLeadNotificationStatus(email, notificationStatus, notifiedAt).catch(() => {});
+  updateLeadNotificationStatus(email, savedMetadata, notificationStatus, notifiedAt).catch(() => {});
 
   const metaCompleteRegistrationFired = leadSaved && !internalTest;
 
