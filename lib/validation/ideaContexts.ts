@@ -544,7 +544,44 @@ const NICHE_TEMPLATES: NicheTemplate[] = [
     },
   },
 
-  // ── 15. Marketplace ──────────────────────────────────────────────────────
+  // ── 15. B2B wholesale / vendor commerce ──────────────────────────────────
+  // Vendors are BUYERS here (buying from the seller/founder). Placed before the
+  // generic marketplace template so "vendors to buy products" routes here, not there.
+  {
+    pattern:
+      /\bvendors?\b.{0,60}\bbuy\b|\bwholesale\b|\bbulk.{0,5}order|\bproduct.sourcing\b|\bsupplier\b.{0,60}\bvendor|\bvendors?\b.{0,60}\bsupplier|ship.{0,50}\bwherever\b|fulfillment.{0,30}\bvendor|\bvendor.{0,30}fulfillment/,
+    nicheLabel: "B2B wholesale or vendor commerce",
+    audienceLabel: "vendors or business buyers",
+    useCaseLabel: "bulk product ordering or fulfillment",
+    customerActorLabel: "vendor",
+    actionTargetLabel: "product order",
+    nicheMistake:
+      "Do not build a full vendor platform before proving that vendors want to buy a specific product category from you at a clear price and shipping model.",
+    nicheAssetReason:
+      "A vendor order interest page tests whether vendors want to buy specific products from you and whether your shipping and fulfillment promise matters — before you invest in building a platform.",
+    steps: {
+      early: [
+        "Choose one vendor type first — retailer, reseller, or distributor — before trying to serve all vendor categories at once.",
+        "Choose one product category and create a simple order-interest page with product examples, a pricing guide or quote request form, and your shipping promise.",
+        "Reach out to 10 vendors directly and collect order requests or letters of intent before writing a line of platform code.",
+        "Talk to every vendor who requests a quote: what product specifics, pricing model, and shipping timeline would make them place a first order?",
+      ],
+      mid: [
+        "Identify your highest-value vendor type — the one with the largest order size and clearest product need — and focus all acquisition on that segment first.",
+        "Map the order journey from vendor interest to payment: find where vendors hesitate and fix that before adding new product categories.",
+        "Talk to vendors who requested a quote but did not place an order: what stopped them — pricing, product range, or shipping terms?",
+        "Build a simple vendor ordering flow only after you have manually processed 10 or more successful orders and understand the recurring friction points.",
+      ],
+      late: [
+        "Document your best vendor type — fastest to decide, largest order size, most repeat purchases — and build all marketing around that profile.",
+        "Create a structured reorder process for vendors who have placed one order — repeat vendors are your lowest cost acquisition channel.",
+        "Test volume pricing tiers once you have enough transaction data to know which order sizes drive the most margin.",
+        "Expand to additional product categories only after your first category has at least 10 recurring vendor accounts placing regular orders.",
+      ],
+    },
+  },
+
+  // ── 16. Marketplace ──────────────────────────────────────────────────────
   {
     pattern:
       /\bmarketplace\b|two.sided (platform|market)|connect (buyers and sellers|freelancers and clients|providers and buyers)|gig (platform|economy platform)|peer.to.peer (market|platform)|platform (that connects|connecting) (buyers|sellers|providers|freelancers)|\bconnects\b.{0,80}\b(products|sellers?|vendors?)\b|\bconnects\b.{0,60}\bsell\b|\b(sellers?|vendors?)\b.{0,50}\bbuyers?\b|\bbuyers?\b.{0,50}\b(sellers?|vendors?)\b/,
@@ -579,7 +616,7 @@ const NICHE_TEMPLATES: NicheTemplate[] = [
     },
   },
 
-  // ── 16. Ecommerce / preorder ─────────────────────────────────────────────
+  // ── 17. Ecommerce / preorder ─────────────────────────────────────────────
   {
     pattern:
       /ecommerce|e-commerce|dropshipping?|physical product|preorder|pre-order|product launch|online store|shopify|woocommerce|private label|consumer goods|sell (products|goods) online|product (page|listing|inventory)/,

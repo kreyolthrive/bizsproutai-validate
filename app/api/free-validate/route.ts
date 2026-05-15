@@ -14,7 +14,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Bump this string any time you need to confirm a new build is live in Vercel logs.
-const ROUTE_VERSION = "2026-05-15-v3";
+const ROUTE_VERSION = "2026-05-15-v4";
 
 const VALID_LOCALES = new Set(["en", "fr", "ht", "es", "pt"]);
 const MAX_IDEA_CHARS = 2_000;
@@ -243,19 +243,25 @@ async function saveFullLead(
   }
 }
 
-// Accepts the already-saved metadata from saveFullLead so it never re-reads from DB
-// (a re-read risks clobbering internal_test/lead_type/attribution if it returns null).
+// Updates notification status by row id only — never by email.
+// Updating by email touches every row for that address; this fixes data bleed
+// across multiple submissions from the same email.
 async function updateLeadNotificationStatus(
-  email: string,
+  leadId: string | null,
   savedMetadata: Record<string, unknown>,
   status: NotificationStatus,
   notifiedAt: string
 ): Promise<void> {
+  const logTs = new Date().toISOString();
+  if (!leadId) {
+    logger.warn({ event: "notification_status_skip", requestId: "n/a", ts: logTs, reason: "no_lead_id" });
+    return;
+  }
   const supabase = getSupabase();
   if (!supabase) return;
 
   try {
-    await (supabase as any)
+    const { data: updated } = await (supabase as any)
       .from("validation_leads")
       .update({
         metadata: {
@@ -267,9 +273,30 @@ async function updateLeadNotificationStatus(
           notified_at: notifiedAt,
         },
       })
-      .eq("email", email);
+      .eq("id", leadId)
+      .select("id");
+
+    const rowCount = Array.isArray(updated) ? updated.length : 0;
+    logger.info({
+      event: "notification_status_updated",
+      requestId: "n/a",
+      ts: logTs,
+      notification_update_target_id: leadId,
+      notification_update_rows_count: rowCount,
+    });
+
+    if (rowCount !== 1) {
+      logger.error({
+        event: "CRITICAL_notification_update_row_count",
+        requestId: "n/a",
+        ts: logTs,
+        notification_update_target_id: leadId,
+        notification_update_rows_count: rowCount,
+        message: `CRITICAL: Expected 1 row updated by id, got ${rowCount}`,
+      });
+    }
   } catch (err) {
-    logger.warn({ event: "notification_status_update_fail", requestId: "n/a", ts: new Date().toISOString(), email, error: String(err) });
+    logger.warn({ event: "notification_status_update_fail", requestId: "n/a", ts: logTs, leadId, error: String(err) });
   }
 }
 
@@ -539,13 +566,15 @@ export async function POST(req: NextRequest) {
 
   if (emailRes.status === "fulfilled" && emailRes.value.sent) {
     notificationStatus.resultEmailSent = true;
-    logger.info({ event: "result_email_ok", requestId, ts, email });
-    const supabase = getSupabase();
-    if (supabase) {
-      await (supabase as any)
-        .from("validation_leads")
-        .update({ email_sent: true })
-        .eq("email", email);
+    logger.info({ event: "result_email_ok", requestId, ts, email, saved_lead_id: validationLeadId });
+    if (validationLeadId) {
+      const supabase = getSupabase();
+      if (supabase) {
+        await (supabase as any)
+          .from("validation_leads")
+          .update({ email_sent: true })
+          .eq("id", validationLeadId);
+      }
     }
   } else {
     const err = emailRes.status === "rejected" ? String(emailRes.reason) : (emailRes.value.error ?? "unknown");
@@ -553,9 +582,9 @@ export async function POST(req: NextRequest) {
     logger.error({ event: "result_email_fail", requestId, ts, email, error: err });
   }
 
-  // 12. Persist notification outcomes to lead metadata — pass savedMetadata to avoid clobbering
+  // 12. Persist notification outcomes to lead metadata — target by id, not email
   const notifiedAt = new Date().toISOString();
-  updateLeadNotificationStatus(email, savedMetadata, notificationStatus, notifiedAt).catch(() => {});
+  updateLeadNotificationStatus(validationLeadId, savedMetadata, notificationStatus, notifiedAt).catch(() => {});
 
   const metaCompleteRegistrationFired = leadSaved && !internalTest;
 

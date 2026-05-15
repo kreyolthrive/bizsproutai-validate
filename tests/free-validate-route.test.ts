@@ -3,19 +3,35 @@ import { NextRequest } from "next/server";
 
 // ─── Module mocks ─────────────────────────────────────────────────────────────
 
+// insert().select().single() — and update().eq().select().maybeSingle() (upsertByEmail UPDATE path)
 const supabaseUpsertMock = vi.fn();
+// update().eq().select() direct await — used by updateLeadNotificationStatus
 const supabaseUpdateMock = vi.fn();
 
 vi.mock("@supabase/supabase-js", () => ({
   createClient: () => ({
     from: () => ({
-      upsert: () => ({
-        select: () => ({
-          single: supabaseUpsertMock,
-        }),
+      insert: () => ({
+        select: () => ({ single: supabaseUpsertMock }),
       }),
       update: () => ({
-        eq: supabaseUpdateMock,
+        eq: () => ({
+          // Direct await — for simple updates like email_sent: true
+          then: (resolve: Function, reject?: Function) =>
+            Promise.resolve({ error: null }).then(resolve as any, reject as any),
+          catch: (rej: Function) =>
+            Promise.resolve({ error: null }).catch(rej as any),
+          // .select() chain — for upsertByEmail UPDATE path and notification status update
+          select: () => ({
+            // upsertByEmail checks `if (updated)` — return the saved row so it resolves early
+            maybeSingle: supabaseUpsertMock,
+            // notification status update awaits the select() result directly as an array
+            then: (resolve: Function, reject?: Function) =>
+              supabaseUpdateMock().then(resolve as any, reject as any),
+            catch: (rej: Function) =>
+              supabaseUpdateMock().catch(rej as any),
+          }),
+        }),
       }),
     }),
   }),
@@ -98,7 +114,8 @@ beforeEach(() => {
 
   // Default happy-path mocks
   supabaseUpsertMock.mockResolvedValue({ data: { id: "lead-123" }, error: null });
-  supabaseUpdateMock.mockResolvedValue({ error: null });
+  // notification status update returns array (rowCount check in route)
+  supabaseUpdateMock.mockResolvedValue({ data: [{ id: "lead-123" }], error: null });
   sendOwnerNotificationMock.mockResolvedValue({ sent: true, error: null });
   sendFreeValidationResultEmailMock.mockResolvedValue({ sent: true, error: null });
 
@@ -327,14 +344,16 @@ describe("stage scenarios — server computes correct framework-based result", (
     const { POST } = await loadRoute();
     const res = await POST(buildRequest({ ...VALID_FULL_BODY, stageIndex: 2, idea: "platform to connect buyers and sellers of handmade crafts" }));
     const body = await res.json();
-    expect(body.result.firstAsset).toBe("Marketplace web app");
+    // Niche system overrides the generic "Marketplace web app" with "Marketplace interest page"
+    expect(body.result.firstAsset).toBe("Marketplace interest page");
   });
 
   it("stage 1 + software: detects SaaS asset", async () => {
     const { POST } = await loadRoute();
     const res = await POST(buildRequest({ ...VALID_FULL_BODY, stageIndex: 1, idea: "SaaS tool with user accounts and dashboard for team management" }));
     const body = await res.json();
-    expect(body.result.firstAsset).toBe("Web app (SaaS)");
+    // Niche system overrides the generic "Web app (SaaS)" with "SaaS demo page"
+    expect(body.result.firstAsset).toBe("SaaS demo page");
   });
 
   it("stage 2 + live asset: Optimization Stage", async () => {
@@ -409,6 +428,7 @@ describe("result is generic and controlled", () => {
   ]);
 
   const KNOWN_ASSETS = new Set([
+    // Base asset values from translations
     "Booking page",
     "Mobile app",
     "Marketplace web app",
@@ -420,6 +440,23 @@ describe("result is generic and controlled", () => {
     "Landing page or booking page",
     "Unified website or funnel",
     "Full launch system",
+    // Niche-specific overrides from engine.ts (added as niche detection expanded)
+    "Idea clarity test",
+    "Workflow clarity test",
+    "SaaS demo page",
+    "Service booking page",
+    "Service consultation page",
+    "Marketplace interest page",
+    "Preorder product page",
+    "App waitlist page",
+    "Workshop signup page",
+    "Template landing page",
+    "Community resource page",
+    "Wellness challenge page",
+    "Wellness service page",
+    "Buyer readiness page",
+    "Real estate lead-capture page",
+    "Vendor order interest page",
   ]);
 
   const ideas = [

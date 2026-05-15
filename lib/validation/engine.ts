@@ -215,6 +215,8 @@ export function computeValidationResult(
     ? "Service booking page"
     : ideaContext?.nicheLabel === "coaching or consulting practice" && assetKey === "booking"
     ? "Service consultation page"
+    : ideaContext?.nicheLabel === "B2B wholesale or vendor commerce"
+    ? "Vendor order interest page"
     : ideaContext?.nicheLabel === "two-sided marketplace" && assetKey === "marketplace"
     ? "Marketplace interest page"
     : ideaContext?.nicheLabel === "product or ecommerce business" && assetKey === "ecommerce"
@@ -261,6 +263,8 @@ export function computeValidationResult(
     ? "health / wellness"
     : ideaContext?.nicheLabel === "real estate service or lead generation tool"
     ? "real estate services"
+    : ideaContext?.nicheLabel === "B2B wholesale or vendor commerce"
+    ? "B2B wholesale / vendor"
     : domainLabel;
 
   // Niche-specific verdict overrides at idea stage — "too early to build" undersells
