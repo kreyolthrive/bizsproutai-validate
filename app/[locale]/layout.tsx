@@ -16,6 +16,7 @@ import { Footer } from "@/components/Footer";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNav } from "@/components/MobileNav";
 import { RetargetingPixels } from "@/components/marketing/RetargetingPixels";
+import { LocaleHtmlUpdater } from "@/components/LocaleHtmlUpdater";
 import { locales, seoMetadata, type Locale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 
@@ -198,10 +199,10 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: "/og-image.png",
+          url: "/api/og",
           width: 1200,
           height: 630,
-          alt: meta.title,
+          alt: "Validate Before You Build | BizSproutAI",
         },
       ],
     },
@@ -209,7 +210,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: meta.title,
       description: meta.description,
-      images: ["/og-image.png"],
+      images: ["/api/og"],
     },
     icons: {
       icon: [{ url: logoSrc }],
@@ -254,117 +255,92 @@ export default async function LocaleLayout({
   const homeHref = `/${locale}`;
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <head>
-        {/* Meta Pixel — BizSproutAI Launch (ID: 1089915446436683) */}
-        {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
-        {/* Meta Pixel init — loads fbevents.js and initializes fbq stub.
-            PageView is fired by RetargetingPixels after React hydration. */}
-        <script dangerouslySetInnerHTML={{ __html: `
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '1089915446436683');
-          fbq('track', 'PageView');
-        ` }} />
-        <noscript>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img height="1" width="1" style={{display:"none"}} alt=""
-            src="https://www.facebook.com/tr?id=1089915446436683&ev=PageView&noscript=1"
-          />
-        </noscript>
-      </head>
-      <body className="font-[family:var(--font-body)] text-[var(--ink)] antialiased">
-        <NextIntlClientProvider messages={messages}>
-          <div className="min-h-screen bg-[var(--warm-white)]">
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:rounded-lg focus:bg-[var(--landing-green-deep)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
-            >
-              Skip to main content
-            </a>
-            <header role="banner" className="fixed inset-x-0 top-0 z-50 border-b border-[rgba(26,58,42,0.08)] bg-[rgba(253,250,245,0.9)] backdrop-blur-xl">
-              <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-10">
-                <Link href="/" className="flex items-center gap-2.5" locale={locale}>
-                  <Image
-                    src={logoSrc}
-                    alt="BizSproutAI"
-                    width={36}
-                    height={36}
-                    className="h-9 w-9 flex-shrink-0 rounded-lg object-contain"
-                    priority
-                  />
-                  <span className="hidden text-[1rem] font-bold tracking-[-0.02em] text-[var(--landing-green-deep)] sm:inline">
-                    BizSproutAI
-                  </span>
-                </Link>
+    <>
+      <LocaleHtmlUpdater locale={locale} />
+      <NextIntlClientProvider messages={messages}>
+        <div className="min-h-screen bg-[var(--warm-white)]">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:rounded-lg focus:bg-[var(--landing-green-deep)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+          >
+            Skip to main content
+          </a>
+          <header role="banner" className="fixed inset-x-0 top-0 z-50 border-b border-[rgba(26,58,42,0.08)] bg-[rgba(253,250,245,0.9)] backdrop-blur-xl">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-10">
+              <Link href="/" className="flex items-center gap-2.5" locale={locale}>
+                <Image
+                  src={logoSrc}
+                  alt="BizSproutAI"
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 flex-shrink-0 rounded-lg object-contain"
+                  priority
+                />
+                <span className="hidden text-[1rem] font-bold tracking-[-0.02em] text-[var(--landing-green-deep)] sm:inline">
+                  BizSproutAI
+                </span>
+              </Link>
 
-                <nav aria-label="Main navigation" className="hidden items-center gap-10 text-base font-medium text-[var(--landing-muted)] lg:flex">
-                  <a href={`${homeHref}#pain`} className="transition hover:text-[var(--landing-green-deep)]">
-                    {copy.nav.pain}
-                  </a>
-                  <a href={`${homeHref}#bridge`} className="transition hover:text-[var(--landing-green-deep)]">
-                    {copy.nav.how}
-                  </a>
-                  <a
-                    href={`${homeHref}#booking`}
-                    className="transition hover:text-[var(--landing-green-deep)]"
-                  >
-                    {copy.nav.bookCall}
-                  </a>
-                </nav>
+              <nav aria-label="Main navigation" className="hidden items-center gap-10 text-base font-medium text-[var(--landing-muted)] lg:flex">
+                <a href={`${homeHref}#pain`} className="transition hover:text-[var(--landing-green-deep)]">
+                  {copy.nav.pain}
+                </a>
+                <a href={`${homeHref}#bridge`} className="transition hover:text-[var(--landing-green-deep)]">
+                  {copy.nav.how}
+                </a>
+                <a
+                  href={`${homeHref}#booking`}
+                  className="transition hover:text-[var(--landing-green-deep)]"
+                >
+                  {copy.nav.bookCall}
+                </a>
+              </nav>
 
-                <div className="flex items-center gap-4">
-                  <div className="hidden md:block">
-                    <LanguageSwitcher />
-                  </div>
-                  <a
-                    href={`${homeHref}/validate`}
-                    className="hidden items-center rounded-full bg-[var(--landing-green-deep)] px-5 py-3 text-sm font-bold text-white shadow-[0_2px_12px_rgba(26,58,42,0.18)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_6px_20px_rgba(26,58,42,0.22)] lg:inline-flex"
-                  >
-                    {copy.nav.cta} →
-                  </a>
-                  <MobileNav
-                    links={[
-                      { href: `${homeHref}#pain`, label: copy.nav.pain },
-                      { href: `${homeHref}#bridge`, label: copy.nav.how },
-                      { href: `${homeHref}#booking`, label: copy.nav.bookCall },
-                    ]}
-                    ctaHref={`${homeHref}/validate`}
-                    ctaLabel={copy.nav.cta}
-                  />
+              <div className="flex items-center gap-4">
+                <div className="hidden md:block">
+                  <LanguageSwitcher />
                 </div>
+                <a
+                  href={`${homeHref}/validate`}
+                  className="hidden items-center rounded-full bg-[var(--landing-green-deep)] px-5 py-3 text-sm font-bold text-white shadow-[0_2px_12px_rgba(26,58,42,0.18)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_6px_20px_rgba(26,58,42,0.22)] lg:inline-flex"
+                >
+                  {copy.nav.cta} →
+                </a>
+                <MobileNav
+                  links={[
+                    { href: `${homeHref}#pain`, label: copy.nav.pain },
+                    { href: `${homeHref}#bridge`, label: copy.nav.how },
+                    { href: `${homeHref}#booking`, label: copy.nav.bookCall },
+                  ]}
+                  ctaHref={`${homeHref}/validate`}
+                  ctaLabel={copy.nav.cta}
+                />
               </div>
-              <div className="mx-auto flex max-w-7xl justify-center px-5 pb-3 md:hidden">
-                <LanguageSwitcher />
-              </div>
-            </header>
+            </div>
+            <div className="mx-auto flex max-w-7xl justify-center px-5 pb-3 md:hidden">
+              <LanguageSwitcher />
+            </div>
+          </header>
 
-            <main id="main-content">
-              <div id="page-content" className="pb-12">
-                {children}
-              </div>
-            </main>
+          <main id="main-content">
+            <div id="page-content" className="pb-12">
+              {children}
+            </div>
+          </main>
 
-            <Footer
-              locale={locale}
-              logoSrc={logoSrc}
-              footerCopy={copy.footer}
-              navCopy={{ blog: copy.nav.blog }}
-              homeHref={homeHref}
-            />
+          <Footer
+            locale={locale}
+            logoSrc={logoSrc}
+            footerCopy={copy.footer}
+            navCopy={{ blog: copy.nav.blog }}
+            homeHref={homeHref}
+          />
 
-          </div>
-        </NextIntlClientProvider>
-        <Suspense fallback={null}>
-          <RetargetingPixels />
-        </Suspense>
-      </body>
-    </html>
+        </div>
+      </NextIntlClientProvider>
+      <Suspense fallback={null}>
+        <RetargetingPixels />
+      </Suspense>
+    </>
   );
 }

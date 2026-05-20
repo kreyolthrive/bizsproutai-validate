@@ -25,9 +25,9 @@ export const seoMetadata: Record<
   { title: string; description: string }
 > = {
   en: {
-    title: "Validate Your Business Idea for Free | BizSproutAI",
+    title: "Validate Before You Build | BizSproutAI",
     description:
-      "BizSproutAI helps you validate your business idea, see what stage you're in, and find what to build first — free. Get your stage, recommended first asset, next 4 steps, and the mistake to avoid.",
+      "Get a fast AI-powered business idea validation and find out what to build first before you waste time and money.",
   },
   fr: {
     title: "Validez votre idée gratuitement | BizSproutAI",
