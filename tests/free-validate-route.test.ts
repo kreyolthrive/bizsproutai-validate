@@ -8,31 +8,40 @@ const supabaseUpsertMock = vi.fn();
 // update().eq().select() direct await — used by updateLeadNotificationStatus
 const supabaseUpdateMock = vi.fn();
 
+type ThenResolve<T> = Parameters<Promise<T>["then"]>[0];
+type ThenReject<T> = Parameters<Promise<T>["then"]>[1];
+type CatchReject<T> = Parameters<Promise<T>["catch"]>[0];
+type SupabaseUpdateResult = { error: null };
+
 vi.mock("@supabase/supabase-js", () => ({
   createClient: () => ({
     from: () => ({
       insert: () => ({
         select: () => ({ single: supabaseUpsertMock }),
       }),
-      update: () => ({
-        eq: () => ({
-          // Direct await — for simple updates like email_sent: true
-          then: (resolve: Function, reject?: Function) =>
-            Promise.resolve({ error: null }).then(resolve as any, reject as any),
-          catch: (rej: Function) =>
-            Promise.resolve({ error: null }).catch(rej as any),
-          // .select() chain — for upsertByEmail UPDATE path and notification status update
-          select: () => ({
-            // upsertByEmail checks `if (updated)` — return the saved row so it resolves early
-            maybeSingle: supabaseUpsertMock,
-            // notification status update awaits the select() result directly as an array
-            then: (resolve: Function, reject?: Function) =>
-              supabaseUpdateMock().then(resolve as any, reject as any),
-            catch: (rej: Function) =>
-              supabaseUpdateMock().catch(rej as any),
-          }),
-        }),
-      }),
+	      update: () => ({
+	        eq: () => ({
+	          // Direct await — for simple updates like email_sent: true
+	          then: (
+	            resolve: ThenResolve<SupabaseUpdateResult>,
+	            reject?: ThenReject<SupabaseUpdateResult>
+	          ) => Promise.resolve({ error: null }).then(resolve, reject),
+	          catch: (rej: CatchReject<SupabaseUpdateResult>) =>
+	            Promise.resolve({ error: null }).catch(rej),
+	          // .select() chain — for upsertByEmail UPDATE path and notification status update
+	          select: () => ({
+	            // upsertByEmail checks `if (updated)` — return the saved row so it resolves early
+	            maybeSingle: supabaseUpsertMock,
+	            // notification status update awaits the select() result directly as an array
+	            then: (
+	              resolve: ThenResolve<SupabaseUpdateResult>,
+	              reject?: ThenReject<SupabaseUpdateResult>
+	            ) => supabaseUpdateMock().then(resolve, reject),
+	            catch: (rej: CatchReject<SupabaseUpdateResult>) =>
+	              supabaseUpdateMock().catch(rej),
+	          }),
+	        }),
+	      }),
     }),
   }),
 }));

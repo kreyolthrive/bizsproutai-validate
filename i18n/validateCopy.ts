@@ -261,7 +261,7 @@ const en: ValidateCopy = {
 
   lockedPreviewsTemplate: [
     {
-      titleWithDomain: "Demand risk score for {domain} businesses at your stage",
+      titleWithDomain: "Demand risk score for {domain} at your stage",
       titleWithoutDomain: "Demand risk score for businesses at your stage",
       meta: "5-factor demand analysis",
     },

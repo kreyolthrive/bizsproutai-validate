@@ -99,7 +99,6 @@ function errorResponse(
 
 // ─── Supabase: partial lead ───────────────────────────────────────────────────
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function upsertByEmail(
   supabase: any,
   fields: Record<string, unknown>

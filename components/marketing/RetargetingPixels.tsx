@@ -3,11 +3,10 @@
 import { useEffect, useRef } from "react";
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
+import { META_PIXEL_IDS } from "@/lib/analytics/metaPixelConfig";
 
-// Meta Pixel is initialized directly in [locale]/layout.tsx with hardcoded ID.
+// Meta Pixel is initialized once in app/layout.tsx for all configured IDs.
 // This component handles SPA route-change PageViews + LinkedIn/Google Ads init.
-
-const META_PIXEL_ID = "1089915446436683";
 
 declare global {
   interface Window {
@@ -126,4 +125,4 @@ export function RetargetingPixels() {
   );
 }
 
-export { META_PIXEL_ID };
+export { META_PIXEL_IDS };

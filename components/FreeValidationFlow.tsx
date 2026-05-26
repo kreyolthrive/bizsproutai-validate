@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { trackMeta, trackMetaStandard } from "@/lib/analytics/metaEvents";
 import type { ValidationResult } from "@/lib/validation/engine";
 import { getValidateCopy } from "@/i18n/validateCopy";
@@ -69,6 +69,14 @@ function StepDots({ total, current }: { total: number; current: number }) {
           }`}
         />
       ))}
+    </div>
+  );
+}
+
+function FieldMessageSlot({ children }: { children?: ReactNode }) {
+  return (
+    <div className="mt-1.5 min-h-[1.25rem] text-[0.8rem] leading-5">
+      {children}
     </div>
   );
 }
@@ -304,7 +312,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
       : copy.rSubhead.charAt(0).toUpperCase() + copy.rSubhead.slice(1);
 
     return (
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto min-h-[1180px] max-w-2xl">
         {/* Header */}
         <div className="mb-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(126,200,80,0.3)] bg-[rgba(126,200,80,0.12)] px-4 py-1.5 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-green-mid)]">
@@ -578,7 +586,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
   const displayStep = step + 1;
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto min-h-[560px] max-w-2xl sm:min-h-[500px]">
       {/* Progress */}
       <div className="mb-8 flex items-center justify-between">
         <StepDots total={totalSteps} current={step} />
@@ -832,19 +840,21 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
                     : "border-[rgba(26,58,42,0.15)] focus:border-[var(--landing-green-mid)]"
                 }`}
               />
-              {emailError && (
-                <p className="mt-1.5 text-[0.8rem] text-red-500">{emailError}</p>
-              )}
+              <FieldMessageSlot>
+                {emailError ? <p className="text-red-500">{emailError}</p> : null}
+              </FieldMessageSlot>
             </div>
           </div>
 
-          {submitError && (
-            <div className="mt-5 rounded-[14px] border border-red-200 bg-red-50 px-4 py-3 text-[0.88rem] text-red-700">
-              {submitError}
-            </div>
-          )}
+          <div className="mt-5 min-h-[4.125rem]">
+            {submitError ? (
+              <div className="rounded-[14px] border border-red-200 bg-red-50 px-4 py-3 text-[0.88rem] text-red-700">
+                {submitError}
+              </div>
+            ) : null}
+          </div>
 
-          <div className="mt-8 flex gap-3">
+          <div className="mt-3 flex gap-3">
             <button
               onClick={() => setStep(2)}
               disabled={submitting}

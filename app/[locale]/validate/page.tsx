@@ -31,7 +31,7 @@ export default async function ValidatePage({ params, searchParams }: Props) {
     stage !== undefined && /^[0-3]$/.test(stage) ? parseInt(stage, 10) : undefined;
 
   return (
-    <main className="min-h-screen bg-[var(--warm-white)] px-5 pb-20 pt-24 sm:pt-28 lg:px-10 lg:pt-40">
+    <main className="min-h-screen bg-[var(--warm-white)] px-5 pb-20 pt-36 sm:pt-32 lg:px-10 lg:pt-40">
       {/* Background blobs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute left-[-10%] top-[20%] h-[400px] w-[400px] rounded-full bg-[rgba(126,200,80,0.05)] blur-3xl" />
@@ -63,11 +63,13 @@ export default async function ValidatePage({ params, searchParams }: Props) {
           </p>
         </div>
 
-        <FreeValidationFlow
-          locale={locale}
-          initialStage={initialStage}
-          phoneHref={phoneHref}
-        />
+        <section className="min-h-[680px] sm:min-h-[620px]" aria-label="Business validation form">
+          <FreeValidationFlow
+            locale={locale}
+            initialStage={initialStage}
+            phoneHref={phoneHref}
+          />
+        </section>
 
         {/* Footer note */}
         <p className="mt-12 text-center text-[0.8rem] text-[var(--landing-muted)]">
