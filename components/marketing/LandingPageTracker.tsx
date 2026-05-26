@@ -8,6 +8,8 @@ export function LandingPageTracker() {
     trackMetaStandard("ViewContent", {
       content_name: "LandingPage",
       content_type: "product",
+      value: 1.0,
+      currency: "USD",
     });
   }, []);
   return null;

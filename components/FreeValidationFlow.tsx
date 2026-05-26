@@ -126,7 +126,12 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
 
   useEffect(() => {
     setAttribution(captureAttribution());
-    trackMetaStandard("ViewContent", { content_name: "FreeValidation", content_type: "product" });
+    trackMetaStandard("ViewContent", {
+      content_name: "FreeValidation",
+      content_type: "product",
+      value: 1.0,
+      currency: "USD",
+    });
   }, []);
 
   function isValidEmail(v: string) {
