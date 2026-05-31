@@ -142,10 +142,25 @@ Run Variant B and Variant C as separate hero challengers against control. Becaus
 | **Control** | Get your idea to its first customer. | Start with a free validation… | Your Free Validation Result | Launch readiness | BizSproutAI recommends first | Your next 4 steps | Unlock Full Analysis → |
 | **Variant B** | Find out what to build first. | BizSproutAI helps you turn an idea into a clear next move by showing your business starting point, what to focus on first, and the next steps to take. | Your Business Starting Point | Your business starting point | What to focus on first | Your next moves | See My Next Move → |
 
-**Primary metric:** Form start rate — `ValidationStarted` events / page visitors.  
-**Secondary metric:** Waitlist submit rate — `WaitlistJoined` / `ValidationResultView`.  
+**Measurement plan:**
+
+| Metric | Formula | Role |
+|--------|---------|------|
+| Form start rate | `ValidationStarted` / page visitors | **Primary** |
+| Primary CTA click rate | `WaitlistJoined` / `ValidationResultView` | Secondary |
+| Next-step conversion | `FitCallClick` / `ValidationResultView` | Secondary |
+| Funnel reach | `ValidationResultView` / `ValidationStarted` | Supporting |
+| Qualitative signal | `ResultFeedback` rating distribution | Supporting |
+
+**Segment by:**
+- `verdict_band` — required for all secondary metrics; `early` band is highest-volume and most sensitive to outcome language
+- `traffic_source` — paid vs organic may respond differently to "next move" framing
+- `locale` — EN only for this variant; exclude non-EN traffic from analysis
+
+**Watch for:** Whether the CTA lift (`WaitlistJoined`) concentrates in `early` / low-clarity outcomes, which would indicate outcome framing is especially effective when the verdict is not yet strong.
+
 **Traffic split:** 50 / 50 (control vs hero-b).  
-**Minimum sample:** 200 `ValidationStarted` per variant.
+**Minimum sample:** 200 `ValidationStarted` per variant; 150 `ValidationResultView` per variant for secondary metrics.
 
 ---
 
@@ -162,10 +177,50 @@ Run Variant B and Variant C as separate hero challengers against control. Becaus
 | **Control** | Get your idea to its first customer. | Start with a free validation… | Free Validation — Step N | Continue → | Get My Free Validation → |
 | **Variant C** | Turn your idea into a business with AI. | BizSproutAI helps founders move from idea to clarity, execution, and first customer by helping them decide what to build first and what to do next. | Business Builder — Step N | Start Building → | Analyze My Idea → |
 
-**Primary metric:** Form start rate — `ValidationStarted` events / page visitors.  
-**Secondary metric:** Form completion rate — `ValidationCompleted` / `ValidationStarted` (tests whether the app framing increases follow-through).  
+**Measurement plan:**
+
+| Metric | Formula | Role |
+|--------|---------|------|
+| Form start rate | `ValidationStarted` / page visitors | **Primary** |
+| Form completion rate | `ValidationCompleted` / `ValidationStarted` | Secondary |
+| Step-by-step dropoff | `ValidationStarted` → step 1 → step 2 → `Lead` | Secondary |
+| Funnel reach | `ValidationResultView` / `ValidationStarted` | Supporting |
+| Qualitative signal | `ResultFeedback` rating distribution | Supporting |
+
+**Segment by:**
+- `traffic_source` — paid traffic is primed by an ad; organic traffic has no prior context. The app framing may work differently across these.
+- `verdict_band` — check whether app-framing sets expectations that early-stage results fail to meet
+- `locale` — EN only; exclude non-EN traffic from analysis
+
+**Watch for:** Higher `ValidationStarted` combined with lower `ValidationCompleted` / `ValidationStarted` ratio — this is the expectation mismatch signal. If C drives more starts but loses people before submit, the framing is over-promising. Also watch `ResultFeedback` ratings: if C produces lower helpfulness scores, the result framing may need to match the app entry promise.
+
 **Traffic split:** 50 / 50 (control vs hero-c).  
 **Minimum sample:** 200 `ValidationStarted` per variant.
+
+---
+
+#### Shared Tracking Fields — Variant B and Variant C
+
+All events for both variants carry the following fields automatically via the existing analytics payload. These must be present in every event used for evaluation.
+
+| Field | Values | Use |
+|-------|--------|-----|
+| `page_variant` | `"hero-b"` / `"hero-c"` / `"control"` | Segment all metrics by variant |
+| `verdict_band` | `"early"` / `"building"` / `"ready"` | Segment result-page metrics by outcome quality |
+| `idea_stage` | English stage tag | Sub-segment within `early` (Idea Stage vs First Asset) |
+| `traffic_source` | `utm_source` or `"referral"` / `"direct"` | Separate paid from organic |
+| `locale` | locale string | Exclude non-EN sessions from analysis |
+
+Events to pull for each variant evaluation:
+
+| Event | Variant B | Variant C |
+|-------|-----------|-----------|
+| `ValidationStarted` | Primary | Primary |
+| `ValidationResultView` | Secondary denominator | Supporting |
+| `ValidationCompleted` | Supporting | Secondary |
+| `WaitlistJoined` | Secondary (CTA rate) | Supporting |
+| `FitCallClick` | Secondary (next-step rate) | Supporting |
+| `ResultFeedback` | Qualitative signal | Qualitative signal |
 
 ---
 
