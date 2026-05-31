@@ -356,6 +356,23 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
     }
   }
 
+  // ── Variant label overrides ────────────────────────────────────────────────
+
+  // Variant B (hero-b) — result page reframed toward outcome language
+  const resultBadge = pageVariant === "hero-b" ? "Your Business Starting Point" : copy.rBadge;
+  const resultHeading = pageVariant === "hero-b" ? "Here is your starting point." : copy.rHeading;
+  const readinessLabel = pageVariant === "hero-b" ? "Your business starting point" : copy.rReadinessLabel;
+  const firstAssetLabel = pageVariant === "hero-b" ? "What to focus on first" : copy.rFirstAssetLabel;
+  const nextStepsLabel = pageVariant === "hero-b" ? "Your next moves" : copy.rNextStepsLabel;
+
+  // Variant C (hero-c) — form entry reframed toward app onboarding
+  const s0CtaLabel = pageVariant === "hero-c" ? "Start Building →" : copy.s0cta;
+  const s3SubmitLabel = pageVariant === "hero-c" ? "Analyze My Idea →" : copy.s3submit;
+  const s3SubmittingLabel = pageVariant === "hero-c" ? "Analyzing your idea…" : copy.s3submitting;
+  const effectiveStepLabel = pageVariant === "hero-c"
+    ? (n: number) => `Business Builder — Step ${n}`
+    : copy.stepLabel;
+
   useEffect(() => {
     if (result) {
       trackMeta("ValidationResultView", {
@@ -393,10 +410,11 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
       ? `${firstName}, ${copy.rSubhead}`
       : copy.rSubhead.charAt(0).toUpperCase() + copy.rSubhead.slice(1);
 
-    // Test 4 — result-page primary CTA label (variant cta-b)
-    const ctaButtonLabel = pageVariant === "cta-b"
-      ? (copy.rCtaLabelB ?? "See My Full Demand Analysis →")
-      : copy.rWaitlistCta;
+    // Result-page primary CTA label — Test 4 (cta-b) and Variant B (hero-b)
+    const ctaButtonLabel =
+      pageVariant === "cta-b" ? (copy.rCtaLabelB ?? "See My Full Demand Analysis →") :
+      pageVariant === "hero-b" ? "See My Next Move →" :
+      copy.rWaitlistCta;
 
     // Shared analytics metadata for result-page events
     const resultMeta = {
@@ -412,10 +430,10 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
         <div className="mb-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(126,200,80,0.3)] bg-[rgba(126,200,80,0.12)] px-4 py-1.5 text-[0.75rem] font-bold uppercase tracking-[0.14em] text-[var(--landing-green-mid)]">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--landing-sprout)]" />
-            {copy.rBadge}
+            {resultBadge}
           </span>
           <h2 className="mt-4 font-[family:var(--font-serif)] text-[clamp(1.8rem,3.5vw,2.8rem)] leading-[1.1] text-[var(--landing-green-deep)]">
-            {copy.rHeading}
+            {resultHeading}
           </h2>
           <p className="mt-2 text-[0.95rem] text-[var(--landing-muted)]">
             {subhead}
@@ -448,7 +466,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
         <div className="rounded-[20px] border border-[rgba(26,58,42,0.08)] bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-light)]">
-              {copy.rReadinessLabel}
+              {readinessLabel}
             </p>
             <span className="text-[0.85rem] font-bold text-[var(--landing-green-deep)]">
               {readiness}%
@@ -489,7 +507,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
         {/* ── First asset ── */}
         <div className="mt-4 rounded-[20px] border border-[rgba(126,200,80,0.25)] bg-[rgba(126,200,80,0.06)] p-6">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-mid)]">
-            {copy.rFirstAssetLabel}
+            {firstAssetLabel}
           </p>
           <p className="mt-2 text-[1.15rem] font-semibold text-[var(--landing-green-deep)]">
             {result.firstAsset}
@@ -502,7 +520,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
         {/* ── Next steps — niche-specific when detected, generic fallback ── */}
         <div className="mt-4 rounded-[20px] border border-[rgba(26,58,42,0.08)] bg-white p-6 shadow-sm">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--landing-green-light)]">
-            {copy.rNextStepsLabel}
+            {nextStepsLabel}
           </p>
           <ol className="mt-4 space-y-3">
             {(result.nicheSteps ?? result.nextSteps).map((s, i) => (
@@ -725,7 +743,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
       {step === 0 && (
         <div>
           <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-            {copy.stepLabel(1)}
+            {effectiveStepLabel(1)}
           </p>
           <h2 className="mt-3 font-[family:var(--font-serif)] text-[clamp(1.65rem,3vw,2.4rem)] leading-[1.12] text-[var(--landing-green-deep)]">
             {copy.s0heading}
@@ -766,7 +784,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
             disabled={stageIndex === null}
             className="mt-8 w-full rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {copy.s0cta}
+            {s0CtaLabel}
           </button>
         </div>
       )}
@@ -775,7 +793,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
       {step === 1 && (
         <div>
           <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-            {copy.stepLabel(2)}
+            {effectiveStepLabel(2)}
           </p>
           <h2 className="mt-3 font-[family:var(--font-serif)] text-[clamp(1.65rem,3vw,2.4rem)] leading-[1.12] text-[var(--landing-green-deep)]">
             {copy.s1heading}
@@ -838,7 +856,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
       {step === 2 && (
         <div>
           <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-            {copy.stepLabel(3)}
+            {effectiveStepLabel(3)}
           </p>
           <h2 className="mt-3 font-[family:var(--font-serif)] text-[clamp(1.65rem,3vw,2.4rem)] leading-[1.12] text-[var(--landing-green-deep)]">
             {copy.s2heading}
@@ -919,7 +937,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
       {step === 3 && (
         <div>
           <p className="text-[0.75rem] font-bold uppercase tracking-[0.18em] text-[var(--landing-green-light)]">
-            {copy.stepLabel(4)}
+            {effectiveStepLabel(4)}
           </p>
           <h2 className="mt-3 font-[family:var(--font-serif)] text-[clamp(1.65rem,3vw,2.4rem)] leading-[1.12] text-[var(--landing-green-deep)]">
             {copy.s3heading}
@@ -993,7 +1011,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
               disabled={submitting}
               className="flex-1 rounded-full bg-[var(--landing-green-deep)] px-8 py-4 text-[1rem] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_10px_30px_rgba(26,58,42,0.2)] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {submitting ? copy.s3submitting : copy.s3submit}
+              {submitting ? s3SubmittingLabel : s3SubmitLabel}
             </button>
           </div>
 

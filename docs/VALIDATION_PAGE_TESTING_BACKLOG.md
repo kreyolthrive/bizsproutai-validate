@@ -28,12 +28,16 @@ Variants are delivered via `?v=` URL query parameter. No external A/B framework 
 | Value | Meaning |
 |-------|---------|
 | *(not set)* | control — all defaults |
-| `v=hero-a` | Test 1: variant A hero headline and subheadline |
-| `v=cta-b` | Test 4: variant B result-page primary CTA label |
+| `v=hero-a` | Test 1: validation-led hero headline and subheadline |
+| `v=cta-b` | Test 4: result-page primary CTA label |
+| `v=hero-b` | Variant B: outcome-led ("Find out what to build first") |
+| `v=hero-c` | Variant C: app-led ("Turn your idea into a business with AI") |
 
-Route traffic by appending `?v=hero-a` or `?v=cta-b` to ad URLs, email links, or organic links.
+Route traffic by appending the `?v=` parameter to ad URLs, email links, or organic links.
 
-**For organic/direct traffic without UTM:** Randomize via sessionStorage assignment (add in a later PR; not needed to launch Round 1 from ads).
+**Note on hero variant competition:** `hero-a`, `hero-b`, and `hero-c` all modify the same hero section. Run at most two hero variants simultaneously against control to avoid splitting traffic too thin. Recommended pairings: control vs hero-b, control vs hero-c, or winner vs challenger.
+
+**For organic/direct traffic without UTM:** Randomize via sessionStorage assignment (add in a later PR; not needed to launch from ads).
 
 ---
 
@@ -77,6 +81,8 @@ On click: immediately replaces buttons with "Thank you — this helps us improve
 
 Run Test 1 and Test 4 simultaneously. They target different funnel positions and do not interfere.
 
+Run Variant B and Variant C as separate hero challengers against control. Because they compete for the same hero position, run each as a standalone 50/50 split (control vs hero-b, then control vs hero-c) unless traffic volume supports a three-way.
+
 ---
 
 #### Test 1 — Hero Promise Clarity
@@ -118,6 +124,48 @@ Run Test 1 and Test 4 simultaneously. They target different funnel positions and
 **Secondary metric:** Submit rate filtered to `verdict_band = "early"` specifically (highest-volume, most at-risk group).  
 **Traffic split:** 50 / 50 (route 50% of result-bound traffic to `?v=cta-b`).  
 **Minimum sample:** 150 result-page views per variant.
+
+---
+
+---
+
+#### Variant B — Outcome-Led Hero
+
+**Hypothesis:** "Find out what to build first" outperforms the control because it names a specific, tangible decision the founder needs to make — not a product category or process — which reduces ambiguity and increases perceived relevance.
+
+**Type:** Copy-only + result page label reframes  
+**Files changed:** `app/[locale]/validate/page.tsx`, `i18n/validateCopy.ts`, `components/FreeValidationFlow.tsx`  
+**Delivery:** `?v=hero-b`
+
+| | Hero Headline | Hero Subheadline | Result Badge | Readiness Label | First Asset Label | Next Steps Label | Waitlist CTA |
+|--|--------------|-----------------|-------------|-----------------|------------------|-----------------|-------------|
+| **Control** | Get your idea to its first customer. | Start with a free validation… | Your Free Validation Result | Launch readiness | BizSproutAI recommends first | Your next 4 steps | Unlock Full Analysis → |
+| **Variant B** | Find out what to build first. | BizSproutAI helps you turn an idea into a clear next move by showing your business starting point, what to focus on first, and the next steps to take. | Your Business Starting Point | Your business starting point | What to focus on first | Your next moves | See My Next Move → |
+
+**Primary metric:** Form start rate — `ValidationStarted` events / page visitors.  
+**Secondary metric:** Waitlist submit rate — `WaitlistJoined` / `ValidationResultView`.  
+**Traffic split:** 50 / 50 (control vs hero-b).  
+**Minimum sample:** 200 `ValidationStarted` per variant.
+
+---
+
+#### Variant C — App-Led Hero
+
+**Hypothesis:** "Turn your idea into a business with AI" outperforms the control because it positions BizSproutAI as a tool the founder is entering rather than a quiz they are filling out — reducing friction by shifting the mental model from evaluation to action.
+
+**Type:** Copy-only — hero + form entry  
+**Files changed:** `app/[locale]/validate/page.tsx`, `i18n/validateCopy.ts`, `components/FreeValidationFlow.tsx`  
+**Delivery:** `?v=hero-c`
+
+| | Hero Headline | Hero Subheadline | Step Labels | Step 0 CTA | Submit Button |
+|--|--------------|-----------------|-------------|-----------|--------------|
+| **Control** | Get your idea to its first customer. | Start with a free validation… | Free Validation — Step N | Continue → | Get My Free Validation → |
+| **Variant C** | Turn your idea into a business with AI. | BizSproutAI helps founders move from idea to clarity, execution, and first customer by helping them decide what to build first and what to do next. | Business Builder — Step N | Start Building → | Analyze My Idea → |
+
+**Primary metric:** Form start rate — `ValidationStarted` events / page visitors.  
+**Secondary metric:** Form completion rate — `ValidationCompleted` / `ValidationStarted` (tests whether the app framing increases follow-through).  
+**Traffic split:** 50 / 50 (control vs hero-c).  
+**Minimum sample:** 200 `ValidationStarted` per variant.
 
 ---
 
@@ -215,7 +263,7 @@ Run after Test 7 to avoid touching the same result-page area simultaneously.
 
 ---
 
-## Implementation Checklist for Round 1
+## Implementation Checklist for Round 1 + Extensions
 
 - [x] Timing normalized to "about 2 minutes" everywhere (trustMeta, stepCounter, pageSubcopy, hero-a subheadline)
 - [x] `?v=` param read from searchParams in `validate/page.tsx`
@@ -228,6 +276,9 @@ Run after Test 7 to avoid touching the same result-page area simultaneously.
 - [x] `ResultFeedback` event added with rating, stage, band, variant, locale
 - [x] Qualitative feedback widget added (Yes / Somewhat / No)
 - [x] `feedbackState` reset in `handleReset`
+
+- [x] Variant B (`?v=hero-b`) implemented: hero, result labels, waitlist CTA
+- [x] Variant C (`?v=hero-c`) implemented: hero, step labels, step 0 CTA, submit button
 
 ## Remaining for Round 2+
 

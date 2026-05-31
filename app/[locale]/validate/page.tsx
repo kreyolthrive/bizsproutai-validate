@@ -24,17 +24,26 @@ export default async function ValidatePage({ params, searchParams }: Props) {
 
   const copy = getValidateCopy(locale);
 
-  // Round 1 variant: "control" | "hero-a" | "cta-b"
-  // hero-a  → Test 1 (hero promise clarity)
-  // cta-b   → Test 4 (result-page primary CTA)
+  // Round 1 variant allow-list:
+  // hero-a  → Test 1  (validation-led hero)
+  // cta-b   → Test 4  (result-page primary CTA)
+  // hero-b  → Variant B (outcome-led: "Find out what to build first")
+  // hero-c  → Variant C (app-led: "Turn your idea into a business with AI")
   const pageVariant: string =
-    v === "hero-a" || v === "cta-b" ? v : "control";
+    v === "hero-a" || v === "cta-b" || v === "hero-b" || v === "hero-c" ? v : "control";
 
-  // Test 1 — hero copy override for variant "hero-a"
+  // Hero copy — variant-aware
   const heroHeadline =
-    pageVariant === "hero-a" ? (copy.rHeroHeadlineA ?? copy.pageHeadline) : copy.pageHeadline;
+    pageVariant === "hero-a" ? (copy.rHeroHeadlineA ?? copy.pageHeadline) :
+    pageVariant === "hero-b" ? (copy.rHeroHeadlineB ?? copy.pageHeadline) :
+    pageVariant === "hero-c" ? (copy.rHeroHeadlineC ?? copy.pageHeadline) :
+    copy.pageHeadline;
+
   const heroSubcopy =
-    pageVariant === "hero-a" ? (copy.rHeroSubcopyA ?? copy.pageSubcopy) : copy.pageSubcopy;
+    pageVariant === "hero-a" ? (copy.rHeroSubcopyA ?? copy.pageSubcopy) :
+    pageVariant === "hero-b" ? (copy.rHeroSubcopyB ?? copy.pageSubcopy) :
+    pageVariant === "hero-c" ? (copy.rHeroSubcopyC ?? copy.pageSubcopy) :
+    copy.pageSubcopy;
 
   const phoneHref =
     "https://cal.com/bizsproutai/30-min-founder-clarity-session";

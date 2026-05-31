@@ -151,6 +151,16 @@ export interface ValidateCopy {
   /** Test 4 Variant B result-page primary CTA label (?v=cta-b) */
   rCtaLabelB?: string;
 
+  // ── Round 1 extension — market framing variants (optional — EN only) ─────
+  /** Variant B hero headline — outcome-led (?v=hero-b) */
+  rHeroHeadlineB?: string;
+  /** Variant B hero subheadline — outcome-led (?v=hero-b) */
+  rHeroSubcopyB?: string;
+  /** Variant C hero headline — app-led (?v=hero-c) */
+  rHeroHeadlineC?: string;
+  /** Variant C hero subheadline — app-led (?v=hero-c) */
+  rHeroSubcopyC?: string;
+
   // ── Page-level intro copy (rendered above the form in validate/page.tsx) ─────
   pageHeadline: string;
   pageSubcopy: string;
@@ -322,6 +332,17 @@ const en: ValidateCopy = {
 
   // Test 4 Variant B — result-page primary CTA (delivered via ?v=cta-b)
   rCtaLabelB: "See My Full Demand Analysis →",
+
+  // ── Round 1 extension — market framing variants ────────────────────────────
+  // Variant B — outcome-led (delivered via ?v=hero-b)
+  rHeroHeadlineB: "Find out what to build first.",
+  rHeroSubcopyB:
+    "BizSproutAI helps you turn an idea into a clear next move by showing your business starting point, what to focus on first, and the next steps to take.",
+
+  // Variant C — app-led (delivered via ?v=hero-c)
+  rHeroHeadlineC: "Turn your idea into a business with AI.",
+  rHeroSubcopyC:
+    "BizSproutAI helps founders move from idea to clarity, execution, and first customer by helping them decide what to build first and what to do next.",
 };
 
 // ─── French ───────────────────────────────────────────────────────────────────
