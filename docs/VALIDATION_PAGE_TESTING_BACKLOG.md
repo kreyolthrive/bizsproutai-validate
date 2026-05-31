@@ -144,20 +144,23 @@ Run Variant B and Variant C as separate hero challengers against control. Becaus
 
 **Measurement plan:**
 
-| Metric | Formula | Role |
-|--------|---------|------|
-| Form start rate | `ValidationStarted` / page visitors | **Primary** |
-| Primary CTA click rate | `WaitlistJoined` / `ValidationResultView` | Secondary |
-| Next-step conversion | `FitCallClick` / `ValidationResultView` | Secondary |
-| Funnel reach | `ValidationResultView` / `ValidationStarted` | Supporting |
-| Qualitative signal | `ResultFeedback` rating distribution | Supporting |
+| Metric | Formula | Role | Notes |
+|--------|---------|------|-------|
+| Form start rate | `ValidationStarted` / page visitors | **Primary** | |
+| CTA click rate | `PrimaryCTA_Click` / `ValidationResultView` | Secondary | Measures intent to engage; requires a dedicated click event — not currently tracked. Add `PrimaryCTA_Click` before this test runs if click-through-to-form separation is needed. |
+| Downstream conversion | `WaitlistJoined` / `ValidationResultView` | Secondary | Email form submitted; distinct from click rate — measures completion, not intent |
+| Next-step conversion | `FitCallClick` / `ValidationResultView` | Secondary | |
+| Funnel reach | `ValidationResultView` / `ValidationStarted` | Supporting | |
+| Qualitative signal | `ResultFeedback` rating distribution | Supporting | |
+
+**Distinction:** `PrimaryCTA_Click` (clicking the button) and `WaitlistJoined` (submitting the email form) are separate moments. A variant could increase clicks but not completions — or completions without clicks if copy alone drives trust. Tracking both lets you identify where outcome language does and does not convert.
 
 **Segment by:**
 - `verdict_band` — required for all secondary metrics; `early` band is highest-volume and most sensitive to outcome language
 - `traffic_source` — paid vs organic may respond differently to "next move" framing
 - `locale` — EN only for this variant; exclude non-EN traffic from analysis
 
-**Watch for:** Whether the CTA lift (`WaitlistJoined`) concentrates in `early` / low-clarity outcomes, which would indicate outcome framing is especially effective when the verdict is not yet strong.
+**Watch for:** Whether `WaitlistJoined` lift concentrates in `early` / low-clarity outcomes. If the CTA label "See My Next Move →" drives more completions specifically when the verdict is weak, outcome framing is doing the most work where the result is least confident.
 
 **Traffic split:** 50 / 50 (control vs hero-b).  
 **Minimum sample:** 200 `ValidationStarted` per variant; 150 `ValidationResultView` per variant for secondary metrics.
