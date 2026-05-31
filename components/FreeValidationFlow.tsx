@@ -18,20 +18,34 @@ interface Attribution {
   page_url: string | null;
   referrer: string | null;
   user_agent: string | null;
+  fbp: string | null;
+  fbc: string | null;
+}
+
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "=([^;]*)"));
+  return match ? decodeURIComponent(match[1]) : null;
 }
 
 function captureAttribution(): Attribution {
   const params = new URLSearchParams(window.location.search);
+  const fbclid = params.get("fbclid");
+  const fbcCookie = getCookie("_fbc");
+  // Construct fbc from fbclid if cookie not yet set (e.g. same-session first hit)
+  const fbc = fbcCookie ?? (fbclid ? `fb.1.${Date.now()}.${fbclid}` : null);
   return {
     utm_source: params.get("utm_source"),
     utm_medium: params.get("utm_medium"),
     utm_campaign: params.get("utm_campaign"),
     utm_content: params.get("utm_content"),
     utm_term: params.get("utm_term"),
-    fbclid: params.get("fbclid"),
+    fbclid,
     page_url: window.location.href,
     referrer: document.referrer || null,
     user_agent: navigator.userAgent,
+    fbp: getCookie("_fbp"),
+    fbc,
   };
 }
 
@@ -111,6 +125,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
     utm_source: null, utm_medium: null, utm_campaign: null,
     utm_content: null, utm_term: null, fbclid: null,
     page_url: null, referrer: null, user_agent: null,
+    fbp: null, fbc: null,
   });
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -229,13 +244,14 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
       const leadType = (data as any).leadType ?? "unknown";
       const leadSaved = !!(data as any).leadSaved;
       const metaFired = leadSaved && !isInternalTest;
+      const capiEventIds = (data as any).capiEventIds as { lead?: string; validationCompleted?: string } | undefined;
 
       trackMetaStandard("Lead", {
         content_name: "FreeValidation",
         source: "free_validation",
         page_variant: pageVariant,
         locale,
-      });
+      }, capiEventIds?.lead);
       if (metaFired) {
         trackMetaStandard("CompleteRegistration", {
           value: 1.00,
@@ -253,7 +269,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
         page_variant: pageVariant,
         locale,
         traffic_source: attribution.utm_source ?? (attribution.referrer ? "referral" : "direct"),
-      });
+      }, capiEventIds?.validationCompleted);
 
       console.log(JSON.stringify({
         event: "lead_saved",

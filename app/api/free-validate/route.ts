@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
+import { sendCapiEvent, makeCapiEventId } from "@/lib/analytics/metaCapi";
 import { NextRequest, NextResponse } from "next/server";
 import { computeValidationResult, type ValidationResult } from "@/lib/validation/engine";
 import { sendFreeValidationResultEmail } from "@/lib/email/freeValidationEmail";
@@ -46,6 +47,8 @@ interface AttributionData {
   page_url: string | null;
   referrer: string | null;
   user_agent: string | null;
+  fbp: string | null;
+  fbc: string | null;
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -68,6 +71,10 @@ interface FreeValidateResponse {
   validationLeadId?: string | null;
   isInternalTest?: boolean;
   leadType?: string;
+  capiEventIds?: {
+    lead: string;
+    validationCompleted: string;
+  };
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -439,6 +446,8 @@ export async function POST(req: NextRequest) {
           page_url: typeof (rawAttribution as any).page_url === "string" ? (rawAttribution as any).page_url : null,
           referrer: typeof (rawAttribution as any).referrer === "string" ? (rawAttribution as any).referrer : null,
           user_agent: typeof (rawAttribution as any).user_agent === "string" ? (rawAttribution as any).user_agent : null,
+          fbp: typeof (rawAttribution as any).fbp === "string" ? (rawAttribution as any).fbp : null,
+          fbc: typeof (rawAttribution as any).fbc === "string" ? (rawAttribution as any).fbc : null,
         }
       : null;
 
@@ -522,10 +531,57 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // 10. Cache for dedup (regardless of DB outcome — result is correct)
+  // 10. Meta CAPI — fire-and-forget, non-internal leads only
+  const capiEventIds = {
+    lead: makeCapiEventId(requestId, "lead"),
+    validationCompleted: makeCapiEventId(requestId, "vcomplete"),
+  };
+
+  if (!internalTest) {
+    const eventTime = Math.floor(Date.now() / 1000);
+    // Resolve fbc: prefer cookie value, fall back to constructing from fbclid
+    const fbcResolved =
+      attribution?.fbc ??
+      (attribution?.fbclid ? `fb.1.${Date.now()}.${attribution.fbclid}` : undefined);
+
+    const sharedUserData = {
+      email,
+      firstName: firstName || undefined,
+      clientIpAddress: ip ?? undefined,
+      clientUserAgent: attribution?.user_agent ?? userAgent ?? undefined,
+      fbc: fbcResolved,
+      fbp: attribution?.fbp ?? undefined,
+    };
+
+    void sendCapiEvent({
+      eventName: "Lead",
+      eventTime,
+      eventId: capiEventIds.lead,
+      eventSourceUrl: attribution?.page_url ?? pageUrl,
+      userData: sharedUserData,
+      customData: {
+        content_name: "FreeValidation",
+        source: "free_validation",
+      },
+    }).catch((err) => logger.error({ event: "capi_lead_fail", requestId, ts, error: String(err) }));
+
+    void sendCapiEvent({
+      eventName: "ValidationCompleted",
+      eventTime,
+      eventId: capiEventIds.validationCompleted,
+      eventSourceUrl: attribution?.page_url ?? pageUrl,
+      userData: sharedUserData,
+      customData: {
+        stage: result.stage,
+        stage_index: stageIndex,
+      },
+    }).catch((err) => logger.error({ event: "capi_validation_completed_fail", requestId, ts, error: String(err) }));
+  }
+
+  // 11. Cache for dedup (regardless of DB outcome — result is correct)
   if (clientRequestId) cacheResult(clientRequestId, result);
 
-  // 11. Fire notifications in parallel
+  // 12. Fire notifications in parallel
   const notificationStatus: NotificationStatus = {
     ownerNotified: false,
     resultEmailSent: false,
@@ -581,7 +637,7 @@ export async function POST(req: NextRequest) {
     logger.error({ event: "result_email_fail", requestId, ts, email, error: err });
   }
 
-  // 12. Persist notification outcomes to lead metadata — target by id, not email
+  // 13. Persist notification outcomes to lead metadata — target by id, not email
   const notifiedAt = new Date().toISOString();
   updateLeadNotificationStatus(validationLeadId, savedMetadata, notificationStatus, notifiedAt).catch(() => {});
 
@@ -607,6 +663,7 @@ export async function POST(req: NextRequest) {
       ok: true, requestId, result, leadSaved, notificationStatus, validationLeadId,
       isInternalTest: internalTest,
       leadType,
+      capiEventIds: internalTest ? undefined : capiEventIds,
     },
     { headers: { "X-Request-Id": requestId } }
   );

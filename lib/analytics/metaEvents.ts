@@ -8,10 +8,12 @@ const isProductionTrackingDomain =
   typeof window !== "undefined" &&
   window.location.hostname === "validate.bizsproutai.com";
 
-function fbq(method: string, event: string, data?: Record<string, unknown>) {
+function fbq(method: string, event: string, data?: Record<string, unknown>, eventID?: string) {
   if (typeof window === "undefined" || !window.fbq) return;
   if (!isProductionTrackingDomain) return;
-  if (data) {
+  if (eventID) {
+    window.fbq(method, event, data ?? {}, { eventID });
+  } else if (data) {
     window.fbq(method, event, data);
   } else {
     window.fbq(method, event);
@@ -21,12 +23,13 @@ function fbq(method: string, event: string, data?: Record<string, unknown>) {
 // Standard Meta events (e.g. Lead, ViewContent)
 export function trackMetaStandard(
   event: string,
-  data?: Record<string, unknown>
+  data?: Record<string, unknown>,
+  eventID?: string
 ) {
-  fbq("track", event, data);
+  fbq("track", event, data, eventID);
 }
 
 // Custom Meta events (e.g. ValidationStart, ValidationComplete)
-export function trackMeta(event: string, data?: Record<string, unknown>) {
-  fbq("trackCustom", event, data);
+export function trackMeta(event: string, data?: Record<string, unknown>, eventID?: string) {
+  fbq("trackCustom", event, data, eventID);
 }
