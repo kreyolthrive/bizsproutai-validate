@@ -54,7 +54,16 @@ export function makeCapiEventId(requestId: string, suffix: string): string {
 export async function sendCapiEvent(payload: CapiEventPayload): Promise<void> {
   const pixelId = process.env.META_PIXEL_ID;
   const accessToken = process.env.META_CAPI_ACCESS_TOKEN;
-  if (!pixelId || !accessToken) return;
+  if (!pixelId || !accessToken) {
+    console.warn(
+      JSON.stringify({
+        event: "capi_disabled",
+        reason: !pixelId ? "META_PIXEL_ID not set" : "META_CAPI_ACCESS_TOKEN not set",
+        event_name: payload.eventName,
+      })
+    );
+    return;
+  }
 
   const event: Record<string, unknown> = {
     event_name: payload.eventName,
@@ -71,9 +80,15 @@ export async function sendCapiEvent(payload: CapiEventPayload): Promise<void> {
   if (testCode) requestBody.test_event_code = testCode;
 
   const url = `${CAPI_URL}/${pixelId}/events?access_token=${accessToken}`;
-  await fetch(url, {
+  const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(requestBody),
   });
+
+  if (!res.ok) {
+    let body = "";
+    try { body = await res.text(); } catch { /* ignore read error */ }
+    throw new Error(`Meta CAPI ${res.status} ${res.statusText}: ${body}`);
+  }
 }
