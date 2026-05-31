@@ -4,7 +4,7 @@ import { getValidateCopy } from "@/i18n/validateCopy";
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ stage?: string }>;
+  searchParams: Promise<{ stage?: string; v?: string }>;
 };
 
 export async function generateMetadata() {
@@ -18,11 +18,23 @@ export async function generateMetadata() {
 
 export default async function ValidatePage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const { stage } = await searchParams;
+  const { stage, v } = await searchParams;
 
   setRequestLocale(locale);
 
   const copy = getValidateCopy(locale);
+
+  // Round 1 variant: "control" | "hero-a" | "cta-b"
+  // hero-a  → Test 1 (hero promise clarity)
+  // cta-b   → Test 4 (result-page primary CTA)
+  const pageVariant: string =
+    v === "hero-a" || v === "cta-b" ? v : "control";
+
+  // Test 1 — hero copy override for variant "hero-a"
+  const heroHeadline =
+    pageVariant === "hero-a" ? (copy.rHeroHeadlineA ?? copy.pageHeadline) : copy.pageHeadline;
+  const heroSubcopy =
+    pageVariant === "hero-a" ? (copy.rHeroSubcopyA ?? copy.pageSubcopy) : copy.pageSubcopy;
 
   const phoneHref =
     "https://cal.com/bizsproutai/30-min-founder-clarity-session";
@@ -50,13 +62,13 @@ export default async function ValidatePage({ params, searchParams }: Props) {
           </span>
         </div>
 
-        {/* Conversion headline */}
+        {/* Conversion headline — variant-aware for Test 1 */}
         <div className="mb-10 text-center">
           <h1 className="font-[family:var(--font-serif)] text-[clamp(1.9rem,4vw,2.9rem)] leading-[1.1] text-[var(--landing-green-deep)]">
-            {copy.pageHeadline}
+            {heroHeadline}
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-[0.97rem] leading-[1.7] text-[var(--landing-muted)]">
-            {copy.pageSubcopy}
+            {heroSubcopy}
           </p>
           <p className="mt-3 text-[0.83rem] font-semibold text-[var(--landing-green-mid)]">
             {copy.pageReassurance}
@@ -68,6 +80,7 @@ export default async function ValidatePage({ params, searchParams }: Props) {
             locale={locale}
             initialStage={initialStage}
             phoneHref={phoneHref}
+            pageVariant={pageVariant}
           />
         </section>
 

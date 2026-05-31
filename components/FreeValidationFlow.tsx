@@ -52,6 +52,12 @@ function getReadinessPercent(stageTag: string): number {
   return 50;
 }
 
+function getVerdictBand(stageTag: string): "early" | "building" | "ready" {
+  if (stageTag.includes("Idea") || stageTag.includes("First Asset")) return "early";
+  if (stageTag.includes("Assembly") || stageTag.includes("Optimization")) return "building";
+  return "ready";
+}
+
 // ─── Step indicators ──────────────────────────────────────────────────────────
 
 function StepDots({ total, current }: { total: number; current: number }) {
@@ -87,11 +93,13 @@ interface Props {
   locale: string;
   initialStage?: number;
   phoneHref: string;
+  /** Round 1 variant token: "control" | "hero-a" | "cta-b" */
+  pageVariant?: string;
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
+export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVariant = "control" }: Props) {
   const copy = getValidateCopy(locale);
   const hasPreselectedStage =
     initialStage != null && initialStage >= 0 && initialStage <= 3;
@@ -123,6 +131,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
   const [waitlistName, setWaitlistName] = useState("");
   const [waitlistEmailError, setWaitlistEmailError] = useState("");
   const [serverLeadId, setServerLeadId] = useState<string | null>(null);
+  const [feedbackState, setFeedbackState] = useState<"idle" | "submitted">("idle");
 
   useEffect(() => {
     setAttribution(captureAttribution());
@@ -131,7 +140,10 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
       content_type: "product",
       value: 1.0,
       currency: "USD",
+      page_variant: pageVariant,
+      locale,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function isValidEmail(v: string) {
@@ -140,8 +152,25 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
 
   function handleStep0Next() {
     if (stageIndex === null) return;
-    trackMeta("ValidationStarted", { stageIndex });
+    trackMeta("ValidationStarted", {
+      stageIndex,
+      page_variant: pageVariant,
+      locale,
+      traffic_source: attribution.utm_source ?? (attribution.referrer ? "referral" : "direct"),
+    });
     setStep(1);
+  }
+
+  function handleFeedback(rating: "yes" | "somewhat" | "no") {
+    if (!result) return;
+    setFeedbackState("submitted");
+    trackMeta("ResultFeedback", {
+      rating,
+      idea_stage: result.stageTag,
+      verdict_band: getVerdictBand(result.stageTag),
+      page_variant: pageVariant,
+      locale,
+    });
   }
 
   function handleStep1Next() {
@@ -201,21 +230,38 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
       const leadSaved = !!(data as any).leadSaved;
       const metaFired = leadSaved && !isInternalTest;
 
-      trackMetaStandard("Lead", { content_name: "FreeValidation", source: "free_validation" });
+      trackMetaStandard("Lead", {
+        content_name: "FreeValidation",
+        source: "free_validation",
+        page_variant: pageVariant,
+        locale,
+      });
       if (metaFired) {
         trackMetaStandard("CompleteRegistration", {
           value: 1.00,
           currency: "USD",
           content_name: "FreeValidation",
           stage: data.result.stage,
+          page_variant: pageVariant,
         });
       }
-      trackMeta("ValidationCompleted", { stage: data.result.stage, stageIndex });
+      trackMeta("ValidationCompleted", {
+        stage: data.result.stage,
+        stageIndex,
+        idea_stage: data.result.stageTag,
+        verdict_band: getVerdictBand(data.result.stageTag),
+        page_variant: pageVariant,
+        locale,
+        traffic_source: attribution.utm_source ?? (attribution.referrer ? "referral" : "direct"),
+      });
 
       console.log(JSON.stringify({
         event: "lead_saved",
         lead_type: leadType,
         internal_test: isInternalTest,
+        page_variant: pageVariant,
+        idea_stage: data.result.stageTag,
+        verdict_band: getVerdictBand(data.result.stageTag),
         utm_source: attribution.utm_source,
         utm_campaign: attribution.utm_campaign,
         utm_content: attribution.utm_content,
@@ -254,6 +300,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
     setWaitlistName("");
     setWaitlistEmailError("");
     setServerLeadId(null);
+    setFeedbackState("idle");
   }
 
   async function handleWaitlist() {
@@ -278,7 +325,14 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || `Server error ${res.status}`);
-      trackMeta("WaitlistJoined", { source: "free_validation", locale });
+      trackMeta("WaitlistJoined", {
+        source: "free_validation",
+        locale,
+        idea_stage: result?.stageTag,
+        verdict_band: result ? getVerdictBand(result.stageTag) : undefined,
+        page_variant: pageVariant,
+        traffic_source: attribution.utm_source ?? (attribution.referrer ? "referral" : "direct"),
+      });
       setWaitlistState("success");
     } catch (err) {
       console.error("[FreeValidationFlow] Waitlist join failed:", err);
@@ -288,8 +342,15 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
 
   useEffect(() => {
     if (result) {
-      trackMeta("ValidationResultView", { stage: result.stage });
+      trackMeta("ValidationResultView", {
+        stage: result.stage,
+        idea_stage: result.stageTag,
+        verdict_band: getVerdictBand(result.stageTag),
+        page_variant: pageVariant,
+        locale,
+      });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   // ── Result view ────────────────────────────────────────────────────────────
@@ -315,6 +376,19 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
     const subhead = firstName
       ? `${firstName}, ${copy.rSubhead}`
       : copy.rSubhead.charAt(0).toUpperCase() + copy.rSubhead.slice(1);
+
+    // Test 4 — result-page primary CTA label (variant cta-b)
+    const ctaButtonLabel = pageVariant === "cta-b"
+      ? (copy.rCtaLabelB ?? "See My Full Demand Analysis →")
+      : copy.rWaitlistCta;
+
+    // Shared analytics metadata for result-page events
+    const resultMeta = {
+      idea_stage: result.stageTag,
+      verdict_band: getVerdictBand(result.stageTag),
+      page_variant: pageVariant,
+      locale,
+    };
 
     return (
       <div className="mx-auto min-h-[1180px] max-w-2xl">
@@ -389,6 +463,11 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
                 })()
               : result.verdict}
           </p>
+          {result.stageTag.includes("Idea") && copy.rIdeaStageReassurance && (
+            <p className="mt-3 rounded-[10px] bg-[rgba(126,200,80,0.08)] px-4 py-2.5 text-[0.88rem] leading-[1.6] text-[var(--landing-green-mid)]">
+              {copy.rIdeaStageReassurance}
+            </p>
+          )}
         </div>
 
         {/* ── First asset ── */}
@@ -442,6 +521,32 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
             </p>
           </div>
         )}
+
+        {/* ── Qualitative feedback signal ── */}
+        <div className="mt-4 rounded-[20px] border border-[rgba(26,58,42,0.07)] bg-[rgba(26,58,42,0.02)] px-5 py-4">
+          {feedbackState === "submitted" ? (
+            <p className="text-center text-[0.82rem] text-[var(--landing-muted)]">
+              Thank you — this helps us improve the analysis.
+            </p>
+          ) : (
+            <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-[0.82rem] font-semibold text-[var(--landing-muted)]">
+                Was this result helpful?
+              </p>
+              <div className="flex gap-2">
+                {(["yes", "somewhat", "no"] as const).map((rating) => (
+                  <button
+                    key={rating}
+                    onClick={() => handleFeedback(rating)}
+                    className="rounded-full border border-[rgba(26,58,42,0.15)] px-4 py-1.5 text-[0.8rem] font-semibold text-[var(--landing-muted)] transition hover:border-[var(--landing-green-mid)] hover:text-[var(--landing-green-deep)] capitalize"
+                  >
+                    {rating === "somewhat" ? "Somewhat" : rating.charAt(0).toUpperCase() + rating.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* ── Locked premium preview ── */}
         <div className="mt-6 rounded-[20px] border border-[rgba(26,58,42,0.1)] bg-[var(--landing-cream)] p-6">
@@ -541,7 +646,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
                 disabled={waitlistState === "submitting"}
                 className="mt-4 w-full rounded-full bg-[var(--landing-sprout)] px-8 py-4 text-[1rem] font-semibold text-[var(--landing-ink)] transition hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_10px_30px_rgba(126,200,80,0.3)] disabled:cursor-not-allowed disabled:opacity-40"
               >
-                {waitlistState === "submitting" ? copy.rWaitlistSubmitting : copy.rWaitlistCta}
+                {waitlistState === "submitting" ? copy.rWaitlistSubmitting : ctaButtonLabel}
               </button>
             </>
           )}
@@ -564,8 +669,8 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
-                trackMetaStandard("Schedule");
-                trackMeta("FitCallClick", { stage: result.stage });
+                trackMetaStandard("Schedule", { page_variant: pageVariant });
+                trackMeta("FitCallClick", { stage: result.stage, ...resultMeta });
               }}
               className="flex items-center justify-center rounded-full border border-white/25 px-6 py-3 text-[0.9rem] font-semibold text-white/80 transition hover:border-white/50 hover:text-white"
             >

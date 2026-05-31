@@ -137,6 +137,20 @@ export interface ValidateCopy {
   /** Small note beside the stage tag pill, e.g. "Based on your selected stage and idea description." */
   rStageContextNote: string;
 
+  /**
+   * Reassurance line shown below the verdict for idea-stage results.
+   * Optional — rendered only when present and stageTag includes "Idea".
+   */
+  rIdeaStageReassurance?: string;
+
+  // ── Round 1 test variant copy (optional — EN only) ───────────────────────
+  /** Test 1 Variant A hero headline (?v=hero-a) */
+  rHeroHeadlineA?: string;
+  /** Test 1 Variant A hero subheadline (?v=hero-a) */
+  rHeroSubcopyA?: string;
+  /** Test 4 Variant B result-page primary CTA label (?v=cta-b) */
+  rCtaLabelB?: string;
+
   // ── Page-level intro copy (rendered above the form in validate/page.tsx) ─────
   pageHeadline: string;
   pageSubcopy: string;
@@ -156,12 +170,12 @@ export interface ValidateCopy {
 
 const en: ValidateCopy = {
   trustBadge: "BizSproutAI — Free Validation",
-  trustMeta: "Free · No account required · Results in under a minute",
+  trustMeta: "Free · No account required · Results in about 2 minutes",
 
   stepLabel: (n) => `Free Validation — Step ${n}`,
   stepCounter: (cur, tot) =>
     cur === 1
-      ? `Step ${cur} of ${tot} — takes about 2 minutes`
+      ? `Step ${cur} of ${tot} — about 2 minutes`
       : `Step ${cur} of ${tot}`,
 
   back: "← Back",
@@ -224,11 +238,11 @@ const en: ValidateCopy = {
   rNextStepsLabel: "Your next 4 steps",
   rWarningLabel: "Avoid this mistake",
   rNoteLabel: "Note",
-  rLockedSectionTitle: "Your full analysis would also include",
+  rLockedSectionTitle: "What the full analysis unlocks for your idea",
   rLockedMeta:
-    "These insights are specific to your idea and require the full AI-powered analysis.",
+    "Unlock the full analysis to see these insights — built specifically around what you described.",
   rSubmittedIdeaLabel: "Submitted idea",
-  rStageContextNote: "Based on your selected stage and idea description.",
+  rStageContextNote: "Calibrated to your stage, your inputs, and your idea type.",
   rUpsellLabel: "Your next step",
   rFitCallLabel: "Want deeper help?",
   rPrimaryCta: "Unlock my full sprint inside BizSproutAI →",
@@ -261,19 +275,19 @@ const en: ValidateCopy = {
 
   lockedPreviewsTemplate: [
     {
-      titleWithDomain: "Demand risk score for {domain} at your stage",
-      titleWithoutDomain: "Demand risk score for businesses at your stage",
-      meta: "5-factor demand analysis",
+      titleWithDomain: "Will people actually pay for a {domain} idea like yours?",
+      titleWithoutDomain: "Will people actually pay — and who is most likely to buy first?",
+      meta: "Likelihood-to-pay signal, mapped to your specific market",
     },
     {
-      titleWithDomain: "Top 3 risks detected for your specific idea",
-      titleWithoutDomain: "Top 3 risks detected for your specific idea",
-      meta: "Ranked by severity",
+      titleWithDomain: "The 3 biggest risks in your {domain} idea — before you waste time building",
+      titleWithoutDomain: "The 3 biggest risks in your idea — before you waste time building",
+      meta: "Ranked by severity and stage, specific to your inputs",
     },
     {
-      titleWithDomain: "Recommended first acquisition channel",
-      titleWithoutDomain: "Recommended first acquisition channel",
-      meta: "Matched to your audience and stage",
+      titleWithDomain: "Which acquisition channel fits your {domain} audience right now?",
+      titleWithoutDomain: "Your first acquisition move — matched to your specific market and stage",
+      meta: "Specific to your audience, idea type, and current stage",
     },
   ],
 
@@ -287,15 +301,27 @@ const en: ValidateCopy = {
     "Start with a free validation. In about 2 minutes, BizSproutAI will show your stage, what to build first, what mistake to avoid, and your next 4 execution steps.",
   pageReassurance: "Free first step. No payment required.",
 
-  rWaitlistHeadline: "Your validation is ready. Join the BizSproutAI waitlist.",
+  rWaitlistHeadline: "Find out if your idea has real demand — before you build anything.",
   rWaitlistBody:
-    "BizSproutAI is being built to help founders move from idea to first customer by identifying what to build first, building it, distributing it, and adapting until the outcome lands.",
-  rWaitlistCta: "Join the Waitlist →",
-  rWaitlistSubmitting: "Joining…",
+    "Your free validation shows where you stand. The full analysis tells you whether people will actually pay for your specific idea, the biggest risks before you invest more time, and which channel to use first — so your next move is the right one.",
+  rWaitlistCta: "Unlock Full Analysis →",
+  rWaitlistSubmitting: "Unlocking…",
   rWaitlistSuccess:
-    "You're on the list. We'll reach out as BizSproutAI opens for founders.",
+    "You're in. We'll send your full analysis access as BizSproutAI opens for founders.",
   rWaitlistError: "Something went wrong. Please try again in a moment.",
   rWaitlistEmailError: "Please enter a valid email address.",
+
+  rIdeaStageReassurance:
+    "This is not a setback — it is the diagnosis that protects you from building the wrong thing. Getting clarity now is exactly the right move.",
+
+  // ── Round 1 test variants (hero + result CTA) ─────────────────────────────
+  // Test 1 Variant A — hero copy (delivered via ?v=hero-a)
+  rHeroHeadlineA: "Validate your business idea before you build.",
+  rHeroSubcopyA:
+    "Get a clear verdict, what to build first, what mistake to avoid, and your next 4 steps — in about 2 minutes.",
+
+  // Test 4 Variant B — result-page primary CTA (delivered via ?v=cta-b)
+  rCtaLabelB: "See My Full Demand Analysis →",
 };
 
 // ─── French ───────────────────────────────────────────────────────────────────

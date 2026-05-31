@@ -75,10 +75,10 @@ const en: LocaleEngineData = {
       stageTag: "Idea Stage",
       verdict: "Too early to build. You need offer clarity first.",
       nextSteps: [
-        "Write one sentence: who you help, what problem you solve, and what you give them",
-        "Share that sentence with 5 real people in your target audience — watch their reaction",
-        "Ask one of them: 'Would you pay for this? What would stop you?' — record the answer",
-        "Only build after at least 3 people say they would pay or sign up",
+        "Narrow your audience to one specific person — describe their age, daily frustration, and what they have already tried",
+        "Talk to 3-5 people who match that description: what does this problem cost them, and what would a real solution be worth?",
+        "Write one sentence: who you help, what specific problem you solve, and what outcome you deliver — then share it with 5 people and watch the reaction",
+        "Only build an offer test after at least 3 of those people say they would pay or take the next step without prompting",
       ],
       warning:
         "Do not build anything yet. Every day you spend building the wrong thing is a day you could spend validating the right one. Most founders who skip this step rebuild everything within 90 days.",
@@ -181,9 +181,9 @@ const en: LocaleEngineData = {
         "You are selling a physical or digital product online. A simple store (Shopify, Gumroad, or similar) is the right starting point.",
     },
     fallback0: {
-      asset: "Simple landing page (offer test)",
+      asset: "Customer discovery conversations",
       reason:
-        "Before you build anything complex, test whether people respond to your offer with a single clear page.",
+        "Before you build a page or test an offer, you need a sharper understanding of who you are helping and what they will actually pay for. Three 20-minute conversations with real potential customers will give you more clarity than any landing page — and the exact language to use when you do build.",
     },
     fallback1: {
       asset: "Landing page or booking page",
@@ -211,7 +211,7 @@ const en: LocaleEngineData = {
     ecommerce: "e-commerce",
   },
   ideaQualityNote:
-    "Your idea description was brief. The recommendation above is based on your selected stage — a more detailed description with your target audience would unlock more precise guidance in the full analysis.",
+    "The analysis above is based on your stage and the idea you described. With a bit more detail — who specifically you are helping, what outcome you are promising, and what problem they currently have — the full analysis can generate a precise demand score and a specific first build plan for your idea.",
 };
 
 // ─── French ───────────────────────────────────────────────────────────────────
