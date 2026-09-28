@@ -1,554 +1,700 @@
-/**
- * Centralised landing page copy for all supported locales.
- *
- * Every user-facing string that appears on the main landing page lives
- * here so it can be swapped per-locale in one place.
- */
-
-export type LandingCopy = ReturnType<typeof getLandingCopy>;
-
-export function getLandingCopy(locale: string) {
-  const lang = locale.toLowerCase().split("-")[0];
-
-  const base = {
-    /* ── Validation widget ────────────────────────── */
-    clarityLabel: "Start here — it takes under a minute",
-    clarityQuestion:
-      "Where are you on the path to your first customer?",
-    clarityChoices: [
-      "I have a business idea but I'm not sure if it's worth pursuing",
-      "I know what I want to offer but I don't know what to build first",
-      "I've started something but I'm stuck and not making money yet",
-      "I'm ready — I just need help getting my first paying customer",
-    ],
-    validationCta: "Start Free Validation",
-    quizCta: "Show Me My Next Move →",
-    widgetNote: "Free · No account needed · Takes under a minute",
-    platformBridgeCta: "Unlock your full sprint inside BizSproutAI",
-    callCta: "Or book a free fit call",
-
-    /* ── Mini cards ───────────────────────────────── */
-    miniCards: [
-      { icon: "🎯", title: "Your stage", subtitle: "Identified instantly" },
-      { icon: "⚡", title: "First asset", subtitle: "Recommended for you" },
-      { icon: "🗺️", title: "4 next steps", subtitle: "Clear and specific" },
-      { icon: "⚠️", title: "1 warning", subtitle: "Mistake to avoid" },
-    ],
-
-    /* ── Free result features ─────────────────────── */
-    freeFeatures: [
-      {
-        icon: "🎯",
-        title: "Your current stage",
-        body: "Idea stage, first asset stage, optimization stage, or launch-ready. Know exactly where you are before you build anything.",
-      },
-      {
-        icon: "⚡",
-        title: "Your recommended first asset",
-        body: "Landing page, booking page, funnel, or full app — matched specifically to your stage, not a generic recommendation.",
-      },
-      {
-        icon: "🗺️",
-        title: "Your clearest next 3–4 steps",
-        body: "Practical, prioritized actions specific to where you are right now. Not a course. Not a checklist of everything. Just your next move.",
-      },
-      {
-        icon: "⚠️",
-        title: "One mistake to avoid",
-        body: "The most common blocker for founders at your exact stage — so you can skip the 60-day detour most people take.",
-      },
-    ],
-
-    /* ── Platform features (post-validation) ─────── */
-    platformFeatures: [
-      "Full 30-day sprint plan with exact week-by-week execution",
-      "Build support for your recommended launch asset",
-      "AI-generated messaging, outreach scripts, and copy",
-      "Detailed scoring and blocker analysis for your idea",
-      "Progress dashboard to track every milestone",
-      "Direct support from the BizSproutAI team throughout",
-    ],
-
-    /* ── Pain items ───────────────────────────────── */
-    painItems: [
-      {
-        icon: "🧠",
-        title: "Too many ideas, no clear next step",
-        body: "You see multiple possible directions, but without a framework to choose, nothing moves.",
-      },
-      {
-        icon: "💸",
-        title: "No confidence people will actually pay",
-        body: "You have not validated whether people want what you are building, so it is hard to commit fully.",
-      },
-      {
-        icon: "🧩",
-        title: "Scattered tools that never become a real business",
-        body: "You may have a landing page, form, or social posts, but nothing is connected into a system that actually works.",
-      },
-      {
-        icon: "🤷",
-        title: "Trying to piece everything together alone",
-        body: "You do not need more content. You need structure, support, and a proven path that moves you toward real customers.",
-      },
-    ],
-
-    /* ── How intro ────────────────────────────────── */
-    howIntro: "This is the exact path we use to get you to your first paying customer in 30 days.",
-
-    /* ── How steps ────────────────────────────────── */
-    howSteps: [
-      {
-        number: "01",
-        title: "\uD83D\uDCA5 Week 1 — Lock Your First Offer (That People Will Actually Pay For)",
-        body: "Stop guessing. We validate your idea, define your audience, and shape an offer built around real demand.",
-        tag: "You leave with",
-        checklist: ["A clear offer", "A defined buyer", "Confidence it can sell"],
-      },
-      {
-        number: "02",
-        title: "\u26A1 Week 2 — Go Live Fast",
-        body: "Your launch asset, messaging, and client system go live — fast.",
-        tag: "You leave with",
-        checklist: ["The right launch asset live", "Booking or lead flow ready", "Follow-up system in place"],
-      },
-      {
-        number: "03",
-        title: "\uD83D\uDE80 Week 3 — Start Real Conversations",
-        body: "No more waiting. You begin reaching real prospects using proven outreach and follow-up.",
-        tag: "You leave with",
-        checklist: ["Outreach messages that get replies", "First real leads", "Active conversations"],
-      },
-      {
-        number: "04",
-        title: "\uD83D\uDCB0 Week 4 — Close Your First Paying Customer",
-        body: "We refine your pitch and help you turn conversations into revenue.",
-        tag: "You leave with",
-        checklist: ["Your first paying customer", "A repeatable sales process", "Real momentum"],
-        guarantee: "If you don\u2019t reach this point, we keep working with you — free — until you do.",
-      },
-    ],
-
-    /* ── Featured service ─────────────────────────── */
-    featuredBadge: "The Sprint",
-    featuredTitle: "The 30-Day Founder Sprint",
-    featuredBody:
-      "A done-with-you business launch system. One focused sprint that helps you move from idea to first paying customer with hands-on support at every stage.",
-    featuredCta: "Apply for the Sprint",
-    featuredChecklist: [
-      "Idea validation and market direction",
-      "Offer creation built around real demand",
-      "The right launch asset and messaging built with you",
-      "Booking and client follow-up system",
-      "AI tools configured to save time",
-      "30-day execution roadmap",
-      "Direct support and feedback throughout",
-    ],
-
-    /* ── Services ─────────────────────────────────── */
-    services: [
-      {
-        id: "outreach_templates",
-        title: "First Customer Outreach Scripts",
-        body: "Know exactly what to say. Outreach and follow-up templates designed to start real conversations that convert.",
-        cta: "Included in the Sprint",
-      },
-      {
-        id: "automation_setup",
-        title: "Automation Setup Support",
-        body: "Your system keeps working even when you are not online. We help configure the tools and automations that save time every week.",
-        cta: "Included in the Sprint",
-      },
-      {
-        id: "commitment",
-        title: "Our Commitment — Results or We Keep Working",
-        body: "If you complete the sprint, follow the plan, and do the work — and still do not land your first paying customer in 30 days — we continue working with you at no extra cost until you do.",
-        cta: "No hidden fees. No fine print.",
-      },
-      {
-        id: "why_different",
-        title: "Why This Is Different",
-        body: "Not a course. Not a tool. Not more theory. The Sprint is built around execution — one clear goal, hands-on support, and a system you own when it is over.",
-        cta: "One goal: your first paying customer",
-      },
-    ],
-
-    /* ── Testimonials ─────────────────────────────── */
-    testimonials: [
-      {
-        quote: "I started with scattered thoughts and no strong positioning. By the end of the sprint, I had a validated offer, a defined audience, and a direction I could explain with confidence.",
-        name: "From unclear idea to clear paid offer",
-        role: "Sprint outcome",
-        initial: "1",
-        color: "bg-[var(--landing-green-mid)]",
-      },
-      {
-        quote: "Instead of just getting something online, I left with messaging, booking flow, and follow-up pieces that actually support conversions.",
-        name: "From scattered pieces to one launch system",
-        role: "Sprint outcome",
-        initial: "2",
-        color: "bg-[var(--landing-green-light)]",
-      },
-      {
-        quote: "I stopped waiting for everything to feel perfect and started having conversations, sending offers, and building momentum around something real.",
-        name: "From overthinking to real outreach",
-        role: "Sprint outcome",
-        initial: "3",
-        color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]",
-      },
-    ],
-
-    /* ── Signal strip ─────────────────────────────── */
-    signalStats: [
-      { value: "<1 min", label: "Free validation — see your stage instantly" },
-      { value: "48h", label: "Your launch system goes live" },
-      { value: "30", label: "Days to your first paying customer" },
-      { value: "$0", label: "Cost to start your free validation" },
-    ],
-
-    /* ── Booking ──────────────────────────────────── */
-    bookingTitle: "Free 30-Minute Founder Sprint Fit Call",
-    bookingSubtitle: "Limited sessions available this week",
-    bookingFallback: "Best for founders ready to launch in the next 30 days",
-    bookingSubheading:
-      "We’ll map your fastest path to a first paying customer and tell you whether the Sprint is the right fit.",
-    bookingBody:
-      "In 30 minutes, we’ll identify what is blocking your launch, map the best next move, and give you one clear action to take immediately.",
-    bookingQualifier: "Best for founders ready to launch in the next 30 days.",
-    bookingNote: "For founders who are ready to move, not just explore.",
+/** Public landing-page copy. Claims describe guidance, never guaranteed business outcomes. */
+export type LandingCopy = {
+  eyebrow: string;
+  title: string;
+  accent: string;
+  description: string;
+  primary: string;
+  secondary: string;
+  note: string;
+  label: string;
+  resultTitle: string;
+  resultIntro: string;
+  results: [string, string][];
+  evidence: string;
+  audienceLabel: string;
+  audienceTitle: string;
+  audiences: [string, string][];
+  methodLabel: string;
+  methodTitle: string;
+  methodIntro: string;
+  steps: [string, string][];
+  nextLabel: string;
+  nextTitle: string;
+  appTitle: string;
+  appBody: string;
+  appCta: string;
+  coachingTitle: string;
+  coachingBody: string;
+  coachingCta: string;
+  coachingNote: string;
+  feedbackTitle: string;
+  founderLabel: string;
+  anonymousNote: string;
+  quotes: string[];
+  faqTitle: string;
+  faqs: [string, string][];
+  finalTitle: string;
+  finalBody: string;
+  founderIntro: string;
+  founderLink: string;
+  nav: {
+    audience: string;
+    how: string;
+    support: string;
+    skip: string;
+    open: string;
+    close: string;
   };
+};
 
-  if (lang === "fr") {
-    return {
-      ...base,
-      clarityLabel: "Commencez ici — moins d'une minute",
-      clarityQuestion:
-        "Où en êtes-vous sur le chemin vers votre premier client ?",
-      clarityChoices: [
-        "J'ai une idée de business mais je ne suis pas sûr(e) si ça vaut la peine de la poursuivre",
-        "Je sais ce que je veux offrir mais je ne sais pas quoi construire en premier",
-        "J'ai commencé quelque chose mais je suis bloqué(e) et je ne gagne pas encore d'argent",
-        "Je suis prêt(e) — j'ai juste besoin d'aide pour obtenir mon premier client payant",
+const copy: Record<string, LandingCopy> = {
+  en: {
+    eyebrow: "Business validation & guided execution",
+    title: "Turn your business idea into",
+    accent: "a clear next step.",
+    description:
+      "BizSproutAI helps first-time founders clarify ideas, test assumptions, create business assets, and take practical steps toward their first customer.",
+    primary: "Start free validation",
+    secondary: "See how it works",
+    note: "Free to start · No account required for validation",
+    label: "Your starting point",
+    resultTitle: "Less guessing. A clearer direction.",
+    resultIntro:
+      "Describe your idea. Get a structured starting point for deciding what to test and what to create next.",
+    results: [
+      [
+        "Your current stage",
+        "Understand where your idea needs more clarity or evidence.",
       ],
-      validationCta: "Démarrer ma validation gratuite",
-      quizCta: "Montre-moi mon prochain mouvement →",
-      widgetNote: "Gratuit · Sans compte · En moins d'une minute",
-      platformBridgeCta: "Accéder à mon sprint complet dans BizSproutAI",
-      callCta: "Ou réserver un appel diagnostic gratuit",
-      miniCards: [
-        { icon: "🎯", title: "Votre étape", subtitle: "Identifiée instantanément" },
-        { icon: "⚡", title: "Premier actif", subtitle: "Recommandé pour vous" },
-        { icon: "🗺️", title: "4 prochaines étapes", subtitle: "Claires et précises" },
-        { icon: "⚠️", title: "1 avertissement", subtitle: "Erreur à éviter" },
+      [
+        "A recommended first asset",
+        "An interview script, outreach message, or offer test—not always an app.",
       ],
-      painItems: [
-        { icon: "🧠", title: "Trop d'idées, aucune prochaine étape claire", body: "Vous avez des directions potentielles mais aucun cadre pour choisir. Chaque option semble aussi possible que risquée, alors rien n'avance." },
-        { icon: "💸", title: "Aucune certitude que les gens vont vraiment payer", body: "Vous n'avez pas validé si quelqu'un veut ce que vous construisez. Sans preuve de demande, il est difficile de s'engager pleinement dans une direction." },
-        { icon: "🔄", title: "La réflexion excessive remplace l'action chaque jour", body: "Vous passez plus de temps à planifier, rechercher et douter qu'à construire. L'écart entre savoir et faire ne cesse de grandir." },
-        { icon: "🧩", title: "Des outils éparpillés qui ne deviennent jamais un vrai business", body: "Vous avez une page ici, un formulaire là, peut-être quelques posts — mais rien n'est connecté en un système qui fonctionne vraiment." },
-        { icon: "📚", title: "Des formations qui enseignent, mais ne vous aident jamais à lancer", body: "Vous avez consommé beaucoup de contenu. Ce qui vous manque, ce n'est pas plus d'information — c'est un chemin de lancement clair et un vrai accompagnement pendant que vous construisez." },
-        { icon: "🤷", title: "Essayer de tout assembler seul(e)", body: "Vous n'avez pas besoin de plus de motivation. Vous avez besoin de structure, de soutien, et de quelqu'un qui construit à vos côtés et qui l'a déjà fait." },
+      [
+        "Practical next steps",
+        "Focus on a small set of actions you can take with real customers.",
       ],
-      howIntro: "Voici le chemin exact que nous utilisons pour vous amener à votre premier client payant en 30 jours.",
-      howSteps: [
-        { number: "01", title: "\uD83D\uDCA5 Semaine 1 — Verrouillez votre première offre (que les gens vont vraiment payer)", body: "Arrêtez de deviner. Nous validons votre idée, définissons votre audience, et construisons une offre basée sur la vraie demande.", tag: "Vous repartez avec", checklist: ["Une offre claire", "Un acheteur défini", "La confiance que ça peut se vendre"] },
-        { number: "02", title: "\u26A1 Semaine 2 — Lancez vite", body: "Votre actif de lancement, votre message et votre système client sont prêts et en ligne rapidement.", tag: "Vous repartez avec", checklist: ["Le bon actif de lancement en ligne", "Flux de réservation ou de leads prêt", "Système de suivi en place"] },
-        { number: "03", title: "\uD83D\uDE80 Semaine 3 — Lancez de vraies conversations", body: "Fini l'attente. Vous commencez à parler à de vrais prospects avec des scripts éprouvés.", tag: "Vous repartez avec", checklist: ["Des messages de prospection qui obtiennent des réponses", "Vos premiers vrais leads", "Des conversations actives"] },
-        { number: "04", title: "\uD83D\uDCB0 Semaine 4 — Décrochez votre premier client payant", body: "Nous affinons votre pitch et vous aidons à transformer les conversations en revenus.", tag: "Vous repartez avec", checklist: ["Votre premier client payant", "Un processus de vente reproductible", "Un vrai élan"], guarantee: "Si vous n\u2019atteignez pas ce point, nous continuons à travailler avec vous — gratuitement — jusqu\u2019à ce que vous y arriviez." },
+      [
+        "A mistake to avoid",
+        "Spot a risk before investing more time or money.",
       ],
-      featuredBadge: "Le Sprint",
-      featuredTitle: "Le Sprint Fondateur 30 Jours",
-      featuredBody:
-        "Un système de lancement de business clé en main. Une mise en place intégrée qui fonctionne vraiment — de l'idée au premier client payant, avec un accompagnement concret à chaque étape.",
-      featuredCta: "Postuler au Sprint",
-      featuredChecklist: [
-        "Validation d'idée et direction marché",
-        "Création d'offre construite autour de la vraie demande",
-        "Le bon actif de lancement et le message construits avec vous",
-        "Système de réservation et suivi client",
-        "Outils IA configurés pour gagner du temps",
-        "Feuille de route d'exécution sur 30 jours",
-        "Accompagnement direct et feedback tout au long",
+    ],
+    evidence:
+      "An AI assessment is a starting point. Customer conversations and real-world tests provide the evidence.",
+    audienceLabel: "Built for your next move",
+    audienceTitle: "Start where you are.",
+    audiences: [
+      [
+        "You have an idea",
+        "Clarify who it helps, what problem it solves, and which assumption to test first.",
       ],
-      services: [
-        { id: "outreach_templates", title: "Scripts d'acquisition premier client", body: "Sachez exactement quoi dire. Des modèles de prospection et de suivi prêts à l'emploi dès le premier jour, conçus pour lancer de vraies conversations qui convertissent.", cta: "Inclus dans le Sprint" },
-        { id: "automation_setup", title: "Support de mise en place d'automatisation", body: "Votre système continue de fonctionner même quand vous n'êtes pas en ligne. Nous configurons les outils IA et les automatisations qui vous font gagner des heures chaque semaine.", cta: "Inclus dans le Sprint" },
-        { id: "commitment", title: "Notre engagement — Des résultats ou on continue", body: "Si vous complétez le sprint, suivez le plan et faites le travail — et que vous n'obtenez toujours pas votre premier client payant en 30 jours — nous continuons à travailler avec vous sans frais supplémentaires jusqu'à ce que ce soit le cas.", cta: "Pas de frais cachés. Pas de petits caractères." },
-        { id: "why_different", title: "Pourquoi c'est différent", body: "Pas une formation. Pas un outil. Pas plus de théorie. Le Sprint est construit autour de l'exécution — un objectif clair, un accompagnement concret, et un système qui vous appartient quand c'est fini.", cta: "Un objectif : votre premier client payant" },
+      [
+        "You are ready to build",
+        "Choose a useful first asset before committing to a bigger product.",
       ],
-      testimonials: [
-        { quote: "J'ai commencé avec des pensées éparpillées et aucun positionnement clair. À la fin du sprint, j'avais une offre validée, un public défini, et une direction que je pouvais expliquer avec confiance.", name: "D'une idée floue à une offre payante claire", role: "Résultat du sprint", initial: "1", color: "bg-[var(--landing-green-mid)]" },
-        { quote: "Au lieu de simplement mettre quelque chose en ligne, je suis reparti(e) avec un message, un flux de réservation, et des éléments de suivi qui soutiennent vraiment les conversions.", name: "De pièces éparses à un vrai système de lancement", role: "Résultat du sprint", initial: "2", color: "bg-[var(--landing-green-light)]" },
-        { quote: "J'ai arrêté d'attendre que tout soit parfait et j'ai commencé à avoir des conversations, envoyer des offres, et créer un élan autour de quelque chose de réel.", name: "De la réflexion excessive à la vraie prospection", role: "Résultat du sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
+      [
+        "You have launched but feel stuck",
+        "Revisit your offer and customer signals to decide what to improve.",
       ],
-      signalStats: [
-        { value: "<1 min", label: "Validation gratuite — voir votre étape instantanément" },
-        { value: "48h", label: "Votre système de lancement est en ligne" },
-        { value: "30", label: "Jours jusqu'au premier client payant" },
-        { value: "0 €", label: "Coût pour démarrer votre validation gratuite" },
+    ],
+    methodLabel: "How it works",
+    methodTitle: "Validation and execution, connected.",
+    methodIntro:
+      "A practical method: understand the problem, test the assumptions, create the right asset, and learn from the response.",
+    steps: [
+      [
+        "Clarify the idea",
+        "Describe your customer, their problem, your offer, and your constraints.",
       ],
-      bookingTitle: "Appel diagnostic Sprint Fondateur gratuit de 30 minutes",
-      bookingSubtitle: "Places limitées cette semaine",
-      bookingFallback: "Idéal pour les fondateurs prêts à lancer dans les 30 prochains jours",
-      bookingSubheading:
-        "Nous allons tracer votre chemin le plus rapide vers un premier client payant et vous dire honnêtement si le Sprint est le bon choix.",
-      bookingBody:
-        "En 30 minutes, nous identifierons ce qui bloque votre lancement, définirons la meilleure prochaine étape, et vous donnerons une action claire à exécuter tout de suite.",
-      bookingQualifier:
-        "Idéal pour les fondateurs prêts à lancer dans les 30 prochains jours.",
-      bookingNote:
-        "Pour les fondateurs prêts à avancer, pas seulement à explorer.",
-    };
-  }
+      [
+        "Choose what to test",
+        "Use structured guidance to identify the assumptions that need evidence.",
+      ],
+      [
+        "Create your first asset",
+        "Turn the next step into something useful: a discovery script, outreach message, or offer test page.",
+      ],
+      [
+        "Act, learn, improve",
+        "Talk to potential customers, record what happens, and adjust your next move.",
+      ],
+    ],
+    nextLabel: "After validation",
+    nextTitle: "Keep moving, with the support you need.",
+    appTitle: "Continue in BizSproutAI",
+    appBody:
+      "Explore the main platform to connect validation, business assets, and guided execution. Start with the asset that fits your stage.",
+    appCta: "Explore the platform",
+    coachingTitle: "Prefer hands-on guidance?",
+    coachingBody:
+      "Discuss a 30-day Founder Sprint focused on testing assumptions, creating your first asset, and taking practical steps toward a first customer.",
+    coachingCta: "Book a free fit call",
+    coachingNote:
+      "Coaching is optional. Scope and fees are discussed before you commit. Customer results and timelines vary.",
+    feedbackTitle: "What founders have shared",
+    founderLabel: "Founder",
+    anonymousNote:
+      "Names withheld at the founders’ request. Individual experiences are not promises of results.",
+    quotes: [
+      "I had too many ideas and no idea where to start. Getting a clear next step changed everything for me.",
+      "I just needed someone to tell me what to build first. That’s exactly what the validation did.",
+    ],
+    faqTitle: "A few things worth knowing.",
+    faqs: [
+      [
+        "What does free validation include?",
+        "A structured assessment of your idea, your current stage, a recommended first asset, practical next steps, and a risk to consider.",
+      ],
+      [
+        "Does a score prove my idea will succeed?",
+        "No. Scores help organize your next decisions. They do not predict revenue or replace evidence from customers.",
+      ],
+      [
+        "Do I need to know how to code?",
+        "No coding is needed to start validation. Your first asset may be an interview script or an outreach message rather than software.",
+      ],
+      [
+        "Is a paying customer guaranteed in 30 days?",
+        "No. The sprint provides structure for action and learning. Demand, execution, and circumstances affect results.",
+      ],
+      [
+        "Do I have to book a call or buy coaching?",
+        "No. Start with free validation. The fit call is an optional conversation about whether additional support suits your needs.",
+      ],
+    ],
+    finalTitle: "You do not need every answer to begin.",
+    finalBody:
+      "Start with your idea. Find the next assumption to test and the next action to take.",
+    founderIntro: "Founded by Wagner Desir, business and mindset strategist.",
+    founderLink: "Meet the founder",
+    nav: {
+      audience: "Who it’s for",
+      how: "How it works",
+      support: "Next steps",
+      skip: "Skip to main content",
+      open: "Open navigation menu",
+      close: "Close navigation menu",
+    },
+  },
+  fr: {
+    eyebrow: "Validation d’entreprise et mise en œuvre guidée",
+    title: "Transformez votre idée en",
+    accent: "une prochaine étape claire.",
+    description:
+      "BizSproutAI aide les nouveaux entrepreneurs à clarifier leurs idées, tester leurs hypothèses, créer des outils utiles et avancer concrètement vers leur premier client.",
+    primary: "Commencer la validation gratuite",
+    secondary: "Voir comment ça marche",
+    note: "Gratuit pour commencer · Aucun compte requis pour la validation",
+    label: "Votre point de départ",
+    resultTitle: "Moins de suppositions. Plus de clarté.",
+    resultIntro:
+      "Décrivez votre idée. Obtenez une base structurée pour choisir quoi tester et quoi créer ensuite.",
+    results: [
+      [
+        "Votre stade actuel",
+        "Repérez ce qui demande plus de clarté ou de preuves.",
+      ],
+      [
+        "Un premier outil recommandé",
+        "Un guide d’entretien, un message de prospection ou un test d’offre : pas forcément une application.",
+      ],
+      [
+        "Des étapes concrètes",
+        "Concentrez-vous sur quelques actions auprès de vrais clients potentiels.",
+      ],
+      [
+        "Une erreur à éviter",
+        "Identifiez un risque avant d’investir davantage de temps ou d’argent.",
+      ],
+    ],
+    evidence:
+      "Une évaluation par IA est un point de départ. Les échanges avec les clients et les tests réels apportent les preuves.",
+    audienceLabel: "Pour votre prochaine étape",
+    audienceTitle: "Partez de là où vous êtes.",
+    audiences: [
+      [
+        "Vous avez une idée",
+        "Précisez à qui elle s’adresse, le problème qu’elle résout et l’hypothèse à tester.",
+      ],
+      [
+        "Vous êtes prêt à créer",
+        "Choisissez un premier outil utile avant de développer un produit plus ambitieux.",
+      ],
+      [
+        "Vous avez lancé, mais vous bloquez",
+        "Revenez sur votre offre et les retours clients pour choisir quoi améliorer.",
+      ],
+    ],
+    methodLabel: "Comment ça marche",
+    methodTitle: "Relier validation et action.",
+    methodIntro:
+      "Une méthode concrète : comprendre le problème, tester les hypothèses, créer le bon outil et apprendre des retours.",
+    steps: [
+      [
+        "Clarifiez votre idée",
+        "Décrivez votre client, son problème, votre offre et vos contraintes.",
+      ],
+      [
+        "Choisissez quoi tester",
+        "Identifiez les hypothèses qui nécessitent des preuves grâce à un parcours structuré.",
+      ],
+      [
+        "Créez votre premier outil",
+        "Préparez un guide d’entretien, un message de prospection ou une page de test d’offre.",
+      ],
+      [
+        "Agissez, apprenez, améliorez",
+        "Échangez avec des clients potentiels, consignez les résultats et ajustez la suite.",
+      ],
+    ],
+    nextLabel: "Après la validation",
+    nextTitle: "Avancez avec le soutien adapté.",
+    appTitle: "Continuez dans BizSproutAI",
+    appBody:
+      "Explorez la plateforme principale pour relier validation, outils de lancement et mise en œuvre guidée. Commencez par ce qui correspond à votre stade.",
+    appCta: "Explorer la plateforme",
+    coachingTitle: "Vous préférez être accompagné ?",
+    coachingBody:
+      "Découvrez un Sprint Fondateur de 30 jours pour tester vos hypothèses, créer votre premier outil et avancer vers un premier client.",
+    coachingCta: "Réserver un appel gratuit",
+    coachingNote:
+      "L’accompagnement est facultatif. Le périmètre et les tarifs sont discutés avant tout engagement. Les résultats et les délais varient.",
+    feedbackTitle: "Ce que des fondateurs nous ont confié",
+    founderLabel: "Fondateur",
+    anonymousNote:
+      "Noms non publiés à la demande des fondateurs. Les expériences individuelles ne constituent pas une promesse de résultat.",
+    quotes: [
+      "J’avais trop d’idées et je ne savais pas par où commencer. Avoir une prochaine étape claire a tout changé pour moi.",
+      "J’avais simplement besoin de savoir quoi créer en premier. C’est exactement ce que la validation m’a apporté.",
+    ],
+    faqTitle: "Quelques réponses avant de commencer.",
+    faqs: [
+      [
+        "Que comprend la validation gratuite ?",
+        "Une évaluation structurée, votre stade actuel, un premier outil recommandé, des prochaines étapes et un risque à considérer.",
+      ],
+      [
+        "Un score prouve-t-il que mon idée réussira ?",
+        "Non. Il aide à organiser vos décisions, sans prédire vos revenus ni remplacer les preuves recueillies auprès des clients.",
+      ],
+      [
+        "Faut-il savoir coder ?",
+        "Non pour commencer la validation. Un guide d’entretien ou un message de prospection peut être plus utile qu’un logiciel.",
+      ],
+      [
+        "Un client payant est-il garanti en 30 jours ?",
+        "Non. Le sprint structure l’action et l’apprentissage. La demande, l’exécution et le contexte influencent les résultats.",
+      ],
+      [
+        "Dois-je réserver un appel ou acheter un accompagnement ?",
+        "Non. Commencez gratuitement. L’appel est une option pour discuter d’un soutien adapté à vos besoins.",
+      ],
+    ],
+    finalTitle: "Pas besoin de toutes les réponses pour commencer.",
+    finalBody:
+      "Partez de votre idée. Identifiez la prochaine hypothèse à tester et l’action à entreprendre.",
+    founderIntro:
+      "Fondé par Wagner Desir, stratège en entrepreneuriat et en développement personnel.",
+    founderLink: "Rencontrer le fondateur",
+    nav: {
+      audience: "Pour qui",
+      how: "La méthode",
+      support: "La suite",
+      skip: "Aller au contenu principal",
+      open: "Ouvrir le menu",
+      close: "Fermer le menu",
+    },
+  },
+  es: {
+    eyebrow: "Validación de negocios y ejecución guiada",
+    title: "Convierte tu idea de negocio en",
+    accent: "un siguiente paso claro.",
+    description:
+      "BizSproutAI ayuda a quienes emprenden por primera vez a aclarar ideas, probar supuestos, crear recursos para su negocio y dar pasos concretos hacia su primer cliente.",
+    primary: "Iniciar validación gratuita",
+    secondary: "Ver cómo funciona",
+    note: "Empieza gratis · La validación no requiere cuenta",
+    label: "Tu punto de partida",
+    resultTitle: "Menos suposiciones. Más claridad.",
+    resultIntro:
+      "Describe tu idea. Obtén una base estructurada para decidir qué probar y qué crear después.",
+    results: [
+      [
+        "Tu etapa actual",
+        "Identifica dónde necesitas más claridad o evidencia.",
+      ],
+      [
+        "Un primer recurso recomendado",
+        "Un guion de entrevista, un mensaje de contacto o una prueba de oferta; no siempre una app.",
+      ],
+      [
+        "Pasos prácticos",
+        "Concéntrate en unas pocas acciones con clientes potenciales reales.",
+      ],
+      [
+        "Un error que evitar",
+        "Detecta un riesgo antes de invertir más tiempo o dinero.",
+      ],
+    ],
+    evidence:
+      "Una evaluación con IA es un punto de partida. Las conversaciones con clientes y las pruebas reales aportan la evidencia.",
+    audienceLabel: "Para tu siguiente paso",
+    audienceTitle: "Empieza donde estás.",
+    audiences: [
+      [
+        "Tienes una idea",
+        "Aclara a quién ayuda, qué problema resuelve y qué supuesto probar primero.",
+      ],
+      [
+        "Estás listo para crear",
+        "Elige un primer recurso útil antes de comprometerte con un producto más grande.",
+      ],
+      [
+        "Ya lanzaste, pero estás estancado",
+        "Revisa tu oferta y las señales de tus clientes para decidir qué mejorar.",
+      ],
+    ],
+    methodLabel: "Cómo funciona",
+    methodTitle: "Validación y ejecución, conectadas.",
+    methodIntro:
+      "Un método práctico: entender el problema, probar supuestos, crear el recurso adecuado y aprender de la respuesta.",
+    steps: [
+      [
+        "Aclara tu idea",
+        "Describe a tu cliente, su problema, tu oferta y tus limitaciones.",
+      ],
+      [
+        "Elige qué probar",
+        "Identifica los supuestos que necesitan evidencia con una guía estructurada.",
+      ],
+      [
+        "Crea tu primer recurso",
+        "Prepara un guion de entrevista, un mensaje de contacto o una página para probar tu oferta.",
+      ],
+      [
+        "Actúa, aprende y mejora",
+        "Habla con clientes potenciales, registra lo que sucede y ajusta tu próximo paso.",
+      ],
+    ],
+    nextLabel: "Después de validar",
+    nextTitle: "Avanza con el apoyo que necesitas.",
+    appTitle: "Continúa en BizSproutAI",
+    appBody:
+      "Explora la plataforma principal para conectar validación, recursos de negocio y ejecución guiada. Empieza con lo que corresponda a tu etapa.",
+    appCta: "Explorar la plataforma",
+    coachingTitle: "¿Prefieres acompañamiento?",
+    coachingBody:
+      "Conoce el Sprint para Fundadores de 30 días: prueba supuestos, crea tu primer recurso y da pasos concretos hacia un primer cliente.",
+    coachingCta: "Reservar una llamada gratuita",
+    coachingNote:
+      "El acompañamiento es opcional. El alcance y los precios se acuerdan antes de comprometerte. Los resultados y plazos varían.",
+    feedbackTitle: "Lo que nos han contado los fundadores",
+    founderLabel: "Fundador",
+    anonymousNote:
+      "Nombres omitidos a petición de los fundadores. Las experiencias individuales no son promesas de resultados.",
+    quotes: [
+      "Tenía demasiadas ideas y no sabía por dónde empezar. Tener un siguiente paso claro lo cambió todo para mí.",
+      "Solo necesitaba saber qué crear primero. Eso es exactamente lo que me aportó la validación.",
+    ],
+    faqTitle: "Lo que conviene saber antes de empezar.",
+    faqs: [
+      [
+        "¿Qué incluye la validación gratuita?",
+        "Una evaluación estructurada, tu etapa actual, un primer recurso recomendado, próximos pasos y un riesgo que considerar.",
+      ],
+      [
+        "¿Una puntuación prueba que mi idea tendrá éxito?",
+        "No. Ayuda a organizar tus decisiones, pero no predice ingresos ni sustituye la evidencia de clientes.",
+      ],
+      [
+        "¿Necesito saber programar?",
+        "No para empezar la validación. Un guion de entrevista o un mensaje de contacto puede ser más útil que un programa.",
+      ],
+      [
+        "¿Se garantiza un cliente de pago en 30 días?",
+        "No. El sprint estructura la acción y el aprendizaje. La demanda, la ejecución y las circunstancias influyen en los resultados.",
+      ],
+      [
+        "¿Debo reservar una llamada o contratar acompañamiento?",
+        "No. Empieza con la validación gratuita. La llamada es opcional para evaluar qué apoyo necesitas.",
+      ],
+    ],
+    finalTitle: "No necesitas todas las respuestas para empezar.",
+    finalBody:
+      "Empieza con tu idea. Encuentra el siguiente supuesto que probar y la próxima acción que tomar.",
+    founderIntro:
+      "Fundado por Wagner Desir, estratega de negocios y mentalidad.",
+    founderLink: "Conoce al fundador",
+    nav: {
+      audience: "Para quién",
+      how: "Cómo funciona",
+      support: "Próximos pasos",
+      skip: "Ir al contenido principal",
+      open: "Abrir menú",
+      close: "Cerrar menú",
+    },
+  },
+  ht: {
+    eyebrow: "Validasyon biznis ak gid pou pase alaksyon",
+    title: "Bay lide biznis ou",
+    accent: "yon pwochen etap klè.",
+    description:
+      "BizSproutAI ede moun k ap lanse premye biznis yo klarifye lide yo, teste sa yo sipoze, kreye zouti pou biznis yo, epi fè etap konkrè pou jwenn premye kliyan yo.",
+    primary: "Kòmanse validasyon gratis",
+    secondary: "Gade kijan li mache",
+    note: "Kòmanse gratis · Ou pa bezwen kont pou validasyon an",
+    label: "Pwen depa ou",
+    resultTitle: "Mwens devinèt. Plis klète.",
+    resultIntro:
+      "Dekri lide ou. Jwenn yon baz ki byen òganize pou deside sa pou teste ak sa pou kreye apre.",
+    results: [
+      [
+        "Etap ou ye kounye a",
+        "Wè ki kote lide ou bezwen plis klète oswa prèv.",
+      ],
+      [
+        "Yon premye zouti rekòmande",
+        "Yon gid entèvyou, yon mesaj pou kontakte moun, oswa yon tès òf; se pa toujou yon aplikasyon.",
+      ],
+      [
+        "Pwochen aksyon yo",
+        "Konsantre sou kèk aksyon ou ka fè ak vrè kliyan potansyèl.",
+      ],
+      [
+        "Yon erè pou evite",
+        "Idantifye yon risk anvan ou depanse plis tan oswa lajan.",
+      ],
+    ],
+    evidence:
+      "Yon evalyasyon ak IA se yon pwen depa. Konvèsasyon ak kliyan ak tès nan lavi reyèl bay prèv yo.",
+    audienceLabel: "Pou pwochen etap ou",
+    audienceTitle: "Kòmanse kote ou ye a.",
+    audiences: [
+      [
+        "Ou gen yon lide",
+        "Klarifye kiyès li ede, ki pwoblèm li rezoud, ak ki sipozisyon pou teste an premye.",
+      ],
+      [
+        "Ou pare pou bati",
+        "Chwazi yon premye zouti itil anvan ou angaje w nan yon pi gwo pwodwi.",
+      ],
+      [
+        "Ou deja lanse, men ou bloke",
+        "Revize òf ou ak sa kliyan yo montre w pou deside sa pou amelyore.",
+      ],
+    ],
+    methodLabel: "Kijan li mache",
+    methodTitle: "Validasyon ak aksyon, konekte.",
+    methodIntro:
+      "Yon metòd pratik: konprann pwoblèm nan, teste sipozisyon yo, kreye bon zouti a, epi aprann nan repons yo.",
+    steps: [
+      [
+        "Klarifye lide a",
+        "Dekri kliyan ou, pwoblèm li, òf ou, ak limit ou genyen.",
+      ],
+      [
+        "Chwazi sa pou teste",
+        "Sèvi ak yon gid byen òganize pou idantifye sipozisyon ki bezwen prèv.",
+      ],
+      [
+        "Kreye premye zouti ou",
+        "Prepare yon gid entèvyou, yon mesaj pou kontakte kliyan, oswa yon paj pou teste òf ou.",
+      ],
+      [
+        "Aji, aprann, amelyore",
+        "Pale ak kliyan potansyèl, note sa ki pase, epi ajiste pwochen aksyon ou.",
+      ],
+    ],
+    nextLabel: "Apre validasyon",
+    nextTitle: "Kontinye avanse ak sipò ou bezwen an.",
+    appTitle: "Kontinye nan BizSproutAI",
+    appBody:
+      "Eksplore platfòm prensipal la pou konekte validasyon, zouti biznis ak aksyon gide. Kòmanse ak sa ki mache pou etap ou ye a.",
+    appCta: "Eksplore platfòm nan",
+    coachingTitle: "Ou pito yon akonpayman?",
+    coachingBody:
+      "Dekouvri yon Sprint Fondatè 30 jou pou teste sipozisyon ou, kreye premye zouti ou, epi fè etap konkrè pou jwenn yon premye kliyan.",
+    coachingCta: "Rezève yon apèl gratis",
+    coachingNote:
+      "Akonpayman an pa obligatwa. N ap diskite sa sèvis la gen ladan l ak pri a anvan ou angaje w. Rezilta ak delè yo varye.",
+    feedbackTitle: "Sa fondatè yo pataje avèk nou",
+    founderLabel: "Fondatè",
+    anonymousNote:
+      "Nou pa pibliye non yo paske fondatè yo mande sa. Eksperyans chak moun pa yon pwomès rezilta.",
+    quotes: [
+      "Mwen te gen twòp lide e mwen pa t konnen ki kote pou kòmanse. Lè mwen te jwenn yon pwochen etap klè, sa te chanje tout bagay pou mwen.",
+      "Mwen te jis bezwen konnen sa pou m bati an premye. Se egzakteman sa validasyon an te ban mwen.",
+    ],
+    faqTitle: "Kèk bagay pou konnen anvan ou kòmanse.",
+    faqs: [
+      [
+        "Kisa validasyon gratis la gen ladan l?",
+        "Yon evalyasyon byen òganize, etap ou ye a, yon premye zouti rekòmande, pwochen aksyon ak yon risk pou konsidere.",
+      ],
+      [
+        "Èske yon nòt pwouve lide m ap reyisi?",
+        "Non. Nòt yo ede òganize desizyon ou. Yo pa predi revni e yo pa ranplase prèv kliyan yo bay.",
+      ],
+      [
+        "Èske mwen bezwen konn kode?",
+        "Non pou kòmanse validasyon an. Yon gid entèvyou oswa yon mesaj pou kontakte moun ka pi itil pase lojisyèl.",
+      ],
+      [
+        "Èske gen garanti pou jwenn yon kliyan peyan nan 30 jou?",
+        "Non. Sprint la bay estrikti pou aji ak aprann. Demann, fason ou aji, ak sikonstans yo enfliyanse rezilta yo.",
+      ],
+      [
+        "Èske mwen oblije rezève yon apèl oswa peye akonpayman?",
+        "Non. Kòmanse ak validasyon gratis la. Apèl la se yon opsyon pou wè ki sipò ki mache pou ou.",
+      ],
+    ],
+    finalTitle: "Ou pa bezwen tout repons yo pou kòmanse.",
+    finalBody:
+      "Kòmanse ak lide ou. Jwenn pwochen sipozisyon pou teste a ak pwochen aksyon pou fè a.",
+    founderIntro:
+      "Wagner Desir, stratèj biznis ak mantalite, se fondatè platfòm nan.",
+    founderLink: "Rankontre fondatè a",
+    nav: {
+      audience: "Pou kiyès",
+      how: "Kijan li mache",
+      support: "Pwochen etap",
+      skip: "Ale nan kontni prensipal la",
+      open: "Louvri meni an",
+      close: "Fèmen meni an",
+    },
+  },
+  pt: {
+    eyebrow: "Validação de negócios e execução guiada",
+    title: "Transforme sua ideia de negócio em",
+    accent: "um próximo passo claro.",
+    description:
+      "O BizSproutAI ajuda quem está empreendendo pela primeira vez a esclarecer ideias, testar hipóteses, criar recursos para o negócio e dar passos práticos rumo ao primeiro cliente.",
+    primary: "Começar a validação gratuita",
+    secondary: "Veja como funciona",
+    note: "Comece grátis · A validação não exige conta",
+    label: "Seu ponto de partida",
+    resultTitle: "Menos suposições. Mais clareza.",
+    resultIntro:
+      "Descreva sua ideia. Receba uma base estruturada para decidir o que testar e o que criar a seguir.",
+    results: [
+      [
+        "Seu estágio atual",
+        "Identifique onde sua ideia precisa de mais clareza ou evidências.",
+      ],
+      [
+        "Um primeiro recurso recomendado",
+        "Um roteiro de entrevista, uma mensagem de contato ou um teste de oferta; nem sempre um aplicativo.",
+      ],
+      [
+        "Próximos passos práticos",
+        "Concentre-se em algumas ações com clientes potenciais reais.",
+      ],
+      [
+        "Um erro a evitar",
+        "Identifique um risco antes de investir mais tempo ou dinheiro.",
+      ],
+    ],
+    evidence:
+      "Uma avaliação por IA é um ponto de partida. Conversas com clientes e testes reais fornecem as evidências.",
+    audienceLabel: "Para seu próximo passo",
+    audienceTitle: "Comece de onde você está.",
+    audiences: [
+      [
+        "Você tem uma ideia",
+        "Esclareça quem ela ajuda, qual problema resolve e qual hipótese testar primeiro.",
+      ],
+      [
+        "Você está pronto para criar",
+        "Escolha um primeiro recurso útil antes de investir em um produto maior.",
+      ],
+      [
+        "Você já lançou, mas está travado",
+        "Reveja sua oferta e os sinais dos clientes para decidir o que melhorar.",
+      ],
+    ],
+    methodLabel: "Como funciona",
+    methodTitle: "Validação e execução, conectadas.",
+    methodIntro:
+      "Um método prático: entender o problema, testar hipóteses, criar o recurso certo e aprender com as respostas.",
+    steps: [
+      [
+        "Esclareça a ideia",
+        "Descreva seu cliente, o problema, sua oferta e suas limitações.",
+      ],
+      [
+        "Escolha o que testar",
+        "Use uma orientação estruturada para identificar as hipóteses que precisam de evidências.",
+      ],
+      [
+        "Crie seu primeiro recurso",
+        "Prepare um roteiro de entrevista, uma mensagem de contato ou uma página de teste de oferta.",
+      ],
+      [
+        "Aja, aprenda e melhore",
+        "Converse com clientes potenciais, registre o que acontece e ajuste seu próximo passo.",
+      ],
+    ],
+    nextLabel: "Depois da validação",
+    nextTitle: "Avance com o apoio de que precisa.",
+    appTitle: "Continue no BizSproutAI",
+    appBody:
+      "Explore a plataforma principal para conectar validação, recursos de negócio e execução guiada. Comece pelo que combina com seu estágio.",
+    appCta: "Explorar a plataforma",
+    coachingTitle: "Prefere acompanhamento?",
+    coachingBody:
+      "Conheça um Sprint Fundador de 30 dias para testar hipóteses, criar seu primeiro recurso e dar passos práticos rumo a um primeiro cliente.",
+    coachingCta: "Agendar uma conversa gratuita",
+    coachingNote:
+      "O acompanhamento é opcional. Escopo e valores são discutidos antes do compromisso. Resultados e prazos variam.",
+    feedbackTitle: "O que os fundadores compartilharam",
+    founderLabel: "Fundador",
+    anonymousNote:
+      "Nomes omitidos a pedido dos fundadores. Experiências individuais não são promessas de resultados.",
+    quotes: [
+      "Eu tinha ideias demais e não sabia por onde começar. Ter um próximo passo claro mudou tudo para mim.",
+      "Eu só precisava saber o que criar primeiro. Foi exatamente isso que a validação me trouxe.",
+    ],
+    faqTitle: "O que vale saber antes de começar.",
+    faqs: [
+      [
+        "O que a validação gratuita inclui?",
+        "Uma avaliação estruturada, seu estágio atual, um primeiro recurso recomendado, próximos passos e um risco a considerar.",
+      ],
+      [
+        "Uma pontuação prova que minha ideia dará certo?",
+        "Não. Ela ajuda a organizar decisões, mas não prevê receita nem substitui evidências dos clientes.",
+      ],
+      [
+        "Preciso saber programar?",
+        "Não para começar a validação. Um roteiro de entrevista ou uma mensagem de contato pode ser mais útil que um software.",
+      ],
+      [
+        "Um cliente pagante é garantido em 30 dias?",
+        "Não. O sprint estrutura a ação e o aprendizado. Demanda, execução e contexto influenciam os resultados.",
+      ],
+      [
+        "Preciso agendar uma conversa ou contratar acompanhamento?",
+        "Não. Comece com a validação gratuita. A conversa é opcional para avaliar o apoio que faz sentido para você.",
+      ],
+    ],
+    finalTitle: "Você não precisa de todas as respostas para começar.",
+    finalBody:
+      "Comece com sua ideia. Encontre a próxima hipótese a testar e a próxima ação a tomar.",
+    founderIntro:
+      "Fundado por Wagner Desir, estrategista de negócios e mentalidade.",
+    founderLink: "Conheça o fundador",
+    nav: {
+      audience: "Para quem",
+      how: "Como funciona",
+      support: "Próximos passos",
+      skip: "Ir ao conteúdo principal",
+      open: "Abrir menu",
+      close: "Fechar menu",
+    },
+  },
+};
 
-  if (lang === "es") {
-    return {
-      ...base,
-      clarityLabel: "Empieza aquí — menos de un minuto",
-      clarityQuestion:
-        "¿Dónde estás en el camino hacia tu primer cliente?",
-      clarityChoices: [
-        "Tengo una idea de negocio pero no estoy seguro/a si vale la pena seguirla",
-        "Sé lo que quiero ofrecer pero no sé qué construir primero",
-        "He empezado algo pero estoy estancado/a y aún no gano dinero",
-        "Estoy listo/a — solo necesito ayuda para conseguir mi primer cliente de pago",
-      ],
-      validationCta: "Iniciar mi validación gratuita",
-      quizCta: "Muéstrame mi próximo movimiento →",
-      widgetNote: "Gratis · Sin cuenta · Menos de un minuto",
-      platformBridgeCta: "Acceder a mi sprint completo en BizSproutAI",
-      callCta: "O reservar una llamada diagnóstico gratuita",
-      miniCards: [
-        { icon: "🎯", title: "Tu etapa", subtitle: "Identificada al instante" },
-        { icon: "⚡", title: "Primer activo", subtitle: "Recomendado para ti" },
-        { icon: "🗺️", title: "4 próximos pasos", subtitle: "Claros y específicos" },
-        { icon: "⚠️", title: "1 advertencia", subtitle: "Error a evitar" },
-      ],
-      painItems: [
-        { icon: "🧠", title: "Demasiadas ideas, ningún próximo paso claro", body: "Tienes direcciones potenciales pero ningún marco para elegir. Cada opción parece igual de posible e igual de arriesgada, así que nada avanza." },
-        { icon: "💸", title: "Sin confianza en que la gente realmente pague", body: "No has validado si alguien quiere lo que estás construyendo. Sin prueba de demanda, es difícil comprometerse completamente con una dirección." },
-        { icon: "🔄", title: "Pensar de más reemplaza la ejecución cada día", body: "Pasas más tiempo planificando, investigando y dudando que construyendo. La brecha entre saber y hacer sigue creciendo." },
-        { icon: "🧩", title: "Herramientas dispersas que nunca se convierten en un negocio real", body: "Tienes una landing page aquí, un formulario allá, quizás algunos posts — pero nada está conectado en un sistema que realmente funcione." },
-        { icon: "📚", title: "Cursos que enseñan, pero nunca te ayudan a lanzar", body: "Has consumido mucho contenido. Lo que te falta no es más información — es un camino claro de lanzamiento y apoyo real mientras construyes." },
-        { icon: "🤷", title: "Intentar armar todo solo/a", body: "No necesitas más motivación. Necesitas estructura, apoyo, y alguien que construya a tu lado y que ya lo haya hecho antes." },
-      ],
-      howIntro: "Este es el camino exacto que usamos para llevarte a tu primer cliente de pago en 30 días.",
-      howSteps: [
-        { number: "01", title: "\uD83D\uDCA5 Semana 1 — Fija tu primera oferta (por la que la gente realmente pagará)", body: "Deja de adivinar. Validamos tu idea, definimos tu audiencia, y construimos una oferta basada en demanda real.", tag: "Te vas con", checklist: ["Una oferta clara", "Un comprador definido", "Confianza en que puede venderse"] },
-        { number: "02", title: "\u26A1 Semana 2 — Lanza rápido", body: "Tu activo de lanzamiento, tu mensaje y tu sistema de clientes quedan listos rápido.", tag: "Te vas con", checklist: ["El activo de lanzamiento correcto en vivo", "Flujo de reservas o leads listo", "Sistema de seguimiento en marcha"] },
-        { number: "03", title: "\uD83D\uDE80 Semana 3 — Inicia conversaciones reales", body: "No más esperas. Empiezas a hablar con prospectos reales usando scripts probados.", tag: "Te vas con", checklist: ["Mensajes de prospección que obtienen respuestas", "Tus primeros leads reales", "Conversaciones activas"] },
-        { number: "04", title: "\uD83D\uDCB0 Semana 4 — Cierra tu primer cliente de pago", body: "Refinamos tu pitch y te ayudamos a convertir conversaciones en ingresos.", tag: "Te vas con", checklist: ["Tu primer cliente de pago", "Un proceso de ventas repetible", "Impulso real"], guarantee: "Si no llegas a este punto, seguimos trabajando contigo — gratis — hasta que lo logres." },
-      ],
-      featuredBadge: "El Sprint",
-      featuredTitle: "El Sprint Fundador de 30 Días",
-      featuredBody:
-        "Un sistema de lanzamiento de negocio hecho contigo. Una configuración integrada que realmente funciona — de la idea al primer cliente de pago, con apoyo práctico en cada paso.",
-      featuredCta: "Aplica al Sprint",
-      featuredChecklist: [
-        "Validación de idea y dirección de mercado",
-        "Creación de oferta basada en demanda real",
-        "El activo de lanzamiento correcto y el mensaje construidos contigo",
-        "Sistema de reservas y seguimiento de clientes",
-        "Herramientas de IA configuradas para ahorrar tiempo",
-        "Hoja de ruta de ejecución de 30 días",
-        "Apoyo directo y feedback en todo momento",
-      ],
-      services: [
-        { id: "outreach_templates", title: "Scripts de adquisición de primer cliente", body: "Sabe exactamente qué decir. Plantillas de prospección y seguimiento listas para usar desde el día uno, diseñadas para iniciar conversaciones reales que convierten.", cta: "Incluido en el Sprint" },
-        { id: "automation_setup", title: "Soporte de configuración de automatización", body: "Tu sistema sigue trabajando aunque no estés en línea. Configuramos las herramientas de IA y automatizaciones que te ahorran horas cada semana.", cta: "Incluido en el Sprint" },
-        { id: "commitment", title: "Nuestro compromiso — Resultados o seguimos trabajando", body: "Si completas el sprint, sigues el plan y haces el trabajo — y aún no consigues tu primer cliente de pago en 30 días — seguimos trabajando contigo sin costo adicional hasta que lo logres.", cta: "Sin tarifas ocultas. Sin letra pequeña." },
-        { id: "why_different", title: "Por qué esto es diferente", body: "No es un curso. No es una herramienta. No es más teoría. El Sprint está construido alrededor de la ejecución — una meta clara, apoyo práctico, y un sistema que es tuyo cuando termina.", cta: "Una meta: tu primer cliente de pago" },
-      ],
-      testimonials: [
-        { quote: "Empecé con pensamientos dispersos y sin un posicionamiento claro. Al final del sprint, tenía una oferta validada, una audiencia definida, y una dirección que podía explicar con confianza.", name: "De idea confusa a oferta pagada clara", role: "Resultado del sprint", initial: "1", color: "bg-[var(--landing-green-mid)]" },
-        { quote: "En lugar de solo poner algo en línea, salí con mensaje, flujo de reservas, y piezas de seguimiento que realmente apoyan las conversiones.", name: "De piezas dispersas a un sistema real de lanzamiento", role: "Resultado del sprint", initial: "2", color: "bg-[var(--landing-green-light)]" },
-        { quote: "Dejé de esperar a que todo se sintiera perfecto y empecé a tener conversaciones, enviar ofertas, y construir impulso alrededor de algo real.", name: "De pensar de más a prospección real", role: "Resultado del sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
-      ],
-      signalStats: [
-        { value: "<1 min", label: "Validación gratuita — ve tu etapa al instante" },
-        { value: "48h", label: "Tu sistema de lanzamiento está en línea" },
-        { value: "30", label: "Días hasta el primer cliente de pago" },
-        { value: "$0", label: "Costo para iniciar tu validación gratuita" },
-      ],
-      bookingTitle: "Llamada gratuita de ajuste del Founder Sprint de 30 minutos",
-      bookingSubtitle: "Sesiones limitadas esta semana",
-      bookingFallback: "Ideal para fundadores listos para lanzar en los próximos 30 días",
-      bookingSubheading:
-        "Trazaremos tu camino más rápido hacia un primer cliente de pago y te diremos si el Sprint es el ajuste correcto.",
-      bookingBody:
-        "En 30 minutos, identificaremos qué está bloqueando tu lanzamiento, definiremos el mejor siguiente paso y te daremos una acción clara para tomar de inmediato.",
-      bookingQualifier:
-        "Ideal para fundadores listos para lanzar en los próximos 30 días.",
-      bookingNote:
-        "Para fundadores que están listos para moverse, no solo para explorar.",
-    };
-  }
-
-  if (lang === "ht") {
-    return {
-      ...base,
-      clarityLabel: "Kòmanse isit — mwens pase yon minit",
-      clarityQuestion:
-        "Ki kote ou ye sou wout rive nan premye kliyan ou?",
-      clarityChoices: [
-        "Mwen gen yon lide biznis men mwen pa sèten si li vo lapenn pouswiv li",
-        "Mwen konnen sa mwen vle ofri men mwen pa konnen ki sa pou bati an premye",
-        "Mwen te kòmanse yon bagay men mwen bloke epi mwen pa fè kòb ankò",
-        "Mwen pare — mwen jis bezwen èd pou jwenn premye kliyan peyan mwen",
-      ],
-      validationCta: "Kòmanse validasyon gratis mwen",
-      quizCta: "Montre m pwochen mouvman mwen →",
-      widgetNote: "Gratis · San kont · Mwens pase yon minit",
-      platformBridgeCta: "Deblouke sprint konplè mwen nan BizSproutAI",
-      callCta: "Oswa rezève yon apèl dyagnostik gratis",
-      miniCards: [
-        { icon: "🎯", title: "Etap ou", subtitle: "Idantifye touswit" },
-        { icon: "⚡", title: "Premye mwayen", subtitle: "Rekòmande pou ou" },
-        { icon: "🗺️", title: "4 pwochen etap", subtitle: "Klè ak espesifik" },
-        { icon: "⚠️", title: "1 avètisman", subtitle: "Erè pou evite" },
-      ],
-      painItems: [
-        { icon: "🧠", title: "Twòp lide, okenn pwochen etap klè", body: "Ou gen direksyon posib men ou pa gen yon kad pou chwazi. Chak opsyon sanble egal posib e egal riske, kidonk anyen pa avanse." },
-        { icon: "💸", title: "Okenn konfyans ke moun ap reyèlman peye", body: "Ou pa t valide si yon moun vle sa ou ap bati. San prèv demand, li difisil pou angaje tout fòs ou nan yon direksyon." },
-        { icon: "🔄", title: "Reflechi twòp ranplase aksyon chak jou", body: "Ou pase plis tan ap planifye, chèche, ak doute pase bati. Distans ant konnen ak fè a ap grandi toujou." },
-        { icon: "🧩", title: "Zouti gaye ki pa janm tounen yon vrè biznis", body: "Ou gen yon paj isit, yon fòmilè la, petèt kèk pòs — men anyen pa konekte nan yon sistèm ki reyèlman mache." },
-        { icon: "📚", title: "Fòmasyon ki anseye, men ki pa janm ede ou lanse", body: "Ou te konsome anpil kontni. Sa ki manke ou se pa plis enfòmasyon — se yon chemen lansman klè ak vrè sipò pandan ou ap bati." },
-        { icon: "🤷", title: "Eseye rasanble tout bagay poukont ou", body: "Ou pa bezwen plis motivasyon. Ou bezwen estrikti, sipò, ak yon moun k ap bati bò kote ou ki te deja fè sa anvan." },
-      ],
-      howIntro: "Sa a se chemen egzak nou itilize pou mennen ou nan premye kliyan peyan ou nan 30 jou.",
-      howSteps: [
-        { number: "01", title: "\uD83D\uDCA5 Semèn 1 — Fikse premye òf ou (ke moun ap reyèlman peye pou li)", body: "Sispann devine. Nou valide lide ou, defini odyans ou, epi bati yon òf ki baze sou vrè demand.", tag: "Ou soti ak", checklist: ["Yon òf klè", "Yon achetè defini", "Konfyans ke li ka vann"] },
-        { number: "02", title: "\u26A1 Semèn 2 — Lanse vit", body: "Bon mwayen lansman ou, mesaj ou, ak sistèm kliyan ou ale an liy vit.", tag: "Ou soti ak", checklist: ["Bon mwayen lansman an an liy", "Rezèvasyon oswa lead pare", "Sistèm swivi an plas"] },
-        { number: "03", title: "\uD83D\uDE80 Semèn 3 — Kòmanse vrè konvèsasyon", body: "Pa tann ankò. Ou kòmanse pale ak vrè prospèk ak script ki pwouve yo mache.", tag: "Ou soti ak", checklist: ["Mesaj pwospeksyon ki jwenn repons", "Premye vrè lead yo", "Konvèsasyon aktif"] },
-        { number: "04", title: "\uD83D\uDCB0 Semèn 4 — Fèmen premye kliyan peyan ou", body: "Nou rafine pitch ou epi ede ou transfòme konvèsasyon an revni.", tag: "Ou soti ak", checklist: ["Premye kliyan peyan ou", "Yon pwosesis lavant ou ka repete", "Vrè elan"], guarantee: "Si ou pa rive nan pwen sa a, nou kontinye travay avèk ou — gratis — jiskaske ou rive." },
-      ],
-      featuredBadge: "Sprint la",
-      featuredTitle: "Sprint Fondatè 30 Jou a",
-      featuredBody:
-        "Yon sistèm lansman biznis fèt avèk ou. Yon sèl konfigirasyon entegre ki reyèlman mache — depi lide rive nan premye kliyan peyan, ak sipò konkrè nan chak etap.",
-      featuredCta: "Aplike pou Sprint la",
-      featuredChecklist: [
-        "Validasyon lide ak direksyon mache",
-        "Kreyasyon òf ki bati sou vrè demand",
-        "Bon mwayen lansman ak mesaj bati avèk ou",
-        "Sistèm rezèvasyon ak swivi kliyan",
-        "Zouti IA konfigire pou ekonomize tan",
-        "Fèy wout egzekisyon 30 jou",
-        "Sipò dirèk ak feedback tout long",
-      ],
-      services: [
-        { id: "outreach_templates", title: "Script akizisyon premye kliyan", body: "Konnen egzakteman sa pou di. Modèl pwospeksyon ak swivi ki pare pou itilize depi premye jou, ki fèt pou kòmanse vrè konvèsasyon ki konvèti.", cta: "Enkli nan Sprint la" },
-        { id: "automation_setup", title: "Sipò konfigirasyon otomatizasyon", body: "Sistèm ou a kontinye travay menm lè ou pa an liy. Nou konfigire zouti IA ak otomatizasyon ki fè ou ekonomize plizyè èdtan chak semèn.", cta: "Enkli nan Sprint la" },
-        { id: "commitment", title: "Angajman nou — Rezilta oswa nou kontinye travay", body: "Si ou konplete sprint la, swiv plan an, epi fè travay la — epi ou toujou pa jwenn premye kliyan peyan ou nan 30 jou — nou kontinye travay avèk ou san frè siplemantè jiskaske ou jwenn.", cta: "Pa gen frè kache. Pa gen ti lèt." },
-        { id: "why_different", title: "Poukisa sa diferan", body: "Se pa yon kou. Se pa yon zouti. Se pa plis teyori. Sprint la bati sou egzekisyon — yon sèl objektif klè, sipò konkrè, ak yon sistèm ki pou ou lè li fini.", cta: "Yon objektif: premye kliyan peyan ou" },
-      ],
-      testimonials: [
-        { quote: "Mwen te kòmanse ak panse gaye e okenn pozisyonman klè. Nan fen sprint la, mwen te gen yon òf valide, yon odyans defini, ak yon direksyon mwen te ka eksplike ak konfyans.", name: "Soti nan lide pa klè rive nan yon òf peyan klè", role: "Rezilta sprint", initial: "1", color: "bg-[var(--landing-green-mid)]" },
-        { quote: "Olye mwen te jis mete yon bagay an liy, mwen te soti ak mesaj, fliks rezèvasyon, ak moso swivi ki reyèlman sipòte konvèsyon.", name: "Soti nan moso gaye rive nan yon vrè sistèm lansman", role: "Rezilta sprint", initial: "2", color: "bg-[var(--landing-green-light)]" },
-        { quote: "Mwen te sispann tann pou tout bagay santi li pafè epi mwen te kòmanse gen konvèsasyon, voye òf, epi bati elan sou yon bagay reyèl.", name: "Soti nan reflechi twòp rive nan vrè pwospeksyon", role: "Rezilta sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
-      ],
-      signalStats: [
-        { value: "<1 min", label: "Validasyon gratis — wè etap ou a imedyatman" },
-        { value: "48h", label: "Sistèm lansman ou an liy" },
-        { value: "30", label: "Jou rive nan premye kliyan peyan" },
-        { value: "$0", label: "Pri pou kòmanse validasyon gratis ou" },
-      ],
-      bookingTitle: "Apèl fit Sprint Fondatè gratis 30 minit",
-      bookingSubtitle: "Sesyon limite disponib semèn sa a",
-      bookingFallback: "Pi bon pou fondatè ki pare pou lanse nan 30 jou k ap vini yo",
-      bookingSubheading:
-        "N ap trase chemen ki pi rapid pou mennen ou nan premye kliyan peyan ou epi n ap di w si Sprint la bon fit pou ou.",
-      bookingBody:
-        "Nan 30 minit, n ap idantifye sa k ap bloke lansman ou, trase pi bon pwochen mouvman an, epi ba ou yon sèl aksyon klè pou pran touswit.",
-      bookingQualifier:
-        "Pi bon pou fondatè ki pare pou lanse nan 30 jou k ap vini yo.",
-      bookingNote:
-        "Pou fondatè ki pare pou avanse, pa sèlman pou eksplore.",
-    };
-  }
-
-  if (lang === "pt") {
-    return {
-      ...base,
-      clarityLabel: "Comece aqui — menos de um minuto",
-      clarityQuestion:
-        "Onde você está no caminho até o seu primeiro cliente?",
-      clarityChoices: [
-        "Tenho uma ideia de negócio mas não tenho certeza se vale a pena seguir em frente",
-        "Sei o que quero oferecer mas não sei o que construir primeiro",
-        "Comecei algo mas estou travado/a e ainda não estou ganhando dinheiro",
-        "Estou pronto/a — só preciso de ajuda para conseguir meu primeiro cliente pagante",
-      ],
-      validationCta: "Iniciar minha validação gratuita",
-      quizCta: "Mostre-me meu próximo passo →",
-      widgetNote: "Gratuito · Sem conta · Menos de um minuto",
-      platformBridgeCta: "Acessar meu sprint completo no BizSproutAI",
-      callCta: "Ou agendar uma chamada diagnóstico gratuita",
-      miniCards: [
-        { icon: "🎯", title: "Sua etapa", subtitle: "Identificada na hora" },
-        { icon: "⚡", title: "Primeiro ativo", subtitle: "Recomendado para você" },
-        { icon: "🗺️", title: "4 próximos passos", subtitle: "Claros e específicos" },
-        { icon: "⚠️", title: "1 aviso", subtitle: "Erro a evitar" },
-      ],
-      painItems: [
-        { icon: "🧠", title: "Muitas ideias, nenhum próximo passo claro", body: "Você tem direções potenciais mas nenhum framework para escolher. Cada opção parece igualmente possível e arriscada, então nada avança." },
-        { icon: "💸", title: "Sem confiança de que as pessoas vão realmente pagar", body: "Você não validou se alguém quer o que está construindo. Sem prova de demanda, é difícil se comprometer totalmente com uma direção." },
-        { icon: "🔄", title: "Pensar demais substituindo a execução todo dia", body: "Você passa mais tempo planejando, pesquisando e questionando do que construindo. A distância entre saber e fazer só cresce." },
-        { icon: "🧩", title: "Ferramentas espalhadas que nunca viram um negócio real", body: "Você tem uma landing page aqui, um formulário ali, talvez alguns posts — mas nada está conectado em um sistema que realmente funciona." },
-        { icon: "📚", title: "Cursos que ensinam, mas nunca ajudam a lançar", body: "Você já consumiu bastante conteúdo. O que falta não é mais informação — é um caminho claro de lançamento e apoio real enquanto você constrói." },
-        { icon: "🤷", title: "Tentando montar tudo sozinho/a", body: "Você não precisa de mais motivação. Precisa de estrutura, apoio e alguém construindo ao seu lado que já fez isso antes." },
-      ],
-      howIntro: "Este é o caminho exato que usamos para levar você ao seu primeiro cliente pagante em 30 dias.",
-      howSteps: [
-        { number: "01", title: "\uD83D\uDCA5 Semana 1 — Defina sua primeira oferta (pela qual as pessoas vão realmente pagar)", body: "Pare de adivinhar. Validamos sua ideia, definimos seu público, e construímos uma oferta baseada em demanda real.", tag: "Você sai com", checklist: ["Uma oferta clara", "Um comprador definido", "Confiança de que pode vender"] },
-        { number: "02", title: "\u26A1 Semana 2 — Vá ao ar rápido", body: "Seu ativo de lançamento, sua mensagem e seu sistema de clientes ficam no ar rápido.", tag: "Você sai com", checklist: ["O ativo de lançamento certo no ar", "Fluxo de agendamento ou leads pronto", "Sistema de acompanhamento ativo"] },
-        { number: "03", title: "\uD83D\uDE80 Semana 3 — Inicie conversas reais", body: "Chega de esperar. Você começa a falar com prospects reais usando scripts comprovados.", tag: "Você sai com", checklist: ["Mensagens de prospecção que geram respostas", "Seus primeiros leads reais", "Conversas ativas"] },
-        { number: "04", title: "\uD83D\uDCB0 Semana 4 — Feche seu primeiro cliente pagante", body: "Refinamos seu pitch e ajudamos você a transformar conversas em receita.", tag: "Você sai com", checklist: ["Seu primeiro cliente pagante", "Um processo de vendas repetível", "Impulso real"], guarantee: "Se você não chegar a esse ponto, continuamos trabalhando com você — de graça — até que consiga." },
-      ],
-      featuredBadge: "O Sprint",
-      featuredTitle: "O Sprint Fundador de 30 Dias",
-      featuredBody:
-        "Um sistema de lançamento de negócio feito com você. Uma configuração integrada que realmente funciona — da ideia ao primeiro cliente pagante, com apoio prático em cada etapa.",
-      featuredCta: "Candidate-se ao Sprint",
-      featuredChecklist: [
-        "Validação de ideia e direção de mercado",
-        "Criação de oferta baseada em demanda real",
-        "O ativo de lançamento certo e a mensagem construídos com você",
-        "Sistema de agendamento e acompanhamento de clientes",
-        "Ferramentas de IA configuradas para economizar tempo",
-        "Roteiro de execução de 30 dias",
-        "Apoio direto e feedback ao longo de todo o processo",
-      ],
-      services: [
-        { id: "outreach_templates", title: "Scripts de aquisição do primeiro cliente", body: "Saiba exatamente o que dizer. Templates de prospecção e acompanhamento prontos para usar desde o primeiro dia, feitos para iniciar conversas reais que convertem.", cta: "Incluído no Sprint" },
-        { id: "automation_setup", title: "Suporte de configuração de automação", body: "Seu sistema continua funcionando mesmo quando você não está online. Configuramos as ferramentas de IA e automações que economizam horas toda semana.", cta: "Incluído no Sprint" },
-        { id: "commitment", title: "Nosso compromisso — Resultados ou continuamos trabalhando", body: "Se você completar o sprint, seguir o plano e fizer o trabalho — e ainda não conseguir seu primeiro cliente pagante em 30 dias — continuamos trabalhando com você sem custo adicional até conseguir.", cta: "Sem taxas ocultas. Sem letras miúdas." },
-        { id: "why_different", title: "Por que isso é diferente", body: "Não é um curso. Não é uma ferramenta. Não é mais teoria. O Sprint é construído em torno da execução — uma meta clara, apoio prático, e um sistema que é seu quando terminar.", cta: "Uma meta: seu primeiro cliente pagante" },
-      ],
-      testimonials: [
-        { quote: "Comecei com pensamentos dispersos e nenhum posicionamento claro. No final do sprint, eu tinha uma oferta validada, um público definido, e uma direção que conseguia explicar com confiança.", name: "De ideia confusa a oferta paga clara", role: "Resultado do sprint", initial: "1", color: "bg-[var(--landing-green-mid)]" },
-        { quote: "Em vez de apenas colocar algo no ar, saí com mensagem, fluxo de agendamento, e peças de acompanhamento que realmente apoiam conversões.", name: "De peças espalhadas a um sistema real de lançamento", role: "Resultado do sprint", initial: "2", color: "bg-[var(--landing-green-light)]" },
-        { quote: "Parei de esperar tudo ficar perfeito e comecei a ter conversas, enviar ofertas, e construir impulso em torno de algo real.", name: "De pensar demais a prospecção real", role: "Resultado do sprint", initial: "3", color: "bg-[var(--landing-amber)] text-[var(--landing-ink)]" },
-      ],
-      signalStats: [
-        { value: "<1 min", label: "Validação gratuita — veja sua etapa na hora" },
-        { value: "48h", label: "Seu sistema de lançamento no ar" },
-        { value: "30", label: "Dias até o primeiro cliente pagante" },
-        { value: "$0", label: "Custo para iniciar sua validação gratuita" },
-      ],
-      bookingTitle: "Chamada gratuita de fit do Founder Sprint de 30 minutos",
-      bookingSubtitle: "Sessões limitadas esta semana",
-      bookingFallback: "Ideal para fundadores prontos para lançar nos próximos 30 dias",
-      bookingSubheading:
-        "Vamos mapear seu caminho mais rápido até o primeiro cliente pagante e dizer se o Sprint é o ajuste certo.",
-      bookingBody:
-        "Em 30 minutos, vamos identificar o que está bloqueando seu lançamento, mapear o melhor próximo passo e dar uma ação clara para você executar imediatamente.",
-      bookingQualifier:
-        "Ideal para fundadores prontos para lançar nos próximos 30 dias.",
-      bookingNote:
-        "Para fundadores que estão prontos para agir, não apenas explorar.",
-    };
-  }
-
-  return base;
+export function getLandingCopy(locale: string): LandingCopy {
+  return copy[locale.toLowerCase().split("-")[0]] ?? copy.en;
 }

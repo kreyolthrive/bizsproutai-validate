@@ -149,3 +149,64 @@ html[data-motion="enabled"] .landing-reveal[data-reveal-state="visible"] {
     animation: none;
   }
 }
+
+/* Landing-only palette: echoes the main app without recoloring validation forms. */
+.validation-landing { --vl-bg: #0a0f1f; --vl-surface: #111a2e; --vl-line: #28354b; --vl-text: #f1f5f9; --vl-muted: #b8c5d6; --vl-accent: #6ee7b7; background: var(--vl-bg); color: var(--vl-text); }
+.validation-landing *, .validation-landing *::before, .validation-landing *::after { min-width: 0; }
+.vl-container { max-width: 1200px; margin: 0 auto; position: relative; }
+.vl-section { padding: 80px 24px; scroll-margin-top: 150px; }
+.vl-section h1, .vl-section h2, .vl-section h3 { font-family: var(--font-body), system-ui, sans-serif; font-weight: 600; text-wrap: balance; }
+.vl-section h1 { font-size: clamp(2.4rem, 5vw, 4.25rem); line-height: 1.09; letter-spacing: -.045em; max-width: 14ch; margin: 24px 0; }
+.vl-section h1 span { color: var(--vl-accent); }
+.vl-section h2 { font-size: clamp(1.8rem, 3.2vw, 2.65rem); line-height: 1.15; letter-spacing: -.025em; max-width: 25ch; }
+.vl-section h3 { font-size: 1.18rem; line-height: 1.4; margin-bottom: 12px; }
+.vl-eyebrow { color: var(--vl-accent); font-size: .76rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+.vl-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--vl-accent); flex-shrink: 0; }
+.vl-hero { padding-top: 190px; position: relative; overflow: hidden; border-bottom: 1px solid var(--vl-line); }
+.vl-hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; }
+.vl-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 88% 20%, #123d4755, transparent 60%); }
+.vl-lead { max-width: 52ch; color: var(--vl-muted); font-size: 1.125rem; line-height: 1.75; }
+.vl-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: 32px; }
+.vl-button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; padding: 14px 24px; border: 1px solid transparent; border-radius: 12px; color: #071a20; background: linear-gradient(110deg, #6ee7b7, #67e8f9); font-size: .95rem; font-weight: 600; text-align: center; transition: filter .15s; }
+.vl-button:hover { filter: brightness(1.1); }
+.vl-text-link { color: var(--vl-accent); text-decoration: underline; text-underline-offset: 5px; display: inline-flex; align-items: center; min-height: 44px; }
+.vl-note { color: var(--vl-muted); font-size: .8rem; line-height: 1.7; margin-top: 16px; }
+.vl-founder { display: flex; align-items: center; gap: 14px; border-top: 1px solid var(--vl-line); margin-top: 32px; padding-top: 24px; font-size: .8rem; color: var(--vl-muted); }
+.vl-founder a { display: inline-block; padding-top: 8px; color: var(--vl-accent); text-decoration: underline; text-underline-offset: 4px; }
+.vl-monogram { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #365466; color: var(--vl-accent); flex-shrink: 0; }
+.vl-result-card { background: linear-gradient(145deg, #18253a, #10192c); border: 1px solid #345062; border-radius: 24px; padding: 32px; box-shadow: 0 28px 70px #0003; }
+.vl-result-card h2 { font-size: 1.75rem; margin-bottom: 16px; }
+.vl-muted { color: var(--vl-muted); line-height: 1.65; font-size: .95rem; }
+.vl-results { padding: 0; list-style: none; margin: 24px 0; }
+.vl-results li { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--vl-line); }
+.vl-results h3 { font-size: .95rem; margin-bottom: 4px; }
+.vl-results p { font-size: .85rem; color: var(--vl-muted); line-height: 1.6; }
+.vl-number { color: var(--vl-accent); font-size: .75rem; padding-top: 3px; }
+.vl-evidence { font-size: .8rem; line-height: 1.6; color: #b6ded3; }
+.vl-audience-grid, .vl-next-grid { display: grid; gap: 24px; margin-top: 32px; }
+.vl-audience-grid { grid-template-columns: repeat(3, 1fr); }
+.vl-next-grid { grid-template-columns: repeat(2, 1fr); }
+.vl-card { border: 1px solid var(--vl-line); background: var(--vl-surface); border-radius: 20px; padding: 28px; }
+.vl-card p, .vl-step-grid p { color: var(--vl-muted); line-height: 1.75; }
+.vl-card .vl-button { margin-top: 24px; }
+.vl-kicker { display: block; color: var(--vl-accent); margin-bottom: 24px; font-size: .8rem; }
+.vl-method { background: #0e1728; border-block: 1px solid var(--vl-line); }
+.vl-section-intro { max-width: 65ch; color: var(--vl-muted); line-height: 1.75; margin-top: 20px; }
+.vl-step-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; list-style: none; padding: 0; margin: 40px 0 24px; }
+.vl-step-number { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid #365466; border-radius: 14px; color: var(--vl-accent); margin-bottom: 24px; }
+.vl-platform { border-color: #366757; }
+.vl-button-secondary { background: transparent; border-color: #648297; color: var(--vl-text); }
+#booking { scroll-margin-top: 150px; }
+.vl-feedback { border-block: 1px solid var(--vl-line); background: #0e1728; }
+.vl-feedback blockquote { font-size: 1.2rem; line-height: 1.7; }
+.vl-feedback figcaption { color: var(--vl-accent); margin-top: 16px; font-size: .85rem; }
+.vl-faq-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; }
+.vl-faq-layout details { border-bottom: 1px solid var(--vl-line); padding: 20px 0; }
+.vl-faq-layout summary { cursor: pointer; font-weight: 600; line-height: 1.6; padding-right: 12px; }
+.vl-faq-layout details p { color: var(--vl-muted); margin-top: 14px; line-height: 1.75; }
+.vl-final { text-align: center; background: radial-gradient(ellipse at bottom, #163832, #0a0f1f 75%); }
+.vl-final h2, .vl-final .vl-section-intro { margin-left: auto; margin-right: auto; }
+.vl-final .vl-button { margin-top: 28px; }
+.validation-landing :focus-visible, .landing-header :focus-visible { outline: 3px solid #22d3ee; outline-offset: 5px; }
+@media (max-width: 1023px) { .vl-hero-grid { grid-template-columns: 1fr; gap: 40px; } .vl-section h1 { max-width: 20ch; } .vl-step-grid { grid-template-columns: repeat(2, 1fr); } .vl-audience-grid { grid-template-columns: 1fr; } .vl-faq-layout { grid-template-columns: 1fr; gap: 24px; } }
+@media (max-width: 639px) { .vl-section { padding: 56px 20px; } .vl-hero { padding-top: 170px; } .vl-next-grid, .vl-step-grid { grid-template-columns: 1fr; } .vl-result-card, .vl-card { padding: 24px; } .vl-actions { align-items: stretch; flex-direction: column; gap: 12px; } .vl-actions .vl-text-link { justify-content: center; } .vl-button { width: 100%; } .vl-result-card h2 { font-size: 1.5rem; } }

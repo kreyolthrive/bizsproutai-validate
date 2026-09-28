@@ -26,7 +26,7 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <div className="inline-flex items-center gap-1 rounded-full border border-[rgba(26,58,42,0.06)] bg-[rgba(248,244,237,0.92)] p-1">
+    <div className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 p-1">
       {locales.map((locale) => {
         const active = locale === currentLocale;
 
@@ -36,8 +36,8 @@ export function LanguageSwitcher() {
             onClick={() => handleLocaleChange(locale)}
             className={
               active
-                ? "rounded-full bg-[var(--landing-green-deep)] px-4 py-2 text-sm font-semibold text-white"
-                : "rounded-full px-4 py-2 text-sm font-semibold text-[var(--landing-muted)] transition hover:bg-[rgba(26,58,42,0.06)] hover:text-[var(--landing-green-deep)]"
+                ? "rounded-full min-h-11 bg-emerald-300 px-3 py-2 text-sm font-semibold text-slate-950"
+                : "rounded-full min-h-11 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-white"
             }
             aria-current={active ? "page" : undefined}
             aria-label={localeNames[locale]}
