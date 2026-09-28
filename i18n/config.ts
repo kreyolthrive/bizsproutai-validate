@@ -1,3 +1,4 @@
+import { getLandingCopy } from "./landingCopy";
 export const locales = ["en", "fr", "ht", "es", "pt"] as const;
 export type Locale = (typeof locales)[number];
 
@@ -19,34 +20,13 @@ export const localeFlags: Record<Locale, string> = {
   pt: "🇵🇹",
 };
 
-// SEO metadata per locale
-export const seoMetadata: Record<
-  Locale,
-  { title: string; description: string }
-> = {
-  en: {
-    title: "Validate Before You Build | BizSproutAI",
-    description:
-      "Get a fast AI-powered business idea validation and find out what to build first before you waste time and money.",
-  },
-  fr: {
-    title: "Validez votre idée gratuitement | BizSproutAI",
-    description:
-      "BizSproutAI vous aide à valider votre idée, identifier votre stade et trouver quoi construire en premier — gratuitement. Résultats en moins d'une minute.",
-  },
-  ht: {
-    title: "Valide ide biznis ou gratis | BizSproutAI",
-    description:
-      "BizSproutAI ede ou valide ide ou, wè kile ou ye, ak jwenn sa pou bati an premye — gratis. Rezilta an mwens pase yon minit.",
-  },
-  es: {
-    title: "Valida tu idea de negocio gratis | BizSproutAI",
-    description:
-      "BizSproutAI te ayuda a validar tu idea, ver en qué etapa estás y encontrar qué construir primero — gratis. Resultados en menos de un minuto.",
-  },
-  pt: {
-    title: "Valide sua ideia de negócio de graça | BizSproutAI",
-    description:
-      "BizSproutAI ajuda você a validar sua ideia, ver em qual estágio está e encontrar o que construir primeiro — de graça. Resultados em menos de um minuto.",
-  },
-};
+// Keep shared metadata aligned with the public landing copy in every language.
+export const seoMetadata = Object.fromEntries(
+  locales.map((locale) => {
+    const copy = getLandingCopy(locale);
+    return [
+      locale,
+      { title: `BizSproutAI | ${copy.eyebrow}`, description: copy.description },
+    ];
+  }),
+) as Record<Locale, { title: string; description: string }>;
