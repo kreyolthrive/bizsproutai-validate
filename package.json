@@ -31,7 +31,8 @@
     "pdf-lib": "^1.17.1",
     "posthog-js": "^1.157.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "web-vitals": "^5.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

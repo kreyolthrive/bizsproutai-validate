@@ -144,7 +144,7 @@ export function Footer({ locale, logoSrc, footerCopy, navCopy, homeHref }: Foote
                 {locale === "fr" ? "Pour qui" : locale === "es" ? "Para quién" : locale === "ht" ? "Pou kiyès" : locale === "pt" ? "Para quem" : "Who It's For"}
               </a>
               <a
-                href={`${homeHref}#bridge`}
+                href={`${homeHref}#how`}
                 className="text-white/75 transition hover:text-[var(--landing-sprout)]"
               >
                 {locale === "fr" ? "Comment ça marche" : locale === "es" ? "Cómo funciona" : locale === "ht" ? "Kijan li mache" : locale === "pt" ? "Como funciona" : "How It Works"}

@@ -279,7 +279,7 @@ export default async function LocaleLayout({
                 <a href={`${homeHref}#pain`} className="transition hover:text-[var(--landing-green-deep)]">
                   {copy.nav.pain}
                 </a>
-                <a href={`${homeHref}#bridge`} className="transition hover:text-[var(--landing-green-deep)]">
+                <a href={`${homeHref}#how`} className="transition hover:text-[var(--landing-green-deep)]">
                   {copy.nav.how}
                 </a>
                 <a
@@ -303,7 +303,7 @@ export default async function LocaleLayout({
                 <MobileNav
                   links={[
                     { href: `${homeHref}#pain`, label: copy.nav.pain },
-                    { href: `${homeHref}#bridge`, label: copy.nav.how },
+                    { href: `${homeHref}#how`, label: copy.nav.how },
                     { href: `${homeHref}#booking`, label: copy.nav.bookCall },
                   ]}
                   ctaHref={`${homeHref}/validate`}
