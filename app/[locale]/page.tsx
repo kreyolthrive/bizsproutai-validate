@@ -99,9 +99,9 @@ function getCopy(locale: string) {
       emailPrefix: "Vous préférez écrire ?",
 
       /* ── Guarantee + trust ── */
-      guaranteeTitle: "Des résultats ou on continue — gratuitement",
+      guaranteeTitle: "Des étapes concrètes vers votre premier client",
       guaranteeBody:
-        "Gratuit pour commencer. Sans compte. Si vous rejoignez le Sprint et n'avez pas encore décroché votre premier client payant en 30 jours, nous continuons à travailler avec vous sans frais supplémentaires jusqu'à ce que ce soit le cas.",
+        "Gratuit pour commencer. Sans compte. Le Sprint Fondateur de 30 Jours vous donne un plan guidé, semaine par semaine, avec un accompagnement pratique à chaque étape. Les résultats dépendent de votre offre, de votre marché et de votre exécution.",
       trustTitle: "Fondateurs déjà en pilote",
       trustMeta: "Cohorte initiale — places limitées",
 
@@ -193,9 +193,9 @@ function getCopy(locale: string) {
       ctaPrimary: "Iniciar mi validación gratuita",
       ctaSecondary: "Reservar llamada diagnóstico gratuita",
       emailPrefix: "¿Prefieres escribir?",
-      guaranteeTitle: "Resultados o seguimos trabajando — gratis",
+      guaranteeTitle: "Pasos prácticos hacia tu primer cliente",
       guaranteeBody:
-        "Gratis para empezar. Sin cuenta. Si te unes al Sprint y aún no has conseguido tu primer cliente de pago en 30 días, seguimos trabajando contigo sin costo adicional hasta que lo logres.",
+        "Gratis para empezar. Sin cuenta. El Sprint Fundador de 30 Días te da un plan guiado, semana a semana, con apoyo práctico en cada etapa. Los resultados dependen de tu oferta, tu mercado y tu ejecución.",
       trustTitle: "Fundadores ya en piloto",
       trustMeta: "Cohorte inicial — plazas limitadas",
 
@@ -285,9 +285,9 @@ function getCopy(locale: string) {
       ctaPrimary: "Kòmanse validasyon gratis mwen",
       ctaSecondary: "Rezève yon apèl dyagnostik gratis",
       emailPrefix: "Ou pito ekri?",
-      guaranteeTitle: "Rezilta oswa nou kontinye — gratis",
+      guaranteeTitle: "Etap konkrè pou rive nan premye kliyan ou",
       guaranteeBody:
-        "Gratis pou kòmanse. San kont. Si ou rantre nan Sprint la epi ou poko jwenn premye kliyan peyan ou nan 30 jou, nou kontinye travay avèk ou san frè siplemantè jiskaske ou jwenn.",
+        "Gratis pou kòmanse. San kont. Sprint Fondatè 30 Jou a ba ou yon plan gide, semèn pa semèn, ak sipò pratik nan chak etap. Rezilta yo depann de òf ou, mache ou, ak ekzekisyon ou.",
       trustTitle: "Fondatè deja nan pilòt",
       trustMeta: "Premye gwoup — plas limite",
 
@@ -377,9 +377,9 @@ function getCopy(locale: string) {
       ctaPrimary: "Iniciar minha validação gratuita",
       ctaSecondary: "Agendar chamada diagnóstico gratuita",
       emailPrefix: "Prefere escrever?",
-      guaranteeTitle: "Resultados ou continuamos trabalhando — de graça",
+      guaranteeTitle: "Passos práticos rumo ao seu primeiro cliente",
       guaranteeBody:
-        "Gratuito para começar. Sem conta. Se você entrar no Sprint e ainda não tiver conseguido seu primeiro cliente pagante em 30 dias, continuamos trabalhando com você sem custo adicional até conseguir.",
+        "Gratuito para começar. Sem conta. O Sprint Fundador de 30 Dias oferece um plano guiado, semana a semana, com apoio prático em cada etapa. Os resultados dependem da sua oferta, do seu mercado e da sua execução.",
       trustTitle: "Fundadores já no piloto",
       trustMeta: "Coorte inicial — vagas limitadas",
 
@@ -487,9 +487,9 @@ function getCopy(locale: string) {
     emailPrefix: "Prefer email?",
 
     /* ── Guarantee + trust ── */
-    guaranteeTitle: "Results or we keep working — free",
+    guaranteeTitle: "Practical steps toward a first customer",
     guaranteeBody:
-      "Free to start. No account needed. If you join the Sprint and still haven't landed your first paying customer in 30 days, we continue working with you at no extra cost until you do.",
+      "Free to start. No account needed. The 30-Day Founder Sprint gives you a guided, week-by-week plan with hands-on support at every stage. Outcomes depend on your offer, market, and execution.",
     trustTitle: "Founders already in pilot",
     trustMeta: "Early cohort — spots limited",
 
@@ -636,24 +636,24 @@ export default async function HomePage({ params }: Props) {
             {/* Testimonials */}
             <div className="landing-reveal mt-8 space-y-[10px]">
               <div className="flex gap-3 rounded-[14px] border border-[rgba(26,58,42,0.1)] bg-white p-4 shadow-sm transition hover:translate-x-0.5">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[var(--landing-green-mid)] text-[0.7rem] font-bold text-white">D</div>
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[var(--landing-green-mid)] text-[0.7rem] font-bold text-white">1</div>
                 <div>
                   <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-ink)]">&ldquo;I had too many ideas and no idea where to start. Getting a clear next step changed everything for me.&rdquo;</p>
-                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Doha</strong> · Early pilot founder</p>
+                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Early pilot founder</strong></p>
                 </div>
               </div>
               <div className="flex gap-3 rounded-[14px] border border-[rgba(26,58,42,0.1)] bg-white p-4 shadow-sm transition hover:translate-x-0.5">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#4a8c5c] text-[0.7rem] font-bold text-white">R</div>
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#4a8c5c] text-[0.7rem] font-bold text-white">2</div>
                 <div>
                   <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-ink)]">&ldquo;My site hadn&rsquo;t matched my real offer in over a year. Within days we had messaging that finally made sense.&rdquo;</p>
-                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Rembert</strong> · Creative services founder</p>
+                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Creative services founder</strong></p>
                 </div>
               </div>
               <div className="flex gap-3 rounded-[14px] border border-[rgba(26,58,42,0.1)] bg-white p-4 shadow-sm transition hover:translate-x-0.5">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[var(--landing-amber)] text-[0.7rem] font-bold text-[var(--landing-ink)]">L</div>
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[var(--landing-amber)] text-[0.7rem] font-bold text-[var(--landing-ink)]">3</div>
                 <div>
                   <p className="text-[0.83rem] leading-[1.55] text-[var(--landing-ink)]">&ldquo;I just needed someone to tell me what to build first. That&rsquo;s exactly what the validation did.&rdquo;</p>
-                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Liv</strong> · Service business owner</p>
+                  <p className="mt-[5px] text-[0.72rem] text-[var(--landing-muted)]"><strong className="text-[var(--landing-green-deep)]">Service business owner</strong></p>
                 </div>
               </div>
             </div>
@@ -713,6 +713,42 @@ export default async function HomePage({ params }: Props) {
                   {item.body}
                 </p>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Section 2b: How It Works ── */}
+      <section id="how" className="border-t border-[rgba(26,58,42,0.1)] bg-[var(--warm-white)] px-5 py-20 lg:px-10">
+        <div className="mx-auto max-w-[1100px]">
+          <div className="landing-reveal mx-auto mb-14 max-w-[620px] text-center">
+            <p className="mb-3 inline-block text-[0.70rem] font-bold uppercase tracking-[0.10em] text-[var(--landing-green-light)]">
+              {copy.howEyebrow}
+            </p>
+            <h2 className="font-[family:var(--font-serif)] text-[clamp(1.9rem,3.2vw,2.8rem)] leading-[1.15] text-[var(--landing-green-deep)]">
+              {copy.howTitle}
+            </h2>
+            <p className="mt-4 text-[1rem] leading-[1.65] text-[var(--landing-muted)]">
+              {copy.howBody}
+            </p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {copy.howStepsOverview.map((step) => (
+              <div
+                key={step.number}
+                className="landing-reveal rounded-[16px] border border-[rgba(26,58,42,0.1)] bg-white p-5 transition hover:-translate-y-1 hover:shadow-[0_14px_36px_rgba(26,58,42,0.09)]"
+              >
+                <span className="text-[0.72rem] font-bold uppercase tracking-[0.1em] text-[var(--landing-green-light)]">
+                  {step.number}
+                </span>
+                <h3 className="mt-2 font-[family:var(--font-serif)] text-[1.05rem] leading-tight text-[var(--landing-green-deep)]">
+                  {step.label}
+                </h3>
+                <p className="mt-2 text-[0.82rem] leading-[1.55] text-[var(--landing-muted)]">
+                  {step.desc}
+                </p>
+              </div>
             ))}
           </div>
         </div>
