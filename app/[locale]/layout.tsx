@@ -247,6 +247,14 @@ export default async function LocaleLayout({
   const copy = getLayoutCopy(locale);
   const logoSrc = pickLogoSrc();
   const homeHref = `/${locale}`;
+  const isEnglish = locale.toLowerCase().split("-")[0] === "en";
+  const enNavLinks = [
+    { href: `${homeHref}#next-move`, label: "Who It's For" },
+    { href: `${homeHref}#how`, label: "How It Works" },
+    { href: `${homeHref}#starting-point`, label: "$1 Domain" },
+    { href: `${homeHref}#sprint-beta`, label: "Founder Sprint" },
+  ];
+  const enCtaLabel = "Validate Idea ($1 Domain)";
 
   return (
     <>
@@ -276,18 +284,28 @@ export default async function LocaleLayout({
               </Link>
 
               <nav aria-label="Main navigation" className="hidden items-center gap-10 text-base font-medium text-[var(--landing-muted)] lg:flex">
-                <a href={`${homeHref}#pain`} className="transition hover:text-[var(--landing-green-deep)]">
-                  {copy.nav.pain}
-                </a>
-                <a href={`${homeHref}#bridge`} className="transition hover:text-[var(--landing-green-deep)]">
-                  {copy.nav.how}
-                </a>
-                <a
-                  href={`${homeHref}#booking`}
-                  className="transition hover:text-[var(--landing-green-deep)]"
-                >
-                  {copy.nav.bookCall}
-                </a>
+                {isEnglish ? (
+                  enNavLinks.map((link) => (
+                    <a key={link.href} href={link.href} className="transition hover:text-[var(--landing-green-deep)]">
+                      {link.label}
+                    </a>
+                  ))
+                ) : (
+                  <>
+                    <a href={`${homeHref}#pain`} className="transition hover:text-[var(--landing-green-deep)]">
+                      {copy.nav.pain}
+                    </a>
+                    <a href={`${homeHref}#bridge`} className="transition hover:text-[var(--landing-green-deep)]">
+                      {copy.nav.how}
+                    </a>
+                    <a
+                      href={`${homeHref}#booking`}
+                      className="transition hover:text-[var(--landing-green-deep)]"
+                    >
+                      {copy.nav.bookCall}
+                    </a>
+                  </>
+                )}
               </nav>
 
               <div className="flex items-center gap-4">
@@ -298,16 +316,20 @@ export default async function LocaleLayout({
                   href={`${homeHref}/validate`}
                   className="hidden items-center rounded-full bg-[var(--landing-green-deep)] px-5 py-3 text-sm font-bold text-white shadow-[0_2px_12px_rgba(26,58,42,0.18)] transition hover:-translate-y-0.5 hover:bg-[var(--landing-green-mid)] hover:shadow-[0_6px_20px_rgba(26,58,42,0.22)] lg:inline-flex"
                 >
-                  {copy.nav.cta} →
+                  {isEnglish ? enCtaLabel : copy.nav.cta} →
                 </a>
                 <MobileNav
-                  links={[
-                    { href: `${homeHref}#pain`, label: copy.nav.pain },
-                    { href: `${homeHref}#bridge`, label: copy.nav.how },
-                    { href: `${homeHref}#booking`, label: copy.nav.bookCall },
-                  ]}
+                  links={
+                    isEnglish
+                      ? enNavLinks
+                      : [
+                          { href: `${homeHref}#pain`, label: copy.nav.pain },
+                          { href: `${homeHref}#bridge`, label: copy.nav.how },
+                          { href: `${homeHref}#booking`, label: copy.nav.bookCall },
+                        ]
+                  }
                   ctaHref={`${homeHref}/validate`}
-                  ctaLabel={copy.nav.cta}
+                  ctaLabel={isEnglish ? enCtaLabel : copy.nav.cta}
                 />
               </div>
             </div>

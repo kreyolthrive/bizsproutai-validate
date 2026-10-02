@@ -4,7 +4,7 @@ import { getValidateCopy } from "@/i18n/validateCopy";
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ stage?: string; v?: string }>;
+  searchParams: Promise<{ stage?: string; v?: string; idea?: string }>;
 };
 
 export async function generateMetadata() {
@@ -18,7 +18,7 @@ export async function generateMetadata() {
 
 export default async function ValidatePage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const { stage, v } = await searchParams;
+  const { stage, v, idea } = await searchParams;
 
   setRequestLocale(locale);
 
@@ -50,6 +50,8 @@ export default async function ValidatePage({ params, searchParams }: Props) {
 
   const initialStage =
     stage !== undefined && /^[0-3]$/.test(stage) ? parseInt(stage, 10) : undefined;
+
+  const initialIdea = idea?.trim() ? idea.trim().slice(0, 500) : undefined;
 
   return (
     <main className="min-h-screen bg-[var(--warm-white)] px-5 pb-20 pt-36 sm:pt-32 lg:px-10 lg:pt-40">
@@ -88,6 +90,7 @@ export default async function ValidatePage({ params, searchParams }: Props) {
           <FreeValidationFlow
             locale={locale}
             initialStage={initialStage}
+            initialIdea={initialIdea}
             phoneHref={phoneHref}
             pageVariant={pageVariant}
           />

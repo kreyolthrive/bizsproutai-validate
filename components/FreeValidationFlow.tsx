@@ -106,6 +106,8 @@ function FieldMessageSlot({ children }: { children?: ReactNode }) {
 interface Props {
   locale: string;
   initialStage?: number;
+  /** Idea text prefilled from the homepage hero's free-text input box. */
+  initialIdea?: string;
   phoneHref: string;
   /** Round 1 variant token: "control" | "hero-a" | "cta-b" */
   pageVariant?: string;
@@ -113,7 +115,7 @@ interface Props {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVariant = "control" }: Props) {
+export function FreeValidationFlow({ locale, initialStage, initialIdea, phoneHref, pageVariant = "control" }: Props) {
   const copy = getValidateCopy(locale);
   const hasPreselectedStage =
     initialStage != null && initialStage >= 0 && initialStage <= 3;
@@ -133,7 +135,7 @@ export function FreeValidationFlow({ locale, initialStage, phoneHref, pageVarian
   const [stageIndex, setStageIndex] = useState<number | null>(
     hasPreselectedStage ? initialStage : null
   );
-  const [idea, setIdea] = useState("");
+  const [idea, setIdea] = useState(initialIdea ?? "");
   const [audience, setAudience] = useState("");
   const [hasLiveAsset, setHasLiveAsset] = useState<boolean | null>(null);
   const [hasTraction, setHasTraction] = useState<boolean | null>(null);

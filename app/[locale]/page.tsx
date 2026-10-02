@@ -3,6 +3,7 @@ import { LandingPageReveal } from "@/components/marketing/LandingPageReveal";
 import { BookingCalendar } from "@/components/marketing/BookingCalendar";
 import { HeroQuizCard } from "@/components/marketing/HeroQuizCard";
 import { LandingPageTracker } from "@/components/marketing/LandingPageTracker";
+import { EnLandingPage } from "@/components/marketing/EnLandingPage";
 import { getLandingCopy } from "@/i18n/landingCopy";
 
 type Props = {
@@ -520,6 +521,10 @@ function getCopy(locale: string) {
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  if (locale.toLowerCase().split("-")[0] === "en") {
+    return <EnLandingPage locale={locale} />;
+  }
 
   const copy = getCopy(locale);
   const lc = getLandingCopy(locale);
