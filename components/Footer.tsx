@@ -137,24 +137,46 @@ export function Footer({ locale, logoSrc, footerCopy, navCopy, homeHref }: Foote
               {footerCopy.explore}
             </p>
             <nav aria-label="Footer navigation" className="mt-5 flex flex-col gap-3 text-sm">
-              <a
-                href={`${homeHref}#pain`}
-                className="text-white/75 transition hover:text-[var(--landing-sprout)]"
-              >
-                {locale === "fr" ? "Pour qui" : locale === "es" ? "Para quién" : locale === "ht" ? "Pou kiyès" : locale === "pt" ? "Para quem" : "Who It's For"}
-              </a>
-              <a
-                href={`${homeHref}#bridge`}
-                className="text-white/75 transition hover:text-[var(--landing-sprout)]"
-              >
-                {locale === "fr" ? "Comment ça marche" : locale === "es" ? "Cómo funciona" : locale === "ht" ? "Kijan li mache" : locale === "pt" ? "Como funciona" : "How It Works"}
-              </a>
-              <a
-                href={`${homeHref}#booking`}
-                className="text-white/75 transition hover:text-[var(--landing-sprout)]"
-              >
-                {locale === "fr" ? "Réserver un appel" : locale === "es" ? "Reservar una llamada" : locale === "ht" ? "Rezève yon apèl" : locale === "pt" ? "Agendar chamada" : "Book a Call"}
-              </a>
+              {locale === "en" ? (
+                <>
+                  <a href={`${homeHref}#next-move`} className="text-white/75 transition hover:text-[var(--landing-sprout)]">
+                    Who It&apos;s For
+                  </a>
+                  <a href={`${homeHref}#how`} className="text-white/75 transition hover:text-[var(--landing-sprout)]">
+                    How It Works
+                  </a>
+                  <a href={`${homeHref}#starting-point`} className="text-white/75 transition hover:text-[var(--landing-sprout)]">
+                    $1 Domain
+                  </a>
+                  <a href={`${homeHref}#sprint-beta`} className="text-white/75 transition hover:text-[var(--landing-sprout)]">
+                    Founder Sprint
+                  </a>
+                  <a href={`${homeHref}#booking`} className="text-white/75 transition hover:text-[var(--landing-sprout)]">
+                    Book a Call
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a
+                    href={`${homeHref}#pain`}
+                    className="text-white/75 transition hover:text-[var(--landing-sprout)]"
+                  >
+                    {locale === "fr" ? "Pour qui" : locale === "es" ? "Para quién" : locale === "ht" ? "Pou kiyès" : locale === "pt" ? "Para quem" : "Who It's For"}
+                  </a>
+                  <a
+                    href={`${homeHref}#bridge`}
+                    className="text-white/75 transition hover:text-[var(--landing-sprout)]"
+                  >
+                    {locale === "fr" ? "Comment ça marche" : locale === "es" ? "Cómo funciona" : locale === "ht" ? "Kijan li mache" : locale === "pt" ? "Como funciona" : "How It Works"}
+                  </a>
+                  <a
+                    href={`${homeHref}#booking`}
+                    className="text-white/75 transition hover:text-[var(--landing-sprout)]"
+                  >
+                    {locale === "fr" ? "Réserver un appel" : locale === "es" ? "Reservar una llamada" : locale === "ht" ? "Rezève yon apèl" : locale === "pt" ? "Agendar chamada" : "Book a Call"}
+                  </a>
+                </>
+              )}
               <Link
                 href="/blog"
                 className="text-white/75 transition hover:text-[var(--landing-sprout)]"

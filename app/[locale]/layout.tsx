@@ -139,7 +139,7 @@ function getLayoutCopy(locale: string) {
     },
     footer: {
       description:
-        "Validation, launch planning, and growth systems for founders building with intention.",
+        "The AI Co-Founder for early-stage founders: free idea validation, a $1 starter domain, and the launch asset and roadmap to your first paying customer.",
       note: "Built for founders who are ready to move.",
       explore: "Explore",
       connect: "Connect",
